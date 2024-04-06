@@ -86,8 +86,8 @@ export default function Header() {
     strModeofSaleValue: "",
     strTeamModeofSaleValue: "",
     strRegionValue: "",
-    strDayBookValue:"",
-    strStateValue:''
+    strDayBookValue: "",
+    strStateValue: ''
   });
 
   const dependentfilter = {
@@ -208,74 +208,74 @@ export default function Header() {
   const [props1, setProps1] = useState();
   useEffect(() => {
     console.log(contexData.tempstate);
-		var Findex = contexData.tempstate.FilterIndex
-		console.log("useEffet1");
-		
-		if (Findex !== "undefined" && Findex !== 0) {
-			if (Findex >= 1 && Findex < 9) {
-				for (let index = Findex+1; index < 10; index++) {
-					console.log(index,'indexno')
-					if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
-						FetchDataDependentAPI(FilterData, index)
-					}
-				}
-			}
-			else if (Findex > 9 && Findex < 13) {
-				for (let index = Findex; index < 16; ++index) {
-					if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
-						FetchDataDependentAPI(FilterData, index)
-					}
-				}
-			}
-		}
-	}, [contexData.FilterIndex])
+    var Findex = contexData.tempstate.FilterIndex
+    console.log("useEffet1");
 
-	// useEffect(() => {
-	// 	console.log("useEffet3");
+    if (Findex !== "undefined" && Findex !== 0) {
+      if (Findex >= 1 && Findex < 9) {
+        for (let index = Findex + 1; index < 10; index++) {
+          console.log(index, 'indexno')
+          if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
+            FetchDataDependentAPI(FilterData, index)
+          }
+        }
+      }
+      else if (Findex > 9 && Findex < 13) {
+        for (let index = Findex; index < 16; ++index) {
+          if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
+            FetchDataDependentAPI(FilterData, index)
+          }
+        }
+      }
+    }
+  }, [contexData.FilterIndex])
 
-	// 	for (let index = 1; index <= dependentfilter.length; index++) {
-	// 		FetchDataDependentAPI(FilterData, index)
-	// 	}
+  // useEffect(() => {
+  // 	console.log("useEffet3");
 
-	// }, [contexData.tempstate.strBranchID, contexData.tempstate.CompanyID])
+  // 	for (let index = 1; index <= dependentfilter.length; index++) {
+  // 		FetchDataDependentAPI(FilterData, index)
+  // 	}
 
-	function FetchDataDependentAPI(input, FilterIndex) {
-		console.log("FetchDataDependentAPI",contexData.tempstate[dependentfilter[FilterIndex][4]]);
-		post(input, dependentfilter[FilterIndex][1], [], 'post').then((res) => {
-			console.log("response",res);
-			console.log("index",contexData.tempstate[dependentfilter[FilterIndex][4]])
-			var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
-			var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-			console.log("hii", res.data.lstResult);
-			var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
-			// var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
-			console.log('TempDatabefore', TempDataID)
-			console.log('resultID', resultID)
-			console.log("contexData.tempstate before",contexData.tempstate);
-			var temarrayID=[]
-			var temparryValue=[]
-			for (let index = 0; index < TempDataID.length; index++) {
-				console.log('delete before log',resultID.indexOf(TempDataID[index]),TempDataID[index])
-				if (resultID.indexOf(TempDataID[index]) >= 0) {	
-					console.log('delete index',TempDataID[index])
-					// TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
-					// TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
-					// delete TempDataID[index]
-					// delete TempDataValue[index]
-					temparryValue.push(TempDataValue[index])
-					temarrayID.push(TempDataID[index])
-				}
-			}
-			
-			
-			console.log('TempData After', temarrayID)			
-			
-			
-			contexData.Settempstate({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(),['FilterIndex']:0 })
-			console.log("contexData.tempstate After ",contexData.tempstate);
-			
-		})
-	}
+  // }, [contexData.tempstate.strBranchID, contexData.tempstate.CompanyID])
+
+  function FetchDataDependentAPI(input, FilterIndex) {
+    console.log("FetchDataDependentAPI", contexData.tempstate[dependentfilter[FilterIndex][4]]);
+    post(input, dependentfilter[FilterIndex][1], [], 'post').then((res) => {
+      console.log("response", res);
+      console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
+      var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
+      var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
+      console.log("hii", res.data.lstResult);
+      var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
+      // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
+      console.log('TempDatabefore', TempDataID)
+      console.log('resultID', resultID)
+      console.log("contexData.tempstate before", contexData.tempstate);
+      var temarrayID = []
+      var temparryValue = []
+      for (let index = 0; index < TempDataID.length; index++) {
+        console.log('delete before log', resultID.indexOf(TempDataID[index]), TempDataID[index])
+        if (resultID.indexOf(TempDataID[index]) >= 0) {
+          console.log('delete index', TempDataID[index])
+          // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
+          // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
+          // delete TempDataID[index]
+          // delete TempDataValue[index]
+          temparryValue.push(TempDataValue[index])
+          temarrayID.push(TempDataID[index])
+        }
+      }
+
+
+      console.log('TempData After', temarrayID)
+
+
+      contexData.Settempstate({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+      console.log("contexData.tempstate After ", contexData.tempstate);
+
+    })
+  }
 
   //   useEffect(() => {
   //     // getdataState();
@@ -302,7 +302,7 @@ export default function Header() {
     let demooName = [];
     demoo.push(myvalue.split(","));
     demooName.push(myvalueName.split(","));
-    console.log("DEMOOOOO",demoo[0].length);
+    console.log("DEMOOOOO", demoo[0].length);
     let newarr = [];
     let newarrName = [];
 
@@ -317,7 +317,7 @@ export default function Header() {
         }
       }
     } else {
-      
+
       for (let index = 0; index < demoo[0].length; index++) {
         if (demoo[0].indexOf("") === -1) {
           console.log(demoo[0][index]);
@@ -340,11 +340,11 @@ export default function Header() {
     contexData.setchildFilterShow(true);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     handleDaybook();
     handleMetaltype();
-    console.log(contexData.tempstate,"useffect temp");
-  },[])
+    console.log(contexData.tempstate, "useffect temp");
+  }, [])
 
   function handlerOnOpen() {
     setFIlterFlag(true);
@@ -408,7 +408,7 @@ export default function Header() {
     });
   }
   function handleselect(e, selectData) {
-    
+
     if (selectData.name === 'MetalTypeSelect') {
       setDefaultMetalType(e);
       contexData.Settempstate({ ...contexData.tempstate, ['strMetalType']: e.value, ['strMetalTypeValue']: e.label });
@@ -856,14 +856,14 @@ export default function Header() {
   };
 
   function formatedValue(str) {
-		if (str !== undefined) {
-			if (str === '' || str.split(',').length === 1) {
-				return str
-			} else {
-				return str.split(',')[0].toString() + ' ' + (str.split(',').length - 1).toString() + '+'
-			}
-		}
-	}
+    if (str !== undefined) {
+      if (str === '' || str.split(',').length === 1) {
+        return str
+      } else {
+        return str.split(',')[0].toString() + ' ' + (str.split(',').length - 1).toString() + '+'
+      }
+    }
+  }
 
   return (
     <>
@@ -937,7 +937,7 @@ export default function Header() {
                             >
                               <div className="button-open">
                                 {localStorage.getItem("value") === "" ||
-                                localStorage.getItem("value") === undefined ? (
+                                  localStorage.getItem("value") === undefined ? (
                                   <>
                                     <img
                                       src={currency}
@@ -1067,28 +1067,28 @@ export default function Header() {
         <Commonmodel modelprops={props1} prdemo={demo} prdemoName={demoName} />
       ) : (
         <Modal
-          className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl modal-filter"
+          className="modal-dialog modal-dialog-centered  modal-xl modal-filter"
           show={filterFlag}
           onHide={handleOnClose}
           backdrop="static"
           keyboard={false}
           size="xl"
-        >
-          {/* <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-		aria-labelledby="staticBackdropLabel" aria-hidden="true"> */}
-
-          {/* <div class="modal-dialog modal-dialog-c`entered modal-dialog-scrollable modal-xl modal-filter" id="staticBackdrop" data-bs-backdrop="static"  data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true"> */}
-          <div class="modal-content">
-            <Modal.Header class="modal-body-header" closeButton>
-            <Modal.Header >
-											<div class="geex-customizer__header">
-												<h4 class="geex-customizer__title">Filter By</h4>
-												<div class="crancy-color2__fill filter-close-icon"  onClick={handleOnClose}>
-                        <i class="fa-solid fa-xmark"></i>
-												</div>
-											</div>
-										</Modal.Header>
-            </Modal.Header>
+        >       
+            <Modal.Header class="modal-header">  
+                  <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> Filter By</h5>
+                  <button class="geex-btn geex-btn__customizer-close" onClick={handleOnClose}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
+                        fill="#ffffff" />
+                      <path
+                        d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
+                        fill="#ffffff" fill-opacity="0.8" />
+                    </svg>
+                  </button>
+                
+              </Modal.Header>
+          
 
             <Modal.Body class="modal-body">
               <div class="container">
@@ -1138,7 +1138,7 @@ export default function Header() {
                                   <option value="2">Two</option>
                                   <option value="3">Three</option>
                                 </select> */}
-                                 <Select
+                                <Select
                                   // defaultValue={[colourOptions[2], colourOptions[3]]}
                                   name="MetalTypeSelect"
                                   options={MetalType}
@@ -1153,10 +1153,10 @@ export default function Header() {
                                     control: (provided, state) => ({
                                       ...provided,
                                       height: '45px',
-                                      borderRadius:'10px'
+                                      borderRadius: '10px'
                                     }),
                                   }}
-                                /> 
+                                />
                               </form>
                             </div>
                           </div>
@@ -1180,10 +1180,10 @@ export default function Header() {
                                     control: (provided, state) => ({
                                       ...provided,
                                       height: '45px',
-                                      borderRadius:'10px'
+                                      borderRadius: '10px'
                                     }),
                                   }}
-                                /> 
+                                />
                               </form>
                             </div>
                           </div>
@@ -1688,9 +1688,8 @@ export default function Header() {
                 </label>
               </div>
             </Modal.Footer>
-          </div>
-          {/* </div> */}
-          {/* </div> */}
+        
+         
         </Modal>
       )}
     </>
