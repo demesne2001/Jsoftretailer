@@ -14,11 +14,12 @@ import img3 from '../../Assets/image/img3.jpg'
 import dots from '../../Assets/image/dots.jpg'
 import strip from '../../Assets/image/strips.jpg'
 import Gradient from "javascript-color-gradient";
-
+import { useNavigate } from 'react-router-dom';
 
 
 export default function DesignCatalogueWise() {
   const [sales, setSales] = useState([])
+  const navigate = useNavigate()
   // const contexData = useContext(contex)
 
   // const series = [44, 55, 41, 17, 15]
@@ -111,9 +112,9 @@ export default function DesignCatalogueWise() {
 
 
   function handleclick(e) {
-    if (e.target.className !== 'custom-hr'){
-			setflag(e.target.id)
-		}
+    if (e.target.className !== 'custom-hr') {
+      setflag(e.target.id)
+    }
   }
   useEffect(() => {
     getdata()
@@ -164,310 +165,19 @@ export default function DesignCatalogueWise() {
   }
 
   function setMargin() {
-		if (weight.length < 7) {
-			return 80
-		} else {
-			return 30
-		}
+    if (weight.length < 7) {
+      return 80
+    } else {
+      return 30
+    }
+  }
+
+
+
+
+  function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise" } })
 	}
-
-
-
-  // if (flag === 'donut') {
-  //   var series = weight;
-  //   var options = {
-  //     legend: {
-  //       show: false
-  //     },
-  //     chart: {
-  //       animations: {
-  //         enabled: true,
-  //         easing: 'easeinout',
-  //         speed: 800,
-  //         animateGradually: {
-  //             enabled: true,
-  //             delay: 100
-  //         },
-  //         dynamicAnimation: {
-  //             enabled: true,
-  //             speed: 300
-  //         }
-  //     },
-  //       toolbar: {
-  //         show: true,
-  //         offsetX: 0,
-  //         offsetY: 0,
-  //         tools: {
-  //           download: true,
-  //         },
-
-  //       },
-  //       width: 380,
-  //       type: 'donut',
-  //       // dropShadow: {
-  //       //   enabled: true,
-  //       //   color: '#111',
-  //       //   top: -1,
-  //       //   left: 3,
-  //       //   blur: 3,
-  //       //   opacity: 0.2
-  //       // }
-  //     },
-  //     stroke: {
-  //       width: 0,
-  //     },
-  //     plotOptions: {
-  //       pie: {
-  //         donut: {
-  //           labels: {
-  //             show: true,
-  //             total: {
-  //               showAlways: true,
-  //               show: true
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     labels: name,
-  //     dataLabels: {
-  //       dropShadow: {
-  //         blur: 3,
-  //         opacity: 0.8
-  //       }
-  //     },
-  //     fill: {
-  //       type: 'pattern',
-  //       opacity: 1,
-  //       pattern: {
-  //         enabled: true,
-  //         style: ['slantedLines'],
-  //       },
-  //     },
-  //     // states: {
-  //     //   hover: {
-  //     //     filter: 'none'
-  //     //   }
-  //     // },
-  //     theme: {
-  //       palette: 'palette2'
-  //     },
-  //     responsive: [{
-	// 			breakpoint: 480,
-	// 			options: {
-	// 				chart: {
-  //           height: 200,
-	// 					width: 200
-	// 				},
-	// 				legend: {
-	// 					position: 'bottom'
-
-	// 				}
-	// 			}
-	// 		}]
-  //   }
-  // }
-
-  // else if (flag === 'pie') {
-    
-  //   var series = weight;
-  //   var options = {
-  //     legend: {
-  //       show: false
-  //     },
-  //     chart: {
-  //       animations: {
-  //         enabled: true,
-  //         easing: 'easeinout',
-  //         speed: 800,
-  //         animateGradually: {
-  //             enabled: true,
-  //             delay: 100
-  //         },
-  //         dynamicAnimation: {
-  //             enabled: true,
-  //             speed: 300
-  //         }
-  //     },
-  //       toolbar: {
-  //         show: true,
-  //         offsetX: 0,
-  //         offsetY: 0,
-  //         tools: {
-  //           download: true,
-  //         },
-
-  //       },
-  //       width: 380,
-  //       type: 'pie',
-  //       // dropShadow: {
-  //       //   enabled: false,
-  //       //   color: '#111',
-  //       //   top: 0,
-  //       //   left: 0,
-  //       //   blur: 0,
-  //       //   opacity: 0
-  //       // }
-  //     },
-  //     stroke: {
-  //       width: 0,
-  //     },
-  //     plotOptions: {
-  //       pie: {
-  //         donut: {
-  //           labels: {
-  //             show: false,
-  //             total: {
-  //               showAlways: true,
-  //               show: true
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     labels: name,
-  //     dataLabels: {
-  //       dropShadow: {
-  //         blur: 0,
-  //         opacity: 0
-  //       }
-  //     },
-  //     fill: {
-  //       image: {
-  //         src: [dots, img3, flow, strip],
-  //         width: 25,
-  //         imagedHeight: 25
-  //       },
-  //       type: 'image',
-  //       opacity: 1,
-  //       pattern: {
-  //         enabled: false,
-  //       },
-  //     },
-  //     // states: {
-  //     //   hover: {
-  //     //     filter: 'none'
-  //     //   }
-  //     // },
-  //     theme: {
-  //       palette: 'none'
-  //     },
-      
-  //   }
-  // }
-
-  // else if(flag === 'bar'){
-  //   var series = [{
-  //     data: weight
-  //   }]
-
-  //   var options = {
-  //     legend: {
-  //       show: false
-  //     },
-  //     chart: {
-  //       animations: {
-  //         enabled: true,
-  //         easing: 'easeinout',
-  //         speed: 800,
-  //         animateGradually: {
-  //             enabled: true,
-  //             delay: 100
-  //         },
-  //         dynamicAnimation: {
-  //             enabled: true,
-  //             speed: 300
-  //         }
-  //     },
-  //       height: 350,
-  //       type: 'bar',
-  //       dropShadow: {
-  //         enabled: false,
-  //         color: '#111',
-  //         top: 0,
-  //         left: 0,
-  //         blur: 0,
-  //         opacity: 0
-  //       }
-  //     },
-  //     plotOptions: {
-  //       bar: {
-  //         horizontal: true,
-  //         borderRadius: 10,
-  //         dataLabels: {
-  //           position: 'top', // top, center, bottom
-  //         },
-  //       }
-  //     },
-  //     dataLabels: {
-  //       enabled: false,
-  //       formatter: function (val) {
-  //         return val;
-  //       },
-  //       offsetY: 20,
-  //       style: {
-  //         fontSize: '12px',
-  //         colors: ["#304758"]
-  //       }
-  //     },
-  //     fill: {
-  //       type: 'none',
-  //       opacity: 1,
-  //       pattern: {
-  //         enabled: false,
-  //       },
-  //     },
-
-  //     xaxis: {
-  //       categories: name,
-  //       position: 'bottom',
-  //       axisBorder: {
-  //         show: false
-  //       },
-  //       axisTicks: {
-  //         show: true
-  //       },
-  //       crosshairs: {
-  //         fill: {
-  //           type: 'gradient',
-  //           gradient: {
-  //             colorFrom: '#D8E3F0',
-  //             colorTo: '#BED1E6',
-  //             stops: [0, 100],
-  //             opacityFrom: 0.4,
-  //             opacityTo: 0.5,
-  //           }
-  //         }
-  //       }
-  //     },
-  //     yaxis: {
-  //       axisBorder: {
-  //         show: true
-  //       },
-  //       axisTicks: {
-  //         show: false,
-  //       },
-  //       labels: {
-  //         show: true,
-  //         formatter: function (val) {
-  //           return val;
-  //         }
-  //       }
-  //     },
-
-  //     theme: {
-  //       palette: 'none'
-  //     },
-
-  //     annotations: {
-  //       // points: imagearr,
-  //       tooltip: {
-  //         enabled: true,
-  //       }
-  //     }
-  //   }
-  // }
-
 
 
   function handleonchangeCurrency() {
@@ -489,19 +199,25 @@ export default function DesignCatalogueWise() {
   return (
     <div className="col-lg-4 col-md-6 col-12">
       <div className="graph-card">
-        <div href="#" target="_self" className="card-title-graph">
-          <p><i className="fas fa-gem"></i>
-            Design Catalogue Wise</p>
-          <div className='btnicons'>
-            <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+        <div className="card-title-graph">
+          <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+            <p><i className="fas fa-gem"></i>
+              Design Catalogue Wise</p>
+          </div>
 
-            <div id="myDropdownicondesigncat" className="dropdown-contenticon" onClick={handleclick}>
-              <a id='donut' >Donut</a><hr className='custom-hr' />
-              <a id='heatmap' >Heatmap</a><hr className='custom-hr' />
-              <a id='bar' >Bar</a><hr className='custom-hr' />
-              <a id='pie' >Pie chart </a><hr className='custom-hr' />
+          <div className="col-sm-2 col-md-2 col-2">
+            <div className='btnicons'>
+              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+
+              <div id="myDropdownicondesigncat" className="dropdown-contenticon" onClick={handleclick}>
+
+                <a id='donut' >Donut</a><hr className='custom-hr' />
+                <a id='heatmap' >Heatmap</a><hr className='custom-hr' />
+                <a id='bar' >Bar</a><hr className='custom-hr' />
+                <a id='pie' >Pie chart </a><hr className='custom-hr' />
+              </div>
+              <i class="fas fa-external-link-alt"></i>
             </div>
-            <i class="fas fa-external-link-alt"></i>
           </div>
           {/* <i className="fas fa-external-link-alt"></i> */}
           {/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
@@ -513,13 +229,13 @@ export default function DesignCatalogueWise() {
           </div> */}
         </div>
         <div className="crancy-progress-card card-contain-graph">
-				{flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} />:null}
-				{flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} />:null}
-				{flag === 'donut' ? <ReactApexChart options={options_donut} type={flag} series={series1} height={350} />:null}
+          {flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} /> : null}
+          {flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} /> : null}
+          {flag === 'donut' ? <ReactApexChart options={options_donut} type={flag} series={series1} height={350} /> : null}
 
           {flag === 'heatmap' ?
-      
-            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
+
+            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
               <tr>
                 <th>DesignNo</th>
                 <th>FineWt</th>
@@ -535,7 +251,7 @@ export default function DesignCatalogueWise() {
                 )
               })}
 
-            </table>:null
+            </table> : null
           }
         </div>
       </div>

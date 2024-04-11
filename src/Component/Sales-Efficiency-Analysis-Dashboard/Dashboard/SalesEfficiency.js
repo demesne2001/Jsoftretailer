@@ -65,30 +65,37 @@ export default function SalesEfficiency() {
         // console.log("branchwise data", inputdata);
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
-               
-                setweight(res.data.lstResult[0]['FineWt'])
-                setcostAmount(res.data.lstResult[0]['CostAmount'])
-                // console.log(res.data.lstResult[0]['FineWt'], "weright card");
-                inputdata = { ...inputdata, ['Grouping']: '' }
+                if (res.data.lstResult.length > 0) {
+                    setweight(res.data.lstResult[0]['FineWt'])
+                    setcostAmount(res.data.lstResult[0]['CostAmount'])
+                    // console.log(res.data.lstResult[0]['FineWt'], "weright card");
+                    inputdata = { ...inputdata, ['Grouping']: '' }
+                } 
             })
     }
     function format(val) {
         // console.log("value", typeof(val));
-		if (localStorage.getItem('value') === 'k') {
+        if (localStorage.getItem('value') === 'k') {
             // console.log("thousand selected");
-			return ((((val / 1000).toFixed(1)).toString()) + "K");
-		} else if (localStorage.getItem('value')  === 'l') {
-			return ((((val / 100000).toFixed(1)).toString()) + "L");
-		} else if (localStorage.getItem('value')  === 'm') {
-			return ((((val / 1000000).toFixed(1)).toString()) + "M");
-		} else if (localStorage.getItem('value')  === 'c') {
-			return ((((val / 10000000).toFixed(1)).toString()) + "CR");
-		}else if (localStorage.getItem('value')  === 'b') {
-			return ((((val / 1000000000).toFixed(1)).toString()) + "B");
-		} else {
-			return Math.floor(val);;
-		}
-	}
+            return ((((val / 1000).toFixed(1)).toString()) + "K");
+        } else if (localStorage.getItem('value') === 'l') {
+            return ((((val / 100000).toFixed(1)).toString()) + "L");
+        } else if (localStorage.getItem('value') === 'm') {
+            return ((((val / 1000000).toFixed(1)).toString()) + "M");
+        } else if (localStorage.getItem('value') === 'c') {
+            return ((((val / 10000000).toFixed(1)).toString()) + "CR");
+        } else if (localStorage.getItem('value') === 'b') {
+            return ((((val / 1000000000).toFixed(1)).toString()) + "B");
+        } else {
+            return Math.floor(val);;
+        }
+    }
+
+    function thousandSeparated(val){
+        return (Number(parseFloat(val)).toLocaleString('en', {
+            minimumFractionDigits: 2
+        }));
+    }
     return (
 
         <div className="col-xl-2 col-lg-4 col-md-4 col-12">
@@ -98,7 +105,7 @@ export default function SalesEfficiency() {
                 </div>
                 <div className="crancy-progress-card1 top-contant-top-card">
                     <div className="crancy-progress-card__content">
-                        <h4 className="crancy-progress-card__title">{weight}</h4>
+                        <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
                         <div className="crancy-progress-card__history">
                             <span>(83.43% Sold)</span>
                         </div>
@@ -110,7 +117,7 @@ export default function SalesEfficiency() {
                 </div>
                 <div className="crancy-progress-card1 top-contant-botton-card">
                     <div className="crancy-progress-card__content">
-                        <h4 className="crancy-progress-card__title">{format(costAmount)}</h4>
+                        <h4 className="crancy-progress-card__title">{thousandSeparated(format(costAmount))}</h4>
                         <div className="crancy-progress-card__history">
                             <span>(83.43% Sold)</span>
                         </div>

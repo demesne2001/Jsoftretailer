@@ -8,92 +8,18 @@ import API from '../../Utility/API';
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
-
+import { useNavigate } from 'react-router-dom';
 
 export default function SalesAgingWise() {
 
-	// const contexData = useContext(contex)
 
-	// const series = [
-	//   {
-	//     name: "High - 2013",
-	//     data: [28, 29, 33, 36, 32, 32, 33]
-	//   }
-	// ]
-
-	// const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
-
-	// const options = lineOption(labels)
-
-	// const [postData, setPostData] = useState({
-	//   "strBranch": "",
-	//   "strState": "",
-	//   "strCity": "",
-	//   "strItem": "",
-	//   "strSubItem": "",
-	//   "strItemGroup": "",
-	//   "strItemSubitem": "",
-	//   "strPurchaseParty": "",
-	//   "strSalesParty": "",
-	//   "strSaleman": "",
-	//   "strProduct": "",
-	//   "strDesignCatalogue": "",
-	//   "strSaleAging": "",
-	//   "strModeofSale": "",
-	//   "strTeamModeofSale": "",
-	//   "FromDate": "",
-	//   "ToDate": "",
-	//   "strMetalType": "",
-	//   "strDayBook": "",
-	//   "PageNo": 0,
-	//   "PageSize": 0,
-	//   "Search": ""
-	// })
-
-
-	// useEffect(()=>{
-
-	// 	setPostData(contexData.state)
-
-	// },[contexData.state])
-
-	// useEffect(()=>{
-	// 	getdata()
-	// },[postData])
-
-
-	// function getdata() {
-
-	//   let temp1 = []
-
-	//   post(postData, API.GetSalesAgingWise, 'post')
-	//     .then((res) => {
-
-	//       for (let index = 0; index < res.data.lstResult.length; index++) {
-
-	//         temp1.push({
-
-	//         })
-
-	//       }
-
-	//     })
-	// }
-
-	// function handledropdownMenu() {
-	//   document.getElementById("myDropdownSalesaging").style.display === "block" ? document.getElementById("myDropdownSalesaging").style.display = "none" : document.getElementById("myDropdownSalesaging").style.display = "block";
-	// }
-
-
-	// function handleSelectedChart(num) {
-	//   // setBranchWiseChart(num)
-	// }
 
 
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
+	const navigate = useNavigate()
 
 	const [flag, setflag] = useState("line")
 	const [demo, setdemo] = useState("line")
@@ -139,7 +65,7 @@ export default function SalesAgingWise() {
 		var series = [{
 			type: 'line',
 			data: weight,
-			name:'weight'
+			name: 'weight'
 		}]
 
 		var options = {
@@ -224,21 +150,21 @@ export default function SalesAgingWise() {
 				offsetY: -25,
 				offsetX: -5
 			},
-			tooltip:{
-				
-				  y: {
+			tooltip: {
+
+				y: {
 					show: true,
-					formatter: function(val) {
-					  return val
+					formatter: function (val) {
+						return val
 					}
-				  },
+				},
 			},
 			responsive: [{
 				breakpoint: 593,
 				options: {
-					
-					xaxis:{
-						labels:{
+
+					xaxis: {
+						labels: {
 							// formatter: function (val) {
 							// 	if (val !== undefined) {
 							// 		if (val.length > 3) {
@@ -247,21 +173,21 @@ export default function SalesAgingWise() {
 							// 			return val
 							// 		}
 							// 	}
-								
+
 							// }
-							
+
 						}
 					},
 					yaxis: {
 						labels: {
 							show: true,
-							formatter: function(val) {
-								
-								return ((val/1000).toFixed(0)).toString() + "KG"
-							  
-							  }
-						  
-						   
+							formatter: function (val) {
+
+								return ((val / 1000).toFixed(0)).toString() + "KG"
+
+							}
+
+
 						}
 					}
 				},
@@ -274,7 +200,7 @@ export default function SalesAgingWise() {
 		var series = [{
 			type: 'area',
 			data: weight,
-			name:'weight'
+			name: 'weight'
 		}]
 
 
@@ -372,11 +298,11 @@ export default function SalesAgingWise() {
 		var series = [{
 			type: 'column',
 			data: weight,
-			name:'weight'
+			name: 'weight'
 		}, {
 			type: 'line',
 			data: weight,
-			name:'weight'
+			name: 'weight'
 		}]
 
 
@@ -406,7 +332,7 @@ export default function SalesAgingWise() {
 				show: true,
 				width: 4,
 				colors: [0, '#4dff4d']
-			},	
+			},
 
 			grid: {
 				yaxis: {
@@ -431,7 +357,9 @@ export default function SalesAgingWise() {
 	}
 
 
-
+	function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise" } })
+	}
 
 
 	function handleonchangeCurrency() {
@@ -441,7 +369,7 @@ export default function SalesAgingWise() {
 
 	window.onclick = function (event) {
 
-		if (!event.target.matches('.dropbtn') ) {
+		if (!event.target.matches('.dropbtn')) {
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[14] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[14].style.display = "none";
@@ -455,18 +383,25 @@ export default function SalesAgingWise() {
 	return (
 		<div class="col-lg-6 col-md-6 col-12">
 			<div class="graph-card">
-				<div href="#" target="_self" class="card-title-graph">
-					<p><i class="fas fa-chart-line"></i>
-						Sales Aging Wise</p>
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+				<div class="card-title-graph">
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+						<p><i class="fas fa-chart-line"></i>
+							Sales Aging Wise</p>
+					</div>
 
-						<div id="myDropdowniconSalesAging" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='line' className='line' >line </a><hr className='custom-hr' />
-							<a id='area' className='area'>area chart</a><hr className='custom-hr' />
-							<a id='linebar' className='line'>Combo chart</a><hr className='custom-hr' />
+					< div className="col-sm-2 col-md-2 col-2">
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+
+							<div id="myDropdowniconSalesAging" className="dropdown-contenticon" onClick={handleclick}>
+
+								{flag === 'line' ? <><a id='line' className='line' >line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></>: <><a id='line' className='line' >line </a><hr className='custom-hr' /></>}
+								{flag === 'area' ? <><a id='area' className='area'>area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>area chart</a><hr className='custom-hr' /></>}
+								{flag === 'linebar' ? <><a id='linebar' className='line'>Combo chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='linebar' className='line'>Combo chart</a><hr className='custom-hr' /></>}
+								
+							</div>
+							<i class="fas fa-external-link-alt"></i>
 						</div>
-						<i class="fas fa-external-link-alt"></i>
 					</div>
 
 					{/* <i class="fas fa-external-link-alt"></i> */}

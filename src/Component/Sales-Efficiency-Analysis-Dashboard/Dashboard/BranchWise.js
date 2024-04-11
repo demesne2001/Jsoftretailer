@@ -70,7 +70,7 @@ export default function BranchWise() {
 
 	async function getdata() {
 		inputdata = { ...inputdata, ['Grouping']: 'a.BranchID,b.BranchName' }
-		// console.log("branchwise data", inputdata);
+		// console.log("INPUT ", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -107,7 +107,6 @@ export default function BranchWise() {
 	}
 
 
-
 	// function handleThousand(n) {
 	// 	localStorage.setItem("value", n)
 	// 	contexData.setcurrency(n)
@@ -119,7 +118,7 @@ export default function BranchWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: "a.BranchID,b.BranchName" })
+		navigate('/graph-detail', {state: {grouping:"a.BranchID,b.BranchName",columnID:'BranchID',columnName:'BranchName',componentName : "Branch Wise"}})
 	}
 
 	window.onclick = function (event) {
@@ -138,31 +137,40 @@ export default function BranchWise() {
 		<div className="col-lg-4 col-md-6 col-12">
 
 			<div className="graph-card">
-				<div className='card-title-graph' onClick={handleNavigation}>
+				<div className='card-title-graph'>
 
-					<p><i class="fas fa-chart-pie">
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
 
-					</i> Branch Wise </p>
-					<i className="fas fa-external-link-alt"></i>
-					{/* <img src={drop} className='dropbtnicon'></img> */}
+						<p><i class="fas fa-chart-pie"></i>Branch Wise</p>
 
+					</div>
 
-				</div>
+					<div className="col-sm-2 col-md-2 col-2" >
 
+						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} ></img>
+						<i class="fas fa-external-link-alt"></i>
 
-
-				<div className="crancy-progress-card card-contain-graph">
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
+						<div className='btnicons'>
+						
 
 						<div id="myDropdowniconbranch" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='donut' >donut</a><hr className='custom-hr' />
-							<a id='radialBar' >radialBar</a><hr className='custom-hr' />
-							<a id='heatmap' >Heat map</a><hr className='custom-hr' />
-							{/* <a id='bubble' >Bubble</a><hr className='custom-hr' /> */}
+
+							{flag === 'donut' ? <><a id='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >Donut</a><hr className='custom-hr' /></>}
+							{flag === 'radialBar' ? <><a id='radialBar'>RadialBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >RadialBar</a><hr className='custom-hr' /></>}
+							{flag === 'heatmap' ? <><a id='heatmap'>Heat map&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /> </>}
+							
 						</div>
 
 					</div>
+
+					</div>
+
+					
+				</div>
+
+				
+				<div className="crancy-progress-card card-contain-graph">
+					
 					{flag === 'donut' ? <ReactApexChart options={options_donut} series={series} height={380} type={flag} /> : null}
 					{flag === 'radialBar' ? <ReactApexChart options={options_radialbar} series={series} height={380} type={flag} /> : null}
 					{flag === 'heatmap' ?

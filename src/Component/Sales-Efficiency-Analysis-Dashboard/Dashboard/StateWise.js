@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import ReactApexChart from 'react-apexcharts';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 
 import BlackDots from '../../Assets/image/Dots.png'
 
@@ -18,13 +19,14 @@ export default function StateWise() {
 
 	const contexData = useContext(contex)
 	const [state, setState] = useState([]);
+	const navigate = useNavigate()
 	let inputdata = contexData.state;
 	const [flag, setflag] = useState("treemap")
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	const options_semidonut = StateWise_SemiDonut(name, state)
 	const options_Treemap = StateWise_Treemap(name)
-	const series_treemap =  [
+	const series_treemap = [
 		{
 			data: state
 		}
@@ -68,123 +70,21 @@ export default function StateWise() {
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
-	// function handleSelectedChart(num) {
-	// 	setStateWiseChart(num)
-	// }
-
-
-	// function returnSelectedChart() {
-	// 	if (stateWiseChart === 1) { 
-
-	// 		return (<ReactApexChart options={treeOption} series={series} type="treemap" height={380} />)
-	// 	}
-	// 	else if(stateWiseChart === 2){
-
-	// 		return (<ReactApexChart options={radialOption} series={series1} type="bar" height={380} />)
-	// 	}
-	// 	else if(stateWiseChart === 3){
-	// 		console.log(semiDoughnutOption)
-	// 		return(<ReactApexChart options={semiDoughnutOption} series={series2} type="donut" height={380} />)
-	// 	}
-	// }
-
-	// function handledropdownMenu() {
-	// 	document.getElementById("myDropdownState").style.display === "block" ? document.getElementById("myDropdownState").style.display = "none" : document.getElementById("myDropdownState").style.display = "block";
-	// }
-
-	// console.log('statewsie',state)
-
-	// console.log('flaggggg', flag)
-
-
 	
 
-	// if (flag === 'radialBar') {
-	// 	// console.log(datax)
 
-
-	// 	let percarray = []
-
-	// 	let sum = 0;
-
-	// 	for (let i = 0; i < datay.length; i++) {
-	// 		sum += datay[i];
-	// 	}
-
-	// 	for (let index = 0; index < datay.length; index++) {
-	// 		percarray.push((datay[index] / sum) * 100)
-	// 	}
-
-
-	// 	var series = percarray
-
-	// 	console.log("datax", datax)
-	// 	var options = {
-	// 		dataLabels: {
-	// 			enabled: true,
-	// 		},
-	// 		chart: {
-	// 			type: 'radialBar',
-	// 		},
-	// 		plotOptions: {
-	// 			radialBar: {
-	// 				offsetY: 0,
-	// 				startAngle: 0,
-	// 				endAngle: 270,
-	// 				hollow: {
-	// 					margin: 5,
-	//                 	size: '15%',
-	// 					background: 'transparent',
-	// 					// image: undefined,
-	// 				},
-	// 				dataLabels: {
-	// 					name: {
-	// 						show: false,
-	// 					},
-	// 					value: {
-	// 						show: false,
-	// 					}
-	// 				}
-	// 			}
-	// 		},
-	// 		labels: datax,
-
-	// 		legend: {
-	// 			show: true,
-	// 			floating: true,
-	// 			fontSize: '13px',
-	// 			position: 'left',
-	// 			offsetX: 140,
-	// 			offsetY: 3,
-	// 			labels: {
-	// 				useSeriesColors: true,
-	// 			},
-	// 			markers: {
-	// 				width: 0,
-	// 				height: 0
-	// 			},
-
-	// 		},
-
-	// 	}
-	// }
-
-	
 
 
 	function handleonchangeCurrency() {
-		// console.log("innn")
+	
 		document.getElementById("myDropdowniconstate").style.display === "block" ? document.getElementById("myDropdowniconstate").style.display = "none" : document.getElementById("myDropdowniconstate").style.display = "block";
 	}
 
 	window.onclick = function (event) {
 
-		// console.log("eeeeeeeeevent",event.target.matches('#iconidstate'))
+		
 
 		if (!event.target.matches('#iconidstate')) {
-			// console.log("hii");
-
-			// console.log('stateeeeeeeeeeeeeeeeeeeeeeee', document.getElementsByClassName("dropdown-contenticon")[1])
 			if (document.getElementsByClassName("dropdown-contenticon")[1] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[1].style.display = "none";
 			}
@@ -192,24 +92,42 @@ export default function StateWise() {
 	}
 
 
+	function handleNavigation() {
+		navigate('/graph-detail', {state: {grouping:"k.stateID,k.Statename" ,columnName:"Statename",columnID:"stateID",componentName : "State Wise"}})
+	}
 
 
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
 				<div className="card-title-graph">
-					<p><i className="fas fa-map-marker-alt"></i>
-						State Wise</p>
 
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidstate'></img>
-						<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='treemap'>Tree map</a><hr className='custom-hr' />
-							{/* <a id='radialBar'>radialBar</a><hr className='custom-hr' /> */}
-							<a id='donut'>Semi donut </a><hr className='custom-hr' />
-						</div>
-						<i class="fas fa-external-link-alt"></i>
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
+
+						<p><i className="fas fa-map-marker-alt"></i> State Wise</p>
+
 					</div>
+
+					<div className="col-sm-2 col-md-2 col-2" >
+
+						<div className='btnicons'>
+
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidstate'></img>
+
+							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
+
+								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></> }
+								{flag === 'donut' ? <><a id='donut'>Semi donut &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Semi donut </a><hr className='custom-hr' /></>}
+								
+							</div>
+							<i class="fas fa-external-link-alt"></i>
+						</div>
+
+					</div>
+
+
+
+
 					{/* <i class="fas fa-external-link-alt"></i> */}
 				</div>
 
@@ -230,9 +148,9 @@ export default function StateWise() {
 
 
 				<div className="crancy-progress-card card-contain-graph">
-					
-					{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} />:null}
-					{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} />:null}
+
+					{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}
+					{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
 				</div>
 				<div id="html-dist"></div>
 			</div>

@@ -1,6 +1,13 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function Header_detailed() {
+
+    const navigate = useNavigate()
+
+    function handleNavigation() {
+		navigate('/')
+	}
     return (
         <header class="crancy-header">
             <div class="container g-0">
@@ -63,11 +70,11 @@ export default function Header_detailed() {
                                                     </div>
                                                 </li>
                                                 <li class="geex-content__header__quickaction__item">
-                                                    <a href="index.html">
+                                                    <a>
                                                         <div
                                                             class="geex-content__header__quickaction__link"
                                                         >
-                                                            <i class="fas fa-reply-all"></i>
+                                                            <i class="fas fa-reply-all" onClick={handleNavigation} ></i>
                                                         </div>
                                                     </a>
                                                 </li>

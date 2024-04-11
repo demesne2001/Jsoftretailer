@@ -10,6 +10,7 @@ import BlackDots from '../../Assets/image/Dots.png'
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CityWise() {
@@ -18,7 +19,7 @@ export default function CityWise() {
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
-	
+
 	const options_lolipop = CityWise_LoliMap(name)
 	const options_bar = CityWise_Bar(name);
 	const series_lolipop = [{
@@ -39,8 +40,10 @@ export default function CityWise() {
 
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
+	const navigate = useNavigate()
+
 	function handleclick(e) {
-		if (e.target.className !== 'custom-hr'){
+		if (e.target.className !== 'custom-hr') {
 			setflag(e.target.id)
 		}
 	}
@@ -70,7 +73,7 @@ export default function CityWise() {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					name.push(res.data.lstResult[index]['cityname'])
 					weight.push(res.data.lstResult[index]['FineWt'])
-					js = {'product':'','thisYearProfit' : 0}
+					js = { 'product': '', 'thisYearProfit': 0 }
 					if (res.data.lstResult[index]['cityname'] === null) {
 						js['product'] = 'null'
 					} else {
@@ -119,6 +122,9 @@ export default function CityWise() {
 		}
 	}
 
+	function handleNavigation() {
+		navigate('/graph-detail', {state: {grouping:"c.cityname" ,columnName:"cityname",columnID:"cityname",componentName : "City Wise"}}) 
+	}
 
 
 
@@ -126,59 +132,60 @@ export default function CityWise() {
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
 				<div className="card-title-graph">
-					<p><i className="fas fa-city"></i>
-						City Wise</p>
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
+
+						<p><i className="fas fa-city"></i> City Wise</p>
+
+					</div>
+					
+					<div className="col-sm-2 col-md-2 col-2" >
 					<div className='btnicons'>
 						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
 
 						<div id="myDropdowniconcity" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='bar' >bar </a><hr className='custom-hr' />
-							<a id='heatmap' >Heatmap</a><hr className='custom-hr' />
-							<a id='barl' >lollipop chart</a><hr className='custom-hr' />
-							{/* <a id='bar' >chart</a><hr className='custom-hr' /> */}
+
+							{flag === 'bar' ? <><a id='bar' >bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >bar </a><hr className='custom-hr' /></>}
+							{flag === 'heatmap' ? <><a id='heatmap' >Heatmap&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heatmap</a><hr className='custom-hr' /></>}
+							{flag === 'barl' ? <><a id='barl' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' >lollipop chart</a><hr className='custom-hr' /></>}
+
+
 						</div>
 						<i class="fas fa-external-link-alt"></i>
 					</div>
+					</div>
 
-					{/* <i class="fas fa-external-link-alt"></i> */}
 				</div>
 
-				{/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-						<img src={BlackDots} className='dropbtn' />
-					</p>
-					<div id="myDropdownCity" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-						<a id='option1' onClick={() => handleSelectedChart(1)}>Radial Bar</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
-					</div> */}
+
 
 				<div className="crancy-progress-card card-contain-graph">
 
-					{flag === 'bar'  ?
-					<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
-					:null}
-					{flag === 'barl'  ?
-					<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
-					:null}
-					
-					{flag === 'heatmap'  ?
-					<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
-						<tr>
-							<th>Citywise</th>
-							<th>FineWt</th>
-						</tr>
+					{flag === 'bar' ?
+						<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
+						: null}
+					{flag === 'barl' ?
+						<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
+						: null}
+
+					{flag === 'heatmap' ?
+						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+							<tr>
+								<th>Citywise</th>
+								<th>FineWt</th>
+							</tr>
 
 
-						{sales.map((data) => {
-							return (
-								<tr >
-									<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-									<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-								</tr>
-							)
-						})}
+							{sales.map((data) => {
+								return (
+									<tr >
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+									</tr>
+								)
+							})}
 
-					</table>:null}
-					
+						</table> : null}
+
 				</div>
 			</div>
 		</div>

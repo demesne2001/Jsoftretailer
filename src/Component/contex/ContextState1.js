@@ -31,10 +31,38 @@ const ContexState1 = (props) => {
         "Grouping": ""
     })
 
+    const [defaultchart, setDefaultChart] = useState({
+        "strBranch": "",
+        "strCompanyID": "",
+        "strState": "",
+        "strCity": "",
+        "strItem": "",
+        "strSubItem": "",
+        "strItemGroup": "",
+        "strRegionID": "",
+        "strItemSubitem": "",
+        "strPurchaseParty": "",
+        "strSalesParty": "",
+        "strSaleman": "",
+        "strProduct": "",
+        "strDesignCatalogue": "",
+        "strSaleAging": "",
+        "strModeofSale": "",
+        "strTeamModeofSale": "",
+        "FromDate": "",
+        "ToDate": "",
+        "strMetalType": "",
+        "strDayBook": "",
+        "PageNo": 1,
+        "PageSize": 10,
+        "Search": "",
+        "Grouping": ""
+    });
+
 
     return (
 
-        <contex.Provider value={{ state: state, SetState: SetState }}>
+        <contex.Provider value={{ state: state, SetState: SetState, defaultchart, setDefaultChart }}>
 
             {props.children}
 

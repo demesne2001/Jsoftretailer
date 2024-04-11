@@ -8,6 +8,7 @@ import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import { SalesPartyWiseLolipop } from '../../ChartOptions/SalesPartyWiseLolipop';
 import { SalesPartyWise_bar } from '../../ChartOptions/SalesPartyWise_bar';
+import { useNavigate } from 'react-router-dom';
 
 import '../../Assets/css/Custom.css'
 
@@ -77,15 +78,17 @@ export default function SalesPartyWise() {
 	const [flag, setflag] = useState("bar")
 	const [demo, setdemo] = useState("bar")
 
+	const navigate = useNavigate()
+
 	const options_lolipop = SalesPartyWiseLolipop(name)
-  	const options_bar = SalesPartyWise_bar(name)
+	const options_bar = SalesPartyWise_bar(name)
 	const series = [{
 		name: 'Weight',
 		data: weight
 	}]
 
 	function handleclick(e) {
-		if (e.target.className !== 'custom-hr'){
+		if (e.target.className !== 'custom-hr') {
 			setdemo(e.target.className)
 			setflag(e.target.id)
 		}
@@ -178,7 +181,9 @@ export default function SalesPartyWise() {
 		}
 	}
 
-
+	function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "accountID", columnID: "accountID", componentName: "Sales Party Wise" } })
+	  }
 
 
 
@@ -186,19 +191,26 @@ export default function SalesPartyWise() {
 
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
-				<div href="#" target="_self" className="card-title-graph">
-					<p><i className="fas fa-handshake"></i>
-						Sales Party Wise</p>
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+				<div className="card-title-graph">
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+						<p><i className="fas fa-handshake"></i>
+							Sales Party Wise</p>
+					</div>
 
-						<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='bar' className='bar' >Bar</a><hr className='custom-hr' />
-							<a id='heatmap' className='heatmap'>Heat map</a><hr className='custom-hr' />
-							<a id='barl' className='bar'>lollipop chart</a><hr className='custom-hr' />
-							{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+					<div className="col-sm-2 col-md-2 col-2">
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+
+							<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
+								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+								{flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map</a><hr className='custom-hr' /></>}
+								{flag === 'barl' ? <><a id='barl' className='bar'>lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' className='bar'>lollipop chart</a><hr className='custom-hr' /></>}
+
+
+								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+							</div>
+							<i class="fas fa-external-link-alt"></i>
 						</div>
-						<i class="fas fa-external-link-alt"></i>
 					</div>
 
 					{/* <i className="fas fa-external-link-alt"></i> */}
@@ -212,16 +224,16 @@ export default function SalesPartyWise() {
 					</div> */}
 				</div>
 				<div className="crancy-progress-card card-contain-graph">
-				{flag === 'bar'
-            ?
-            <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
-            :null}
-             {flag === 'barl'
-            ?
-            <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
-            :null}
-            {flag === 'heatmap'?
-						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
+					{flag === 'bar'
+						?
+						<ReactApexChart options={options_bar} series={series} type={demo} height={350} />
+						: null}
+					{flag === 'barl'
+						?
+						<ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
+						: null}
+					{flag === 'heatmap' ?
+						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
 							<tr>
 								<th>AccountName</th>
 								<th>FineWt</th>
@@ -237,7 +249,7 @@ export default function SalesPartyWise() {
 								)
 							})}
 
-						</table>:null}
+						</table> : null}
 				</div>
 			</div>
 		</div>

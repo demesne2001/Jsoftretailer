@@ -58,6 +58,7 @@ const API = {
     GetSalesmanWise : Chart + 'GetSalesmanWise',
     CommonChart : Chart + 'GetCommanChart',
     CommonCard : Card + 'GetCardValue',
+    
     GetDetailCommanChart: Chart + 'GetDetailCommanChart'
 
 }

@@ -11,19 +11,15 @@ import post from '../../Utility/APIHandle'
 import Gradient from "javascript-color-gradient";
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductWise() {
 
-	// function handledropdownMenu() {
-	// 	document.getElementById("myDropdownProduct").style.display === "block" ? document.getElementById("myDropdownProduct").style.display = "none" : document.getElementById("myDropdownProduct").style.display = "block";
-	// }
 
-	// function handleSelectedChart(num) {
-	// 	// setBranchWiseChart(num)
-	// }
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
+	const navigate = useNavigate()
 	let inputdata = contexData.state;
 
 	const options_Bar = ProductWise_Bar(name)
@@ -40,7 +36,7 @@ export default function ProductWise() {
 
 
 	function handleclick(e) {
-		if (e.target.className !== 'custom-hr'){
+		if (e.target.className !== 'custom-hr') {
 			setflag(e.target.id)
 		}
 	}
@@ -100,8 +96,11 @@ export default function ProductWise() {
 	// function handleSelectedChart(num) {
 	// 	// setBranchWiseChart(num)
 	// }
-	
-	
+
+	function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise" } })
+	}
+
 
 
 	function handleonchangeCurrency() {
@@ -134,18 +133,25 @@ export default function ProductWise() {
 	return (
 		<div class="col-lg-4 col-md-6 col-12">
 			<div class="graph-card">
-				<div href="#" target="_self" class="card-title-graph">
-					<p><i class="fas fa-boxes"></i>
-						Product Wise </p>
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
+				<div class="card-title-graph">
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+						<p><i class="fas fa-boxes"></i>
+							Product Wise </p>
+					</div>
 
-						<div id="myDropdowniconproduct" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='bar' >bar</a><hr className='custom-hr' />
-							<a id='heatmap' >Heat map </a><hr className='custom-hr' />
-							{/* <a id='heatmap' >Heat map</a><hr className='custom-hr' /> */}
+					<div className="col-sm-2 col-md-2 col-2">
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
+
+							<div id="myDropdowniconproduct" className="dropdown-contenticon" onClick={handleclick}>
+
+								{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
+								{flag === 'heatmap' ? <><a id='heatmap' >Heat map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heat map </a><hr className='custom-hr' /></>}
+
+								{/* <a id='heatmap' >Heat map</a><hr className='custom-hr' /> */}
+							</div>
+							<i class="fas fa-external-link-alt"></i>
 						</div>
-						<i class="fas fa-external-link-alt"></i>
 					</div>
 
 					{/* <i class="fas fa-external-link-alt"></i> */}
@@ -165,9 +171,10 @@ export default function ProductWise() {
 
 					{flag === 'bar' ?
 						<ReactApexChart options={options_Bar} series={series} type={flag} height={390} />
-						:
+						: null}
 
-						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
+					{flag === 'heatmap' ?
+						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
 							<tr>
 								<th>ProductWise</th>
 								<th>FineWt</th>
@@ -184,7 +191,8 @@ export default function ProductWise() {
 							})}
 
 						</table>
-					}
+
+						: null}
 				</div>
 			</div>
 		</div>

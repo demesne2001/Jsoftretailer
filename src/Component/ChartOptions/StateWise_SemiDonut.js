@@ -43,17 +43,53 @@ export function StateWise_SemiDonut(name, state) {
                 }
             }
         },
-        
+
+        tooltip: {
+            enabled: false,
+            x: {
+                show: false
+            },
+            y: {
+                
+                title: {
+                    formatter: (seriesName) => '',
+                },
+                formatter: function (val, name) {
+                    return datax[name.dataPointIndex] + ' : ' + val
+                }
+            },
+        },
+
         plotOptions: {
             pie: {
                 startAngle: -90,
                 endAngle: 90,
                 offsetY: 80,
+                labels:{
+                    show:false,
+                },
                 dataLabels: {
+                    enabled : false,
                     format: 'scale'
+                },
+
+              donut: {
+                labels: {
+                  show: true,
+      
+                  name: {
+      
+                  },
+                  value: {
+                    offsetY: -5,
+                    fontSize: '12px',
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    fontWeight: 600,
+                  }
                 }
+              }
             }
-        },
+          },
         legend: {
             show: true,
             // floating: false,
@@ -72,20 +108,7 @@ export function StateWise_SemiDonut(name, state) {
 
         labels: name,
 
-        tooltip: {
-            show: true,
-            x: {
-                show: false
-            },
-            y: {
-                title: {
-                    formatter: (seriesName) => '',
-                },
-                formatter: function (val, name) {
-                    return datax[name.dataPointIndex] + ' : ' + val
-                }
-            },
-        },
+       
 
         responsive: [{
             breakpoint: 480,
@@ -118,7 +141,9 @@ export function StateWise_SemiDonut(name, state) {
                         dataLabels: {
                             format: 'scale'
                         }
+                        
                     }
+                    
                 }
             }
         }]

@@ -9,9 +9,11 @@ import BlackDots from '../../Assets/image/Dots.png'
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import contex from '../../contex/Contex';
+import drop from '../../Assets/img/svg/dropdown.svg'
+import { useNavigate } from 'react-router-dom';
 
 export default function SalesManWise() {
-	
+
   // const contexData = useContext(contex)
 
   // let seriesData = [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
@@ -49,13 +51,13 @@ export default function SalesManWise() {
 
   // useEffect(()=>{
 
-	// 	setPostData(contexData.state)
+  // 	setPostData(contexData.state)
 
-	// },[contexData.state])
+  // },[contexData.state])
 
-	// useEffect(()=>{
-	// 	getdata()
-	// },[postData])
+  // useEffect(()=>{
+  // 	getdata()
+  // },[postData])
 
 
   // function getdata() {
@@ -79,18 +81,24 @@ export default function SalesManWise() {
   const contexData = useContext(contex);
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
+  const [flag,setFlag] = useState('bar')
   let inputdata = contexData.state;
+  const navigate = useNavigate()
 
   useEffect(() => {
     getdata()
-  
+
   }, [inputdata])
 
-  
+
   useEffect(() => {
     imagepoint()
-  
+
   }, [imagearr])
+
+  function handleNavigation() {
+    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "Sales Party Wise" } })
+  }
 
   async function getdata() {
 
@@ -139,7 +147,7 @@ export default function SalesManWise() {
   }
 
   // useEffect(() => {
-    
+
   // }, [inputdata])
 
   const series = [{
@@ -180,21 +188,21 @@ export default function SalesManWise() {
         colors: ["#304758"]
       }
     },
-   
-    tooltip:{
+
+    tooltip: {
       x: {
-          show: true,
-          formatter: function(val) {
-            return val
-          }
-        },
-        y: {
-          show: true,
-          formatter: function(val) {
-            return val
-          }
-        },
-  },
+        show: true,
+        formatter: function (val) {
+          return val
+        }
+      },
+      y: {
+        show: true,
+        formatter: function (val) {
+          return val
+        }
+      },
+    },
     xaxis: {
       categories: name,
       position: 'bottom',
@@ -241,63 +249,93 @@ export default function SalesManWise() {
     responsive: [{
       breakpoint: 593,
       options: {
-          
-          xaxis:{
-              labels:{
-                formatter: function (val) {
-                  if (val.length > 3) {
-                      return val.slice(0, 3) + "..."
-                  } else {
-                      return val
-                  }
+
+        xaxis: {
+          labels: {
+            formatter: function (val) {
+              if (val.length > 3) {
+                return val.slice(0, 3) + "..."
+              } else {
+                return val
               }
-              }
-          },
-          yaxis: {
-              labels: {
-                  show: true,
-                  formatter: function(val) {
-                      
-                    return ((val/1000).toFixed(0)).toString() + "KG"
-                  
-                  }
-                 
-              }
+            }
           }
+        },
+        yaxis: {
+          labels: {
+            show: true,
+            formatter: function (val) {
+
+              return ((val / 1000).toFixed(0)).toString() + "KG"
+
+            }
+
+          }
+        }
       },
-  }]
+    }]
   }
 
 
-	
+  function handleclick(e) {
+		if (e.target.className !== 'custom-hr') {
+			setFlag(e.target.id)
+		}
+	}
 
-	// function handledropdownMenu() {
-    //     document.getElementById("myDropdownSalesman").style.display === "block" ? document.getElementById("myDropdownSalesman").style.display = "none" : document.getElementById("myDropdownSalesman").style.display = "block";
-    //   }
+  function handleonchangeCurrency() {
+		// console.log("innn")
+		document.getElementById("myDropdowniconSalesManWise").style.display === "block" ? document.getElementById("myDropdowniconSalesManWise").style.display = "none" : document.getElementById("myDropdowniconSalesManWise").style.display = "block";
+	}
 
-    //   function handleSelectedChart(num) {
-    //     // setBranchWiseChart(num)
-    //   }
+	window.onclick = function (event) {
+
+		if (!event.target.matches('.dropbtn')) {
+			// console.log("hii");
+			if (document.getElementsByClassName("dropdown-contenticon")[9] !== undefined) {
+				document.getElementsByClassName("dropdown-contenticon")[9].style.display = "none";
+			}
+
+		}
+	}
+
+  // function handledropdownMenu() {
+  //     document.getElementById("myDropdownSalesman").style.display === "block" ? document.getElementById("myDropdownSalesman").style.display = "none" : document.getElementById("myDropdownSalesman").style.display = "block";
+  //   }
+
+  //   function handleSelectedChart(num) {
+  //     // setBranchWiseChart(num)
+  //   }
   return (
     <div className="col-lg-4 col-md-6 col-12">
-								<div className="graph-card">
-									<div href="#" target="_self" className="card-title-graph">
-										<p><i className="fas fa-users"></i>
-											Salesmen Wise</p>
-										<i className="fas fa-external-link-alt"></i>
-										{/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-						<img src={BlackDots} className='dropbtn' />
-					</p>
-					<div id="myDropdownSalesman" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-						<a id='option1' onClick={() => handleSelectedChart(1)}>Tree Map</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(2)}>Radial Bar</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
-					</div> */}
-									</div>
-									<div className="crancy-progress-card card-contain-graph">
-									<ReactApexChart options={options} series={series} type="bar" height={350} />
-									</div>
-								</div>
+      <div className="graph-card">
+        <div className="card-title-graph">
+
+          <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+            <p><i className="fas fa-users"></i>
+              Salesmen Wise</p>
+          </div>
+        
+
+        <div className="col-sm-2 col-md-2 col-2">
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img>
+
+							<div id="myDropdowniconSalesManWise" className="dropdown-contenticon" onClick={handleclick}>
+								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+
+								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
 							</div>
+							<i class="fas fa-external-link-alt"></i>
+						</div>
+					</div>
+
+          </div>
+
+        <div className="crancy-progress-card card-contain-graph">
+          <ReactApexChart options={options} series={series} type="bar" height={350} />
+        </div>
+      </div>
+    </div>
   )
 }

@@ -10,11 +10,11 @@ import contex from '../../contex/Contex';
 import ReactApexChart from 'react-apexcharts';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
-
+import { useNavigate } from 'react-router-dom';
 
 export default function ItemWise() {
 
-	const contexData = useContext(contex)
+	
 
 	// const lineDiffrence = ["100%","80%","60%","40%","20%","0%"]  
 
@@ -66,6 +66,8 @@ export default function ItemWise() {
 	// useEffect(()=>{
 	// 	getdata()
 	// },[postData])
+
+	const contexData = useContext(contex)
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
@@ -83,9 +85,11 @@ export default function ItemWise() {
 		data: weight
 	}]
 
+	const navigate = useNavigate()
+
 	function handleclick(e) {
 		// console.log('aaaaaa', e.target.id)
-		if (e.target.className !== 'custom-hr'){
+		if (e.target.className !== 'custom-hr') {
 			setflag(e.target.id)
 			setdemo(e.target.className)
 		}
@@ -118,7 +122,7 @@ export default function ItemWise() {
 				var js = {};
 				// console.log(res.data.lstResult)
 				for (let index = 0; index < res.data.lstResult.length; index++) {
-					js = {'product':'','thisYearProfit' : 0}
+					js = { 'product': '', 'thisYearProfit': 0 }
 					if (res.data.lstResult[index]['ItemName'] === null) {
 						name.push("null")
 					} else {
@@ -164,6 +168,9 @@ export default function ItemWise() {
 		}
 	}
 
+	function handleNavigation() { 
+		navigate('/graph-detail', { state: { grouping: "d.itemID,d.ItemName", columnName: "ItemName", columnID: "itemID", componentName: "Item Group Wise" } })
+	}
 
 
 	return (
@@ -171,18 +178,25 @@ export default function ItemWise() {
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
 				<div className="card-title-graph">
-					<p><i className="fas fa-project-diagram"></i>
-						Item Wise</p>
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
+						<p><i className="fas fa-project-diagram"></i>
+							Item Group Wise</p>
+					</div>
 
-						<div id="myDropdowniconitem" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='bar' className='bar'>bar chart </a><hr className='custom-hr' />
-							<a id='barh' className='bar'>horizontal bar</a><hr className='custom-hr' />
-							<a id='heatmap' >heat map</a><hr className='custom-hr' />
-							{/* <a id='bar' >chart</a><hr className='custom-hr' /> */}
+					<div className='col-sm-2 col-md-2 col-2'>
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+
+							<div id="myDropdowniconitem" className="dropdown-contenticon" onClick={handleclick}>
+
+								{flag === 'bar' ? <><a id='bar' className='bar'>Bar Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar'>bar chart </a><hr className='custom-hr' /></>}
+								{flag === 'barh' ? <><a id='barh' className='bar'>Horizontal Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barh' className='bar'>horizontal bar</a><hr className='custom-hr' /></>}
+								{flag === 'heatmap' ? <><a id='heatmap' >Heat Map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >heat map</a><hr className='custom-hr' /></>}
+
+								{/* <a id='bar' >chart</a><hr className='custom-hr' /> */}
+							</div>
+							<i class="fas fa-external-link-alt"></i>
 						</div>
-						<i class="fas fa-external-link-alt"></i>
 					</div>
 
 
@@ -200,26 +214,26 @@ export default function ItemWise() {
 
 				<div className="crancy-progress-card card-contain-graph">
 
-					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series} type={demo} height={350} />:null}
-					{flag === 'barh' ? <ReactApexChart options={options_barh} series={series} type={demo} height={350} />:null}
-					{flag === 'heatmap'?
-					<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
-						<tr>
-							<th>Itemwise</th>
-							<th>FineWt</th>
-						</tr>
+					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series} type={demo} height={350} /> : null}
+					{flag === 'barh' ? <ReactApexChart options={options_barh} series={series} type={demo} height={350} /> : null}
+					{flag === 'heatmap' ?
+						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+							<tr>
+								<th>Itemwise</th>
+								<th>FineWt</th>
+							</tr>
 
 
-						{sales.map((data) => {
-							return (
-								<tr >
-									<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-									<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-								</tr>
-							)
-						})}
+							{sales.map((data) => {
+								return (
+									<tr >
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+									</tr>
+								)
+							})}
 
-					</table>:null}
+						</table> : null}
 				</div>
 			</div>
 		</div>

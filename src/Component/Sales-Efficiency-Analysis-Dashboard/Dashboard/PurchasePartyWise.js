@@ -10,6 +10,7 @@ import post from '../../Utility/APIHandle'
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
+import { useNavigate } from 'react-router-dom';
 // import { flat } from '../../Assets/font/js/v4-shims';
 
 
@@ -23,7 +24,7 @@ export default function PurchasePartyWise() {
 
   // let imagearr =[]
 
-
+  const navigate = useNavigate()
   const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
   const [imagearr, setImageArr] = useState([])
@@ -41,20 +42,23 @@ export default function PurchasePartyWise() {
     data: weight
   }]
   function handleclick(e) {
-    if (e.target.className !== 'custom-hr'){
-			setflag(e.target.id)
+    if (e.target.className !== 'custom-hr') {
+      setflag(e.target.id)
       setdemo(e.target.className)
-		}
+    }
   }
 
   function setMargin() {
-		if (weight.length < 7) {
-			return 80
-		} else {
-			return 30
-		}
-	}
+    if (weight.length < 7) {
+      return 80
+    } else {
+      return 30
+    }
+  }
 
+  function handleNavigation() {
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesigncodeID", columnID: "DesigncodeID", componentName: "Purchase Party Wise" } })
+  }
 
 
   // const [postData, setPostData] = useState({
@@ -216,18 +220,24 @@ export default function PurchasePartyWise() {
   return (
     <div className="col-lg-4 col-md-6 col-12">
       <div className="graph-card">
-        <div href="#" target="_self" className="card-title-graph">
-          <p><i className="fas fa-people-carry"></i>
-            Purchase Party Wise</p>
-          <div className='btnicons'>
-            <img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
+        <div className="card-title-graph">
+          <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+            <p><i className="fas fa-people-carry"></i>
+              Purchase Party Wise</p>
+          </div>
 
-            <div id="myDropdowniconPurchase" className="dropdown-contenticon" onClick={handleclick}>
-              <a id='bar' className='bar'>bar</a><hr className='custom-hr' />
-              <a id='barl' className='bar'>lollipop chart </a><hr className='custom-hr' />
-              <a id='heatmap' className='heatmap'>Heat map </a><hr className='custom-hr' />
+          <div className="col-sm-2 col-md-2 col-2">
+            <div className='btnicons'>
+              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
+
+              <div id="myDropdowniconPurchase" className="dropdown-contenticon" onClick={handleclick}>
+                {flag === 'bar' ? <><a id='bar' className='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar'>bar</a><hr className='custom-hr' /></>}
+                {flag === 'barl' ? <><a id='barl' className='bar'>Lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' className='bar'>Lollipop chart </a><hr className='custom-hr' /></>}
+                {flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map </a><hr className='custom-hr' /></>}
+                
+              </div>
+              <i class="fas fa-external-link-alt"></i>
             </div>
-            <i class="fas fa-external-link-alt"></i>
           </div>
 
           {/* <i class="fas fa-external-link-alt"></i> */}
@@ -243,17 +253,17 @@ export default function PurchasePartyWise() {
         <div className="crancy-progress-card card-contain-graph">
 
 
-        
-        {flag === 'bar'
+
+          {flag === 'bar'
             ?
             <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
-            :null}
-             {flag === 'barl'
+            : null}
+          {flag === 'barl'
             ?
             <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
-            :null}
-            {flag === 'heatmap'?
-            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
+            : null}
+          {flag === 'heatmap' ?
+            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
               <tr>
                 <th>DesignCode</th>
                 <th>FineWt</th>
@@ -269,7 +279,7 @@ export default function PurchasePartyWise() {
                 )
               })}
 
-            </table>:null}
+            </table> : null}
         </div>
       </div>
     </div>

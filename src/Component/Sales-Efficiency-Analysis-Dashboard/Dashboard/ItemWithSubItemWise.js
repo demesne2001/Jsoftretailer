@@ -12,7 +12,7 @@ import '../../Assets/css/Custom.css'
 import { ItemWithSubItemWise_bar } from '../../ChartOptions/ItemWithSubItemWise_bar';
 import { ItemWithSubItemWise_vbar } from '../../ChartOptions/ItemWithSubItemWise_vbar';
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 export default function ItemWithSubItemWise() {
@@ -24,7 +24,9 @@ export default function ItemWithSubItemWise() {
 	const [flag, setflag] = useState("bar")
 
 	const [sales, setSales] = useState([])
-	
+
+	const navigate = useNavigate()
+
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
 	const options_bar = ItemWithSubItemWise_bar(name);
@@ -32,9 +34,9 @@ export default function ItemWithSubItemWise() {
 	const series = [{
 		data: weight
 	}]
-	 
+
 	function handleclick(e) {
-		if (e.target.className !== 'custom-hr'){
+		if (e.target.className !== 'custom-hr') {
 			setflag(e.target.id)
 		}
 	}
@@ -70,7 +72,7 @@ export default function ItemWithSubItemWise() {
 						name.push(res.data.lstResult[index]['ItemSubNAme'])
 					}
 					weight.push(res.data.lstResult[index]['FineWt'])
-					js = {'product':'','thisYearProfit' : 0}
+					js = { 'product': '', 'thisYearProfit': 0 }
 					if (res.data.lstResult[index]['ItemSubNAme'] === null) {
 						js['product'] = 'null'
 					} else {
@@ -97,9 +99,14 @@ export default function ItemWithSubItemWise() {
 		document.getElementById("myDropdowniconitemsub").style.display === "block" ? document.getElementById("myDropdowniconitemsub").style.display = "none" : document.getElementById("myDropdowniconitemsub").style.display = "block";
 	}
 
+	function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item Group Wise" } })
+	  }
+	
+
 	window.onclick = function (event) {
 		// console.log('evennnn', event.target.className)
-		
+
 		if (!event.target.matches('.dropbtn')) {
 			// console.log("hii");
 			// console.log('branchhh', document.getElementsByClassName("dropdown-contenticon")[7])
@@ -110,55 +117,56 @@ export default function ItemWithSubItemWise() {
 	}
 
 
+
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
-				<div href="#" target="_self" className="card-title-graph">
-					<p><i className="fas fa-sitemap"></i>
-						Item with Sub item Wise</p>
+				<div className="card-title-graph">
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+						<p><i className="fas fa-sitemap"></i>
+							Item with Sub item Wise</p>
+					</div>
+
+					<div className="col-sm-2 col-md-2 col-2">
 					<div className='btnicons'>
 						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
 
 						<div id="myDropdowniconitemsub" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='bar' >bar</a><hr className='custom-hr' />
-							<a id='barv' >vertical bar </a><hr className='custom-hr' />
-							<a id='heatmap' >Heat map</a><hr className='custom-hr' />
+							{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >bar</a><hr className='custom-hr' /></>}
+							{flag === 'barv' ? <><a id='barv' >Vertical Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barv' >vertical bar </a><hr className='custom-hr' /></>}
+							{flag === 'heatmap' ? <><a id='heatmap' >Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /></>}
+							
 						</div>
 						<i class="fas fa-external-link-alt"></i>
 					</div>
+					</div>
 
-					{/* <i class="fas fa-external-link-alt"></i> */}
-					{/* <img src={BlackDots} className='dropbtn' /> */}
-
-					{/* <div id="myDropdownItemwithsubitem" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-            <a id='option1' onClick={() => handleSelectedChart(1)}>Radial Bar</a><hr class="custom-hr" />
-            <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
-          </div> */}
+					
 				</div>
 				<div className="crancy-progress-card card-contain-graph">
 
-					{flag === 'bar' ? 
+					{flag === 'bar' ?
 						<ReactApexChart options={options_bar} series={series} type="bar" height={330} />
-					:null}
-					{flag === 'barv'?<ReactApexChart options={options_vbar} series={series} type="bar" height={330} />:null}
-					{flag === 'heatmap'?
-					<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
-						<tr>
-							<th>ItemWithSubItemWise</th>
-							<th>FineWt</th>
-						</tr>
+						: null}
+					{flag === 'barv' ? <ReactApexChart options={options_vbar} series={series} type="bar" height={330} /> : null}
+					{flag === 'heatmap' ?
+						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+							<tr>
+								<th>ItemWithSubItemWise</th>
+								<th>FineWt</th>
+							</tr>
 
 
-						{sales.map((data) => {
-							return (
-								<tr >
-									<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-									<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-								</tr>
-							)
-						})}
+							{sales.map((data) => {
+								return (
+									<tr >
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+									</tr>
+								)
+							})}
 
-					</table>:null}
+						</table> : null}
 				</div>
 			</div>
 		</div>

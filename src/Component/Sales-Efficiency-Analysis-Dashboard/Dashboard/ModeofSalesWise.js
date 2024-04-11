@@ -6,84 +6,18 @@ import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import { useEffect, useState } from 'react';
 import contex from '../../contex/Contex';
+import { useNavigate } from 'react-router-dom';
 
 export default function ModeofSalesWise() {
 
-  // const contexData = useContext(contex)
-
-  // const series = [44, 55, 41, 17, 15]
-
-  // const label = ["Comedy", "Action", "SciFi", "Drama", "Horror"]
-
-  // const option = semiDoughnutOptions(label)
-
-  // const [postData, setPostData] = useState({
-  //   "strBranch": "",
-  //   "strState": "",
-  //   "strCity": "",
-  //   "strItem": "",
-  //   "strSubItem": "",
-  //   "strItemGroup": "",
-  //   "strItemSubitem": "",
-  //   "strPurchaseParty": "",
-  //   "strSalesParty": "",
-  //   "strSaleman": "",
-  //   "strProduct": "",
-  //   "strDesignCatalogue": "",
-  //   "strSaleAging": "",
-  //   "strModeofSale": "",
-  //   "strTeamModeofSale": "",
-  //   "FromDate": "",
-  //   "ToDate": "",
-  //   "strMetalType": "",
-  //   "strDayBook": "",
-  //   "PageNo": 0,
-  //   "PageSize": 0,
-  //   "Search": ""
-  // })
-
-
-  // useEffect(() => {
-
-  //   setPostData(contexData.state)
-
-  // }, [contexData.state])
-
-  // useEffect(() => {
-  //   getdata()
-  // }, [postData])
-
-
-  // function getdata() {
-
-  //   let temp1 = []
-
-
-  //   post(postData, API.GetModeOfSalesWise, 'post')
-  //     .then((res) => {
-
-  //       for (let index = 0; index < res.data.lstResult.length; index++) {
-
-  //         temp1.push({
-
-  //         })
-
-  //       }
-
-  //     })
-  // }
-
-  // function handledropdownMenu() {
-  //   document.getElementById("myDropdownModeofsales").style.display === "block" ? document.getElementById("myDropdownModeofsales").style.display = "none" : document.getElementById("myDropdownModeofsales").style.display = "block";
-  // }
-
-  // function handleSelectedChart(num) {
-  //   // setBranchWiseChart(num)
-  // }
+  
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
+
+  const navigate = useNavigate()
+
 
 	useEffect(() => {
 		getdata()
@@ -112,6 +46,11 @@ export default function ModeofSalesWise() {
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
+
+  function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise" } })
+	}
+
 	const series = weight
   const options = {
     chart: {
@@ -150,10 +89,12 @@ export default function ModeofSalesWise() {
   return (
     <div className="col-lg-6 col-md-6 col-12">
       <div className="graph-card">
-        <div href="#" target="_self" className="card-title-graph">
+        <div className="card-title-graph" onClick={handleNavigation}>
+           
           <p><i className="fas fa-layer-group"></i>
             Mode of Sales Wise</p>
           <i className="fas fa-external-link-alt"></i>
+          
           {/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
             <img src={BlackDots} className='dropbtn' />
           </p>

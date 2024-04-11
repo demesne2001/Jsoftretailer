@@ -11,6 +11,7 @@ import { SubItem_Polar } from '../../ChartOptions/SubItem_Polar';
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
+import { useNavigate } from 'react-router-dom';
 
 export default function SubItemWise() {
 
@@ -24,16 +25,18 @@ export default function SubItemWise() {
 
   const options_Polar = SubItem_Polar(name)
   const options_bar = SubItemWise_bar(name)
-  const series_bar =  [{
+  const series_bar = [{
     name: 'Weight',
     data: weight
   }]
   const series_polar = weight;
 
+  const navigate = useNavigate()
+
   function handleclick(e) {
-    if (e.target.className !== 'custom-hr'){
-			setflag(e.target.id)
-		}
+    if (e.target.className !== 'custom-hr') {
+      setflag(e.target.id)
+    }
   }
 
   const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
@@ -46,17 +49,12 @@ export default function SubItemWise() {
 
 
   function setMargin() {
-		if (weight.length < 7) {
-			return 80
-		} else {
-			return 30
-		}
-	}
-
-
-
-
-
+    if (weight.length < 7) {
+      return 80
+    } else {
+      return 30
+    }
+  }
 
 
   async function getdata() {
@@ -102,9 +100,11 @@ export default function SubItemWise() {
   }
 
 
-  
+  function handleNavigation() {
+    navigate('/graph-detail', { state: { grouping: "e.subitemID,e.subItemName", columnName: "subItemName", columnID: "subitemID", componentName: " Sub-Item Wise" } })
+  }
 
-  
+
 
   function handleonchangeCurrency() {
     // console.log("innn")
@@ -113,7 +113,7 @@ export default function SubItemWise() {
 
   window.onclick = function (event) {
 
-    if (!event.target.matches('.dropbtn') ) {
+    if (!event.target.matches('.dropbtn')) {
       // console.log("hii");
       if (document.getElementsByClassName("dropdown-contenticon")[5] !== undefined) {
         document.getElementsByClassName("dropdown-contenticon")[5].style.display = "none";
@@ -128,17 +128,22 @@ export default function SubItemWise() {
     <div className="col-lg-4 col-md-6 col-12">
       <div className="graph-card">
         <div className="card-title-graph">
-          <p><i className="fas fa-th-list"></i>
-            Sub-Item Wise</p>
-          <div className='btnicons'>
-            <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+          <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+            <p><i className="fas fa-th-list"></i>
+              Sub-Item Wise</p>
+          </div>
 
-            <div id="myDropdowniconsubitem" className="dropdown-contenticon" onClick={handleclick}>
-              <a id='bar' >Bar </a><hr className='custom-hr' />
-              <a id='heatmap' >Heatmap</a><hr className='custom-hr' />
-              <a id='polarArea' >polar area</a><hr className='custom-hr' />
+          <div className="col-sm-2 col-md-2 col-2">
+            <div className='btnicons'>
+              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+
+              <div id="myDropdowniconsubitem" className="dropdown-contenticon" onClick={handleclick}>
+                <a id='bar' >Bar </a><hr className='custom-hr' />
+                <a id='heatmap' >Heatmap</a><hr className='custom-hr' />
+                <a id='polarArea' >polar area</a><hr className='custom-hr' />
+              </div>
+              <i class="fas fa-external-link-alt"></i>
             </div>
-            <i class="fas fa-external-link-alt"></i>
           </div>
 
           {/* <i class="fas fa-external-link-alt"></i> */}
@@ -150,13 +155,13 @@ export default function SubItemWise() {
           {/* <ReactApexChart options={options} series={series} type="polarArea" height={390} /> */}
           {/* <RoundedBar/> */}
 
-          {flag === 'bar'?
+          {flag === 'bar' ?
             <ReactApexChart options={options_bar} series={series_bar} type={flag} height={350} />
-            :null}
-            
-            {flag === 'polarArea'?<ReactApexChart options={options_Polar} series={series_polar} type={flag} height={350} />:null}
-            {flag ==='heatmap'?
-            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop:setMargin() }}>
+            : null}
+
+          {flag === 'polarArea' ? <ReactApexChart options={options_Polar} series={series_polar} type={flag} height={350} /> : null}
+          {flag === 'heatmap' ?
+            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
               <tr>
                 <th>Subitemwise</th>
                 <th>FineWt</th>
@@ -172,7 +177,7 @@ export default function SubItemWise() {
                 )
               })}
 
-            </table>:null}
+            </table> : null}
         </div>
       </div>
     </div>

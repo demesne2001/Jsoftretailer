@@ -65,7 +65,7 @@ function Commonmodel(props) {
     let updatedList = [...props.prdemo];
     let updatelistName = [...props.prdemoName]
     useEffect(() => {
-        console.log("hiiiiiii", updatedList);
+        // console.log("hiiiiiii", updatedList);
         setPage(2)
 
         setmulticheck(updatedList)
@@ -342,7 +342,7 @@ function Commonmodel(props) {
                                                         id={ele[props.modelprops.id]}
                                                         value={ele[props.modelprops.id]}
                                                         name={ele[props.modelprops.name]}
-                                                        label={ele[props.modelprops.name]}
+                                                        label={ele[props.modelprops.id]  + " - " + ele[props.modelprops.name]}
                                                         onChange={handleCheck}
                                                         checked={multicheck.includes(ele[props.modelprops.id])}
                                                     />

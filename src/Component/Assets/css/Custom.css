@@ -287,7 +287,7 @@ select {
   background-color: #fafafa;
   min-width: 160px;
   overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.56);
   z-index: 999;
   margin-top: 10px;
   margin-left: -150px;
@@ -307,7 +307,31 @@ select {
   color: white;
 }
 
+.dropdown-contenticon-second-screen {
+  display: none;
+  position: absolute;
+  background-color: #fafafa;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  margin-top: 10px;
+  margin-left: 55%;
+  border-radius: 20px;
+  color: black;
+} 
 
+.dropdown-contenticon-second-screen a {
+  color: #094876;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-contenticon-second-screen a:hover {
+  background-color: #094876;
+  color: white;
+}
 
 /* loader */
 .loader {
@@ -479,6 +503,7 @@ select {
   text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  background-color: #e3e9ed;
 }
 
 .flip-card:hover .flip-card-inner {
@@ -509,6 +534,7 @@ select {
 }
 
 .flip-card {
+
   height: 100%;
   /* border: 1px solid #f1f1f1; */
   perspective: 1000px; 
@@ -518,3 +544,50 @@ select {
   transform: rotateY(180deg);
 }
 
+.date-arrow-left {
+
+
+  font-size: 45px;
+  cursor: pointer;
+}
+
+.date-arrow-right {
+
+
+  font-size: 45px;
+  cursor: pointer;
+}
+
+.date-arrow-right:hover{
+  color: #ee5f23;
+}
+
+.date-arrow-left:hover{
+  color: #ee5f23;
+}
+
+#FlipDefaultChart{
+  float: right;
+  margin-right: 20px;
+  color: #094876;
+  background: none;
+}
+
+.tableScroll {
+  flex: 1;
+  overflow-y: scroll;
+  height: 565px;
+}
+
+.fas.fa-external-link-alt{
+  text-align: right;
+}
+
+.card-title-graph:hover  {
+  background-color: red;
+}
+
+.fa-solid-fa-check{
+  text-align: right;
+  background-color: yellow;
+}

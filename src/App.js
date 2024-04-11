@@ -20,6 +20,7 @@ import './Component/Assets/css/reset.css'
 import './Component/Assets/css/style copy.css'
 
 import './Component/Assets/css/Custom.css'
+import './Component/Assets/css/slick.css'
 import './Component/Assets/css/responsive.css'
 
 
@@ -27,12 +28,14 @@ import './Component/Assets/css/responsive.css'
 
 
 
-// import bootstrapSelectMin from './Component/Assets/js/bootstrap-select.min';
-// import bootstrapMin from './Component/Assets/js/bootstrap.min'
-// import jqueryMigrate from './Component/Assets/js/jquery-migrate';
-// import jquaryMin from './Component/Assets/js/jquery.min'
-// import main from './Component/Assets/js/main'
-// import popperMin from './Component/Assets/js/popper.min';
+// import './Component/Assets/js/bootstrap-select.min';
+// import  './Component/Assets/js/bootstrap.min'
+// import  './Component/Assets/js/jquery-migrate';
+// import  './Component/Assets/js/jquery.min'
+// import  './Component/Assets/js/main'
+// import  './Component/Assets/js/popper.min';
+// import './Component/Assets/js/slick.min';
+// import './Component/Assets/js/jquery.fancybox.min';
 
 
 function App() {

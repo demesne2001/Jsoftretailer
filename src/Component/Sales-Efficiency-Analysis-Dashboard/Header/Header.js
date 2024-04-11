@@ -865,6 +865,75 @@ export default function Header() {
     }
   }
 
+  function handleOnReset() {
+    contexData.SettempState(postData)
+  }
+
+  function handleArrowLeft(str) {
+    if (contexData.tempstate[str] !== "") {
+      var ans = ""
+
+      const date = new Date(contexData.tempstate[str]);
+      var month = date.getMonth() + 1
+      console.log(date.getFullYear());
+      if (date.getDate() === 1) {
+        if (month === 1) {
+          ans = (date.getFullYear() - 1).toString() + "-12" + "-31"
+        } else {
+          ans = date.getFullYear().toString() + "-" + (month - 1).toString() + "-" + new Date(date.getFullYear(), month - 1, 0).getDate().toString()
+        }
+      } else {
+        ans = date.getFullYear().toString() + "-" + month.toString() + "-" + (date.getDate() - 1).toString()
+      }
+
+      var listarr = ans.split("-")
+      console.log(listarr);
+      if (listarr[1].length < 2) {
+        listarr[1] = "0" + listarr[1]
+      }
+      if (listarr[2].length < 2) {
+        listarr[2] = "0" + listarr[2]
+      }
+      console.log(listarr);
+      ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
+      // document.getElementById("FromDate").value = ans;
+      contexData.SettempState({ ...contexData.tempstate, [str]: ans })
+    }
+
+  }
+  function handleArrowRight(str) {
+    if (contexData.tempstate[str] !== "") {
+      var ans = ""
+
+      const date = new Date(contexData.tempstate[str]);
+      var month = date.getMonth() + 1
+      console.log(date.getFullYear());
+      if (date.getDate() === new Date(date.getFullYear(), month, 0).getDate()) {
+        if (month === 12) {
+          ans = (date.getFullYear() + 1).toString() + "-01" + "-01"
+        } else {
+          ans = date.getFullYear().toString() + "-" + (month + 1).toString() + "-01"
+        }
+      } else {
+        ans = date.getFullYear().toString() + "-" + month.toString() + "-" + (date.getDate() + 1).toString()
+      }
+
+      var listarr = ans.split("-")
+      console.log(listarr);
+      if (listarr[1].length < 2) {
+        listarr[1] = "0" + listarr[1]
+      }
+      if (listarr[2].length < 2) {
+        listarr[2] = "0" + listarr[2]
+      }
+      console.log(listarr);
+      ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
+      // document.getElementById("FromDate").value = ans;
+      contexData.SettempState({ ...contexData.tempstate, [str]: ans })
+    }
+  }
+
+
   return (
     <>
       <header className="crancy-header">
@@ -926,7 +995,7 @@ export default function Header() {
                             <h5>
                               Synchronize-Date :{" "}
                               <span className="text-muted">
-                                01/03/2023 11:53:00
+                                {(new Date().getDate()).toString() + "/" + (new Date().getMonth() + 1).toString() + "/" + (new Date().getFullYear()).toString() + "  " + (new Date().getHours()).toString() + ":" + (new Date().getMinutes()).toString()}
                               </span>
                             </h5>
                           </li>
@@ -1073,63 +1142,78 @@ export default function Header() {
           backdrop="static"
           keyboard={false}
           size="xl"
-        >       
-            <Modal.Header class="modal-header">  
-                  <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> Filter By</h5>
-                  <button class="geex-btn geex-btn__customizer-close" onClick={handleOnClose}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
-                        fill="#ffffff" />
-                      <path
-                        d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
-                        fill="#ffffff" fill-opacity="0.8" />
-                    </svg>
-                  </button>
-                
-              </Modal.Header>
-          
+        >
+          <Modal.Header class="modal-header">
+            <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> Filter By</h5>
+            <button class="geex-btn geex-btn__customizer-close" onClick={handleOnClose}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
+                  fill="#ffffff" />
+                <path
+                  d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
+                  fill="#ffffff" fill-opacity="0.8" />
+              </svg>
+            </button>
 
-            <Modal.Body class="modal-body">
-              <div class="container">
-                <div class="card-graph-detail">
-                  <div class="row">
-                    <div class="filter-top">
-                      <form class="form-group">
-                        <div class="row">
-                          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                            <div class="card-filter-contain top-card-filter">
-                              <label for="sel1" class="form-label">
-                                From Date
-                              </label>
+          </Modal.Header>
+
+
+          <Modal.Body class="modal-body">
+            <div class="container">
+              <div class="card-graph-detail">
+                <div class="row">
+                  <div class="filter-top">
+                    <form class="form-group">
+                      <div class="row">
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                          <div class="card-filter-contain top-card-filter">
+                            <label for="sel1" class="form-label">
+                              From Date
+                            </label>
+                            <div style={{ display: 'flex' }}>
+
+                              <i class="fa-solid fa-caret-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('FromDate') }} />
                               <input
-                                class="form-control  date-spacing"
+                                class="form-control  date-spacing "
                                 type="date"
                                 onChange={handleonchange}
                                 name="FromDate"
+                                id="FromDate"
+                                value={contexData.tempstate["FromDate"]}
                               />
+                              <i class="fa-solid fa-caret-right date-arrow-right" onClick={() => { handleArrowRight('FromDate') }} />
                             </div>
+
                           </div>
-                          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                            <div class="card-filter-contain top-card-filter">
-                              <label for="sel1" class="form-label">
-                                To Date
-                              </label>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                          <div class="card-filter-contain top-card-filter">
+                            <label for="sel1" class="form-label">
+                              To Date
+                            </label>
+                            <div style={{ display: 'flex' }}>
+
+                              <i class="fa-solid fa-caret-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('ToDate') }} />
                               <input
                                 class="form-control"
                                 type="date"
                                 onChange={handleonchange}
                                 name="ToDate"
+                                value={contexData.tempstate["ToDate"]}
+                                id="ToDate"
                               />
+                              <i class="fa-solid fa-caret-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
                             </div>
                           </div>
-                          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                            <div class="card-filter-contain top-card-filter">
-                              <form class="from-group">
-                                <label for="sel1" class="form-label">
-                                  Metal Type
-                                </label>
-                                {/* <select
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                          <div class="card-filter-contain top-card-filter">
+                            <form class="from-group">
+                              <label for="sel1" class="form-label">
+                                Metal Type
+                              </label>
+                              {/* <select
                                   class="form-select form-control filter-header-dropdown"
                                   aria-label="Default select example"
                                 >
@@ -1138,71 +1222,71 @@ export default function Header() {
                                   <option value="2">Two</option>
                                   <option value="3">Three</option>
                                 </select> */}
-                                <Select
-                                  // defaultValue={[colourOptions[2], colourOptions[3]]}
-                                  name="MetalTypeSelect"
-                                  options={MetalType}
-                                  className="basic-multi-select"
-                                  classNamePrefix="select"
-                                  onChange={handleselect}
-                                  components={animatedComponents}
-                                  closeMenuOnSelect={false}
-                                  defaultValue={DefaultMetalType}
-                                  placeholder="Select..."
-                                  styles={{
-                                    control: (provided, state) => ({
-                                      ...provided,
-                                      height: '45px',
-                                      borderRadius: '10px'
-                                    }),
-                                  }}
-                                />
-                              </form>
-                            </div>
-                          </div>
-                          <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
-                            <div class="card-filter-contain top-card-filter">
-                              <form class="from-group">
-                                <label for="sel1" class="form-label">
-                                  Day Book Selection
-                                </label>
-                                <Select
-                                  // defaultValue={[colourOptions[2], colourOptions[3]]}
-                                  name="DayBookSelect"
-                                  options={Daybook}
-                                  className="basic-multi-select"
-                                  classNamePrefix="select"
-                                  onChange={handleselect}
-                                  components={animatedComponents}
-                                  closeMenuOnSelect={false}
-                                  defaultValue={DefaultDaybook}
-                                  styles={{
-                                    control: (provided, state) => ({
-                                      ...provided,
-                                      height: '45px',
-                                      borderRadius: '10px'
-                                    }),
-                                  }}
-                                />
-                              </form>
-                            </div>
+                              <Select
+                                // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                name="MetalTypeSelect"
+                                options={MetalType}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                onChange={handleselect}
+                                components={animatedComponents}
+                                closeMenuOnSelect={false}
+                                defaultValue={DefaultMetalType}
+                                placeholder="Select..."
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    height: '45px',
+                                    borderRadius: '10px'
+                                  }),
+                                }}
+                              />
+                            </form>
                           </div>
                         </div>
-                      </form>
-                    </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                          <div class="card-filter-contain top-card-filter">
+                            <form class="from-group">
+                              <label for="sel1" class="form-label">
+                                Day Book Selection
+                              </label>
+                              <Select
+                                // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                name="DayBookSelect"
+                                options={Daybook}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                onChange={handleselect}
+                                components={animatedComponents}
+                                closeMenuOnSelect={false}
+                                defaultValue={DefaultDaybook}
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    height: '45px',
+                                    borderRadius: '10px'
+                                  }),
+                                }}
+                              />
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
-              <div class="container">
-                <form>
-                  <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fa-solid fa-building"></i>
-                        <label for="sel1" class="form-label">
-                          Branch
-                        </label>
-                        {/* <Select
+            </div>
+            <div class="container">
+              <form>
+                <div class="row">
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fa-solid fa-building"></i>
+                      <label for="sel1" class="form-label">
+                        Branch
+                      </label>
+                      {/* <Select
 
 														isMulti
 														name="branchSelect"
@@ -1216,22 +1300,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strBranchValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(1);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strBranchValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(1);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-globe"></i>
-                        <label for="sel1" class="form-label">
-                          Region{" "}
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-globe"></i>
+                      <label for="sel1" class="form-label">
+                        Region{" "}
+                      </label>
+                      {/* <Select
                           // defaultValue={[colourOptions[2], colourOptions[3]]}
                           isMulti
                           name="regionSelect"
@@ -1242,23 +1326,23 @@ export default function Header() {
                           components={animatedComponents}
                           closeMenuOnSelect={false}
                         /> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strRegionIDValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(2);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strRegionIDValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(2);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <label for="sel1" class="form-label">
-                          State
-                        </label>
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <label for="sel1" class="form-label">
+                        State
+                      </label>
 
-                        {/* <Select
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="stateSelect"
@@ -1272,22 +1356,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strStateValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(3);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strStateValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(3);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-city"></i>
-                        <label for="sel1" class="form-label">
-                          City
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-city"></i>
+                      <label for="sel1" class="form-label">
+                        City
+                      </label>
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="citySelect"
@@ -1301,22 +1385,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strCity"])}
-                          onClick={() => {
-                            HandleOnClickComman(4);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strCity"])}
+                        onClick={() => {
+                          HandleOnClickComman(4);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-chart-area"></i>
-                        <label for="sel1" class="form-label">
-                          Item Group
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-chart-area"></i>
+                      <label for="sel1" class="form-label">
+                        Item Group
+                      </label>
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="itemGroupSelect"
@@ -1330,22 +1414,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strItemGroupValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(5);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strItemGroupValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(5);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-boxes"></i>
-                        <label for="sel1" class="form-label">
-                          Product
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-boxes"></i>
+                      <label for="sel1" class="form-label">
+                        Product
+                      </label>
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="productSelect"
@@ -1359,22 +1443,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strProductValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(6);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strProductValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(6);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-project-diagram"></i>
-                        <label for="sel1" class="form-label">
-                          Item
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-project-diagram"></i>
+                      <label for="sel1" class="form-label">
+                        Item
+                      </label>
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="itemSelect"
@@ -1388,22 +1472,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strItemValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(7);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strItemValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(7);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-th-list"></i>
-                        <label for="sel1" class="form-label">
-                          Sub-Item
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-th-list"></i>
+                      <label for="sel1" class="form-label">
+                        Sub-Item
+                      </label>
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="subItemSelect"
@@ -1417,22 +1501,22 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strSubItemValue"])}
-                          onClick={() => {
-                            HandleOnClickComman(8);
-                          }}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strSubItemValue"])}
+                        onClick={() => {
+                          HandleOnClickComman(8);
+                        }}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-sitemap"></i>
-                        <label for="sel1" class="form-label">
-                          Item with Sub-item
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-sitemap"></i>
+                      <label for="sel1" class="form-label">
+                        Item with Sub-item
+                      </label>
+                      {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
 												isMulti
 												name="itemSubItemSelect"
@@ -1446,20 +1530,20 @@ export default function Header() {
 												components={animatedComponents}
 												closeMenuOnSelect={false}
 											/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strItemSubitemValue"])}
-                          onClick={() => HandleOnClickComman(9)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strItemSubitemValue"])}
+                        onClick={() => HandleOnClickComman(9)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-gem"></i>
-                        <label for="sel1" class="form-label">
-                          Design Catalogue
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-gem"></i>
+                      <label for="sel1" class="form-label">
+                        Design Catalogue
+                      </label>
+                      {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
 												isMulti
 												name="designSelect"
@@ -1473,20 +1557,20 @@ export default function Header() {
 												components={animatedComponents}
 												closeMenuOnSelect={false}
 											/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strDesignCatalogueValue"])}
-                          onClick={() => HandleOnClickComman(10)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strDesignCatalogueValue"])}
+                        onClick={() => HandleOnClickComman(10)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-users"></i>
-                        <label for="sel1" class="form-label">
-                          Saleman
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-users"></i>
+                      <label for="sel1" class="form-label">
+                        Saleman
+                      </label>
+                      {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
 														isMulti
 														name="salesmanSelect"
@@ -1500,20 +1584,20 @@ export default function Header() {
 														components={animatedComponents}
 														closeMenuOnSelect={false}
 													/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strSalemanValue"])}
-                          onClick={() => HandleOnClickComman(11)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strSalemanValue"])}
+                        onClick={() => HandleOnClickComman(11)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-layer-group"></i>
-                        <label for="sel1" class="form-label">
-                          Mode of Sale
-                        </label>
-                        {/* <div class="dropdown">
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-layer-group"></i>
+                      <label for="sel1" class="form-label">
+                        Mode of Sale
+                      </label>
+                      {/* <div class="dropdown">
 														<select class="selectpicker" multiple aria-label="Default select example"
 															data-live-search="true">
 															<option value="one">One</option>
@@ -1522,20 +1606,20 @@ export default function Header() {
 															<option value="four">Four</option>
 														</select>
 													</div> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strModeofSaleValue"])}
-                          onClick={() => HandleOnClickComman(12)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strModeofSaleValue"])}
+                        onClick={() => HandleOnClickComman(12)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-stream"></i>
-                        <label for="sel1" class="form-label">
-                          Team & Mode of Sale
-                        </label>
-                        {/* <div class="dropdown">
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-stream"></i>
+                      <label for="sel1" class="form-label">
+                        Team & Mode of Sale
+                      </label>
+                      {/* <div class="dropdown">
 														<select class="selectpicker" multiple aria-label="Default select example"
 															data-live-search="true">
 															<option value="one">One</option>
@@ -1544,33 +1628,33 @@ export default function Header() {
 															<option value="four">Four</option>
 														</select>
 													</div> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
-                          onClick={() => HandleOnClickComman(13)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
+                        onClick={() => HandleOnClickComman(13)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-chart-line"></i>
-                        <label for="sel1" class="form-label">
-                          Sale Aging
-                        </label>
-                        <input
-                          value={formatedValue(contexData.tempstate["strSaleAging"])}
-                          onClick={() => HandleOnClickComman(14)}
-                        />
-                      </div>
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-chart-line"></i>
+                      <label for="sel1" class="form-label">
+                        Sale Aging
+                      </label>
+                      <input
+                        value={formatedValue(contexData.tempstate["strSaleAging"])}
+                        onClick={() => HandleOnClickComman(14)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-people-carry"></i>
-                        <label for="sel1" class="form-label">
-                          Purchase Party
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-people-carry"></i>
+                      <label for="sel1" class="form-label">
+                        Purchase Party
+                      </label>
+                      {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
 												isMulti
 												name="purchasePartySelect"
@@ -1584,20 +1668,20 @@ export default function Header() {
 												components={animatedComponents}
 												closeMenuOnSelect={false}
 											/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strPurchasePartyValue"])}
-                          onClick={() => HandleOnClickComman(15)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strPurchasePartyValue"])}
+                        onClick={() => HandleOnClickComman(15)}
+                      />
                     </div>
+                  </div>
 
-                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                      <div class="card-filter-contain">
-                        <i class="fas fa-handshake"></i>
-                        <label for="sel1" class="form-label">
-                          Sales Party
-                        </label>
-                        {/* <Select
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-handshake"></i>
+                      <label for="sel1" class="form-label">
+                        Sales Party
+                      </label>
+                      {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
 												isMulti
 												name="salesPartySelect"
@@ -1611,14 +1695,14 @@ export default function Header() {
 												components={animatedComponents}
 												closeMenuOnSelect={false}
 											/> */}
-                        <input
-                          value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
-                          onClick={() => HandleOnClickComman(16)}
-                        />
-                      </div>
+                      <input
+                        value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
+                        onClick={() => HandleOnClickComman(16)}
+                      />
                     </div>
+                  </div>
 
-                    {/* <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                  {/* <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
 									<div class="card-filter-contain">
 										<i class="fas fa-calendar-week"></i>
 										<label for="sel1" class="form-label">Month</label>
@@ -1649,47 +1733,47 @@ export default function Header() {
 										</div>
 									</div>
 								</div> */}
-                  </div>
-                </form>
-              </div>
-            </Modal.Body>
+                </div>
+              </form>
+            </div>
+          </Modal.Body>
 
-            <Modal.Footer class="modal-footer">
-              <button
-                type="button"
-                class="filter-footer-button"
-                data-mdb-ripple-init
-                onClick={handleOnClose}
+          <Modal.Footer class="modal-footer">
+            <button
+              type="button"
+              class="filter-footer-button"
+              data-mdb-ripple-init
+              onClick={handleOnReset}
+            >
+              {" "}
+              Reset{" "}
+            </button>
+            <button
+              type="button"
+              class="filter-footer-button"
+              data-mdb-ripple-init
+              onClick={handleApplyFilter}
+            >
+              Apply
+            </button>
+            <div class="form-check checkbox-filter">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckChecked"
+                checked
+              />
+              <label
+                class="form-check-label checkbox-filter-label text-muted"
+                for="flexCheckChecked"
               >
-                {" "}
-                Close{" "}
-              </button>
-              <button
-                type="button"
-                class="filter-footer-button"
-                data-mdb-ripple-init
-                onClick={handleApplyFilter}
-              >
-                Apply
-              </button>
-              <div class="form-check checkbox-filter">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckChecked"
-                  checked
-                />
-                <label
-                  class="form-check-label checkbox-filter-label text-muted"
-                  for="flexCheckChecked"
-                >
-                  (% Set as Default)
-                </label>
-              </div>
-            </Modal.Footer>
-        
-         
+                (% Set as Default)
+              </label>
+            </div>
+          </Modal.Footer>
+
+
         </Modal>
       )}
     </>

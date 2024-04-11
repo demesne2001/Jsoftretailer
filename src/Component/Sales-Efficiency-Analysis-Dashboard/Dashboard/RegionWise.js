@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
+import { useNavigate } from 'react-router-dom';
 
 
 export default function RegionWise() {
@@ -29,6 +30,8 @@ export default function RegionWise() {
 		data: weight
 	}]
 	const series_polar = weight
+
+	const navigate = useNavigate()
 
 	function handleclick(e) {
 		// console.log('aaaaaa', e.target.id)
@@ -69,7 +72,7 @@ export default function RegionWise() {
 	}
 
 	window.onclick = function (event) {
-		if (!event.target.matches('.dropbtn') ) {
+		if (!event.target.matches('.dropbtn')) {
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[3] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[3].style.display = "none";
@@ -78,34 +81,42 @@ export default function RegionWise() {
 		}
 	}
 
-
+	function handleNavigation() { 
+		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise" } })
+	}
 
 
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
 				<div className="card-title-graph">
-					<p><i className="fas fa-globe"></i>
-						Region Wise</p>
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
+						<p><i className="fas fa-globe"></i>
+							Region Wise</p>
+					</div>
 
-						<div id="myDropdowniconregion" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='bar' >lollipop chart </a><hr className='custom-hr' />
-							<a id='polarArea' >polar area</a><hr className='custom-hr' />
-							{/* <a id='bar' >chart</a><hr className='custom-hr' />
-							<a id='bar' >chart</a><hr className='custom-hr' /> */}
+					<div className="col-sm-2 col-md-2 col-2">
+
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+
+							<div id="myDropdowniconregion" className="dropdown-contenticon" onClick={handleclick}>
+
+								{flag === 'bar' ? <><a id='bar' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >lollipop chart </a><hr className='custom-hr' /></>}
+								{flag === 'polarArea' ? <><a id='polarArea' >polar area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >polar area</a><hr className='custom-hr' /></>}
+							</div>
+							<i class="fas fa-external-link-alt"></i>
 						</div>
-						<i class="fas fa-external-link-alt"></i>
+
 					</div>
 
 					{/* <i class="fas fa-external-link-alt"></i> */}
 				</div>
 				<div className="crancy-progress-card card-contain-graph">
-				{flag === 'bar' ? <ReactApexChart options={options_lolipop} type={flag} series={series_lolipop} height={350} />:null}
-				{flag === 'polarArea' ? <ReactApexChart options={options_polar} type={flag} series={series_polar} height={350} />:null}
+					{flag === 'bar' ? <ReactApexChart options={options_lolipop} type={flag} series={series_lolipop} height={350} /> : null}
+					{flag === 'polarArea' ? <ReactApexChart options={options_polar} type={flag} series={series_polar} height={350} /> : null}
 
-					
+
 					{/* <Cylinder/> */}
 				</div>
 			</div>

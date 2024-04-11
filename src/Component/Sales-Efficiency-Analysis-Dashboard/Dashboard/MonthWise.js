@@ -9,13 +9,13 @@ import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { MonthWise_Bar } from '../../ChartOptions/MonthWise_Bar';
 import { MonthWise_area } from '../../ChartOptions/MonthWise_area';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function MonthWise() {
 
-  
+  const navigate = useNavigate()
   // const series = [{
   // 	name: 'Net Profit',
   // 	data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
@@ -110,7 +110,7 @@ export default function MonthWise() {
 
     inputdata = { ...inputdata, ['Grouping']: 'datename(month,voucherDate)' }
     await post(inputdata, API.CommonChart, {}, 'post')
-    .then((res) => {
+      .then((res) => {
         // console.log("apiiiiiiiiiiiiiiii", res.data.lstResult);
         let name = [];
         let weight = [];
@@ -129,163 +129,18 @@ export default function MonthWise() {
       })
   }
 
+  function handleclick(e) {
+    if (e.target.className !== 'custom-hr') {
+      setflag(e.target.id)
+    }
+  }
 
 
+  
 
-  // if (flag === 'bar') {
-  //   var series = [{
-  //     name: '',
-  //     data: weight
-  //   }]
-  //   var options = {
-  //     // colors:['#00b150','#002060'],
-  //     chart: {
-  //       toolbar: {
-  //         show: true,
-  //         offsetX: 0,
-  //         offsetY: 0,
-  //         tools: {
-  //           download: true,
-  //         },
-
-  //       },
-  //       type: 'bar',
-  //       height: 350,
-
-  //     },
-  //     plotOptions: {
-  //       bar: {
-  //         distributed: true,
-  //         horizontal: false,
-  //         columnWidth: '55%',
-  //         endingShape: 'rounded'
-  //       },
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     stroke: {
-  //       show: true,
-  //       width: 2,
-  //       colors: ['transparent']
-  //     },
-  //     xaxis: {
-  //       categories: name,
-  //     },
-  //     yaxis: {
-  //       title: {
-  //         text: 'Thousands'
-  //       }
-  //     },
-  //     fill: {
-  //       opacity: 1,
-  //       type: 'solid',
-  //     },
-
-  //     legend: {
-  //       show: true,
-  //       horizontalAlign: 'center'
-  //     },
-  //     // tooltip: {
-  //     //   y: {
-  //     //     formatter: function (val) {
-  //     //       return val + " Thousand"
-  //     //     }
-  //     //   }
-  //     // }
-  //   }
-  // }
-
-
-  // else if (flag === 'area') {
-  //   var series = [{
-  //     // name: "STOCK ABC",
-  //     data: weight
-  //   }]
-
-  //   var options = {
-  //     chart: {
-  //       type: 'area',
-  //       height: 350,
-  //       zoom: {
-  //         enabled: true
-  //       }
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     plotOptions: {
-  //       area: {
-  //         fillTo: 'end',
-  //       },
-  //     },
-  //     stroke: {
-  //       curve: 'smooth',
-  //       show: true,
-  //       width: 2,
-  //       colors: ['transparent']
-  //     },
-
-  //     fill: {
-  //       opacity: 0.1,
-  //       type: 'gradient',
-  //       gradient: {
-  //         shade: 'dark',
-  //         type: "vertical",
-  //         shadeIntensity: 0.2,
-  //         // gradientToColors: undefined,
-  //         inverseColors: true,
-  //         opacityFrom: 1.5,
-  //         opacityTo: 0.6,
-  //         // stops: [0, 50, 100],
-  //         // colorStops: []
-  //       },
-  //     },
-
-  //     labels: name,
-
-  //     grid: {
-  //       yaxis: {
-  //         lines: {
-  //           offsetX: -30
-  //         }
-  //       },
-  //       padding: {
-  //         left: 20
-  //       }
-  //     },
-
-  //     yaxis: {
-  //       tickAmount: 4,
-  //       floating: false,
-
-  //       labels: {
-  //         style: {
-  //           colors: '#8e8da4',
-  //         },
-  //         offsetY: -7,
-  //         offsetX: 0,
-  //       },
-
-  //       // axisBorder: {
-  //       //   show: false,
-  //       // },
-  //       // axisTicks: {
-  //       //   show: false
-  //       // }
-  //     },
-
-  //     legend: {
-  //       show: false,
-  //       horizontalAlign: 'left'
-  //     },
-  //     tooltip: {
-  //       enabled: true,
-  //     },
-  //   }
-  // }
-
-
+  function handleNavigation() {
+    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise" } })
+  }
 
 
 
@@ -296,7 +151,7 @@ export default function MonthWise() {
 
   window.onclick = function (event) {
 
-    if (!event.target.matches('.dropbtn') ) {
+    if (!event.target.matches('.dropbtn')) {
       // console.log("hii");
       if (document.getElementsByClassName("dropdown-contenticon")[12] !== undefined) {
         document.getElementsByClassName("dropdown-contenticon")[12].style.display = "none";
@@ -311,19 +166,24 @@ export default function MonthWise() {
   return (
     <div className="col-lg-4 col-md-6 col-12">
       <div className="graph-card">
-        <div href="#" target="_self" className="card-title-graph">
-          <p><i className="fas fa-calendar-week"></i>
-            Month Wise</p>
+        <div className="card-title-graph">
+          <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+            <p><i className="fas fa-calendar-week"></i>
+              Month Wise</p>
+          </div>
 
-          <div className='btnicons'>
-            <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+          <div className="col-sm-2 col-md-2 col-2">
+            <div className='btnicons'>
+              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
 
-            <div id="myDropdowniconmonth" className="dropdown-contenticon" onClick={handleclick}>
-              <a id='bar' className='bar' >Bar</a><hr className='custom-hr' />
-              <a id='area' className='area'>Area chart</a><hr className='custom-hr' />
-              {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+              <div id="myDropdowniconmonth" className="dropdown-contenticon" onClick={handleclick}>
+                {flag  === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+                {flag  === 'area' ? <><a id='area' className='area'>Area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>Area chart</a><hr className='custom-hr' /></>}
+                
+                {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+              </div>
+              <i class="fas fa-external-link-alt"></i>
             </div>
-            <i class="fas fa-external-link-alt"></i>
           </div>
 
 
@@ -338,15 +198,15 @@ export default function MonthWise() {
 
         </div>
         <div className="crancy-progress-card card-contain-graph">
-          
+
           {flag === 'bar'
             ?
             <ReactApexChart options={options_bar} series={series} type={demo} height={390} />
-            :null}
-            {flag === 'area'
+            : null}
+          {flag === 'area'
             ?
             <ReactApexChart options={options_area} series={series} type={demo} height={390} />
-            :null}
+            : null}
         </div>
       </div>
     </div>

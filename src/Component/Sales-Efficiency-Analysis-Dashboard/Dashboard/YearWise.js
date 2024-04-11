@@ -11,11 +11,13 @@ import '../../Assets/css/Custom.css'
 import { YearWise_Donut } from '../../ChartOptions/YearWise_Donut';
 import { YearWise_bar } from '../../ChartOptions/YearWise_bar';
 import { YearWise_semiDonut } from '../../ChartOptions/YearWise_semiDonut';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function YearWise() {
+
+	const navigate = useNavigate()
 
 	// const contexData = useContext(contex)
 
@@ -252,7 +254,7 @@ export default function YearWise() {
 		var series = [{
 			data: weight
 		}]
-	
+
 		var options = {
 			chart: {
 				height: 350,
@@ -276,7 +278,7 @@ export default function YearWise() {
 		}
 	}
 
-	else if(flag === 'donut'){
+	else if (flag === 'donut') {
 		var series = weight
 
 		var options = {
@@ -284,8 +286,8 @@ export default function YearWise() {
 				enabled: false,
 			},
 			chart: {
-			  type: 'donut',
-			  animations: {
+				type: 'donut',
+				animations: {
 					enabled: true,
 					easing: 'easeinout',
 					speed: 1000,
@@ -300,14 +302,14 @@ export default function YearWise() {
 				},
 			},
 			plotOptions: {
-			  pie: {
-				startAngle: -90,
-				endAngle: 90,
-				offsetY: 80,
-				dataLabels: {
-					format: 'scale'
+				pie: {
+					startAngle: -90,
+					endAngle: 90,
+					offsetY: 80,
+					dataLabels: {
+						format: 'scale'
+					}
 				}
-			  }
 			},
 			colors: ['#58a3b2'],
 
@@ -325,9 +327,9 @@ export default function YearWise() {
 					width: 0,
 					height: 0
 				},
-				
+
 			},
-			
+
 			labels: name,
 			// tooltip: {
 			// 	theme: 'dark',
@@ -346,15 +348,15 @@ export default function YearWise() {
 			// 	},
 			// 	legend: {
 			// 	  position: 'bottom'
-				  
+
 			// 	}
 			//   }
 			// }]
-		  }
 		}
+	}
 
-		else if(flag === 'kpi'){
-			var series = weight
+	else if (flag === 'kpi') {
+		var series = weight
 
 		var options = {
 			dataLabels: {
@@ -365,7 +367,7 @@ export default function YearWise() {
 				followCursor: true,
 			},
 			colors: ['#51bde4'],
-		
+
 			chart: {
 				animations: {
 					enabled: true,
@@ -385,10 +387,10 @@ export default function YearWise() {
 					offsetX: 0,
 					offsetY: 0,
 					tools: {
-					  download: true,
+						download: true,
 					},
-			
-				  },
+
+				},
 				type: 'donut',
 			},
 			legend: {
@@ -435,45 +437,54 @@ export default function YearWise() {
 				}
 			}
 		}
-		}
-	
+	}
 
-		function handleonchangeCurrency() {
-			// console.log("innn")
-			document.getElementById("myDropdowniconyear").style.display === "block" ? document.getElementById("myDropdowniconyear").style.display = "none" : document.getElementById("myDropdowniconyear").style.display = "block";
-		}
-	
-		window.onclick = function (event) {
-	
-			if (!event.target.matches('.dropbtn') ) {
-				// console.log("hii");
-				if (document.getElementsByClassName("dropdown-contenticon")[13] !== undefined) {
-					document.getElementsByClassName("dropdown-contenticon")[13].style.display = "none";
-				}
-	
+
+	function handleonchangeCurrency() {
+		// console.log("innn")
+		document.getElementById("myDropdowniconyear").style.display === "block" ? document.getElementById("myDropdowniconyear").style.display = "none" : document.getElementById("myDropdowniconyear").style.display = "block";
+	}
+
+	function handleNavigation() {
+		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise" } })
+	}
+
+	window.onclick = function (event) {
+
+		if (!event.target.matches('.dropbtn')) {
+			// console.log("hii");
+			if (document.getElementsByClassName("dropdown-contenticon")[13] !== undefined) {
+				document.getElementsByClassName("dropdown-contenticon")[13].style.display = "none";
 			}
+
 		}
-	
+	}
 
 	
+
 
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
-				<div href="#" target="_self" className="card-title-graph">
-					<p><i className="fas fa-calendar-alt"></i>
-						Year Wise</p>
+				<div className="card-title-graph">
+					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
+						<p><i className="fas fa-calendar-alt"></i>
+							Year Wise</p>
+					</div>
 
-					<div className='btnicons'>
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+					<div className="col-sm-2 col-md-2 col-2">
+						<div className='btnicons'>
+							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
 
-						<div id="myDropdowniconyear" className="dropdown-contenticon" onClick={handleclick}>
-							<a id='kpi' className='donut'>KPI chart</a><hr className='custom-hr' />
-							<a id='bar' className='bar' >Bar</a><hr className='custom-hr' />
-							<a id='donut' className='donut'>Semi Donut</a><hr className='custom-hr' />
-							{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+							<div id="myDropdowniconyear" className="dropdown-contenticon" onClick={handleclick}>
+								{flag === 'kpi' ? <><a id='kpi' className='donut'>KPI chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='kpi' className='donut'>KPI chart</a><hr className='custom-hr' /></> }
+								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+								{flag === 'donut' ? <><a id='donut' className='donut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Semi Donut</a><hr className='custom-hr' /></>}
+								
+								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+							</div>
+							<i class="fas fa-external-link-alt"></i>
 						</div>
-						<i class="fas fa-external-link-alt"></i>
 					</div>
 					{/* <i className="fas fa-external-link-alt"></i> */}
 					{/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
@@ -485,9 +496,9 @@ export default function YearWise() {
 					</div> */}
 				</div>
 				<div className="crancy-progress-card card-contain-graph">
-				{flag === 'kpi'?<ReactApexChart options={options_donut} series={series2} type='donut' height={350} />:null}
-				{flag === 'bar'?<ReactApexChart options={options_bar} series={series1} type={flag} height={350} />:null}
-				{flag === 'donut'?<ReactApexChart options={options_semidonut} series={series2} type={flag} height={350} />:null}
+					{flag === 'kpi' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
+					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
+					{flag === 'donut' ? <ReactApexChart options={options_semidonut} series={series2} type={flag} height={350} /> : null}
 				</div>
 			</div>
 		</div>
