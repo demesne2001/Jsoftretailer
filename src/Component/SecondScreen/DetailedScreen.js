@@ -20,7 +20,7 @@ import img7 from '../Assets/image/slider/Ring12.png';
 import img8 from '../Assets/image/slider/Ring13.png';
 import img9 from '../Assets/image/slider/Ring14.png';
 import img10 from '../Assets/image/slider/Ring15.png';
-import Default_chart from './Components_Detailed/Default_chart';
+import Default_chart from './Components_Detailed/default_chart';
 
 export default function DetailedScreen() {
     const location = useLocation()
