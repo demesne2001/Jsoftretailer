@@ -129,6 +129,7 @@ export default function BranchWise() {
 				.then((res)=>{
 					alert(res.data.Message)
 				})
+				
 			}
 			else{
 
