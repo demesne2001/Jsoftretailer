@@ -10,6 +10,7 @@ export default function Default_chart(props) {
     const contextData = useContext(contex);
     const [name, setName] = useState([])
     const [weight, setweight] = useState([])
+    
     const [data, setdata] = useState([])
     let input = contextData.defaultchart;
 
@@ -18,11 +19,15 @@ export default function Default_chart(props) {
         fetchData()
     }, [props])
 
+    useEffect(() => {
+        fetchData()
+    }, [input])
+
 
 // console.log(props);
     function fetchData() {
         input = { ...input, ['Grouping']: props.graph.group };
-        // console.log(input, "hii");
+        console.log(input, "DEFAULT CHART API");
         post(input, API.CommonChart, {}, "post").then((res) => {
 
             if (res.data.lstResult.length !== 0) {

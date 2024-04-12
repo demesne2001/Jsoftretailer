@@ -57,7 +57,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesigncodeID", columnID: "DesigncodeID", componentName: "Purchase Party Wise" } })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesigncodeID", columnID: "DesigncodeID", componentName: "Purchase Party Wise",filterKey : "strPurchaseParty" } })
   }
 
 

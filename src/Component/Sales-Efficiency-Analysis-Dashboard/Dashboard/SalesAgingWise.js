@@ -358,7 +358,7 @@ export default function SalesAgingWise() {
 
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise" } })
+		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise",filterKey : "strSaleAging" } })
 	}
 
 

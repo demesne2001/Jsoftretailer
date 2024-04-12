@@ -139,7 +139,7 @@ export default function MonthWise() {
   
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise" } })
+    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise",filterKey : "strItemSubitem" } })
   }
 
 

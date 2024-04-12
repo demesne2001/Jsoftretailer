@@ -11,18 +11,24 @@ import { secondScreen_donut } from '../../ChartOptions/SecondScreen/Donut';
 import secondScreen_radial from '../../ChartOptions/SecondScreen/Radial';
 import { BranchWise_donut } from '../../ChartOptions/BranchWise_donut';
 
+
+
 export default function Main_chart(props) {
+
     const contextData = useContext(contex);
     const [name, setName] = useState([])
+    const [id, setId] = useState([])
     const [weight, setweight] = useState([])
     const [data, setdata] = useState([])
     const [flag, setFlag] = useState('bar')
     const [flagShowId, setFlagShowId] = useState(true)
-    const [componentName, setComponentName] = useState(props.state.componentName)
+    const [componentName, setComponentName] = useState('')
     let input = contextData.state;
 
+    
 
-    const options_hbar = secondScreen_hbar(name)
+
+    const options_hbar = secondScreen_hbar(name,contextData,id,props.state.filterKey)
     const options_donut = secondScreen_donut(name)
     // const options_radialbar = secondScreen_radial(name)
 
@@ -34,6 +40,7 @@ export default function Main_chart(props) {
 
     useEffect(() => {
 
+        setComponentName(props.state.componentName)
         if (props.state.columnName === props.state.columnID) {
             setFlagShowId(false)
         }
@@ -51,6 +58,7 @@ export default function Main_chart(props) {
         post(input, API.GetDetailCommanChart, {}, "post").then((res) => {
             let name = [];
             let weg = [];
+            let id1 = [];
 
             if (res.data.lstResult.length !== 0) {
                 console.log(res)
@@ -58,9 +66,13 @@ export default function Main_chart(props) {
                     // console.log(i)
                     name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
                     weg.push(res.data.lstResult[i]['FineWt']);
+                    id1.push(res.data.lstResult[i][props.state.columnID]);
                 }
+
+                // console.log(props.state.columnId)
                 setName(name);
                 setweight(weg);
+                setId(id1)
                 setdata(res.data.lstResult)
             }
         })
@@ -156,6 +168,7 @@ export default function Main_chart(props) {
 
                 {flag === 'bar' ? <><a id='bar'> Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar'>Bar</a><hr className='custom-hr' /> </>}
                 {flag === 'donut' ? <><a id='donut'>Donut &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Donut</a><hr className='custom-hr' /></>}
+                
                 {/* {flag === 'radialBar'} ?<><a id='radialBar'>Radial Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr'/></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr'/></> */}
 
             </div>
@@ -165,13 +178,7 @@ export default function Main_chart(props) {
                     <div class="flip-card-front">
 
                         <div class="graphdetailcards graphdetail-firstcard">
-                            {/* <div class="gd-refresh-icon">
-                                <div class="graphdetailcards-icon" onClick={flip}>
-                                    <i class="fa-solid fa-retweet"></i>
-                                </div>
-                            </div> */}
-
-                            {/* <ReactApexChart options={options_donut} series={series} height={380} type="donut" /> */}
+                          
                             {flag === 'bar' ?
                                 <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={590}/>
                                 : null}
@@ -183,11 +190,7 @@ export default function Main_chart(props) {
                     </div>
                     <div class="flip-card-back">
                         <div class="graphdetailcards graphdetail-firstcard">
-                            {/* <div class="gd-refresh-icon">
-                                <div class="graphdetailcards-icon" onClick={flip}>
-                                    <i class="fa-solid fa-retweet"></i>
-                                </div>
-                            </div> */}
+                           
                             <div className="tableScroll">
                                 <table class="table table-striped table-bordered" >
                                     {flagShowId === true ?

@@ -182,7 +182,7 @@ export default function SalesPartyWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "accountID", columnID: "accountID", componentName: "Sales Party Wise" } })
+		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "accountID", columnID: "accountID", componentName: "Sales Party Wise",filterKey : "strSalesParty" } })
 	  }
 
 

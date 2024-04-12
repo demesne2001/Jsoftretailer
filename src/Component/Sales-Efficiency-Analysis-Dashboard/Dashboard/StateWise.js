@@ -93,7 +93,7 @@ export default function StateWise() {
 
 
 	function handleNavigation() {
-		navigate('/graph-detail', {state: {grouping:"k.stateID,k.Statename" ,columnName:"Statename",columnID:"stateID",componentName : "State Wise"}})
+		navigate('/graph-detail', {state: {grouping:"k.stateID,k.Statename" ,columnName:"Statename",columnID:"stateID",componentName : "State Wise",filterKey : "strState"}})
 	}
 
 

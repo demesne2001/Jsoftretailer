@@ -6,6 +6,7 @@ const Chart = Baseurl + 'Chart/'
 const Card = Baseurl + 'Card/'
 
 
+
 const API = {
 
     BranchFilter: Filter+'GetBranch',
@@ -59,7 +60,10 @@ const API = {
     CommonChart : Chart + 'GetCommanChart',
     CommonCard : Card + 'GetCardValue',
     
-    GetDetailCommanChart: Chart + 'GetDetailCommanChart'
+    GetDetailCommanChart: Chart + 'GetDetailCommanChart',
+
+    GetChartOptionByID : Chart + 'GetChartOptionByID',
+    ChartOptionAddEdit : Chart + 'ChartOptionAddEdit'
 
 }
 export default API

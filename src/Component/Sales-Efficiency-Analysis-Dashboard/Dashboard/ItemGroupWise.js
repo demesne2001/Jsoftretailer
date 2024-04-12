@@ -98,7 +98,7 @@ export default function ItemGroupWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "o.ItemGroupId,o.GroupName", columnName: "GroupName", columnID: "ItemGroupId", componentName: "Item Group Wise" } })
+    navigate('/graph-detail', { state: { grouping: "o.ItemGroupId,o.GroupName", columnName: "GroupName", columnID: "ItemGroupId", componentName: "Item Group Wise",filterKey : "strItemGroup" } })
   }
 
   function handleonchangeCurrency() {

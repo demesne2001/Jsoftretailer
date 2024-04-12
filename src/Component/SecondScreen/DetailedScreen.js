@@ -27,7 +27,7 @@ export default function DetailedScreen() {
     const [graph, setGraph] = useState("")
     const [componentName, setComponentName] = useState(location.state)
 
-
+    
 
     const settings = {
         speed: 500,
@@ -152,7 +152,7 @@ export default function DetailedScreen() {
                                                     <Slider {...settings}>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'a.BranchID,b.BranchName', column: 'BranchID', componentName: 'Branch Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'a.BranchID,b.BranchName', column: 'BranchID', componentName: 'Branch Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-chart-pie icon-m"></i>
@@ -164,7 +164,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'k.stateID,k.Statename', column: 'Statename', componentName: 'State Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'k.stateID,k.Statename', column: 'Statename', componentName: 'State Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-map-marker-alt icon-m"></i>
@@ -176,7 +176,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'c.cityname', column: 'CityName', componentName: 'City Wise' }) }}>
+                                                                <a  onClick={() => { handleOnLink({ group: 'c.cityname', column: 'CityName', componentName: 'City Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-city icon-m"></i>
@@ -188,7 +188,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'l.RegionID,l.RegionName', column: 'RegionName', componentName: 'Region Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'l.RegionID,l.RegionName', column: 'RegionName', componentName: 'Region Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="topicon-gd">
                                                                             <div class="crancy-featured-user__ficon">
@@ -202,7 +202,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'd.itemID,d.ItemName', column: 'ItemName', componentName: 'Item Wise' }) }}>
+                                                                <a  onClick={() => { handleOnLink({ group: 'd.itemID,d.ItemName', column: 'ItemName', componentName: 'Item Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-project-diagram icon-m"></i>
@@ -214,7 +214,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'e.subitemID,e.subItemName', column: 'subItemName', componentName: 'Sub-Item Wise' }) }}>
+                                                                <a  onClick={() => { handleOnLink({ group: 'e.subitemID,e.subItemName', column: 'subItemName', componentName: 'Sub-Item Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-th-list icon-m"></i>
@@ -226,7 +226,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'o.ItemGroupId,o.GroupName', column: 'GroupName', componentName: 'Item Group Wise' }) }}>
+                                                                <a  onClick={() => { handleOnLink({ group: 'o.ItemGroupId,o.GroupName', column: 'GroupName', componentName: 'Item Group Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-chart-area icon-m"></i>
@@ -238,7 +238,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'f.ItemSubNAme,f.ItemSubID', column: 'ItemSubID', componentName: 'Item with Sub-item Wise' }) }}>
+                                                                <a  onClick={() => { handleOnLink({ group: 'f.ItemSubNAme,f.ItemSubID', column: 'ItemSubID', componentName: 'Item with Sub-item Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-sitemap icon-m"></i>
@@ -250,7 +250,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'g.DesigncodeID,g.DesignCode', column: 'DesignCode', componentName: 'Purchase Party Wise' }) }}>
+                                                                <a  onClick={() => { handleOnLink({ group: 'g.DesigncodeID,g.DesignCode', column: 'DesignCode', componentName: 'Purchase Party Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="graphdetail-topsildericon">
                                                                             <div class="crancy-featured-user__ficon">
@@ -264,7 +264,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'a.accountID,c.AccountName', column: 'AccountName', componentName: 'Sales Party Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'a.accountID,c.AccountName', column: 'AccountName', componentName: 'Sales Party Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-handshake icon-m"></i>
@@ -276,7 +276,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'h.SalesmanID,h.SalesmanNAme', column: 'SalesmanNAme', componentName: 'Saleman Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'h.SalesmanID,h.SalesmanNAme', column: 'SalesmanNAme', componentName: 'Saleman Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-users icon-m"></i>
@@ -288,7 +288,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'i.ProductId,i.ProductName', column: 'ProductName', componentName: 'Product Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'i.ProductId,i.ProductName', column: 'ProductName', componentName: 'Product Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-boxes icon-m"></i>
@@ -300,7 +300,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'j.designCatalogID,j.DesignNo', column: 'DesignNo', componentName: 'Design Catalogue Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'j.designCatalogID,j.DesignNo', column: 'DesignNo', componentName: 'Design Catalogue Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-gem icon-m"></i>
@@ -312,7 +312,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'datename(month,voucherDate)', column: 'MonthName', componentName: 'Month Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'datename(month,voucherDate)', column: 'MonthName', componentName: 'Month Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-calendar-week icon-m"></i>
@@ -324,7 +324,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'M.FinYearID,m.YearCode', column: 'YearCode', componentName: 'Year Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'M.FinYearID,m.YearCode', column: 'YearCode', componentName: 'Year Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas  fa-calendar-alt icon-m"></i>
@@ -336,7 +336,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'a.[rd.caption]', column: 'caption', componentName: 'Sale Aging Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'a.[rd.caption]', column: 'caption', componentName: 'Sale Aging Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-chart-line icon-m"></i>
@@ -348,7 +348,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-layer-group icon-m"></i>
@@ -360,7 +360,7 @@ export default function DetailedScreen() {
                                                         </li>
                                                         <li class="ag-carousel_item">
                                                             <figure class="ag-carousel_figure">
-                                                                <a href="#" onClick={() => { handleOnLink({ group: '', column: '', componentName: 'Team & Mode of Sale Wise' }) }}>
+                                                                <a onClick={() => { handleOnLink({ group: '', column: '', componentName: 'Team & Mode of Sale Wise' }) }}>
                                                                     <div class="crancy-featured-user__fcontent">
                                                                         <div class="crancy-featured-user__ficon">
                                                                             <i class="fas fa-stream icon-m"></i>

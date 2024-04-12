@@ -176,7 +176,7 @@ export default function DesignCatalogueWise() {
 
 
   function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise" } })
+		navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise",filterKey : "strDesignCatalogue" } })
 	}
 
 

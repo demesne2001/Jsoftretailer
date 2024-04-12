@@ -82,7 +82,7 @@ export default function RegionWise() {
 	}
 
 	function handleNavigation() { 
-		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise" } })
+		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise" , filterKey : "strRegionID"} })
 	}
 
 

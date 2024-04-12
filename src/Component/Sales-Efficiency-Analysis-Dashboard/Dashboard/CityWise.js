@@ -123,7 +123,7 @@ export default function CityWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', {state: {grouping:"c.cityname" ,columnName:"cityname",columnID:"cityname",componentName : "City Wise"}}) 
+		navigate('/graph-detail', {state: {grouping:"c.cityname" ,columnName:"cityname",columnID:"cityname",componentName : "City Wise", filterKey : "strCity"}}) 
 	}
 
 

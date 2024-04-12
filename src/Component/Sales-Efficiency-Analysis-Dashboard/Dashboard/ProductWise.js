@@ -98,7 +98,7 @@ export default function ProductWise() {
 	// }
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise" } })
+		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise",filterKey : "strProduct" } })
 	}
 
 
