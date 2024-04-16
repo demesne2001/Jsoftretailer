@@ -66,7 +66,7 @@ const options = {
         floating: true,
         fontSize: '15px',
         position: 'left',
-        offsetX: 130,
+        offsetX: 110,
         offsetY: 7,
         labels: {
             useSeriesColors: true,
@@ -74,7 +74,15 @@ const options = {
         markers: {
             width: 0,
             height: 0
+        },
+        formatter: function (val) {
+            if (val.length > 7) {
+                return val.slice(0, 6) + "..."
+            } else {
+                return val
+            }
         }
+        
     },
     responsive: [{
         breakpoint: 593,

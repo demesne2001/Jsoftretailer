@@ -25,6 +25,7 @@ import ModeofSalesWise from './ModeofSalesWise'
 import TeamModeofSalesWise from './TeamModeofSalesWise'
 
 import ContexState from '../../contex/ContexState'
+import FilterPrint from '../FilterPrint'
 
 // import bootstrapSelectMin from '../../Assets/js/bootstrap-select.min';
 // import bootstrapMin from '../../Assets/js/bootstrap.min'
@@ -40,12 +41,12 @@ export default function Dashboard() {
         <div>
             <ContexState>
             <Header />
-
+            
             <section className="crancy-adashboard crancy-show">
                 <div className="container">
                     <div className="crancy-body">
                         <div className="crancy-dsinner">
-
+                        <div id='rootElementId'>
                             <div className="row">
 
                                 <Piegraph1 />
@@ -61,9 +62,9 @@ export default function Dashboard() {
                                 <StateWise/>
                                 <CityWise/>
                                 <RegionWise/>
-                                <ItemWise/>
-                                <SubItemWise/>
                                 <ItemGroupWise/>
+                                <SubItemWise/>
+                                <ItemWise/>
                                 <ItemWithSubItemWise/>
                                 <PurchasePartyWise/>
                                 <SalesPartyWise/>
@@ -76,10 +77,14 @@ export default function Dashboard() {
                                 <ModeofSalesWise/>
                                 {/* <TeamModeofSalesWise/> */}
                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                
             </section>
+          
+            <div id='pdf-div'><FilterPrint/></div>
 
             {/* <script type="text/javascript" src={bootstrapSelectMin}></script>
             <script type="text/javascript" src={bootstrapMin}></script>

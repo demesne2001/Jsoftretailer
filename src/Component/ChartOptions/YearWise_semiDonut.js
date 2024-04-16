@@ -29,7 +29,7 @@ export function YearWise_semiDonut(name) {
             }
           }
         },
-        colors: ['#58a3b2'],
+        colors: ['#51bde4','#265cb9','#00e396'],
 
         legend: {
             show: false,

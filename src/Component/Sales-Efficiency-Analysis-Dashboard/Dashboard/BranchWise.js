@@ -24,8 +24,12 @@ export default function BranchWise() {
 	let inputdata = contexData.state;
 	const navigate = useNavigate()
 	const [flag, setflag] = useState()
+
+	const [optionId,setOptionId] = useState()
+
 	const [sales, setSales] = useState([])
 	const ChartType="donut"
+	
 
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
@@ -35,9 +39,6 @@ export default function BranchWise() {
 		getdata()
 	}, [inputdata])
 
-	// useEffect(()=>{
-		
-	// },[flag])
 
 
 	const series = handleSeriesData()
@@ -124,15 +125,22 @@ export default function BranchWise() {
 
 		.then((res)=>{
 			if(res.data.lstResult.length === 0){
+				setflag(ChartType)
 				// console.log('FIRST TIME API CALLED')
 				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 1,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 				.then((res)=>{
+					post({ "ID": 1,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+					.then((res)=>{
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+					})
+					
 					alert(res.data.Message)
 				})
-				
+
 			}
 			else{
-
+				
+				setOptionId(res.data.lstResult[0].ChartOptionID)
 				setflag(res.data.lstResult[0].ChartOption) 
 			}
 			
@@ -141,7 +149,7 @@ export default function BranchWise() {
 
 	async function addEditOption(){
 		
-		await post({"ChartOptionID": 2,"ChartOption": flag,"ChartID": 1,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 1,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
 			
 			alert(res.data.Message)
@@ -149,20 +157,18 @@ export default function BranchWise() {
 		})
 	}
 
-	
-
 	function handleonchangeCurrency() {
 		
 		document.getElementById("myDropdowniconbranch").style.display === "block" ? document.getElementById("myDropdowniconbranch").style.display = "none" : document.getElementById("myDropdowniconbranch").style.display = "block";
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', {state: {grouping:"a.BranchID,b.BranchName",columnID:'BranchID',columnName:'BranchName',componentName : "Branch Wise" , filterKey : "strBranch"}})
+		navigate('/graph-detail', {state: {grouping:"a.BranchID,b.BranchName",columnID:'BranchID',columnName:'BranchName',componentName : "Branch Wise" , filterKey : "strBranch" ,chartId : 1}})
 	}
 
 	window.onclick = function (event) {
 
-		// console.log('evennnn', event.target.className)
+		console.log('evennnn', event.target.className)
 		if (event.target.className !== 'dropbtn') {
 			if (document.getElementsByClassName("dropdown-contenticon")[0] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[0].style.display = "none";
@@ -170,7 +176,18 @@ export default function BranchWise() {
 		}
 	}
 
-	// console.log("optionss", options)
+	function flip() {
+        if (document.getElementById("flipbranch").style.transform === "rotateY(360deg)" || document.getElementById("flipbranch").style.transform === "") {
+            
+            document.getElementById("flipbranch").style.transform = "rotateY(180deg)"
+        } else {
+            
+            document.getElementById("flipbranch").style.transform = "rotateY(360deg)"
+        }
+
+    }
+
+	// console.log('LOCAL STORAGE ITEM JJ',localStorage.getItem('jj'))
 
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
@@ -187,7 +204,8 @@ export default function BranchWise() {
 					<div className="col-sm-2 col-md-2 col-2" >
 
 						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} ></img>
-						<i class="fas fa-external-link-alt"></i>
+						{/* <i class="fa-solid fa-retweet"  onClick={flip}/> */}
+						<i class="fas fa-external-link-alt"/>
 
 						<div className='btnicons'>
 						
@@ -208,7 +226,7 @@ export default function BranchWise() {
 				</div>
 
 				
-				<div className="crancy-progress-card card-contain-graph">
+				<div className="crancy-progress-card card-contain-graph" id='flipbranch'>
 					
 					{flag === 'donut' ? <ReactApexChart options={options_donut} series={series} height={380} type={flag} /> : null}
 					{flag === 'radialBar' ? <ReactApexChart options={options_radialbar} series={series} height={380} type={flag} /> : null}

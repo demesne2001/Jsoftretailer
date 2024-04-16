@@ -30,7 +30,10 @@ export default function Default_chart(props) {
         console.log(input, "DEFAULT CHART API");
         post(input, API.CommonChart, {}, "post").then((res) => {
 
+            console.log('INPUT FOR CLICK',input)
+
             if (res.data.lstResult.length !== 0) {
+                
                 
                 let name = [];
                 let weg = [];
@@ -88,6 +91,18 @@ export default function Default_chart(props) {
                 }
             }
         },
+        tooltip: {
+            x: {
+                formatter: function (val) {
+                    return val
+                }
+            },
+            y: {
+                formatter: function (val) {
+                    return val
+                }
+            }
+        },
     }
 
     function flip() {
@@ -100,6 +115,8 @@ export default function Default_chart(props) {
         }
 
     }
+
+    
 
     return (
         <div>

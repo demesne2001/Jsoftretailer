@@ -74,7 +74,9 @@ export default function ItemWise() {
 
 	const [sales, setSales] = useState([])
 
-	const [flag, setflag] = useState("bar")
+	const [flag, setflag] = useState()
+	const ChartType="bar"
+	const [optionId,setOptionId] = useState()
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 	const [demo, setdemo] = useState('bar')
 
@@ -87,13 +89,21 @@ export default function ItemWise() {
 
 	const navigate = useNavigate()
 
-	function handleclick(e) {
-		// console.log('aaaaaa', e.target.id)
-		if (e.target.className !== 'custom-hr') {
-			setflag(e.target.id)
-			setdemo(e.target.className)
-		}
+	useEffect(() => {
+		fetchOption()
+		getdata()
+	}, [inputdata])
 
+	function handleclick(e) {
+		
+		if (e.target.id !== 'save' ){
+			console.log('Updationg option')
+			setflag(e.target.id)
+		}
+		else{
+			console.log("NOT UPDATING OPTIOJN")
+		}
+		
 	}
 
 	function setMargin() {
@@ -104,11 +114,6 @@ export default function ItemWise() {
 		}
 	}
 
-
-
-	useEffect(() => {
-		getdata()
-	}, [inputdata])
 
 	async function getdata() {
 
@@ -169,7 +174,42 @@ export default function ItemWise() {
 	}
 
 	function handleNavigation() { 
-		navigate('/graph-detail', { state: { grouping: "d.itemID,d.ItemName", columnName: "ItemName", columnID: "itemID", componentName: "Item Group Wise" } })
+		navigate('/graph-detail', { state: { grouping: "d.itemID,d.ItemName", columnName: "ItemName", columnID: "itemID", componentName: "Item Group Wise",filterKey : "strItem",chartId : 7} })
+	}
+
+	async function fetchOption(){
+		await post({ "ID": 7,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+				setflag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 7,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+					post({ "ID": 7,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+					.then((res)=>{
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+					})
+					alert(res.data.Message)
+				})
+
+			}
+			else{
+				setOptionId(res.data.lstResult[0].ChartOptionID)
+				setflag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
+	}
+
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 7,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
 	}
 
 
@@ -180,7 +220,7 @@ export default function ItemWise() {
 				<div className="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
 						<p><i className="fas fa-project-diagram"></i>
-							Item Group Wise</p>
+							Item Wise</p>
 					</div>
 
 					<div className='col-sm-2 col-md-2 col-2'>
@@ -192,8 +232,8 @@ export default function ItemWise() {
 								{flag === 'bar' ? <><a id='bar' className='bar'>Bar Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar'>bar chart </a><hr className='custom-hr' /></>}
 								{flag === 'barh' ? <><a id='barh' className='bar'>Horizontal Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barh' className='bar'>horizontal bar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap' >Heat Map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >heat map</a><hr className='custom-hr' /></>}
-
-								{/* <a id='bar' >chart</a><hr className='custom-hr' /> */}
+								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
+								
 							</div>
 							<i class="fas fa-external-link-alt"></i>
 						</div>

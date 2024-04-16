@@ -4,14 +4,14 @@ export function ItemGroup_RadialBar(name) {
             height: 350,
             type: 'radialBar',
             toolbar: {
-              show: true,
+              show: false,
               offsetX: 0,
               offsetY: 0,
               tools: {
                 download: true,
               },
             },
-    
+
             animations: {
               enabled: true,
               easing: 'easeinout',
@@ -26,12 +26,16 @@ export function ItemGroup_RadialBar(name) {
               }
             }
           },
+          legend: {
+            show: true,
+            position: 'bottom',
+          },
           colors: [
                     '#3B93A5',
                     '#F7B844',
                 ],
-    
-    
+          
+                
           plotOptions: {
             radialBar: {
               startAngle: 0,

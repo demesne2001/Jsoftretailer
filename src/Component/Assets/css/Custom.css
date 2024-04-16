@@ -513,7 +513,7 @@ select {
 
 /* Position the front and back side */
 .flip-card-front, .flip-card-back {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
   -webkit-backface-visibility: hidden; /* Safari */
@@ -590,4 +590,110 @@ select {
 .fa-solid-fa-check{
   text-align: right;
   background-color: yellow;
+}
+
+#save{
+  margin-left: 20%;
+}
+
+#pdf-div{
+  display: none;
+  width: 80%;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+#columnChooser {
+  display: none;
+  position: fixed;
+  background-color: #ffffff;
+  width: max-content;
+  overflow: auto;
+  z-index: 10;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 20px 20px 50px grey;
+  margin-left: 173px;
+}
+#columnChooser .column {
+  font-size: 17px;
+
+} 
+
+.Table-Label{ 
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+
+.table-header {
+  
+  position: sticky;
+   top: 0; 
+   background:rgb(224, 224, 224);
+   color:black;
+   border:rgb(0, 0, 0) 1px solid;
+}
+
+#scrollbar {
+  background-color: rgb(224, 224, 224);
+  border-radius: 10px;
+  padding: 20px;
+  height: 60vh;
+  /* height: 400px; */
+  overflow-y: scroll;
+  /* box-shadow: 20px 20px 50px rgb(204, 204, 204); */
+
+}
+
+#scrollbar1 {
+  /* border-radius: 10px; */
+  /* padding: 20px; */
+  /* height: 60vh; */
+  height: fit-content;
+  max-height: 60vh;
+  /* height: 400px; */
+  overflow-y: auto;
+  /* box-shadow: 20px 20px 50px rgb(204, 204, 204); */
+
+}
+
+#inputselectAll{
+ 
+}
+
+
+.top-slider {
+  margin: 20px 40px;
+}
+
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: all 1.0s linear;
+}
+.flip-card .flip-card-inner {
+  transform: rotateY(180deg);
+  box-shadow: -5px 5px 5px #aaa;
+}
+.flip-card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.flip-card-back {
+  display: block;
+  transform: rotateY(180deg);
+  box-sizing: border-box;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+.flip-card-front{
+  color: #FFF;
+  text-align: center;
+  padding: 10px;
 }

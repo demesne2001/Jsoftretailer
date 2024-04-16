@@ -29,7 +29,9 @@ export default function PurchasePartyWise() {
 
   const [imagearr, setImageArr] = useState([])
   const [sales, setSales] = useState([])
-  const [flag, setflag] = useState("bar")
+  const [flag, setflag] = useState()
+  const ChartType="donut" 
+  const [optionId,setOptionId] = useState()
   const [demo, setdemo] = useState("bar")
   const contexData = useContext(contex);
   const [name, setName] = useState([])
@@ -57,7 +59,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesigncodeID", columnID: "DesigncodeID", componentName: "Purchase Party Wise",filterKey : "strPurchaseParty" } })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesigncodeID", columnID: "DesigncodeID", componentName: "Purchase Party Wise",filterKey : "strPurchaseParty",chartId : 9} })
   }
 
 
@@ -119,6 +121,7 @@ export default function PurchasePartyWise() {
 
 
   useEffect(() => {
+    fetchOption()
     getdata()
 
   }, [inputdata])
@@ -216,6 +219,42 @@ export default function PurchasePartyWise() {
     }
   }
 
+  async function fetchOption(){
+		await post({ "ID": 9,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+        setflag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 9,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+          post({ "ID": 9,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+          .then((res)=>{
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+          })
+					alert(res.data.Message)
+				})
+
+			}
+			else{
+        setOptionId(res.data.lstResult[0].ChartOptionID)
+				setflag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
+	}
+
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 9,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
+	}
+
+
 
   return (
     <div className="col-lg-4 col-md-6 col-12">
@@ -232,9 +271,9 @@ export default function PurchasePartyWise() {
 
               <div id="myDropdowniconPurchase" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' className='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar'>bar</a><hr className='custom-hr' /></>}
-                {flag === 'barl' ? <><a id='barl' className='bar'>Lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' className='bar'>Lollipop chart </a><hr className='custom-hr' /></>}
+                {/* {flag === 'barl' ? <><a id='barl' className='bar'>Lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' className='bar'>Lollipop chart </a><hr className='custom-hr' /></>} */}
                 {flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map </a><hr className='custom-hr' /></>}
-                
+                <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
               </div>
               <i class="fas fa-external-link-alt"></i>
             </div>

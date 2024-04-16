@@ -1,4 +1,4 @@
-export function secondScreen_donut(name){
+export function secondScreen_donut(name, contexData , id , filterKey){
 
     const options = {
         stroke: {
@@ -11,6 +11,35 @@ export function secondScreen_donut(name){
                 enabled: true,
                 easing: 'easein',
             },
+            events:{
+                dataPointSelection:(event,chartContex,config)=>{
+                   
+                    
+                    
+                    
+                    // contexData.setDefaultChart({...contexData.defaultchart,["strBranch"] : config.w.config.xaxis.categories[config.dataPointIndex] })
+                    //   console.log(id[config.dataPointIndex])
+                  
+                    if(id[config.dataPointIndex] === null){
+                        // console.log('INSIDE NULL')
+                        contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : '-' })
+                      }
+                    else if(id[config.dataPointIndex].toString() === contexData.defaultchart[filterKey]){
+                        contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : '' })
+                    }
+                      else{
+                        contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : id[config.dataPointIndex].toString() })
+                      }
+                   
+                   
+                    
+                    // console.log(config.w.config.xaxis.categories[config.dataPointIndex])
+                    
+
+                    // console.log(config.w.config.series[0].data[config.dataPointIndex],config.w.config.xaxis.categories[config.dataPointIndex])
+    
+                }
+              }
             // toolbar: {
             // 	show: true,
             // 	offsetX: 0,

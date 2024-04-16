@@ -1,5 +1,5 @@
 export function DesignCatalogueWise_bar(name) {
-    console.log(name,"hii");
+    
     const option = {
         legend: {
             show: false

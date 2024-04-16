@@ -1,10 +1,16 @@
 
+
 const Baseurl="http://192.168.1.208:5000/"
+
+const BaseurlCommon="http://192.168.1.208:7000/"
+
+
 
 const Filter = Baseurl + 'Filter/'
 const Chart = Baseurl + 'Chart/'
 const Card = Baseurl + 'Card/'
 
+const Common = BaseurlCommon + 'Comman/'
 
 
 const API = {
@@ -32,6 +38,8 @@ const API = {
     GetSalesAging: Filter + 'GetSalesAging',
     GetDayBook: Filter + 'GetDayBook',
     GetMetalType: Filter + 'GetMetalType',
+    GetMonth:Filter+'GetMonth',
+    
 
     GetSalesEfficiencyCard : Card + 'GetSalesEfficiencyCard',
     GetReturnTrendCard : Card + 'GetReturnTrendCard',
@@ -63,8 +71,20 @@ const API = {
     GetDetailCommanChart: Chart + 'GetDetailCommanChart',
 
     GetChartOptionByID : Chart + 'GetChartOptionByID',
-    ChartOptionAddEdit : Chart + 'ChartOptionAddEdit'
+    ChartOptionAddEdit : Chart + 'ChartOptionAddEdit',
 
+    GetChartGroupByID : Chart + 'GetChartGroupByID',
+    ChartGroupAddEdit : Chart + 'ChartGroupAddEdit',
+
+    GetFilterGridByID:Filter + "GetFilterGridByID",   
+    FilterGridAddEdit: Filter + "FilterGridAddEdit",
+    GetDefaultScreenData:Filter+'GetDefaultScreenData',
+
+    uploadImage : Common + "uploadImage",
+    GetPDFUsingImage : Common + "GetPDFUsingImage",
+
+    downloadPdf : Baseurl + "PDF/"
+    
 }
 export default API
 

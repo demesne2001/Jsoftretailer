@@ -88,7 +88,9 @@ export default function MonthWise() {
   let inputdata = contexData.state;
 
 
-  const [flag, setflag] = useState("bar")
+  const [flag, setflag] = useState()
+  const ChartType = "bar"
+  const [optionId,setOptionId] = useState()
   const [demo, setdemo] = useState("bar")
   const options_bar = MonthWise_Bar(name)
   const options_area = MonthWise_area(name)
@@ -96,22 +98,31 @@ export default function MonthWise() {
     name: 'weight',
     data: weight
   }]
+
   function handleclick(e) {
-    // console.log('aaaaaa', e.target.id)
-    setdemo(e.target.className)
-    setflag(e.target.id)
-  }
+		
+		if (e.target.id !== 'save' ){
+			console.log('Updationg option')
+			setflag(e.target.id)
+		}
+		else{
+			console.log("NOT UPDATING OPTIOJN")
+		}
+		
+	}
 
   useEffect(() => {
+    fetchOption()
     getdata()
   }, [inputdata])
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'datename(month,voucherDate)' }
+    inputdata = { ...inputdata, ['Grouping']: 'datename(month,a.voucherDate)' }
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
-        // console.log("apiiiiiiiiiiiiiiii", res.data.lstResult);
+        
+        // console.log("apiiiiiiiiiiiiiiii", res);
         let name = [];
         let weight = [];
         // console.log(res.data.lstResult)
@@ -129,17 +140,9 @@ export default function MonthWise() {
       })
   }
 
-  function handleclick(e) {
-    if (e.target.className !== 'custom-hr') {
-      setflag(e.target.id)
-    }
-  }
-
-
-  
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise",filterKey : "strItemSubitem" } })
+    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise",filterKey : "strItemSubitem",chartId : 14} })
   }
 
 
@@ -160,6 +163,41 @@ export default function MonthWise() {
     }
   }
 
+  async function fetchOption(){
+		await post({ "ID": 14	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+        setflag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 14	,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+
+					post({ "ID": 14	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+          .then((res)=>{
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+          })
+					alert(res.data.Message)
+				})
+
+			}
+			else{
+        setOptionId(res.data.lstResult[0].ChartOptionID)
+				setflag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
+	}
+
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 14		,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
+	}
 
 
 
@@ -180,6 +218,7 @@ export default function MonthWise() {
                 {flag  === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
                 {flag  === 'area' ? <><a id='area' className='area'>Area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>Area chart</a><hr className='custom-hr' /></>}
                 
+                <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
                 {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
               </div>
               <i class="fas fa-external-link-alt"></i>

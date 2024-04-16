@@ -3,7 +3,7 @@ import contex from "./Contex"
 
 const ContexState = (props) => {
 
-    const [state,SetState] = useState({
+	const [state, SetState] = useState({
 		strBranch: "",
 		strState: "",
 		strCity: "",
@@ -43,11 +43,14 @@ const ContexState = (props) => {
 		strModeofSaleValue: "",
 		strTeamModeofSaleValue: "",
 		strRegionValue: "",
-		strDayBookValue:"",
-		strStateValue:''
-		
-    })
-	const [tempstate,SettempState] = useState({
+		strDayBookValue: "",
+		strStateValue: '',
+		strMonth: "",
+		strFinYear: "",
+		strMonthValue: ""
+
+	})
+	const [tempstate, SettempState] = useState({
 		strBranch: "",
 		strState: "",
 		strCity: "",
@@ -87,21 +90,25 @@ const ContexState = (props) => {
 		strModeofSaleValue: "",
 		strTeamModeofSaleValue: "",
 		strRegionValue: "",
-		strDayBookValue:"",
-		strStateValue:''
-})
+		strDayBookValue: "",
+		strStateValue: '',
+		strMonth: "",
+		strFinYear: "",
+		strMonthValue: ""
+	})
 	const [childFilterShow, setchildFilterShow] = useState(false);
 	const [currency, setcurrency] = useState("");
+	const [flag, setflag] = useState(0);
 
-    return (
+	return (
 
-       <contex.Provider value={{state:state, SetState:SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency}}>
+		<contex.Provider value={{ state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
 
-        {props.children}
+			{props.children}
 
-       </contex.Provider>
+		</contex.Provider>
 
-    )
+	)
 
 }
 

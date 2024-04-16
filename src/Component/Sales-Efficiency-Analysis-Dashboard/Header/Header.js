@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 
 import Modal from "react-bootstrap/Modal";
@@ -11,7 +11,10 @@ import contex from "../../contex/Contex";
 import Commonmodel from "../../CommonModel/CommanModal";
 import currency from "../../Assets/img/svg/currency.svg";
 import "../../Assets/css/Custom.css";
+import * as htmlToImage from 'html-to-image';
 import reactSelect from "react-select";
+import download from 'downloadjs';
+import { MultiSelect } from "react-multi-select-component";
 
 // import Commonmodel from '../../CommonModel/CommanModal';
 
@@ -43,8 +46,14 @@ export default function Header() {
 
   const animatedComponents = makeAnimated();
 
+
   const [filterFlag, setFIlterFlag] = useState(false);
   const [fullScreenFlag, setFullscreenFlag] = useState(false);
+
+  const [file, setfile] = useState('');
+  let res
+  const [count, setCount] = useState(1000)
+  const conponentPDF = useRef(null);
 
   const [postData, setPostData] = useState({
     strBranch: "",
@@ -87,7 +96,10 @@ export default function Header() {
     strTeamModeofSaleValue: "",
     strRegionValue: "",
     strDayBookValue: "",
-    strStateValue: ''
+    strStateValue: '',
+    strMonth: "",
+    strFinYear: "",
+    strMonthValue: ""
   });
 
   const dependentfilter = {
@@ -97,6 +109,7 @@ export default function Header() {
       "BranchId",
       "BranchName",
       "strBranchValue",
+      1
     ],
     2: [
       "strRegionID",
@@ -104,15 +117,17 @@ export default function Header() {
       "RegionID",
       "RegionName",
       "strRegionValue",
+      2
     ],
-    3: ["strState", API.GetState, "StateID", "StateName", "strStateValue"],
-    4: ["strCity", API.GetCity, "CityName", "CityName", "strCity"],
+    3: ["strState", API.GetState, "StateID", "StateName", "strStateValue", 3],
+    4: ["strCity", API.GetCity, "CityName", "CityName", "strCity", 4],
     5: [
       "strItemGroup",
       API.itemGroupFilter,
       "ItemGroupID",
       "ItemGroupName",
       "strItemGroupValue",
+      5,
     ],
     6: [
       "strProduct",
@@ -120,14 +135,16 @@ export default function Header() {
       "ProductId",
       "ProductName",
       "strProductValue",
+      6,
     ],
-    7: ["strItem", API.itemFilter, "ItemId", "ItemName", "strItemValue"],
+    7: ["strItem", API.itemFilter, "ItemId", "ItemName", "strItemValue", 7],
     8: [
       "strSubItem",
       API.GetSubItem,
       "SubItemId",
       "SubItemName",
       "strSubItemValue",
+      8,
     ],
     9: [
       "strItemSubitem",
@@ -135,6 +152,7 @@ export default function Header() {
       "ItemSubID",
       "SubItemWithStyleName",
       "strItemSubitemValue",
+      9,
     ],
     10: [
       "strDesignCatalogue",
@@ -142,6 +160,7 @@ export default function Header() {
       "DesignCatalogID",
       "DesignNo",
       "strDesignCatalogueValue",
+      10,
     ],
     11: [
       "strSaleman",
@@ -149,6 +168,7 @@ export default function Header() {
       "SalesmanID",
       "SalesmanName",
       "strSalemanValue",
+      11,
     ],
     12: [
       "strModeofSale",
@@ -156,6 +176,7 @@ export default function Header() {
       "ModeOfSaleID",
       "ModeOfSaleName",
       "strModeofSaleValue",
+      12,
     ],
     13: [
       "strTeamModeofSale",
@@ -163,6 +184,7 @@ export default function Header() {
       "TeamModeofSaleID",
       "TeamModeofSaleName",
       "strTeamModeofSaleValue",
+      13,
     ],
     14: [
       "strSaleAging",
@@ -170,6 +192,7 @@ export default function Header() {
       "Caption",
       "Caption",
       "strSaleAging",
+      14,
     ],
     15: [
       "strPurchaseParty",
@@ -177,6 +200,7 @@ export default function Header() {
       "DesignCatalogID",
       "DesignNo",
       "strPurchasePartyValue",
+      15,
     ],
     16: [
       "strSalesParty",
@@ -184,7 +208,16 @@ export default function Header() {
       "AccountId",
       "AccountName",
       "strSalesPartyValue",
+      16,
     ],
+    17: [
+      "strMonth",
+      API.GetMonth,
+    "MonthID",
+      "MonthName",
+      "strMonthValue",
+      17
+    ]
   };
   const [demo, setDemo] = useState([]);
   const [demoName, setDemoName] = useState([]);
@@ -206,10 +239,17 @@ export default function Header() {
   const [purchaseParty, setPurcharseParty] = useState({});
   const [salesParty, setSalesParty] = useState({});
   const [props1, setProps1] = useState();
+  const [syncDate, setSyncDate] = useState()
+
+
+
+
+
   useEffect(() => {
+    getSyncDate()
     console.log(contexData.tempstate);
     var Findex = contexData.tempstate.FilterIndex
-    console.log("useEffet1");
+    // console.log("useEffet1");
 
     if (Findex !== "undefined" && Findex !== 0) {
       if (Findex >= 1 && Findex < 9) {
@@ -230,23 +270,23 @@ export default function Header() {
     }
   }, [contexData.FilterIndex])
 
-  // useEffect(() => {
-  // 	console.log("useEffet3");
 
-  // 	for (let index = 1; index <= dependentfilter.length; index++) {
-  // 		FetchDataDependentAPI(FilterData, index)
-  // 	}
+  async function getSyncDate() {
+    await post({}, API.GetDefaultScreenData, {}, 'post')
+      .then((res) => {
+        setSyncDate(res.data.lstResult[0].SyncDate)
+      })
+  }
 
-  // }, [contexData.tempstate.strBranchID, contexData.tempstate.CompanyID])
 
   function FetchDataDependentAPI(input, FilterIndex) {
-    console.log("FetchDataDependentAPI", contexData.tempstate[dependentfilter[FilterIndex][4]]);
+    // console.log("FetchDataDependentAPI", contexData.tempstate[dependentfilter[FilterIndex][4]]);
     post(input, dependentfilter[FilterIndex][1], [], 'post').then((res) => {
-      console.log("response", res);
-      console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
+      // console.log("response", res);
+      // console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
       var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
       var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-      console.log("hii", res.data.lstResult);
+      // console.log("hii", res.data.lstResult);
       var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
       // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
       console.log('TempDatabefore', TempDataID)
@@ -268,31 +308,17 @@ export default function Header() {
       }
 
 
-      console.log('TempData After', temarrayID)
+      // console.log('TempData After', temarrayID)
 
 
       contexData.Settempstate({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
-      console.log("contexData.tempstate After ", contexData.tempstate);
+      // console.log("contexData.tempstate After ", contexData.tempstate);
 
     })
   }
 
-  //   useEffect(() => {
-  //     // getdataState();
-  //     // getdataBranch();
-  //     // getdataRegion();
-  //     // getdatacity();
-  //     // getdataitemgroup();
-  //     // getdataproduct();
-  //     // getdataitemgroup();
-  //     // getdataitem();
-  //     // getdatasubitem();
-  //     // getdataitemsubitem();
-  //     // getdatadesign();
-  //     // getdatasalesman();
-  //     // // getdatapurchaseparty()
-  //     // getdatasalesparty();
-  //   }, [postData]);
+
+
 
   function HandleOnClickComman(IndexNo) {
     let myvalue = contexData.tempstate[dependentfilter[IndexNo][0]];
@@ -302,7 +328,7 @@ export default function Header() {
     let demooName = [];
     demoo.push(myvalue.split(","));
     demooName.push(myvalueName.split(","));
-    console.log("DEMOOOOO", demoo[0].length);
+    // console.log("DEMOOOOO", demoo[0].length);
     let newarr = [];
     let newarrName = [];
 
@@ -328,7 +354,7 @@ export default function Header() {
     }
     setDemo(newarr);
     setDemoName(newarrName);
-    console.log(newarr);
+    // console.log(newarr);
     setProps1({
       api: dependentfilter[IndexNo][1],
       labelname: dependentfilter[IndexNo][0],
@@ -336,6 +362,7 @@ export default function Header() {
       name: dependentfilter[IndexNo][3],
       LabelValue: dependentfilter[IndexNo][4],
       FilterIndex: IndexNo,
+      grid: dependentfilter[IndexNo][5]
     });
     contexData.setchildFilterShow(true);
   }
@@ -343,7 +370,7 @@ export default function Header() {
   useEffect(() => {
     handleDaybook();
     handleMetaltype();
-    console.log(contexData.tempstate, "useffect temp");
+    // console.log(contexData.tempstate, "useffect temp");
   }, [])
 
   function handlerOnOpen() {
@@ -387,21 +414,22 @@ export default function Header() {
     post(postData, API.GetMetalType, {}, "post").then((res) => {
       for (let index = 0; index < res.data.lstResult.length; index++) {
         temp1.push({
-          value: res.data.lstResult[index].ModelTypeId,
-          label: res.data.lstResult[index].ModelTypeName,
+          label: res.data.lstResult[index].MetalTypeDesc,
+          value: res.data.lstResult[index].MetalType,
         });
       }
       setMetalType(temp1);
     });
   }
+
   function handleDaybook() {
     let temp1 = [];
 
     post(postData, API.GetDayBook, {}, "post").then((res) => {
       for (let index = 0; index < res.data.lstResult.length; index++) {
         temp1.push({
-          value: res.data.lstResult[index].DayBookId,
-          label: res.data.lstResult[index].DayBookName,
+          value: res.data.lstResult[index].DaybookID,
+          label: res.data.lstResult[index].Daybook,
         });
       }
       setDayBook(temp1);
@@ -411,330 +439,74 @@ export default function Header() {
 
     if (selectData.name === 'MetalTypeSelect') {
       setDefaultMetalType(e);
-      contexData.Settempstate({ ...contexData.tempstate, ['strMetalType']: e.value, ['strMetalTypeValue']: e.label });
+      contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e.value, ['strMetalTypeValue']: e.label });
     } else {
       setDefaultDayBook(e);
-      contexData.Settempstate({ ...contexData.tempstate, ['strDayBook']: e.value, ['strDayBookValue']: e.label });
+      contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: e.value, ['strDayBookValue']: e.label });
     }
   }
 
-  // function getdataBranch() {
-  //   let temp1 = [];
 
-  //   post(postData, API.BranchFilter, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].BranchId,
-  //         label: res.data.lstResult[index].BranchName,
-  //       });
-  //     }
-  //     setBranch(temp1);
-  //   });
-  // }
-
-  // function getdataRegion() {
-  //   let temp1 = [];
-
-  //   post(postData, API.regionFilter, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({});
-  //     }
-  //     setRegion(temp1);
-  //   });
-  // }
-
-  // function getdatacity() {
-  //   let temp1 = [];
-
-  //   post(postData, API.cityFilter, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].CityName,
-  //         label: res.data.lstResult[index].CityName,
-  //       });
-  //     }
-  //     setCity(temp1);
-  //   });
-  // }
-
-  // function getdataitemgroup() {
-  //   let temp1 = [];
-
-  //   post(postData, API.itemGroupFilter, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].ItemGroupID,
-  //         label:
-  //           res.data.lstResult[index].GroupName +
-  //           "(" +
-  //           res.data.lstResult[index].ShortName +
-  //           ")",
-  //       });
-  //     }
-  //     setItemGroup(temp1);
-  //   });
-  // }
-
-  // function getdataproduct() {
-  //   let temp1 = [];
-
-  //   post(postData, API.productFilter, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].ProductId,
-  //         label: res.data.lstResult[index].ProductName,
-  //       });
-  //     }
-  //     setProduct(temp1);
-  //   });
-  // }
-
-  // function getdataitem() {
-  //   let temp1 = [];
-
-  //   post(postData, API.itemFilter, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].ItemId,
-  //         label: res.data.lstResult[index].ItemName,
-  //       });
-  //     }
-  //     setItem(temp1);
-  //   });
-  // }
-
-  // function getdatasubitem() {
-  //   let temp1 = [];
-
-  //   post(postData, API.GetSubItem, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].SubItemId,
-  //         label: res.data.lstResult[index].SubItemName,
-  //       });
-  //     }
-  //     setSubItem(temp1);
-  //   });
-  // }
-
-  // function getdataitemsubitem() {
-  //   let temp1 = [];
-
-  //   post(postData, API.GetItemWithSubitem, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].ItemSubID,
-  //         label: res.data.lstResult[index].SubItemWithStyleName,
-  //       });
-  //     }
-  //     setItemSubItem(temp1);
-  //   });
-  // }
-
-  // function getdatadesign() {
-  //   let temp1 = [];
-
-  //   post(postData, API.GetDesignCatalogue, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].DesignCatalogID,
-  //         label: res.data.lstResult[index].DesignNo,
-  //       });
-  //     }
-  //     Setdesign(temp1);
-  //   });
-  // }
-
-  // function getdatasalesman() {
-  //   let temp1 = [];
-
-  //   post(postData, API.GetSaleman, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].SalesmanID,
-  //         label: res.data.lstResult[index].SalesmanName,
-  //       });
-  //     }
-  //     setSalesMan(temp1);
-  //   });
-  // }
-
-  // function getdatasalesparty() {
-  //   let temp1 = [];
-
-  //   post(postData, API.GetSalesParty, {}, "post").then((res) => {
-  //     for (let index = 0; index < res.data.lstResult.length; index++) {
-  //       temp1.push({
-  //         value: res.data.lstResult[index].AccountId,
-  //         label: res.data.lstResult[index].AccountName,
-  //       });
-  //     }
-  //     setSalesParty(temp1);
-  //   });
-  // }
-
-  // function getdatapurchaseparty(){
-
-  // 	let temp1 = []
-
-  // 	post(postData,API.GetSaleman,{},'post')
-  // 	.then((res)=>{
-
-  // 		for (let index = 0; index < res.data.lstResult.length; index++) {
-
-  // 			temp1.push({
-  // 				value: res.data.lstResult[index].SalesmanID,
-  // 				label:res.data.lstResult[index].SalesmanName
-  // 			})
-  // 		}
-  // 		setSalesMan(temp1)
-  // 	})
-
-  // }
 
   function handleonchange(e) {
     contexData.SettempState({ ...contexData.tempstate, [e.target.name]: e.target.value });
   }
 
-  // function handleselect(e, selectData) {
-  //   // function to handle selected data and update respactive postdata items
+  async function downloadPdfDocument() {
 
-  //   if (selectData.name === "branchSelect") {
-  //     let temp = "";
 
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-  //     // console.log(temp)
-  //     setPostData({ ...postData, ["strBranch"]: temp });
-  //   } else if (selectData.name === "regionSelect") {
-  //     let temp = "";
 
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
+    var nameArray = []
+    document.getElementById('pdf-div').style.display = "block";
 
-  //     // setPostData({...postData,['setBranch']:temp})
-  //   } else if (selectData.name === "stateSelect") {
-  //     let temp = "";
+    await htmlToImage.toPng(document.getElementById('rootElementId'))
+      .then(function (dataUrl) {
+        setCount(count + 1)
+        var name = count.toString() + "Dashboard";
 
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
+        // console.log('dataUrl', dataUrl)
+        // download(dataUrl, "file1.png")
+        post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
+          nameArray.push(res.data.filename);
+        })
+      });
 
-  //     setPostData({ ...postData, ["strState"]: temp });
-  //   } else if (selectData.name === "citySelect") {
-  //     let temp = "";
+    await htmlToImage.toPng(document.getElementById('pdf-div'))
+      .then(function (dataUrl) {
+        var name = count.toString() + "filter";
+        // download(dataUrl, "file2.png")
+        // console.log('dataUrl1', dataUrl)
+        post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
+          // console.log(res.data.filename);
+          nameArray.push(res.data.filename);
+          // console.log(count.toString() + "filter.png", count.toString() + "Dashboard.png");
+          post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, API.GetPDFUsingImage, {}, "post").then((res) => {
+            // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
+            // console.log(res);
+            // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
+            const pdfUrl = API.downloadPdf + count.toString() + "aa.pdf";
+            axios.get(pdfUrl, {
+              responseType: 'blob',
+            })
+              .then((res) => {
+                download(res.data, "JSoftDashboard.pdf")
+              })
+              .catch((e) => {
+                console.log(e)
+              })
 
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
+          });
+        })
+      });
 
-  //     setPostData({ ...postData, ["strCity"]: temp });
-  //   } else if (selectData.name === "itemGroupSelect") {
-  //     let temp = "";
 
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strItemGroup"]: temp });
-  //   } else if (selectData.name === "productSelect") {
-  //     let temp = "";
-
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strProduct"]: temp });
-  //   } else if (selectData.name === "itemSelect") {
-  //     let temp = "";
-
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strItem"]: temp });
-  //   } else if (selectData.name === "subItemSelect") {
-  //     let temp = "";
-
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strSubItem"]: temp });
-  //   } else if (selectData.name === "itemSubItemSelect") {
-  //     let temp = "";
-
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strItemSubitem"]: temp });
-  //   } else if (selectData.name === "designSelect") {
-  //     let temp = "";
-
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strDesignCatalogue"]: temp });
-  //   } else if (selectData.name === "salesmanSelect") {
-  //     let temp = "";
-
-  //     for (let index = 0; index < e.length; index++) {
-  //       if (index + 1 === e.length) {
-  //         temp = temp + e[index].value;
-  //       } else {
-  //         temp = temp + e[index].value + ",";
-  //       }
-  //     }
-
-  //     setPostData({ ...postData, ["strSaleman"]: temp });
-  //   }
-  // }
+    setTimeout(() => {
+      document.getElementById('pdf-div').style.display = "none";
+    }, 100);
+  }
 
   function handleApplyFilter() {
+    console.log('FILTER DATA', FilterData)
     contexData.SetState(FilterData);
     handleOnClose();
   }
@@ -842,13 +614,13 @@ export default function Header() {
   }
 
   window.onclick = function (event) {
-    console.log(event.target.className);
+    // console.log(event.target.className);
     if (event.target.className !== "dropbtn") {
       if (
         document.getElementsByClassName("dropdown-content")[0] !== undefined ||
         document.getElementsByClassName("dropdown-content")[1] !== undefined
       ) {
-        console.log("hii");
+
         document.getElementsByClassName("dropdown-content")[0].style.display =
           "none";
       }
@@ -993,9 +765,9 @@ export default function Header() {
                         <ul className="geex-content__header__quickaction">
                           <li className="from-date-to-date-header__quickaction">
                             <h5>
-                              Synchronize-Date :{" "}
+                              Synchronize-Date :{syncDate}
                               <span className="text-muted">
-                                {(new Date().getDate()).toString() + "/" + (new Date().getMonth() + 1).toString() + "/" + (new Date().getFullYear()).toString() + "  " + (new Date().getHours()).toString() + ":" + (new Date().getMinutes()).toString()}
+                                { }
                               </span>
                             </h5>
                           </li>
@@ -1006,13 +778,17 @@ export default function Header() {
                             >
                               <div className="button-open">
                                 {localStorage.getItem("value") === "" ||
-                                  localStorage.getItem("value") === undefined ? (
+                                  localStorage.getItem("value") === null ? (
                                   <>
-                                    <img
+
+                                    {/* <img
                                       src={currency}
                                       className="dropbtn"
                                       onClick={handleonchangeCurrency}
-                                    />
+                                    ></img>
+                                     */}
+                                    <button class="fas fa-rupee-sign" onClick={handleonchangeCurrency}> Default </button>
+                                    {/* <button class="fa fa-inr" aria-hidden="true" src={currency} className="dropbtn" onClick={handleonchangeCurrency} > </button> */}
                                   </>
                                 ) : null}
                                 {localStorage.getItem("value") === "k" ? (
@@ -1095,6 +871,7 @@ export default function Header() {
                               </a>
                             </div>
                           </li>
+                          <button className="fa-solid fa-file-pdf" onClick={downloadPdfDocument} > </button>
                           <li className="geex-content__header__quickaction__item">
                             <div
                               className="geex-content__header__quickaction__link crancy-header__alarm top-header-icon"
@@ -1213,18 +990,11 @@ export default function Header() {
                               <label for="sel1" class="form-label">
                                 Metal Type
                               </label>
-                              {/* <select
-                                  class="form-select form-control filter-header-dropdown"
-                                  aria-label="Default select example"
-                                >
-                                  <option selected>Select Metal Type</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select> */}
+
                               <Select
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"
+                                isMulti
                                 options={MetalType}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
@@ -1236,7 +1006,7 @@ export default function Header() {
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
-                                    height: '45px',
+                                    // height: '45px',
                                     borderRadius: '10px'
                                   }),
                                 }}
@@ -1698,6 +1468,20 @@ export default function Header() {
                       <input
                         value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
                         onClick={() => HandleOnClickComman(16)}
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-calendar-alt"></i>
+                      <label for="sel1" class="form-label">
+                        Month Wise
+                      </label>
+
+                      <input
+                        value={formatedValue(contexData.tempstate["strMonthValue"])}
+                        onClick={() => HandleOnClickComman(17)}
                       />
                     </div>
                   </div>

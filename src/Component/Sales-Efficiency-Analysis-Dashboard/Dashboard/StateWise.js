@@ -21,9 +21,11 @@ export default function StateWise() {
 	const [state, setState] = useState([]);
 	const navigate = useNavigate()
 	let inputdata = contexData.state;
-	const [flag, setflag] = useState("treemap")
+	const [flag, setflag] = useState()
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
+	const [optionId, setOptionId] = useState()
+
 	const options_semidonut = StateWise_SemiDonut(name, state)
 	const options_Treemap = StateWise_Treemap(name)
 	const series_treemap = [
@@ -33,13 +35,23 @@ export default function StateWise() {
 	]
 	const series_semidonut = weight;
 
+	const ChartType = "treemap"
+
 	function handleclick(e) {
-		// console.log('aaaaaa', e.target.id)
-		setflag(e.target.id)
+
+		if (e.target.id !== 'save') {
+
+			setflag(e.target.id)
+		}
+		else {
+			console.log("NOT UPDATING OPTIOJN")
+		}
+
 	}
 
 
 	useEffect(() => {
+		fetchOption()
 		getdata()
 	}, [inputdata])
 
@@ -70,19 +82,19 @@ export default function StateWise() {
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
-	
+
 
 
 
 
 	function handleonchangeCurrency() {
-	
+
 		document.getElementById("myDropdowniconstate").style.display === "block" ? document.getElementById("myDropdowniconstate").style.display = "none" : document.getElementById("myDropdowniconstate").style.display = "block";
 	}
 
 	window.onclick = function (event) {
 
-		
+
 
 		if (!event.target.matches('#iconidstate')) {
 			if (document.getElementsByClassName("dropdown-contenticon")[1] !== undefined) {
@@ -93,7 +105,44 @@ export default function StateWise() {
 
 
 	function handleNavigation() {
-		navigate('/graph-detail', {state: {grouping:"k.stateID,k.Statename" ,columnName:"Statename",columnID:"stateID",componentName : "State Wise",filterKey : "strState"}})
+		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState",chartId : 2 } })
+	}
+
+	async function fetchOption() {
+		await post({ "ID": 2, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+
+			.then((res) => {
+				if (res.data.lstResult.length === 0) {
+					setflag(ChartType)
+					// console.log('FIRST TIME API CALLED')
+					setflag(ChartType)
+					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+						.then((res) => {
+							post({ "ID": 2, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+								.then((res) => {
+									setOptionId(res.data.lstResult[0].ChartOptionID)
+								})
+
+							alert(res.data.Message)
+						})
+
+				}
+				else {
+					setOptionId(res.data.lstResult[0].ChartOptionID)
+					setflag(res.data.lstResult[0].ChartOption)
+				}
+
+			})
+	}
+
+	async function addEditOption() {
+
+		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+			.then((res) => {
+
+				alert(res.data.Message)
+
+			})
 	}
 
 
@@ -116,9 +165,9 @@ export default function StateWise() {
 
 							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
 
-								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></> }
+								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></>}
 								{flag === 'donut' ? <><a id='donut'>Semi donut &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Semi donut </a><hr className='custom-hr' /></>}
-								
+								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
 							<i class="fas fa-external-link-alt"></i>
 						</div>

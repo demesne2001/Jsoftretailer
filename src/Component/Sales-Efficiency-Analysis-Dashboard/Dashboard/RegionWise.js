@@ -20,8 +20,9 @@ export default function RegionWise() {
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
 
-	const [flag, setflag] = useState("bar")
-
+	const [flag, setflag] = useState()
+	const [optionId,setOptionId] = useState()
+	const ChartType="bar"
 
 	const options_lolipop = RegionWise_lolipop(name)
 	const options_polar = RegionWise_Polar(name)
@@ -34,10 +35,19 @@ export default function RegionWise() {
 	const navigate = useNavigate()
 
 	function handleclick(e) {
-		// console.log('aaaaaa', e.target.id)
-		setflag(e.target.id)
+		
+		if (e.target.id !== 'save' ){
+			
+			setflag(e.target.id)
+		}
+		else{
+			console.log("NOT UPDATING OPTIOJN")
+		}
+		
 	}
+
 	useEffect(() => {
+		fetchOption()
 		getdata()
 	}, [inputdata])
 
@@ -82,10 +92,49 @@ export default function RegionWise() {
 	}
 
 	function handleNavigation() { 
-		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise" , filterKey : "strRegionID"} })
+		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise" , filterKey : "strRegionID",chartId : 4} })
+	}
+
+	async function fetchOption(){
+		await post({ "ID": 4,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+				setflag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				setflag(ChartType)
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 4,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+					post({ "ID": 4,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+					.then((res)=>{
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+					})
+					
+					alert(res.data.Message)
+				})
+				
+
+			}
+			else{
+				setOptionId(res.data.lstResult[0].ChartOptionID)
+				setflag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
+	}
+
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 4,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
 	}
 
 
+	
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
 			<div className="graph-card">
@@ -102,8 +151,9 @@ export default function RegionWise() {
 
 							<div id="myDropdowniconregion" className="dropdown-contenticon" onClick={handleclick}>
 
-								{flag === 'bar' ? <><a id='bar' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >lollipop chart </a><hr className='custom-hr' /></>}
-								{flag === 'polarArea' ? <><a id='polarArea' >polar area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >polar area</a><hr className='custom-hr' /></>}
+								{/* {flag === 'bar' ? <><a id='bar' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >lollipop chart </a><hr className='custom-hr' /></>} */}
+							    {flag === 'polarArea' ? <><a id='polarArea' >polar area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >polar area</a><hr className='custom-hr' /></>}
+								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>	
 							</div>
 							<i class="fas fa-external-link-alt"></i>
 						</div>
@@ -114,7 +164,7 @@ export default function RegionWise() {
 				</div>
 				<div className="crancy-progress-card card-contain-graph">
 					{flag === 'bar' ? <ReactApexChart options={options_lolipop} type={flag} series={series_lolipop} height={350} /> : null}
-					{flag === 'polarArea' ? <ReactApexChart options={options_polar} type={flag} series={series_polar} height={350} /> : null}
+					{flag === 'polarArea' ? <ReactApexChart options={options_polar} type='polarArea' series={series_polar} height={350} /> : null}
 
 
 					{/* <Cylinder/> */}

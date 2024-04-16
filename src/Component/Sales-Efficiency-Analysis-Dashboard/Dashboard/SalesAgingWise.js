@@ -20,17 +20,26 @@ export default function SalesAgingWise() {
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
 	const navigate = useNavigate()
+	const [optionId, setOptionId] = useState()
 
 	const [flag, setflag] = useState("line")
-	const [demo, setdemo] = useState("line")
+	const ChartType = "line"
 
 	function handleclick(e) {
-		setdemo(e.target.className)
-		setflag(e.target.id)
+
+		if (e.target.id !== 'save') {
+			console.log('Updationg option')
+			setflag(e.target.id)
+		}
+		else {
+			console.log("NOT UPDATING OPTIOJN")
+		}
+
 	}
 
 
 	useEffect(() => {
+		fetchOption()
 		getdata()
 	}, [inputdata])
 
@@ -42,7 +51,7 @@ export default function SalesAgingWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
-				console.log(res.data.lstResult)
+				// console.log(res.data.lstResult)
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['rd.caption'] === null) {
 						name.push("null")
@@ -358,7 +367,7 @@ export default function SalesAgingWise() {
 
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise",filterKey : "strSaleAging" } })
+		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging",chartId : 16} })
 	}
 
 
@@ -378,6 +387,42 @@ export default function SalesAgingWise() {
 		}
 	}
 
+	async function fetchOption() {
+		await post({ "ID": 16 , "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+
+			.then((res) => {
+				if (res.data.lstResult.length === 0) {
+					setflag(ChartType)
+					// console.log('FIRST TIME API CALLED')
+					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+						.then((res) => {
+
+							post({ "ID": 16	, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+								.then((res) => {
+									setOptionId(res.data.lstResult[0].ChartOptionID)
+								})
+							alert(res.data.Message)
+						})
+
+				}
+				else {
+					setOptionId(res.data.lstResult[0].ChartOptionID)
+					setflag(res.data.lstResult[0].ChartOption)
+				}
+
+			})
+	}
+
+	async function addEditOption() {
+
+		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+			.then((res) => {
+
+				alert(res.data.Message)
+
+			})
+	}
+
 
 
 	return (
@@ -395,10 +440,10 @@ export default function SalesAgingWise() {
 
 							<div id="myDropdowniconSalesAging" className="dropdown-contenticon" onClick={handleclick}>
 
-								{flag === 'line' ? <><a id='line' className='line' >line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></>: <><a id='line' className='line' >line </a><hr className='custom-hr' /></>}
+								{flag === 'line' ? <><a id='line' className='line' >line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='line' className='line' >line </a><hr className='custom-hr' /></>}
 								{flag === 'area' ? <><a id='area' className='area'>area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>area chart</a><hr className='custom-hr' /></>}
 								{flag === 'linebar' ? <><a id='linebar' className='line'>Combo chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='linebar' className='line'>Combo chart</a><hr className='custom-hr' /></>}
-								
+								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
 							<i class="fas fa-external-link-alt"></i>
 						</div>
@@ -416,7 +461,7 @@ export default function SalesAgingWise() {
 				</div>
 				<div class="crancy-progress-card card-contain-graph">
 
-					<ReactApexChart options={options} series={series} type={demo} height={390} />
+					<ReactApexChart options={options} series={series} height={390} />
 				</div>
 			</div>
 		</div>

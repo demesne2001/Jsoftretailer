@@ -1,13 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import post from '../../Utility/APIHandle';
+import API from '../../Utility/API';
+
+
 
 export default function Header_detailed() {
+
+    const [fullscreen, setFullScreen] = useState(false);
+    const [syncDate, setSyncDate] = useState()
+
+    useEffect(() => {
+        getSyncDate()
+    }, [])
+
+    function Handlefullscreen() {
+        if (fullscreen === true) {
+            setFullScreen(false);
+            document.exitFullscreen();
+        } else {
+            setFullScreen(true);
+            var ele = document.documentElement;
+            ele.requestFullscreen();
+        }
+    }
+
+    async function getSyncDate() {
+        await post({}, API.GetDefaultScreenData, {}, 'post')
+            .then((res) => {
+                setSyncDate(res.data.lstResult[0].SyncDate)
+            })
+    }
+
+
 
     const navigate = useNavigate()
 
     function handleNavigation() {
-		navigate('/')
-	}
+        navigate('/')
+    }
     return (
         <header class="crancy-header">
             <div class="container g-0">
@@ -32,17 +64,20 @@ export default function Header_detailed() {
                                     </div>
 
                                     <div id="crancy__sicon" class="crancy__sicon close-icon">
-                                        <i class="fas fa-angle-left" style={{color: '#ffffff'}}></i>
+                                        <i class="fas fa-angle-left" style={{ color: '#ffffff' }}></i>
                                     </div>
                                 </div>
                                 <div class="geex-content__header">
-                                    <div class="geex-content__header__content">
-                                        <div class="geex-content__header__customizer">
-                                            <h2 class="geex-content__header__title">
-                                                Sales Efficiency Analysis Dashboard
-                                            </h2>
+                                    <div class='geex-header-title-date'>
+                                        <div class="geex-content__header__content">
+                                            <div class="geex-content__header__customizer">
+                                                <h2 class="geex-content__header__title">
+                                                    Sales Efficiency Analysis Dashboard
+                                                </h2>
+                                            </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="geex-content__header__action">
                                         <div class="geex-content__header__action__wrap">
                                             <ul class="geex-content__header__quickaction">
@@ -50,7 +85,7 @@ export default function Header_detailed() {
                                                     <h5>
                                                         Synchronize-Date :
                                                         <span class="text-muted"
-                                                        >01/03/2023 11:53:00</span
+                                                        >{syncDate}</span
                                                         >
                                                     </h5>
                                                 </li>
@@ -59,7 +94,7 @@ export default function Header_detailed() {
                                                         class="geex-content__header__quickaction__link crancy-header__alarm top-header-icon"
                                                         id="crancy-header__full"
                                                     >
-                                                        <i class="fas fa-expand-alt"></i>
+                                                        <i class="fas fa-expand-alt" onClick={Handlefullscreen}></i>
                                                     </div>
                                                 </li>
                                                 <li class="geex-content__header__quickaction__item">

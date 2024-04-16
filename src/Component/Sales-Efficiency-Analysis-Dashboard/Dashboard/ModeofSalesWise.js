@@ -48,10 +48,12 @@ export default function ModeofSalesWise() {
 	}
 
   function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise" } })
+		navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise",chartId : 17} })
 	}
 
 	const series = weight
+
+
   const options = {
     chart: {
       toolbar: {
@@ -65,7 +67,7 @@ export default function ModeofSalesWise() {
       },
       type: 'donut',
     },
-    colors: ['#00e396'],
+    colors: ['#51bde4','#265cb9','#00e396'],
     legend: {
       position: 'bottom'
     },

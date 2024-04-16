@@ -19,6 +19,7 @@ export default function ProductWise() {
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
+	const [optionId,setOptionId] = useState()
 	const navigate = useNavigate()
 	let inputdata = contexData.state;
 
@@ -28,21 +29,28 @@ export default function ProductWise() {
 		data: weight
 	}]
 
-	const [flag, setflag] = useState("bar")
+	const [flag, setflag] = useState()
+	const ChartType="bar"
 
 	const [sales, setSales] = useState([])
 
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
-
 	function handleclick(e) {
-		if (e.target.className !== 'custom-hr') {
+		
+		if (e.target.id !== 'save' ){
+			console.log('Updationg option')
 			setflag(e.target.id)
 		}
+		else{
+			console.log("NOT UPDATING OPTIOJN")
+		}
+		
 	}
 
 
 	useEffect(() => {
+		fetchOption()
 		getdata()
 	}, [inputdata])
 
@@ -98,7 +106,7 @@ export default function ProductWise() {
 	// }
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise",filterKey : "strProduct" } })
+		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise",filterKey : "strProduct",chartOptionId : 12 } })
 	}
 
 
@@ -128,6 +136,43 @@ export default function ProductWise() {
 		}
 	}
 
+	async function fetchOption(){
+		await post({ "ID": 12	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+				setflag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 12,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+
+					post({ "ID": 12	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+          .then((res)=>{
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+          })
+					alert(res.data.Message)
+				})
+
+			}
+			else{
+        setOptionId(res.data.lstResult[0].ChartOptionID)
+				setflag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
+	}
+
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 12	,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
+	}
+
+
 
 
 	return (
@@ -147,7 +192,7 @@ export default function ProductWise() {
 
 								{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap' >Heat map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heat map </a><hr className='custom-hr' /></>}
-
+								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 								{/* <a id='heatmap' >Heat map</a><hr className='custom-hr' /> */}
 							</div>
 							<i class="fas fa-external-link-alt"></i>

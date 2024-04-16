@@ -21,7 +21,9 @@ export default function ItemWithSubItemWise() {
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
 
-	const [flag, setflag] = useState("bar")
+	const [flag, setflag] = useState()
+	const ChartType="bar"
+	const [optionId,setOptionId] = useState()
 
 	const [sales, setSales] = useState([])
 
@@ -36,10 +38,17 @@ export default function ItemWithSubItemWise() {
 	}]
 
 	function handleclick(e) {
-		if (e.target.className !== 'custom-hr') {
+		
+		if (e.target.id !== 'save' ){
+			console.log('Updationg option')
 			setflag(e.target.id)
 		}
+		else{
+			console.log("NOT UPDATING OPTIOJN")
+		}
+		
 	}
+
 	function setMargin() {
 		if (weight.length < 7) {
 			return 80
@@ -51,6 +60,7 @@ export default function ItemWithSubItemWise() {
 
 
 	useEffect(() => {
+		fetchOption()
 		getdata()
 	}, [inputdata])
 
@@ -100,8 +110,43 @@ export default function ItemWithSubItemWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item With Sub Item Wise",filterKey : "strItemSubitem" } })
+		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item With Sub Item Wise",filterKey : "strItemSubitem",chartId :7 } })
 	  }
+
+	  async function fetchOption(){
+		await post({ "ID": 8,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+				setflag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 8,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+					post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 8,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+					.then((res)=>{
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+					})
+					alert(res.data.Message)
+				})
+
+			}
+			else{
+				setOptionId(res.data.lstResult[0].ChartOptionID)
+				setflag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
+	}
+
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 8,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
+	}
 	
 
 	window.onclick = function (event) {
@@ -135,7 +180,7 @@ export default function ItemWithSubItemWise() {
 							{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >bar</a><hr className='custom-hr' /></>}
 							{flag === 'barv' ? <><a id='barv' >Vertical Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barv' >vertical bar </a><hr className='custom-hr' /></>}
 							{flag === 'heatmap' ? <><a id='heatmap' >Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /></>}
-							
+							<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 						</div>
 						<i class="fas fa-external-link-alt"></i>
 					</div>

@@ -29,7 +29,7 @@ export default function Main_chart(props) {
 
 
     const options_hbar = secondScreen_hbar(name,contextData,id,props.state.filterKey)
-    const options_donut = secondScreen_donut(name)
+    const options_donut = secondScreen_donut(name,contextData,id,props.state.filterKey)
     // const options_radialbar = secondScreen_radial(name)
 
     const series_bar = [{
@@ -153,13 +153,13 @@ export default function Main_chart(props) {
     }
 
     return (
-        <div class="">
+        <div>
 
             <div class="title-top-graphdetail">
                 <h5>
                     {componentName}
                     <button class="fa-solid fa-retweet" style={{ float: 'right' }} onClick={flip} />
-                    <button class="fas fa-expand-alt" style={{ float: 'right' }} onClick={handleFullDiv} />
+                    {/* <button class="fas fa-expand-alt" style={{ float: 'right' }} onClick={handleFullDiv} /> */}
                     <button id='dropdownbutton' class="fa-solid fa-ellipsis-vertical" style={{ float: 'right' }} onClick={handledropdownMenu} ></button>
                 </h5>
             </div>
@@ -172,26 +172,12 @@ export default function Main_chart(props) {
                 {/* {flag === 'radialBar'} ?<><a id='radialBar'>Radial Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr'/></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr'/></> */}
 
             </div>
-
+            
             <div class="flip-card">
                 <div class="flip-card-inner" id='filp'>
                     <div class="flip-card-front">
 
-                        <div class="graphdetailcards graphdetail-firstcard">
-                          
-                            {flag === 'bar' ?
-                                <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={590}/>
-                                : null}
-                            {flag === 'donut' ?
-                                <ReactApexChart options={options_donut} series={series_donut} type="donut" height={590}/>
-                                : null}
-
-                        </div>
-                    </div>
-                    <div class="flip-card-back">
-                        <div class="graphdetailcards graphdetail-firstcard">
-                           
-                            <div className="tableScroll">
+                    <div className="tableScroll">
                                 <table class="table table-striped table-bordered" >
                                     {flagShowId === true ?
                                         <><thead>
@@ -229,6 +215,22 @@ export default function Main_chart(props) {
 
                                 </table>
                             </div>
+                        
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="graphdetailcards graphdetail-firstcard">
+                           
+                        <div class="graphdetailcards graphdetail-firstcard">
+                          
+                          {flag === 'bar' ?
+                              <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={565}/>
+                              : null}
+                          {flag === 'donut' ?
+                              <ReactApexChart options={options_donut} series={series_donut} type="donut" height={580}/>
+                              : null}
+
+                      </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -236,3 +238,5 @@ export default function Main_chart(props) {
         </div>
     )
 }
+
+

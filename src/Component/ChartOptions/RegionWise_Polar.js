@@ -1,5 +1,6 @@
 export function RegionWise_Polar(name) {
     const options = {
+
         chart: {
             width: 380,
             type: 'polarArea'
@@ -16,7 +17,8 @@ export function RegionWise_Polar(name) {
             show: false
         },
         legend: {
-            show: false
+            show: true,
+            position:'bottom'
         },
         plotOptions: {
             polarArea: {
@@ -28,7 +30,7 @@ export function RegionWise_Polar(name) {
                 },
             }
         },
-        colors: '#2b908f',
+        // colors: '#2b908f',
         theme: {
             palette: 'palette1', 
             // monochrome: {
@@ -39,14 +41,14 @@ export function RegionWise_Polar(name) {
         },
         dataLabels: {
             formatter: function (val) {
-                return val + "%"
+                return val.toFixed(2) + "%"
               },
             enabled: true,
             // textAnchor: 'middle',
             offsetY: 50,
             style: {
                 fontSize: '17px',
-                colors: ["#fff"],
+                // colors: ["#fff"],
             },
             background: {
                 enabled: false,

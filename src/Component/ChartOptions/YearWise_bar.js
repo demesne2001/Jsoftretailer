@@ -26,7 +26,7 @@ export function YearWise_bar(name) {
                 }
               },
         },
-        colors: ['#00E396'],
+        colors: ['#51bde4','#265cb9','#00e396'],
         dataLabels: {
             enabled: false
         },

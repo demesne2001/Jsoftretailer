@@ -4,10 +4,10 @@ export function YearWise_Donut(name) {
             enabled: true,
         },
         tooltip: {
-            enabled: true,
+            enabled: false,
             followCursor: true,
         },
-        colors: ['#51bde4'],
+        colors: ['#51bde4','#265cb9','#00e396'],
     
         chart: {
             animations: {

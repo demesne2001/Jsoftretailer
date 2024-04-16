@@ -446,7 +446,7 @@
 .crancy-header {
     position: sticky;
     top: 0;
-    height: 80px;
+    /* height: 80px; */
     align-items: center;
     z-index: 1;
     background: #fff

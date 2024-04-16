@@ -81,11 +81,14 @@ export default function SalesManWise() {
   const contexData = useContext(contex);
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
-  const [flag,setFlag] = useState('bar')
+  const [flag, setFlag] = useState()
+  const ChartType='bar'
+  const [optionId,setOptionId] = useState()
   let inputdata = contexData.state;
   const navigate = useNavigate()
 
   useEffect(() => {
+    fetchOption()
     getdata()
 
   }, [inputdata])
@@ -97,7 +100,7 @@ export default function SalesManWise() {
   }, [imagearr])
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "Sales Party Wise",filterKey : "strSaleman" } })
+    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman",chartId : 11 } })
   }
 
   async function getdata() {
@@ -278,34 +281,69 @@ export default function SalesManWise() {
 
 
   function handleclick(e) {
-		if (e.target.className !== 'custom-hr') {
+		
+		if (e.target.id !== 'save' ){
+			console.log('Updationg option')
 			setFlag(e.target.id)
 		}
+		else{
+			console.log("NOT UPDATING OPTIOJN")
+		}
+		
 	}
 
   function handleonchangeCurrency() {
-		// console.log("innn")
-		document.getElementById("myDropdowniconSalesManWise").style.display === "block" ? document.getElementById("myDropdowniconSalesManWise").style.display = "none" : document.getElementById("myDropdowniconSalesManWise").style.display = "block";
-	}
+    // console.log("innn")
+    document.getElementById("myDropdowniconSalesManWise").style.display === "block" ? document.getElementById("myDropdowniconSalesManWise").style.display = "none" : document.getElementById("myDropdowniconSalesManWise").style.display = "block";
+  }
 
-	window.onclick = function (event) {
+  window.onclick = function (event) {
 
-		if (!event.target.matches('.dropbtn')) {
-			// console.log("hii");
-			if (document.getElementsByClassName("dropdown-contenticon")[9] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[9].style.display = "none";
+    if (!event.target.matches('.dropbtn')) {
+      // console.log("hii");
+      if (document.getElementsByClassName("dropdown-contenticon")[9] !== undefined) {
+        document.getElementsByClassName("dropdown-contenticon")[9].style.display = "none";
+      }
+
+    }
+  }
+
+  async function fetchOption(){
+		await post({ "ID": 11	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+
+		.then((res)=>{
+			if(res.data.lstResult.length === 0){
+        setFlag(ChartType)
+				// console.log('FIRST TIME API CALLED')
+				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 11,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+				.then((res)=>{
+
+					post({ "ID": 11	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+          .then((res)=>{
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+          })
+					alert(res.data.Message)
+				})
+
 			}
-
-		}
+			else{
+        setOptionId(res.data.lstResult[0].ChartOptionID)
+				setFlag(res.data.lstResult[0].ChartOption) 
+			}
+			
+		})	
 	}
 
-  // function handledropdownMenu() {
-  //     document.getElementById("myDropdownSalesman").style.display === "block" ? document.getElementById("myDropdownSalesman").style.display = "none" : document.getElementById("myDropdownSalesman").style.display = "block";
-  //   }
+	async function addEditOption(){
+		
+		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 11	,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
+		.then((res)=>{
+			
+			alert(res.data.Message)
+			
+		})
+	}
 
-  //   function handleSelectedChart(num) {
-  //     // setBranchWiseChart(num)
-  //   }
   return (
     <div className="col-lg-4 col-md-6 col-12">
       <div className="graph-card">
@@ -315,22 +353,22 @@ export default function SalesManWise() {
             <p><i className="fas fa-users"></i>
               Salesmen Wise</p>
           </div>
-        
 
-        <div className="col-sm-2 col-md-2 col-2">
-						<div className='btnicons'>
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img>
 
-							<div id="myDropdowniconSalesManWise" className="dropdown-contenticon" onClick={handleclick}>
-								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+          <div className="col-sm-2 col-md-2 col-2">
+            <div className='btnicons'>
+              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img>
 
-								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
-							</div>
-							<i class="fas fa-external-link-alt"></i>
-						</div>
-					</div>
+              <div id="myDropdowniconSalesManWise" className="dropdown-contenticon" onClick={handleclick}>
+                {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
 
+                {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
+              </div>
+              <i class="fas fa-external-link-alt"></i>
+            </div>
           </div>
+
+        </div>
 
         <div className="crancy-progress-card card-contain-graph">
           <ReactApexChart options={options} series={series} type="bar" height={350} />

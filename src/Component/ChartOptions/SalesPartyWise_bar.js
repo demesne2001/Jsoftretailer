@@ -29,7 +29,7 @@ export function SalesPartyWise_bar(name) {
         dataLabels: {
             enabled: false,
             formatter: function (val) {
-                return val;
+                return val.slice(0, 6) + "...";
             },
             offsetY: 20,
             style: {
@@ -51,6 +51,16 @@ export function SalesPartyWise_bar(name) {
         xaxis: {
             categories: name,
             position: 'bottom',
+            labels: {
+                show: true,
+                formatter: function (val) {
+                  if (val.length > 7) {
+                    return val.slice(0, 6) + "..."
+                  } else {
+                    return val
+                  }
+                }
+              },
             axisBorder: {
                 show: false
             },
