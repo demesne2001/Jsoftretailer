@@ -7,5 +7,5 @@ COPY package.json .
 RUN npm install
 COPY . .
 EXPOSE 7578
-CMD [ "npm","run","build" ]
-CMD [ "serve","-s","build" ]
+RUN npm run build
+CMD [ "serve","-s build"]
