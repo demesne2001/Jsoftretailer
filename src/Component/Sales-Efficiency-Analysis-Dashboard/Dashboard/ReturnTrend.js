@@ -107,7 +107,7 @@ export default function ReturnTrend() {
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
                         <div className="crancy-progress-card__history">
-                            <span>(16.57% Ret.)</span>
+                            <span>(00.00% Ret.)</span>
                         </div>
                     </div>
                     <div className="crancy-progress__single">
@@ -119,7 +119,7 @@ export default function ReturnTrend() {
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">{thousandSeparated(format(costAmount))}</h4>
                         <div className="crancy-progress-card__history">
-                            <span>(16.57% Ret.)</span>
+                            <span>(00.00% Ret.)</span>
                         </div>
                     </div>
                     <div className="crancy-progress__single">
