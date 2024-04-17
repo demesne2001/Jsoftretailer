@@ -85,7 +85,7 @@ function Commonmodel(props) {
         }
         if (finalAllitem.length !== 0) {
 
-            console.log('SET HEADER', Object.keys(finalAllitem[0]))
+            // console.log('SET HEADER', Object.keys(finalAllitem[0]))
             setHeader(Object.keys(finalAllitem[0]));
 
 
@@ -93,7 +93,7 @@ function Commonmodel(props) {
     }, [finalAllitem])
 
     useEffect(() => {
-        console.log('MODEL PROPS VALUES ', props);
+        // console.log('MODEL PROPS VALUES ', props);
         setPage(2)
 
         setmulticheck(updatedList)
@@ -101,7 +101,7 @@ function Commonmodel(props) {
         setSearch(contextSetparam.tempstate)
         fetchItemdata()
         fetchAllData()
-        console.log('HEADER', header)
+        // console.log('HEADER', header)
 
     }, [props.modelprops])
 
@@ -134,7 +134,7 @@ function Commonmodel(props) {
     }, [searchValue])
 
     function handleDoubleClick() {
-        console.log("hiii");
+        // console.log("hiii");
         if (document.getElementById("columnChooser") !== null) {
             document.getElementById("columnChooser").style.display === "block" ? document.getElementById("columnChooser").style.display = "none" : document.getElementById("columnChooser").style.display = "block";
         }
@@ -157,25 +157,25 @@ function Commonmodel(props) {
 
     function AddDefaultColumn() {
         post({ "ID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.GetFilterGridByID, {}, "post").then((res) => {
-            console.log(res, " ");
+            // console.log(res, " ");
             if (res.data.lstResult.length === 0) {
                 if (props.modelprops.id === 'DesignCatalogID') {
                     post({ "FilterGridID": 0, "FilterGrid": header[2], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                        console.log('IF IF ', res1);
+                        // console.log('IF IF ', res1);
                         // setColumn([props.modelprops.name]);
                     })
                 } else if (props.modelprops.id === 'CityName') {
                     post({ "FilterGridID": 0, "FilterGrid": header[0], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                        console.log('IF IF ', res1);
+                        // console.log('IF IF ', res1);
                         // setColumn([props.modelprops.name]);
                     })
                 } else {
                     post({ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                        console.log('IF IF ', res1);
+                        // console.log('IF IF ', res1);
                         // setColumn([props.modelprops.name]);
                     })
                 }
-                console.log('POST OBJECT IF IIf', { "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid })
+                // console.log('POST OBJECT IF IIf', { "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid })
 
                 // } else {
                 //     post({ "FilterGridID": 0, "FilterGrid": props.modelprops.name, "FilterID": props.modelprops.grid,vendorID:1,UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
@@ -184,7 +184,7 @@ function Commonmodel(props) {
                 //     })
                 // }
             } else {
-                console.log("ELESE", res)
+                // console.log("ELESE", res)
                 setFilterGridId(res.data.lstResult[0]['FilterGridID']);
                 let arr = res.data.lstResult[0]['FilterGrid'].split(',');
                 // console.log(arr, "arrrr");
@@ -241,7 +241,7 @@ function Commonmodel(props) {
             value = e.target.value
         }
         let name = e.target.name;
-        console.log(value);
+        // console.log(value);
         if (finalcheck) {
             setmulticheck([...multicheck, value])
             setmulticheckName([...multicheckName, name])
@@ -265,7 +265,7 @@ function Commonmodel(props) {
     const handlesavefilter = () => {
         var stringConvert = multicheck.toString()
         var stringNameConvert = multicheckName.toString()
-        console.log(stringConvert, stringNameConvert);
+        // console.log(stringConvert, stringNameConvert);
         // props.setvalues({ ...props.valuesform, [props.modelprops.labelname]: stringConvert })
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: stringConvert, [props.modelprops['LabelValue']]: stringNameConvert, ['FilterIndex']: props.modelprops.FilterIndex })
         contextSetparam.setchildFilterShow(false)
@@ -293,7 +293,7 @@ function Commonmodel(props) {
             let tempvalue = [];
             let tempName = [];
             for (let i = 0; i < finalitem.length; i++) {
-                console.log(finalitem[i][props.modelprops.name]);
+                // console.log(finalitem[i][props.modelprops.name]);
                 tempvalue.push(finalitem[i][props.modelprops.id])
                 tempName.push(finalitem[i][props.modelprops.name])
             }
@@ -323,7 +323,7 @@ function Commonmodel(props) {
             const scrollRatio = scrollTop / (scrollHeight - clientHeight);
 
             setScrollTop(scrollRatio);
-            console.log(scrollRatio);
+            // console.log(scrollRatio);
             if (scrollRatio === 1) {
                 if (multicheck.length === finalAllitem.length) {
                     ref1.current.checked = true
@@ -331,7 +331,7 @@ function Commonmodel(props) {
                     ref1.current.checked = false
                 }
                 var input = { ...search, ['PageNo']: page, ['PageSize']: 60 }
-                console.log("scroll", input);
+                // console.log("scroll", input);
                 delete input.undefined
                 axios.post(props.modelprops.api, input)
                     .then(response => {
@@ -345,19 +345,19 @@ function Commonmodel(props) {
 
 
     const fetchItemdata = () => {
-        console.log("api", props)
-        console.log("hii");
+        // console.log("api", props)
+       // console.log("hii");
         var input = { ...search, ['PageSize']: 60 }
-        console.log("api", props.modelprops.api)
+        // console.log("api", props.modelprops.api)
         delete input.undefined
         if (props.modelprops.api !== undefined) {
             // console.log("search", input)
-            console.log("api", props)
-            console.log(input, "input");
-            console.log("hii");
+            // console.log("api", props)
+            // console.log(input, "input");
+            // console.log("hii");
             axios.post(props.modelprops.api, input)
                 .then((response) => {
-                    console.log(response.data.lstResult)
+                    // console.log(response.data.lstResult)
                     setfinalitem(response.data.lstResult)
                     // console.log(response);
                 })
@@ -533,7 +533,7 @@ function Commonmodel(props) {
                                                                     onChange={handleSelectAll}
                                                                     ref={ref1}
                                                                 /></th>
-                                                            {console.log("COLUMN VALUE", column)}
+                                                            {/* {console.log("COLUMN VALUE", column)} */}
                                                             {column.map((ele) => {
                                                                 return <th id='columnth'
                                                                     onClick={handleDoubleClick}>{ele}</th>
@@ -594,8 +594,19 @@ function Commonmodel(props) {
                     contextSetparam.childFilterShow ?
                         <>
                             <Modal show={contextSetparam.childFilterShow} onHide={handleClose} >
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Filter</Modal.Title>
+                            <Modal.Header >
+                                    <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> Filter By</h5>
+                                    <button class="geex-btn geex-btn__customizer-close" onClick={handleClose}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
+                                                fill="#ffffff" />
+                                            <path
+                                                d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
+                                                fill="#ffffff" fill-opacity="0.8" />
+                                        </svg>
+                                    </button>
+
                                 </Modal.Header>
 
                                 <Modal.Body className='modal-body' modal-dialog-scrollable style={{ padding: 0, paddingRight: 30, paddingLeft: 30 }}>

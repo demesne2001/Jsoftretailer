@@ -48,18 +48,20 @@ export function ItemGroup_RadialBar(name) {
                 value: {
                   formatter: function (val) {
                     return parseInt(val) + ('%');
+                    
                   },
                   colors: ['#111'],
                   fontSize: '16px',
                   show: true
                 },
-                total: {
-                  show: true,
-                  label: 'Total',
-                  // formatter: function (w) {
-                  //   return 249  
-                  // }
-                }
+                // total: {
+                //   show: true,
+                //   label: 'Total',
+                //   formatter: function (val) {
+                //     console.log('VALUE',val)
+                //     return val 
+                //   }
+                // }
               }
             }
           },

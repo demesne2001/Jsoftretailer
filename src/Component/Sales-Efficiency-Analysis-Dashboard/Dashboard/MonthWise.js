@@ -102,11 +102,11 @@ export default function MonthWise() {
   function handleclick(e) {
 		
 		if (e.target.id !== 'save' ){
-			console.log('Updationg option')
+			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
 		else{
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 		
 	}

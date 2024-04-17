@@ -139,7 +139,7 @@ export default function DetailedScreen() {
         console.log('Onclick on data', str)
         showSelectedSlider(str.componentName)
 
-        console.log('CHAR GROUP AND CLICK CHART GROUP', chartGroup, str.group)
+        console.log('CHART GROUP AND CLICK CHART GROUP', chartGroup, str.group)
         if (chartGroup === str.group) {
             // document.getElementById("DefaultCheckBoxSeconScreen").checked = true; 
         }
@@ -203,6 +203,8 @@ export default function DetailedScreen() {
 
         // console.log('Chart GROUP ',chartGroupId)
         // console.log('GRAPH ',graph)
+
+        
 
         // console.log({ "ChartGroupID": chartGroupId,"ChartGroup": chartGroup,"ChartID": location.state.chartOptionId,"vendorID": 1,"UserID": 1})
         post({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')

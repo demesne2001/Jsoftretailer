@@ -145,7 +145,7 @@ export default function Default_chart(props) {
                     </div>
                 </div> */}
                 <div class="topimg-gd">
-                    <ReactApexChart options={options} series={series} type="bar" height={350} />
+                    <ReactApexChart options={options} series={series} type="bar" height={450} />
                 </div>
             </div>
         </div>

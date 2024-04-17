@@ -4408,7 +4408,7 @@ span.crancy-featured-user__ficon svg {
     text-align: center;
     padding: 10px 20px 20px 20px;
     border-radius: 10px;
-    box-shadow: 5px 2px 5px 0px #eee;
+    /* box-shadow: 5px 2px 5px 0px #eee; */
     margin-bottom: 15px;
 }
 

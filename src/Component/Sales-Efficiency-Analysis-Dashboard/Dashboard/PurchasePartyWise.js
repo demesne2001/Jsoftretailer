@@ -59,7 +59,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesigncodeID", columnID: "DesigncodeID", componentName: "Purchase Party Wise",filterKey : "strPurchaseParty",chartId : 9} })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise",filterKey : "strPurchaseParty",chartId : 9} })
   }
 
 
@@ -262,7 +262,7 @@ export default function PurchasePartyWise() {
         <div className="card-title-graph">
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
             <p><i className="fas fa-people-carry"></i>
-              Purchase Party Wise</p>
+              Design Wise</p>
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">

@@ -40,7 +40,6 @@ export default function BranchWise() {
 	}, [inputdata])
 
 
-
 	const series = handleSeriesData()
 	const options_donut = BranchWise_donut(name)
 
@@ -48,12 +47,14 @@ export default function BranchWise() {
 
 	function handleclick(e) {
 		
-		if (e.target.id !== 'save' ){
-			console.log('Updationg option')
+		// console.log('Event ID',e.target.id)
+
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
+			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
 		else{
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 		
 	}
@@ -168,7 +169,7 @@ export default function BranchWise() {
 
 	window.onclick = function (event) {
 
-		console.log('evennnn', event.target.className)
+		// console.log('evennnn', event.target.className)
 		if (event.target.className !== 'dropbtn') {
 			if (document.getElementsByClassName("dropdown-contenticon")[0] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[0].style.display = "none";
@@ -216,6 +217,7 @@ export default function BranchWise() {
 							{flag === 'radialBar' ? <><a id='radialBar'>RadialBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >RadialBar</a><hr className='custom-hr' /></>}
 							{flag === 'heatmap' ? <><a id='heatmap'>Heat map&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /> </>}
 							<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
+
 						</div>
 
 					</div>

@@ -658,14 +658,8 @@ select {
 
 }
 
-#inputselectAll{
- 
-}
 
 
-.top-slider {
-  margin: 20px 40px;
-}
 
 
 .flip-card-inner {
@@ -696,4 +690,17 @@ select {
   color: #FFF;
   text-align: center;
   padding: 10px;
+}
+
+.input-group-text{
+  margin-top: 15px;
+}
+
+.input-group>.form-control{
+  margin-top: 15px;
+}
+
+.apexcharts-tooltip {
+  background: #f3f3f3;
+  color: rgb(0, 0, 0);
 }

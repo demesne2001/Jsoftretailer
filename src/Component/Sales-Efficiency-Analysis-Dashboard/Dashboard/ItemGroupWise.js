@@ -60,7 +60,7 @@ export default function ItemGroupWise() {
 			setflag(e.target.id)
 		}
 		else{
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 		
 	}

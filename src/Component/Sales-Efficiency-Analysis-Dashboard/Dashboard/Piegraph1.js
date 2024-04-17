@@ -44,6 +44,11 @@ export default function Piegraph1() {
       type: 'donut',
       height: '100%'
   },
+  legend:{
+    show:true,
+    position:'bottom',
+    
+  },
     dataLabels: {
       enabled: false
     },
@@ -71,9 +76,43 @@ export default function Piegraph1() {
         }
       }
     },
-    responsive: [{
-      breakpoint: 2000,
-    }]
+  //   responsive: [{
+  //     breakpoint: 480,
+  //     options: {
+  //         chart: {
+  //             type: 'donut',
+  //             animations: {
+  //                 enabled: true,
+  //                 easing: 'easeinout',
+  //                 speed: 800,
+  //                 animateGradually: {
+  //                     enabled: true,
+  //                     delay: 150
+  //                 },
+  //                 dynamicAnimation: {
+  //                     enabled: true,
+  //                     speed: 700
+  //                 }
+  //             },
+  //             width: 300
+  //         },
+  //         legend: {
+  //             position: 'bottom'
+  //         },
+  //         plotOptions: {
+  //             pie: {
+  //                 startAngle: -90,
+  //                 endAngle: 90,
+  //                 offsetY: 0,
+  //                 dataLabels: {
+  //                     format: 'scale'
+  //                 }
+                  
+  //             }
+              
+  //         }
+  //     }
+  // }]
   }
   return (
 
@@ -83,8 +122,8 @@ export default function Piegraph1() {
         <div className="crancy-progress-card top-graph-card">
           {/* <div className="text-center"> */}
 
-          <ReactApexChart options={options} series={series} type="donut" />
-
+          {/* <ReactApexChart options={options} series={series} type="donut" /> */}
+          <ReactApexChart options={options} series={series} type='donut' />
           {/* </div> */}
         </div>
 

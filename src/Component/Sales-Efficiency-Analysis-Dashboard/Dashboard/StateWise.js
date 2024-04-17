@@ -44,7 +44,7 @@ export default function StateWise() {
 			setflag(e.target.id)
 		}
 		else {
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 
 	}

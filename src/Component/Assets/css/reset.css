@@ -371,9 +371,7 @@ input::-ms-input-placeholder {
     display: flex;
     justify-content: center;
     width: auto;
-    padding: ;
     max-width: 50px;
-    align-items:
 }
 
 .crancy-smenu.crancy-close .logout-button__arrow {
@@ -416,10 +414,6 @@ input::-ms-input-placeholder {
     padding-right: 25px;
     border-left: 1px solid #e4f2ff;
     padding-left: 25px
-}
-
-.crancy-adashboard {
-    padding-bottom: 50px
 }
 
 .crancy-adashboard.crancy-close {
@@ -2010,11 +2004,9 @@ object {
 
 .Prev.slick-arrow {
     right: 55px;
-    background:
 }
 
 .slick-arrow:hover {
-    background: ;
     background: linear-gradient(134.38deg, #0A82FD 0%, #C342F9 43.55%, #0A82FD 104.51%);
     color: #fff
 }
@@ -2280,7 +2272,6 @@ object {
 }
 
 .section-white-style .sec-head__badge {
-    background: ;
     background: #f1e3fb2b;
     color: #fff
 }

@@ -28,7 +28,7 @@ export function secondScreen_hbar(name , contexData , id , filterKey){
                    
                     
                     // console.log(config.w.config.xaxis.categories[config.dataPointIndex])
-                    console.log('CONTEX DATA',contexData.setDefaultChart)
+                    // console.log('CONTEX DATA',contexData.setDefaultChart)
 
                     // console.log(config.w.config.series[0].data[config.dataPointIndex],config.w.config.xaxis.categories[config.dataPointIndex])
     

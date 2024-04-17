@@ -235,7 +235,7 @@ export default function Header() {
   const [Daybook, setDayBook] = useState({});
   const [DefaultDaybook, setDefaultDayBook] = useState({});
   const [MetalType, setMetalType] = useState({});
-  const [DefaultMetalType, setDefaultMetalType] = useState({});
+  const [DefaultMetalType, setDefaultMetalType] = useState();
   const [purchaseParty, setPurcharseParty] = useState({});
   const [salesParty, setSalesParty] = useState({});
   const [props1, setProps1] = useState();
@@ -438,6 +438,7 @@ export default function Header() {
   function handleselect(e, selectData) {
 
     if (selectData.name === 'MetalTypeSelect') {
+
       setDefaultMetalType(e);
       contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e.value, ['strMetalTypeValue']: e.label });
     } else {
@@ -979,6 +980,7 @@ export default function Header() {
                                 name="ToDate"
                                 value={contexData.tempstate["ToDate"]}
                                 id="ToDate"
+                                
                               />
                               <i class="fa-solid fa-caret-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
                             </div>
@@ -991,6 +993,7 @@ export default function Header() {
                                 Metal Type
                               </label>
 
+                              {console.log(DefaultMetalType)}
                               <Select
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"
@@ -1422,7 +1425,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-people-carry"></i>
                       <label for="sel1" class="form-label">
-                        Purchase Party
+                        Design
                       </label>
                       {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1476,7 +1479,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-calendar-alt"></i>
                       <label for="sel1" class="form-label">
-                        Month Wise
+                        Month
                       </label>
 
                       <input

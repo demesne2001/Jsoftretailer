@@ -92,11 +92,11 @@ export default function SalesPartyWise() {
 	function handleclick(e) {
 
 		if (e.target.id !== 'save') {
-			console.log('Updationg option')
+			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
 		else {
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 
 	}
@@ -190,7 +190,7 @@ export default function SalesPartyWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "accountID", columnID: "accountID", componentName: "Sales Party Wise", filterKey: "strSalesParty",chartId : 10 } })
+		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "AccountName", columnID: "accountID", componentName: "Sales Party Wise", filterKey: "strSalesParty",chartId : 10 } })
 	}
 
 	async function fetchOption() {

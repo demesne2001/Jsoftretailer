@@ -52,7 +52,7 @@ export default function CityWise() {
 			setflag(e.target.id)
 		}
 		else {
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 
 	}
@@ -168,7 +168,7 @@ export default function CityWise() {
 
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 3, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
-				console.log(res)
+				// console.log(res)
 				
 				alert(res.data.Message)
 

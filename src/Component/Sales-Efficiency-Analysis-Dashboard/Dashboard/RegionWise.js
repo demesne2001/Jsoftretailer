@@ -36,12 +36,12 @@ export default function RegionWise() {
 
 	function handleclick(e) {
 		
-		if (e.target.id !== 'save' ){
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
 			
 			setflag(e.target.id)
 		}
 		else{
-			console.log("NOT UPDATING OPTIOJN")
+			// console.log("NOT UPDATING OPTIOJN")
 		}
 		
 	}

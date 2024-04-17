@@ -22,6 +22,15 @@ export function BranchWise_donut(name) {
             // },
         },
 
+        total: {
+            show: true,
+            label: 'Total',
+            formatter: function (val) {
+                console.log('VALUE', val)
+                return val
+            }
+        },
+
         dataLabels: {
             opacity: 0.9,
             dropShadow: {
@@ -67,7 +76,7 @@ export function BranchWise_donut(name) {
             show: true,
             floating: false,
             fontSize: '13px',
-            position: 'right',
+            position: 'bottom',
             offsetX: 0,
             offsetY: 0,
             labels: {
@@ -126,6 +135,14 @@ export function BranchWise_donut(name) {
                                 return (parseFloat(val).toFixed(2)).toString() + "%"
                             }
                         },
+                    },
+                    total: {
+                        show: true,
+                        label: 'Total',
+                        formatter: function (val) {
+                            
+                            return val
+                        }
                     }
                 }
             }
