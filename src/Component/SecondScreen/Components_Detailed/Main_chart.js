@@ -223,7 +223,7 @@ export default function Main_chart(props) {
                         <div class="graphdetailcards graphdetail-firstcard">
                           
                           {flag === 'bar' ?
-                              <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={565}/>
+                              <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={580}/>
                               : null}
                           {flag === 'donut' ?
                               <ReactApexChart options={options_donut} series={series_donut} type="donut" height={580}/>

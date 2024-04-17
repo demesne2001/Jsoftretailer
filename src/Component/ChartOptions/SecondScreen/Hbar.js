@@ -47,6 +47,18 @@ export function secondScreen_hbar(name , contexData , id , filterKey){
         xaxis: {
             categories: name,
         },
+        yaxis: {
+            labels: {
+                show: true,
+                formatter: function (val) {
+                    if (val.length > 7) {
+                        return val.slice(0, 6) + "..."
+                    } else {
+                        return val
+                    }
+                }
+            }
+        },
         
         responsive: [
             {

@@ -576,7 +576,7 @@ select {
 .tableScroll {
   flex: 1;
   overflow-y: scroll;
-  height: 565px;
+  height: 650px;
 }
 
 .fas.fa-external-link-alt{

@@ -76,6 +76,23 @@ export default function Piegraph1() {
         }
       }
     },
+    responsive: [
+      {
+        
+          breakpoint: 850,
+          options: {
+            chart: {
+              type: 'donut',
+              height: '150'
+           },
+           legend:{
+            show:true,
+            position:'right',
+          }
+
+          }
+      }
+  ],
   //   responsive: [{
   //     breakpoint: 480,
   //     options: {
@@ -123,7 +140,7 @@ export default function Piegraph1() {
           {/* <div className="text-center"> */}
 
           {/* <ReactApexChart options={options} series={series} type="donut" /> */}
-          <ReactApexChart options={options} series={series} type='donut' />
+          <ReactApexChart options={options} series={series} type='donut' height={200} />
           {/* </div> */}
         </div>
 

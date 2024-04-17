@@ -18,8 +18,8 @@ export default function FilterPrint() {
             </tr>
           </thead>
           <tbody>
-            <tr><td>Company Id</td><td> AnyBody</td></tr>
-            <tr><td>Branch Id</td><td> Ho</td></tr>
+           
+            
             {filter.state['FromDate'] !== ''?<tr><td>From Date</td><td>{filter.state['FromDate']}</td></tr>: null}
             {filter.state['ToDate'] !== ''?<tr><td>To Date</td><td>{filter.state['ToDate']}</td></tr>: null}
             {filter.state['strBranch'] !== ''?<tr><td>Branch Name</td><td>{filter.state['strBranchValue']}</td></tr>: null}
