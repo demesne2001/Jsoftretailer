@@ -69,23 +69,51 @@ export default function Collection() {
                 }
             })
     }
+    // function format(val) {
+    //     if (localStorage.getItem('value') === 'k') {
+    //         // console.log("thousand selected");
+    //         return ((((val / 1000).toFixed(1)).toString()) + "K");
+    //     } else if (localStorage.getItem('value') === 'l') {
+    //         return ((((val / 100000).toFixed(1)).toString()) + "L");
+    //     } else if (localStorage.getItem('value') === 'm') {
+    //         return ((((val / 1000000).toFixed(1)).toString()) + "M");
+    //     } else if (localStorage.getItem('value') === 'c') {
+    //         return ((((val / 10000000).toFixed(1)).toString()) + "CR");
+    //     } else if (localStorage.getItem('value') === 'b') {
+    //         return ((((val / 1000000000).toFixed(1)).toString()) + "B");
+    //     } else {
+    //         return Math.floor(val);
+            
+    //     }
+    // }
+
     function format(val) {
         if (localStorage.getItem('value') === 'k') {
-            // console.log("thousand selected");
-            return ((((val / 1000).toFixed(1)).toString()) + "K");
+          return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
+            minimumFractionDigits: 0
+          }) + " " +"K");
         } else if (localStorage.getItem('value') === 'l') {
-            return ((((val / 100000).toFixed(1)).toString()) + "L");
+          return (Number(parseFloat(((((val / 100000).toFixed(1)).toString())))).toLocaleString('en', {
+            minimumFractionDigits: 0
+          })+ " " + "L");
         } else if (localStorage.getItem('value') === 'm') {
-            return ((((val / 1000000).toFixed(1)).toString()) + "M");
+          return (Number(parseFloat(((((val / 1000000).toFixed(1)).toString())))).toLocaleString('en', {
+            minimumFractionDigits: 0
+          }) + " " + "M");
         } else if (localStorage.getItem('value') === 'c') {
-            return ((((val / 10000000).toFixed(1)).toString()) + "CR");
+          return (Number(parseFloat(((((val / 10000000).toFixed(1)).toString())))).toLocaleString('en', {
+            minimumFractionDigits: 0
+          }) + " " + "CR");
         } else if (localStorage.getItem('value') === 'b') {
-            return ((((val / 1000000000).toFixed(1)).toString()) + "B");
+          return (Number(parseFloat(((((val / 1000000000).toFixed(1)).toString())))).toLocaleString('en', {
+            minimumFractionDigits: 0
+          }) + " " + "B");
         } else {
-            return Math.floor(val);
-            
+          return (Number(parseFloat(Math.floor(val))).toLocaleString('en', {
+            minimumFractionDigits: 0
+          }));
         }
-    }
+      }
     
     function thousandSeparated(val){
         return (Number(parseFloat(val)).toLocaleString('en', {
@@ -114,7 +142,7 @@ export default function Collection() {
                 </div>
                 <div className="crancy-progress-card3 top-contant-botton-card">
                     <div className="crancy-progress-card__content">
-                        <h4 className="crancy-progress-card__title">{thousandSeparated(format(costAmount))}</h4>
+                        <h4 className="crancy-progress-card__title">{format(costAmount)}</h4>
                         <div className="crancy-progress-card__history">
                             <span>(Bank Recepit)</span>
                         </div>

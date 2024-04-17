@@ -153,6 +153,7 @@ export default function BranchWise() {
 		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 1,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
 			
+			document.getElementById('myDropdowniconbranch').style.display = 'none'
 			alert(res.data.Message)
 			
 		})
@@ -177,17 +178,7 @@ export default function BranchWise() {
 		}
 	}
 
-	function flip() {
-        if (document.getElementById("flipbranch").style.transform === "rotateY(360deg)" || document.getElementById("flipbranch").style.transform === "") {
-            
-            document.getElementById("flipbranch").style.transform = "rotateY(180deg)"
-        } else {
-            
-            document.getElementById("flipbranch").style.transform = "rotateY(360deg)"
-        }
-
-    }
-
+	
 	// console.log('LOCAL STORAGE ITEM JJ',localStorage.getItem('jj'))
 
 	return (

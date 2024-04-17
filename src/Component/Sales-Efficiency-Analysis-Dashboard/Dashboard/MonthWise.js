@@ -101,7 +101,7 @@ export default function MonthWise() {
 
   function handleclick(e) {
 		
-		if (e.target.id !== 'save' ){
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
 			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
@@ -193,7 +193,7 @@ export default function MonthWise() {
 		
 		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 14		,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
-			
+			document.getElementById('myDropdowniconmonth').style.display = 'none'
 			alert(res.data.Message)
 			
 		})

@@ -2,6 +2,8 @@ export function YearWise_Donut(name) {
     const option ={
         dataLabels: {
             enabled: true,
+           
+                
         },
         tooltip: {
             enabled: false,
@@ -73,7 +75,16 @@ export function YearWise_Donut(name) {
                         value: {
 
                         }
-                    }
+                    },
+                    total: {
+                        show: true,
+                        label: 'Total',
+                        formatter: function (w) {
+                          return w.globals.seriesTotals.reduce((a, b) => {
+                            return a + b
+                          }, 0)
+                        }
+                      }
                 }
             }
         }

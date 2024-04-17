@@ -47,7 +47,7 @@ export default function CityWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save') {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
 
 			setflag(e.target.id)
 		}
@@ -169,7 +169,7 @@ export default function CityWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 3, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				// console.log(res)
-				
+				document.getElementById('myDropdowniconcity').style.display = 'none'
 				alert(res.data.Message)
 
 			})

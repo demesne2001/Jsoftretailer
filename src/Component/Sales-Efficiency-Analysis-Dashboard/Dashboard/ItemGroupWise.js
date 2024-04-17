@@ -55,7 +55,7 @@ export default function ItemGroupWise() {
 
   function handleclick(e) {
 		
-		if (e.target.id !== 'save' ){
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
 			
 			setflag(e.target.id)
 		}
@@ -121,8 +121,8 @@ export default function ItemGroupWise() {
     if (!event.target.matches('.dropbtn')) {
       // console.log("hii");
       // console.log('stateee', document.getElementsByClassName("dropdown-contenticon")[6])
-      if (document.getElementsByClassName("dropdown-contenticon")[6] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[6].style.display = "none";
+      if (document.getElementsByClassName("dropdown-contenticon")[5] !== undefined) {
+        document.getElementsByClassName("dropdown-contenticon")[5].style.display = "none";
       }
     }
   }
@@ -159,10 +159,12 @@ export default function ItemGroupWise() {
 		
 		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 5,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
-			
+      document.getElementById('myDropdowniconigroup').style.display = 'none'
 			alert(res.data.Message)
 			
 		})
+
+  
 	}
 
 

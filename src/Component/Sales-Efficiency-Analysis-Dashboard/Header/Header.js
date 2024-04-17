@@ -242,6 +242,7 @@ export default function Header() {
   const [syncDate, setSyncDate] = useState()
 
 
+  const date = new Date();
 
 
 
@@ -269,6 +270,38 @@ export default function Header() {
       }
     }
   }, [contexData.FilterIndex])
+
+  console.log('TODAYS DATE',date.getDate() + date.getMonth() + 1 + date.getFullYear())
+
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+let year = date.getFullYear();
+let currentDate 
+if(month < 10){
+  if (day < 10 ) {
+    currentDate = `${year}-0${month}-0${day}`;  
+  }
+  else{
+    currentDate = `${year}-0${month}-${day}`;
+  }
+}
+else{
+  if (day < 10 ) {
+    currentDate = `${year}-0${month}-0${day}`;  
+  }
+  else{
+    currentDate = `${year}-0${month}-${day}`;
+  }
+}
+
+
+
+console.log(currentDate)
+  
+  useEffect(()=>{
+    contexData.SettempState({ ...contexData.tempstate,["ToDate"]:currentDate,["FromDate"]:currentDate })
+    
+  },[])
 
 
   async function getSyncDate() {

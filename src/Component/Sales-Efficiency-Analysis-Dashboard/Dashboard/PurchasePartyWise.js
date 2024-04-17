@@ -44,7 +44,7 @@ export default function PurchasePartyWise() {
     data: weight
   }]
   function handleclick(e) {
-    if (e.target.className !== 'custom-hr') {
+    if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
       setflag(e.target.id)
       setdemo(e.target.className)
     }
@@ -248,7 +248,7 @@ export default function PurchasePartyWise() {
 		
 		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 9,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
-			
+			document.getElementById('myDropdowniconPurchase').style.display = 'none'
 			alert(res.data.Message)
 			
 		})

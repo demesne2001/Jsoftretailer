@@ -11,6 +11,7 @@ import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import { BranchWise_donut } from '../../ChartOptions/BranchWise_donut';
 
 
 export default function RegionWise() {
@@ -26,6 +27,8 @@ export default function RegionWise() {
 
 	const options_lolipop = RegionWise_lolipop(name)
 	const options_polar = RegionWise_Polar(name)
+	const options_donut = BranchWise_donut(name)
+
 	const series_lolipop = [{
 		name: 'Weight',
 		data: weight
@@ -127,7 +130,7 @@ export default function RegionWise() {
 		
 		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 4,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
-			
+			document.getElementById('myDropdowniconregion').style.display = 'none'
 			alert(res.data.Message)
 			
 		})
@@ -153,6 +156,7 @@ export default function RegionWise() {
 
 								{/* {flag === 'bar' ? <><a id='bar' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >lollipop chart </a><hr className='custom-hr' /></>} */}
 							    {flag === 'polarArea' ? <><a id='polarArea' >polar area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >polar area</a><hr className='custom-hr' /></>}
+								{flag === 'donut' ? <><a id='donut' >donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >donut</a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>	
 							</div>
 							<i class="fas fa-external-link-alt"></i>
@@ -165,7 +169,7 @@ export default function RegionWise() {
 				<div className="crancy-progress-card card-contain-graph">
 					{flag === 'bar' ? <ReactApexChart options={options_lolipop} type={flag} series={series_lolipop} height={350} /> : null}
 					{flag === 'polarArea' ? <ReactApexChart options={options_polar} type='polarArea' series={series_polar} height={350} /> : null}
-
+					{flag === 'donut' ? <ReactApexChart options={options_donut} type='donut' series={series_polar} height={350} /> : null}
 
 					{/* <Cylinder/> */}
 				</div>

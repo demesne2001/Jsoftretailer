@@ -37,7 +37,7 @@ export default function SubItemWise() {
 
   function handleclick(e) {
 		
-		if (e.target.id !== 'save' ){
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
 			
 			setflag(e.target.id)
 		}
@@ -162,7 +162,7 @@ export default function SubItemWise() {
 		
 		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 6,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
 		.then((res)=>{
-			
+			document.getElementById('myDropdowniconsubitem').style.display = 'none'
 			alert(res.data.Message)
 			
 		})

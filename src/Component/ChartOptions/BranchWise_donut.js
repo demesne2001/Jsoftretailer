@@ -22,14 +22,7 @@ export function BranchWise_donut(name) {
             // },
         },
 
-        total: {
-            show: true,
-            label: 'Total',
-            formatter: function (val) {
-                console.log('VALUE', val)
-                return val
-            }
-        },
+    
 
         dataLabels: {
             opacity: 0.9,
@@ -136,14 +129,21 @@ export function BranchWise_donut(name) {
                             }
                         },
                     },
+               
                     total: {
                         show: true,
+                        showAlways: true,
                         label: 'Total',
-                        formatter: function (val) {
-                            
-                            return val
+                        fontSize: '22px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 600,
+                        color: '#373d3f',
+                        formatter: function (w) {
+                          return w.globals.seriesTotals.reduce((a, b) => {
+                            return a + b
+                          }, 0)
                         }
-                    }
+                    },
                 }
             }
         }

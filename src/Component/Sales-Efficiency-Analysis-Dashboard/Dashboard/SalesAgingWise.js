@@ -27,7 +27,7 @@ export default function SalesAgingWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save') {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
 			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
@@ -417,7 +417,7 @@ export default function SalesAgingWise() {
 
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
-
+				document.getElementById('myDropdowniconSalesAging').style.display = 'none'
 				alert(res.data.Message)
 
 			})

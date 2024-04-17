@@ -54,14 +54,15 @@ export function ItemGroup_RadialBar(name) {
                   fontSize: '16px',
                   show: true
                 },
-                // total: {
-                //   show: true,
-                //   label: 'Total',
-                //   formatter: function (val) {
-                //     console.log('VALUE',val)
-                //     return val 
-                //   }
-                // }
+                total: {
+                  show: true,
+                  label: 'Total',
+                  formatter: function (w) {
+                    return w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b
+                    }, 0)
+                  }
+                }
               }
             }
           },

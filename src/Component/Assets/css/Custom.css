@@ -704,3 +704,15 @@ select {
   background: #f3f3f3;
   color: rgb(0, 0, 0);
 }
+
+@media only screen and (max-width: 1024px) {
+  .fa-rupee-sign{
+    font-size: x-small !important;
+  }
+}
+
+@media only screen and (max-width: 1320px) {
+  .fa-rupee-sign{
+    font-size: x-small !important;
+  }
+}

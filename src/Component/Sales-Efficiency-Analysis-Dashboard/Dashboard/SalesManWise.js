@@ -282,7 +282,7 @@ export default function SalesManWise() {
 
   function handleclick(e) {
 		
-		if (e.target.id !== 'save' ){
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
 			// console.log('Updationg option')
 			setFlag(e.target.id)
 		}
