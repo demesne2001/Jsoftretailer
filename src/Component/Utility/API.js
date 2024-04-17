@@ -2,7 +2,7 @@
 
 // const Baseurl="http://192.168.1.208:5000/"
 
-const BaseurlCommon="http://192.168.1.208:7000/"
+const BaseurlCommon="http://103.131.196.61:42202/"
 
 const Baseurl ="http://103.131.196.61:52202/"
 
@@ -83,7 +83,7 @@ const API = {
     uploadImage : Common + "uploadImage",
     GetPDFUsingImage : Common + "GetPDFUsingImage",
 
-    downloadPdf : Baseurl + "PDF/"
+    downloadPdf : BaseurlCommon + "PDF/"
     
 }
 export default API
