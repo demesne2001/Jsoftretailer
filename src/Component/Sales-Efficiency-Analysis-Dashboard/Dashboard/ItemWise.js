@@ -165,6 +165,7 @@ export default function ItemWise() {
 
 	window.onclick = function (event) {
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById('myDropdowniconitem').style.display = 'none'
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[4] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[4].style.display = "none";

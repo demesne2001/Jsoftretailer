@@ -119,6 +119,8 @@ export default function ItemGroupWise() {
   window.onclick = function (event) {
     // console.log('matchhhh', event.target.matches('.dropbtn'))
     if (!event.target.matches('.dropbtn')) {
+      document.getElementById('myDropdowniconigroup').style.display = 'none'
+      
       // console.log("hii");
       // console.log('stateee', document.getElementsByClassName("dropdown-contenticon")[6])
       if (document.getElementsByClassName("dropdown-contenticon")[5] !== undefined) {

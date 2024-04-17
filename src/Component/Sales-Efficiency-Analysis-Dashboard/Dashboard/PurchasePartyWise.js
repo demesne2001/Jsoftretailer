@@ -213,6 +213,7 @@ export default function PurchasePartyWise() {
   window.onclick = function (event) {
 
     if (!event.target.matches('.dropbtn')) {
+      document.getElementById('myDropdowniconPurchase').style.display = 'none'
       if (document.getElementsByClassName("dropdown-contenticon")[8] !== undefined) {
         document.getElementsByClassName("dropdown-contenticon")[8].style.display = "none";
       }

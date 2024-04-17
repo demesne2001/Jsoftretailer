@@ -379,6 +379,7 @@ export default function SalesAgingWise() {
 	window.onclick = function (event) {
 
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById('myDropdowniconSalesAging').style.display = 'none'
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[14] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[14].style.display = "none";

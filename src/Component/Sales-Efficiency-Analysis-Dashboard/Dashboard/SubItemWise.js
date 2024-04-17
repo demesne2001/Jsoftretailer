@@ -124,6 +124,7 @@ export default function SubItemWise() {
   window.onclick = function (event) {
 
     if (!event.target.matches('.dropbtn')) {
+      document.getElementById('myDropdowniconsubitem').style.display = 'none'
       // console.log("hii");
       if (document.getElementsByClassName("dropdown-contenticon")[5] !== undefined) {
         document.getElementsByClassName("dropdown-contenticon")[5].style.display = "none";

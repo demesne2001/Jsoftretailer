@@ -461,6 +461,7 @@ export default function YearWise() {
 	window.onclick = function (event) {
 
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById('myDropdowniconyear').style.display = 'none'
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[13] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[13].style.display = "none";

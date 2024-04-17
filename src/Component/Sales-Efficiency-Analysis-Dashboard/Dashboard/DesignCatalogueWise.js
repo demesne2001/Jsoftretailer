@@ -125,6 +125,8 @@ export default function DesignCatalogueWise() {
 
     if (!event.target.matches('.dropbtn')) {
       // console.log("hii");
+      document.getElementById("myDropdownicondesigncat").style.display = "none"
+      
       if (document.getElementsByClassName("dropdown-contenticon")[11] !== undefined) {
         document.getElementsByClassName("dropdown-contenticon")[11].style.display = "none";
       }

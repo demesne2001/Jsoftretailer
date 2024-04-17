@@ -156,6 +156,7 @@ export default function MonthWise() {
 
     if (!event.target.matches('.dropbtn')) {
       // console.log("hii");
+      document.getElementById('myDropdowniconmonth').style.display = 'none'
       if (document.getElementsByClassName("dropdown-contenticon")[12] !== undefined) {
         document.getElementsByClassName("dropdown-contenticon")[12].style.display = "none";
       }

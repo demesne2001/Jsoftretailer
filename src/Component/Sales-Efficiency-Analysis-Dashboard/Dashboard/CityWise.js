@@ -124,6 +124,8 @@ export default function CityWise() {
 
 	window.onclick = function (event) {
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById("myDropdowniconcity").style.display = "none"
+			
 			// console.log("hii");
 			// console.log("cityyyyyyyyyyy", document.getElementsByClassName("dropdown-contenticon")[2])
 			if (document.getElementsByClassName("dropdown-contenticon")[2] !== undefined) {

@@ -120,6 +120,7 @@ export default function ProductWise() {
 		// console.log('evennnn', event.target.className)
 
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById('myDropdowniconproduct').style.display = 'none'
 			// console.log("hii");
 			// console.log('branchhh', document.getElementsByClassName("dropdown-contenticon")[7])
 			if (document.getElementsByClassName("dropdown-contenticon")[10] !== undefined) {

@@ -173,6 +173,7 @@ export default function SalesPartyWise() {
 	window.onclick = function (event) {
 
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById('myDropdowniconSalesparty').style.display = 'none'
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[9] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[9].style.display = "none";

@@ -86,6 +86,7 @@ export default function RegionWise() {
 
 	window.onclick = function (event) {
 		if (!event.target.matches('.dropbtn')) {
+			document.getElementById('myDropdowniconregion').style.display = 'none'
 			// console.log("hii");
 			if (document.getElementsByClassName("dropdown-contenticon")[3] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[3].style.display = "none";

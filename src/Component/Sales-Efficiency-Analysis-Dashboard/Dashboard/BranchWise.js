@@ -172,9 +172,8 @@ export default function BranchWise() {
 
 		// console.log('evennnn', event.target.className)
 		if (event.target.className !== 'dropbtn') {
-			if (document.getElementsByClassName("dropdown-contenticon")[0] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[0].style.display = "none";
-			}
+			document.getElementById("myDropdowniconbranch").style.display = "none"
+			
 		}
 	}
 

@@ -218,13 +218,20 @@ export default function DetailedScreen() {
 
         console.log('SELECTED ID', selectedId)
 
-        if (document.querySelector(".active") !== null) { // to deselect a icon
+        if( document.getElementById(selectedId) !== null){
+            if (document.querySelector(".active") !== null) { // to deselect a icon
 
 
-            document.querySelector(".active").className = document.querySelector(".active").className.replace('active', '')
+                document.querySelector(".active").className = document.querySelector(".active").className.replace('active', '')
+            }
+    
+            else{
+                document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
+            }
+            
         }
 
-        document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
+        
 
     }
 

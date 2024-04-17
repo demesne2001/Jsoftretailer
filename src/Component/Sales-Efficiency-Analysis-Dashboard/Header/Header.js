@@ -271,7 +271,7 @@ export default function Header() {
     }
   }, [contexData.FilterIndex])
 
-  console.log('TODAYS DATE',date.getDate() + date.getMonth() + 1 + date.getFullYear())
+  // console.log('TODAYS DATE',date.getDate() + date.getMonth() + 1 + date.getFullYear())
 
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -296,7 +296,7 @@ else{
 
 
 
-console.log(currentDate)
+// console.log(currentDate)
   
   useEffect(()=>{
     contexData.SettempState({ ...contexData.tempstate,["ToDate"]:currentDate,["FromDate"]:currentDate })
@@ -1026,7 +1026,7 @@ console.log(currentDate)
                                 Metal Type
                               </label>
 
-                              {console.log(DefaultMetalType)}
+                              {/* {console.log(DefaultMetalType)} */}
                               <Select
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"

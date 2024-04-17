@@ -97,6 +97,7 @@ export default function StateWise() {
 
 
 		if (!event.target.matches('#iconidstate')) {
+			document.getElementById('myDropdowniconstate').style.display = 'none'
 			if (document.getElementsByClassName("dropdown-contenticon")[1] !== undefined) {
 				document.getElementsByClassName("dropdown-contenticon")[1].style.display = "none";
 			}
