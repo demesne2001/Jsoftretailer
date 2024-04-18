@@ -273,7 +273,7 @@ input::-ms-input-placeholder {
 .crancy-smenu {
     position: fixed;
     left: 0;
-    z-index: 2;
+    z-index: 999;
     height: 100%;
     transition: all .3s ease;
     width: 300px;

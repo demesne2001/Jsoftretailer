@@ -189,6 +189,7 @@ export default function ItemWithSubItemWise() {
 
 					
 				</div>
+				{weight.length !== 0 ?
 				<div className="crancy-progress-card card-contain-graph">
 
 					{flag === 'bar' ?
@@ -213,7 +214,18 @@ export default function ItemWithSubItemWise() {
 							})}
 
 						</table> : null}
-				</div>
+				</div>:<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div> }
 			</div>
 		</div>
 	)

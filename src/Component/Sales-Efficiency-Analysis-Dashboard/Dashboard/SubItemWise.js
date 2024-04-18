@@ -199,7 +199,7 @@ export default function SubItemWise() {
         </div>
 
 
-
+        {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
           {/* <ReactApexChart options={options} series={series} type="polarArea" height={390} /> */}
           {/* <RoundedBar/> */}
@@ -227,7 +227,19 @@ export default function SubItemWise() {
               })}
 
             </table> : null}
+        </div>:
+        <div className="crancy-progress-card card-contain-graph" >
+        <div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
         </div>
+      </div> }
       </div>
     </div>
   )

@@ -204,6 +204,7 @@ export default function DesignCatalogueWise() {
             <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
           </div> */}
         </div>
+        {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
           {flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} /> : null}
           {flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} /> : null}
@@ -229,7 +230,19 @@ export default function DesignCatalogueWise() {
 
             </table> : null
           }
-        </div>
+        </div>:
+        <div className="crancy-progress-card card-contain-graph">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+				</div>
+			</div>}
       </div>
     </div>
   )

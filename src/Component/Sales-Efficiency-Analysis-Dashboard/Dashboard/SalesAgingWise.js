@@ -460,10 +460,22 @@ export default function SalesAgingWise() {
             <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
           </div> */}
 				</div>
+				{weight.length !== 0 ?
 				<div class="crancy-progress-card card-contain-graph">
 
 					<ReactApexChart options={options} series={series} height={390} />
+				</div>:<div className="crancy-progress-card card-contain-graph">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
 				</div>
+			</div>}
 			</div>
 		</div>
 	)

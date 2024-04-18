@@ -137,7 +137,7 @@ export default function Default_chart(props) {
                     </div>
                 </div>
             </div> */}
-
+       
             <div class="graphdetailcards graphdetail-secondcard">
                 {/* <div class="gd-refresh-icon">
                     <div class="graphdetailcards-icon">
@@ -147,7 +147,8 @@ export default function Default_chart(props) {
                 <div class="topimg-gd">
                     <ReactApexChart options={options} series={series} type="bar" height={450} />
                 </div>
-            </div>
+            </div>:
+			
         </div>
     )
 }

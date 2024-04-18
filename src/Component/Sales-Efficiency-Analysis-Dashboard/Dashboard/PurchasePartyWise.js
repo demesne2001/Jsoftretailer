@@ -30,8 +30,8 @@ export default function PurchasePartyWise() {
   const [imagearr, setImageArr] = useState([])
   const [sales, setSales] = useState([])
   const [flag, setflag] = useState()
-  const ChartType="donut" 
-  const [optionId,setOptionId] = useState()
+  const ChartType = "donut"
+  const [optionId, setOptionId] = useState()
   const [demo, setdemo] = useState("bar")
   const contexData = useContext(contex);
   const [name, setName] = useState([])
@@ -44,7 +44,7 @@ export default function PurchasePartyWise() {
     data: weight
   }]
   function handleclick(e) {
-    if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
+    if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
       setflag(e.target.id)
       setdemo(e.target.className)
     }
@@ -59,7 +59,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise",filterKey : "strPurchaseParty",chartId : 9} })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9 } })
   }
 
 
@@ -220,40 +220,40 @@ export default function PurchasePartyWise() {
     }
   }
 
-  async function fetchOption(){
-		await post({ "ID": 9,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+  async function fetchOption() {
+    await post({ "ID": 9, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
-		.then((res)=>{
-			if(res.data.lstResult.length === 0){
-        setflag(ChartType)
-				// console.log('FIRST TIME API CALLED')
-				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 9,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-				.then((res)=>{
-          post({ "ID": 9,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
-          .then((res)=>{
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-          })
-					alert(res.data.Message)
-				})
+      .then((res) => {
+        if (res.data.lstResult.length === 0) {
+          setflag(ChartType)
+          // console.log('FIRST TIME API CALLED')
+          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 9, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+            .then((res) => {
+              post({ "ID": 9, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                .then((res) => {
+                  setOptionId(res.data.lstResult[0].ChartOptionID)
+                })
+              alert(res.data.Message)
+            })
 
-			}
-			else{
-        setOptionId(res.data.lstResult[0].ChartOptionID)
-				setflag(res.data.lstResult[0].ChartOption) 
-			}
-			
-		})	
-	}
+        }
+        else {
+          setOptionId(res.data.lstResult[0].ChartOptionID)
+          setflag(res.data.lstResult[0].ChartOption)
+        }
 
-	async function addEditOption(){
-		
-		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 9,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-		.then((res)=>{
-			document.getElementById('myDropdowniconPurchase').style.display = 'none'
-			alert(res.data.Message)
-			
-		})
-	}
+      })
+  }
+
+  async function addEditOption() {
+
+    await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 9, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+      .then((res) => {
+        document.getElementById('myDropdowniconPurchase').style.display = 'none'
+        alert(res.data.Message)
+
+      })
+  }
 
 
 
@@ -290,37 +290,50 @@ export default function PurchasePartyWise() {
             <a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
           </div> */}
         </div>
-        <div className="crancy-progress-card card-contain-graph">
+        {weight.length !== 0 ?
+          <div className="crancy-progress-card card-contain-graph">
 
 
 
-          {flag === 'bar'
-            ?
-            <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
-            : null}
-          {flag === 'barl'
-            ?
-            <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
-            : null}
-          {flag === 'heatmap' ?
-            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-              <tr>
-                <th>DesignCode</th>
-                <th>FineWt</th>
-              </tr>
+            {flag === 'bar'
+              ?
+              <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
+              : null}
+            {flag === 'barl'
+              ?
+              <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
+              : null}
+            {flag === 'heatmap' ?
+              <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+                <tr>
+                  <th>DesignCode</th>
+                  <th>FineWt</th>
+                </tr>
 
 
-              {sales.map((data) => {
-                return (
-                  <tr >
-                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-                  </tr>
-                )
-              })}
+                {sales.map((data) => {
+                  return (
+                    <tr >
+                      <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+                      <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+                    </tr>
+                  )
+                })}
 
-            </table> : null}
-        </div>
+              </table> : null}
+          </div> :
+          <div className="crancy-progress-card card-contain-graph" >
+            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+            </div>
+          </div> }
       </div>
     </div>
   )

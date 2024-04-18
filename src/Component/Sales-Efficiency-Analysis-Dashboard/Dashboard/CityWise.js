@@ -47,7 +47,7 @@ export default function CityWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 
 			setflag(e.target.id)
 		}
@@ -125,7 +125,7 @@ export default function CityWise() {
 	window.onclick = function (event) {
 		if (!event.target.matches('.dropbtn')) {
 			document.getElementById("myDropdowniconcity").style.display = "none"
-			
+
 			// console.log("hii");
 			// console.log("cityyyyyyyyyyy", document.getElementsByClassName("dropdown-contenticon")[2])
 			if (document.getElementsByClassName("dropdown-contenticon")[2] !== undefined) {
@@ -135,7 +135,7 @@ export default function CityWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity",chartId : 3 } })
+		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity", chartId: 3 } })
 	}
 
 	async function fetchOption() {
@@ -207,36 +207,49 @@ export default function CityWise() {
 				</div>
 
 
+				{weight.length !== 0 ?
+					<div className="crancy-progress-card card-contain-graph">
 
-				<div className="crancy-progress-card card-contain-graph">
+						{flag === 'bar' ?
+							<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
+							: null}
+						{flag === 'barl' ?
+							<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
+							: null}
 
-					{flag === 'bar' ?
-						<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
-						: null}
-					{flag === 'barl' ?
-						<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
-						: null}
-
-					{flag === 'heatmap' ?
-						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-							<tr>
-								<th>Citywise</th>
-								<th>FineWt</th>
-							</tr>
+						{flag === 'heatmap' ?
+							<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+								<tr>
+									<th>Citywise</th>
+									<th>FineWt</th>
+								</tr>
 
 
-							{sales.map((data) => {
-								return (
-									<tr >
-										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-									</tr>
-								)
-							})}
+								{sales.map((data) => {
+									return (
+										<tr >
+											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+										</tr>
+									)
+								})}
 
-						</table> : null}
+							</table> : null}
 
-				</div>
+					</div> :
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 

@@ -20,7 +20,7 @@ import img7 from '../Assets/image/slider/Ring12.png';
 import img8 from '../Assets/image/slider/Ring13.png';
 import img9 from '../Assets/image/slider/Ring14.png';
 import img10 from '../Assets/image/slider/Ring15.png';
-import Default_chart from './Components_Detailed/default_chart';
+import Default_chart from './Components_Detailed/Default_chart';
 import API from '../Utility/API';
 import post from '../Utility/APIHandle';
 import { elements } from 'chart.js';
@@ -279,7 +279,7 @@ export default function DetailedScreen() {
                                     <div class="top-slider">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="graphdetailcards-silder graphdetailtopslider-card">
+                                                <div class="graphdetailcards-silder graphdetailtopslider-card mb-0">
 
                                                     <ul id="topitem" class="js-carousel ag-carousel_list detailgraph-carousel topicon-gd">
 
@@ -292,16 +292,16 @@ export default function DetailedScreen() {
                                                                     else {
                                                                         return (
                                                                             <li class="ag-carousel_item">
-                                                                                <figure class="ag-carousel_figure" >
+                                                                                <div class="ag-carousel_figure" >
                                                                                     <a onClick={() => { handleOnLink({ group: data.group, column: data.column, componentName: data.componentName }) }}>
-                                                                                        <div class="crancy-featured-user__fcontent">
+                                                                                        {/* <div class="crancy-featured-user__fcontent"> */}
                                                                                             <div class="crancy-featured-user__ficon" id={data.componentName}>
                                                                                                 <i class={data.iconClass}></i>
                                                                                             </div>
                                                                                             <h4 class="crancy-featured-user__fname">{data.name}</h4>
-                                                                                        </div>
+                                                                                        {/* </div> */}
                                                                                     </a>
-                                                                                </figure>
+                                                                                </div>
                                                                             </li>
                                                                         )
                                                                     }
@@ -311,7 +311,7 @@ export default function DetailedScreen() {
                                                     </ul>
                                                 </div>
                                                 <div class="crancy-featured-default-box">
-                                                    <div class="crancy-featured-user__fcontent graphdetaildefault">
+                                                    <div class="crancy-featured-user__fcontent graphdetaildefault mb-0">
                                                         <form class="form-check checkbox-filter">
                                                             {/* <input class="form-check-input" type="checkbox" value="" id="DefaultCheckBoxSeconScreen" onClick={handleDefault} /> */}
                                                             <input class="form-check-input" type="checkbox" value="" id="DefaultCheckBoxSeconScreen" onClick={addEditOption} />

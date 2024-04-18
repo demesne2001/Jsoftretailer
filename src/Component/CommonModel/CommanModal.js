@@ -15,7 +15,8 @@ function Commonmodel(props) {
     const ref = useRef([]);
     const ref1 = useRef([]);
     const contextSetparam = useContext(contex)
-    const [loader, setLoader] = useState(false);
+    const [loader, setLoader] = useState(true);
+    const [loaderGrid, setLoaderGrid] = useState(true);
     const [finalitem, setfinalitem] = useState([]);
     const [finalAllitem, setfinalAllitem] = useState([]);
     const [scrollTop, setScrollTop] = useState(0);
@@ -27,7 +28,7 @@ function Commonmodel(props) {
     const [header, setHeader] = useState([])
     const [searchProcess, setSearchProcess] = useState(false);
     const [search, setSearch] = useState(contextSetparam.tempstate)
-    const inputForAlldata = {
+    let inputForAlldata = {
         strBranch: "",
         strState: "",
         strCity: "",
@@ -49,7 +50,7 @@ function Commonmodel(props) {
         strMetalType: "",
         strDayBook: "",
         PageNo: 0,
-        PageSize: 9999,
+        PageSize: 100,
         Search: "",
         Grouping: "",
         FilterIndex: "",
@@ -75,62 +76,75 @@ function Commonmodel(props) {
     let updatelistName = [...props.prdemoName]
 
     useEffect(() => {
-        if (ref1.current !== null) {
-            // console.log("hi", updatedList.length, finalAllitem.length);
-            if (updatedList.length === finalAllitem.length) {
-                ref1.current.checked = true
-            } else {
-                ref1.current.checked = false
-            }
-        }
+
         if (finalAllitem.length !== 0) {
+            console.log("effect1");
+            if (ref1.current !== null) {
+                // console.log("hi", updatedList.length, finalAllitem.length);
+                if (updatedList.length === finalAllitem.length) {
+                    ref1.current.checked = true
+                } else {
+                    ref1.current.checked = false
+                }
+            }
+            if (finalAllitem.length !== 0) {
 
-            // console.log('SET HEADER', Object.keys(finalAllitem[0]))
-            setHeader(Object.keys(finalAllitem[0]));
+                // console.log('SET HEADER', Object.keys(finalAllitem[0]))
+                setHeader(Object.keys(finalAllitem[0]));
 
 
+            }
         }
     }, [finalAllitem])
 
     useEffect(() => {
+        console.log("effect2");
         // console.log('MODEL PROPS VALUES ', props);
         setPage(2)
 
-        setmulticheck(updatedList)
-        setmulticheckName(updatelistName);
         setSearch(contextSetparam.tempstate)
         fetchItemdata()
-        fetchAllData()
+        // if (multicheckName.length !== 0) {
+        //     console.log(multicheckName, "name");
+        //     fetchAllData()
+        // }
         // console.log('HEADER', header)
 
     }, [props.modelprops])
+    useEffect(() => {
+        setmulticheck(updatedList)
+        setmulticheckName(updatelistName);
+    }, [])
+
+
+    // useEffect(() => {
+
+    // }, [multicheck])
+
 
     useEffect(() => {
-        // console.log(finalitem.length, multicheck.length);
-        if (multicheck.length === finalitem.length) {
-            ref1.current.checked = true
-        } else {
-            ref1.current.checked = false
-        }
-    }, [multicheck])
 
-
-    useEffect(() => {
         if (header.length !== 0) {
-
+            console.log("effect4")
             AddDefaultColumn()
         }
     }, [header])
 
 
     useEffect(() => {
+        console.log(search, "effect5_search");
+
+        console.log((search), "search");
+        console.log("effect5");
         fetchItemdata()
+
+
     }, [search])
 
     useEffect(() => {
-
-
+        console.log("effect6");
         setSearch({ ...search, ['Search']: searchValue })
+        fetchAllData()
     }, [searchValue])
 
     function handleDoubleClick() {
@@ -190,7 +204,9 @@ function Commonmodel(props) {
                 // console.log(arr, "arrrr");
                 setColumn(arr);
             }
+            setLoaderGrid(false)
         })
+
     }
 
 
@@ -213,12 +229,15 @@ function Commonmodel(props) {
     }
 
     const fetchAllData = () => {
+
         if (totalcount !== 0) {
+            console.log(multicheckName.toString(), "fetchAllData");
+            inputForAlldata = { ...inputForAlldata, ['Search']: multicheckName.toString() }
             if (props.modelprops.api !== undefined) {
                 // console.log("search", input)
                 axios.post(props.modelprops.api, inputForAlldata)
                     .then((response) => {
-                        // console.log(response);
+                        console.log(response.data.lstResult, "result");
                         setfinalAllitem(response.data.lstResult)
                     })
                     .catch(error => console.error(error))
@@ -345,11 +364,13 @@ function Commonmodel(props) {
 
 
     const fetchItemdata = () => {
+
         // console.log("api", props)
-       // console.log("hii");
+        // console.log("hii");
         var input = { ...search, ['PageSize']: 60 }
         // console.log("api", props.modelprops.api)
         delete input.undefined
+        console.log(search, "input");
         if (props.modelprops.api !== undefined) {
             // console.log("search", input)
             // console.log("api", props)
@@ -359,6 +380,7 @@ function Commonmodel(props) {
                 .then((response) => {
                     // console.log(response.data.lstResult)
                     setfinalitem(response.data.lstResult)
+                    setLoader(false)
                     // console.log(response);
                 })
                 .catch(error => console.error(error))
@@ -379,15 +401,15 @@ function Commonmodel(props) {
 
     }
 
-    const cancelbutton = (e, name) => {
+    const cancelbutton = (index) => {
         setmulticheck((prevData) => {
             return prevData.filter((id) => {
-                return id !== e
+                return id !== multicheck[index]
             })
         })
         setmulticheckName((prevData) => {
             return prevData.filter((id) => {
-                return id !== name
+                return id !== multicheckName[index]
             })
         })
     }
@@ -464,13 +486,16 @@ function Commonmodel(props) {
 
                                     {multicheck.length !== 0 ?
                                         <div className='selected-item style-3'>
+                                            {console.log(finalAllitem)}
+                                            {multicheckName.map((item, index) => {
 
-                                            {finalAllitem.map((ele) => {
-                                                if (multicheck.indexOf(ele[props.modelprops.id]) !== -1) {
-                                                    return <span>
-                                                        <label className='selected-label'>{ele[props.modelprops.name]}<button onClick={() => cancelbutton(ele[props.modelprops.id], ele[props.modelprops.name])} className='cancel-button'>X</button></label>
-                                                    </span>
-                                                }
+
+
+                                                return <span>
+                                                    <label className='selected-label'>{item}<button onClick={() => cancelbutton(index)} className='cancel-button'>X</button></label>
+                                                </span>
+
+
 
                                             })}
                                         </div> : null}
@@ -519,10 +544,11 @@ function Commonmodel(props) {
                                                 <button type='button' className='column-btn' onClick={hadnleOnGridSave}>Save</button>
                                             </div> : null}
                                         <div>
-                                            {loader === true ? <div class="spinner-grow text-primary" style={{ marginLeft: '45%' }} role="status">
+                                            {loader === true || loaderGrid === true ? <div class="spinner-grow text-primary" style={{ marginLeft: '45%' }} role="status">
                                                 <span class="sr-only">Loading...</span>
                                             </div> :
                                                 <Table striped bordered hover>
+
                                                     <thead className='table-header'
                                                     >
                                                         <tr>
@@ -541,6 +567,7 @@ function Commonmodel(props) {
                                                             {/* <th id='columnth' onClick={handleDoubleClick}>{props.modelprops.name}</th> */}
                                                         </tr>
                                                     </thead>
+
                                                     <tbody >{
                                                         finalitem.map((ele, i) =>
                                                         (
@@ -575,8 +602,10 @@ function Commonmodel(props) {
 
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <button class="btn showpreview-button" onClick={() => handlesavefilter()}>save Filter</button>
-                                    <button class="btn close-button geex-btn__customizer-close" onClick={() => handleResetfilter()}>Reset</button>
+                                    <div className='filter__btn'>
+                                        <button class="btn-danger close-button geex-btn__customizer-close showpreview-button " onClick={() => handleResetfilter()}>Reset</button>
+                                        <button class="showpreview-button" onClick={() => handlesavefilter()}>Save Filter</button>
+                                    </div>
                                 </Modal.Footer>
                             </Modal>
                         </>
@@ -594,7 +623,7 @@ function Commonmodel(props) {
                     contextSetparam.childFilterShow ?
                         <>
                             <Modal show={contextSetparam.childFilterShow} onHide={handleClose} >
-                            <Modal.Header >
+                                <Modal.Header >
                                     <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> Filter By</h5>
                                     <button class="geex-btn geex-btn__customizer-close" onClick={handleClose}>
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -653,7 +682,7 @@ function Commonmodel(props) {
                                     {multicheck.length !== 0 ?
                                         <div className='selected-item style-3'>
 
-                                            {finalAllitem.map((ele) => {
+                                            {finalitem.map((ele) => {
                                                 if (multicheck.indexOf(ele[props.modelprops.id]) !== -1) {
                                                     return <span>
                                                         <label className='selected-label'>{ele[props.modelprops.name]}<button onClick={() => cancelbutton(ele[props.modelprops.id], ele[props.modelprops.name])} className='cancel-button'>X</button></label>

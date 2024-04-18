@@ -237,6 +237,7 @@ export default function MonthWise() {
 					</div> */}
 
         </div>
+        {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
 
           {flag === 'bar'
@@ -247,7 +248,19 @@ export default function MonthWise() {
             ?
             <ReactApexChart options={options_area} series={series} type={demo} height={390} />
             : null}
-        </div>
+        </div>:
+        <div className="crancy-progress-card card-contain-graph">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+				</div>
+			</div>}
       </div>
     </div>
   )

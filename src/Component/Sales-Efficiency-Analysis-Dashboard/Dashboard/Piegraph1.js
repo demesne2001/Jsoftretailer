@@ -136,13 +136,26 @@ export default function Piegraph1() {
 
     <div className="col-xl-2 col-lg-4 col-md-4 col-12">
       <div className="graph-card">
+      {weight.length !== 0 ?
         <div className="crancy-progress-card top-graph-card">
           {/* <div className="text-center"> */}
 
           {/* <ReactApexChart options={options} series={series} type="donut" /> */}
           <ReactApexChart options={options} series={series} type='donut' height={200} />
           {/* </div> */}
-        </div>
+        </div>:
+        <div className="crancy-progress-card top-graph-card">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
+				</div>
+			</div>}
 
       </div>
     </div>

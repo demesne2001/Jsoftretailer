@@ -213,7 +213,7 @@ export default function Header() {
     17: [
       "strMonth",
       API.GetMonth,
-    "MonthID",
+      "MonthID",
       "MonthName",
       "strMonthValue",
       17
@@ -245,63 +245,72 @@ export default function Header() {
   const date = new Date();
 
 
-
   useEffect(() => {
     getSyncDate()
+    contexData.SettempState({ ...contexData.tempstate, ["ToDate"]: currentDate, ["FromDate"]: currentDate })
+    handleDaybook();
+    handleMetaltype();
+  }, [])
+
+
+
+  useEffect(() => {
     console.log(contexData.tempstate);
     var Findex = contexData.tempstate.FilterIndex
     // console.log("useEffet1");
-
+    console.log('index', Findex)
     if (Findex !== "undefined" && Findex !== 0) {
-      if (Findex >= 1 && Findex < 9) {
-        for (let index = Findex + 1; index < 10; index++) {
-          console.log(index, 'indexno')
-          if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
-            FetchDataDependentAPI(FilterData, index)
-          }
+      for (let index = Findex + 1; index < 16; index++) {
+        console.log(index, 'indexno')
+        if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
+          FetchDataDependentAPI(FilterData, index)
         }
       }
-      else if (Findex > 9 && Findex < 13) {
-        for (let index = Findex; index < 16; ++index) {
-          if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
-            FetchDataDependentAPI(FilterData, index)
-          }
-        }
-      }
+      // if (Findex >= 1 && Findex < 9) {
+      //   for (let index = Findex + 1; index < 10; index++) {
+      //     console.log(index, 'indexno')
+      //     if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
+      //       FetchDataDependentAPI(FilterData, index)
+      //     }
+      //   }
+      // }
+      // else if (Findex > 9 && Findex < 13) {
+      //   for (let index = Findex; index < 16; ++index) {
+      //     if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
+      //       FetchDataDependentAPI(FilterData, index)
+      //     }
+      //   }
+      // }
     }
-  }, [contexData.FilterIndex])
+  }, [contexData.tempstate.FilterIndex])
 
   // console.log('TODAYS DATE',date.getDate() + date.getMonth() + 1 + date.getFullYear())
 
   let day = date.getDate();
   let month = date.getMonth() + 1;
-let year = date.getFullYear();
-let currentDate 
-if(month < 10){
-  if (day < 10 ) {
-    currentDate = `${year}-0${month}-0${day}`;  
+  let year = date.getFullYear();
+  let currentDate
+  if (month < 10) {
+    if (day < 10) {
+      currentDate = `${year}-0${month}-0${day}`;
+    }
+    else {
+      currentDate = `${year}-0${month}-${day}`;
+    }
   }
-  else{
-    currentDate = `${year}-0${month}-${day}`;
+  else {
+    if (day < 10) {
+      currentDate = `${year}-0${month}-0${day}`;
+    }
+    else {
+      currentDate = `${year}-0${month}-${day}`;
+    }
   }
-}
-else{
-  if (day < 10 ) {
-    currentDate = `${year}-0${month}-0${day}`;  
-  }
-  else{
-    currentDate = `${year}-0${month}-${day}`;
-  }
-}
 
 
 
-// console.log(currentDate)
-  
-  useEffect(()=>{
-    contexData.SettempState({ ...contexData.tempstate,["ToDate"]:currentDate,["FromDate"]:currentDate })
-    
-  },[])
+  // console.log(currentDate)
+
 
 
   async function getSyncDate() {
@@ -322,9 +331,9 @@ else{
       // console.log("hii", res.data.lstResult);
       var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
       // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
-      console.log('TempDatabefore', TempDataID)
-      console.log('resultID', resultID)
-      console.log("contexData.tempstate before", contexData.tempstate);
+      // console.log('TempDatabefore', TempDataID)
+      // console.log('resultID', resultID)
+      // console.log("contexData.tempstate before", contexData.tempstate);
       var temarrayID = []
       var temparryValue = []
       for (let index = 0; index < TempDataID.length; index++) {
@@ -344,7 +353,7 @@ else{
       // console.log('TempData After', temarrayID)
 
 
-      contexData.Settempstate({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+      contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
       // console.log("contexData.tempstate After ", contexData.tempstate);
 
     })
@@ -401,8 +410,8 @@ else{
   }
 
   useEffect(() => {
-    handleDaybook();
-    handleMetaltype();
+    // handleDaybook();
+    // handleMetaltype();
     // console.log(contexData.tempstate, "useffect temp");
   }, [])
 
@@ -821,16 +830,23 @@ else{
                                       onClick={handleonchangeCurrency}
                                     ></img>
                                      */}
-                                    <button class="fas fa-rupee-sign" onClick={handleonchangeCurrency}> Default </button>
+                                    <button
+                                      class="dropbtn"
+                                      onClick={handleonchangeCurrency}>
+                                      <i class='fas fa-rupee-sign'></i>
+                                      <p class='value_name'> Default</p>
+                                    </button>
                                     {/* <button class="fa fa-inr" aria-hidden="true" src={currency} className="dropbtn" onClick={handleonchangeCurrency} > </button> */}
                                   </>
                                 ) : null}
                                 {localStorage.getItem("value") === "k" ? (
                                   <button
                                     className="dropbtn"
-                                    onClick={handleonchangeCurrency}
-                                  >
-                                    Thousand
+                                    onClick={handleonchangeCurrency}>
+                                    <i class='fas fa-rupee-sign'></i>
+                                    <p class='value_name'>
+                                      Thousand
+                                    </p>
                                   </button>
                                 ) : null}
                                 {localStorage.getItem("value") === "l" ? (
@@ -838,23 +854,30 @@ else{
                                     className="dropbtn"
                                     onClick={handleonchangeCurrency}
                                   >
-                                    Lakh
+                                    <i class='fas fa-rupee-sign'></i>
+                                    <p class='value_name'>
+                                      Lakh
+                                    </p>
                                   </button>
                                 ) : null}
                                 {localStorage.getItem("value") === "m" ? (
                                   <button
                                     className="dropbtn"
-                                    onClick={handleonchangeCurrency}
-                                  >
-                                    Million
+                                    onClick={handleonchangeCurrency}>
+                                    <i class='fas fa-rupee-sign'></i>
+                                    <p class='value_name'>
+                                      Million
+                                    </p>
                                   </button>
                                 ) : null}
                                 {localStorage.getItem("value") === "c" ? (
                                   <button
-                                    className="dropbtn"
-                                    onClick={handleonchangeCurrency}
-                                  >
-                                    Crore
+                                    className=" dropbtn"
+                                    onClick={handleonchangeCurrency}>
+                                    <i class='fas fa-rupee-sign'></i>
+                                    <p class='value_name'>
+                                      Crore
+                                    </p>
                                   </button>
                                 ) : null}
                                 {localStorage.getItem("value") === "b" ? (
@@ -862,7 +885,10 @@ else{
                                     className="dropbtn"
                                     onClick={handleonchangeCurrency}
                                   >
-                                    Billion
+                                    <i class='fas fa-rupee-sign'></i>
+                                    <p class='value_name'>
+                                      Billion
+                                    </p>
                                   </button>
                                 ) : null}
                               </div>
@@ -1013,7 +1039,7 @@ else{
                                 name="ToDate"
                                 value={contexData.tempstate["ToDate"]}
                                 id="ToDate"
-                                
+
                               />
                               <i class="fa-solid fa-caret-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
                             </div>

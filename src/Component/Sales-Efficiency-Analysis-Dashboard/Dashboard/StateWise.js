@@ -39,7 +39,7 @@ export default function StateWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 
 			setflag(e.target.id)
 		}
@@ -106,7 +106,7 @@ export default function StateWise() {
 
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState",chartId : 2 } })
+		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 } })
 	}
 
 	async function fetchOption() {
@@ -196,13 +196,27 @@ export default function StateWise() {
 
 
 
+				{weight.length !== 0 ?
+					<>
+						<div className="crancy-progress-card card-contain-graph">
 
-				<div className="crancy-progress-card card-contain-graph">
-
-					{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}
-					{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
-				</div>
-				<div id="html-dist"></div>
+							{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}
+							{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
+						</div>
+						<div id="html-dist"></div></> :
+							<div className="crancy-progress-card card-contain-graph">
+							<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+								<div class="dot-spinner__dot"></div>
+							</div>
+						</div> 
+						}
 			</div>
 		</div>
 	)

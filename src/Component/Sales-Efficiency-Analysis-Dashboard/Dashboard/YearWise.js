@@ -207,7 +207,7 @@ export default function YearWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 			console.log('Updationg option')
 			setflag(e.target.id)
 		}
@@ -455,7 +455,7 @@ export default function YearWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise",chartId : 15  } })
+		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 } })
 	}
 
 	window.onclick = function (event) {
@@ -542,11 +542,24 @@ export default function YearWise() {
 						<a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
 					</div> */}
 				</div>
-				<div className="crancy-progress-card card-contain-graph">
-					{flag === 'kpi' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
-					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
-					{flag === 'donut' ? <ReactApexChart options={options_semidonut} series={series2} type={flag} height={350} /> : null}
-				</div>
+				{weight.length !== 0 ?
+					<div className="crancy-progress-card card-contain-graph">
+						{flag === 'kpi' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
+						{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
+						{flag === 'donut' ? <ReactApexChart options={options_semidonut} series={series2} type={flag} height={350} /> : null}
+					</div> :
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>}
 			</div>
 		</div>
 	)

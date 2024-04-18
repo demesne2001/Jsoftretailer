@@ -357,7 +357,7 @@ export default function SalesManWise() {
 
           <div className="col-sm-2 col-md-2 col-2">
             <div className='btnicons'>
-              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img>
+              {/* <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img> */}
 
               <div id="myDropdowniconSalesManWise" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
@@ -369,10 +369,22 @@ export default function SalesManWise() {
           </div>
 
         </div>
-
+        {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
           <ReactApexChart options={options} series={series} type="bar" height={350} />
-        </div>
+        </div>:
+        <div className="crancy-progress-card card-contain-graph">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+				</div>
+			</div>}
       </div>
     </div>
   )

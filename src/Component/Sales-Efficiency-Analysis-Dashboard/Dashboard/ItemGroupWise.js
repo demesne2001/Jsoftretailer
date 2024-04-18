@@ -195,13 +195,25 @@ export default function ItemGroupWise() {
         </div>
 
 
-
+        {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
 
           {flag === 'radialBar' ? <ReactApexChart options={options_radial} series={series_radial} height={390} type={flag} /> : null}
           {flag === 'treemap' ? <ReactApexChart options={options_treemap} series={series_treemap} height={390} type={flag} /> : null}
 
+        </div>:
+        <div className="crancy-progress-card card-contain-graph">
+        <div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
         </div>
+      </div> }
       </div>
     </div>
   )

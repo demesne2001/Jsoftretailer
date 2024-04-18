@@ -218,19 +218,13 @@ export default function Main_chart(props) {
                         
                     </div>
                     <div class="flip-card-back">
-                        <div class="graphdetailcards graphdetail-firstcard">
-                           
-                        <div class="graphdetailcards graphdetail-firstcard">
-                          
+                        <div class="">                          
                           {flag === 'bar' ?
                               <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={580}/>
                               : null}
                           {flag === 'donut' ?
                               <ReactApexChart options={options_donut} series={series_donut} type="donut" height={580}/>
-                              : null}
-
-                      </div>
-                            
+                              : null}                            
                         </div>
                     </div>
                 </div>

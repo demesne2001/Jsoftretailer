@@ -210,6 +210,7 @@ export default function ProductWise() {
 						<a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
 					</div> */}
 				</div>
+				{weight.length !== 0 ?
 				<div class="crancy-progress-card card-contain-graph">
 
 					{/* <ParentSize>{({ width, height }) => <Radialbar width={width} height={350} />}</ParentSize> */}
@@ -239,7 +240,19 @@ export default function ProductWise() {
 						</table>
 
 						: null}
+				</div>:
+				<div className="crancy-progress-card card-contain-graph">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
 				</div>
+			</div>}
 			</div>
 		</div>
 	)

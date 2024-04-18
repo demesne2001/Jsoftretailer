@@ -167,13 +167,26 @@ export default function RegionWise() {
 
 					{/* <i class="fas fa-external-link-alt"></i> */}
 				</div>
+				{weight.length !== 0 ?
 				<div className="crancy-progress-card card-contain-graph">
 					{flag === 'bar' ? <ReactApexChart options={options_lolipop} type={flag} series={series_lolipop} height={350} /> : null}
 					{flag === 'polarArea' ? <ReactApexChart options={options_polar} type='polarArea' series={series_polar} height={350} /> : null}
 					{flag === 'donut' ? <ReactApexChart options={options_donut} type='donut' series={series_polar} height={350} /> : null}
 
 					{/* <Cylinder/> */}
+				</div>:
+				<div className="crancy-progress-card card-contain-graph" >
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
 				</div>
+			</div> }
 			</div>
 		</div>
 	)

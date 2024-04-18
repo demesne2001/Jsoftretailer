@@ -105,9 +105,22 @@ export default function ModeofSalesWise() {
             <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
           </div> */}
         </div>
+        {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
           <ReactApexChart options={options} series={series} type="donut" height={390} />
-        </div>
+        </div>:
+        <div className="crancy-progress-card card-contain-graph">
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+				</div>
+			</div>}
       </div>
     </div>
   )

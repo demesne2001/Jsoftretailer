@@ -252,7 +252,7 @@ export default function ItemWise() {
 				</div>
 
 
-
+				{weight.length !== 0 ?
 				<div className="crancy-progress-card card-contain-graph">
 
 					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series} type={demo} height={350} /> : null}
@@ -275,7 +275,19 @@ export default function ItemWise() {
 							})}
 
 						</table> : null}
+				</div>:
+				<div className="crancy-progress-card card-contain-graph" >
+				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
+					<div class="dot-spinner__dot"></div>
 				</div>
+			</div> }
 			</div>
 		</div>
 

@@ -17,7 +17,7 @@ import { Axios } from 'axios';
 
 export default function BranchWise() {
 
-	
+
 	const contexData = useContext(contex)
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
@@ -25,11 +25,11 @@ export default function BranchWise() {
 	const navigate = useNavigate()
 	const [flag, setflag] = useState()
 
-	const [optionId,setOptionId] = useState()
+	const [optionId, setOptionId] = useState()
 
 	const [sales, setSales] = useState([])
-	const ChartType="donut"
-	
+	const ChartType = "donut"
+
 
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
@@ -46,17 +46,17 @@ export default function BranchWise() {
 	const options_radialbar = BranchWise_Radial(name)
 
 	function handleclick(e) {
-		
+
 		// console.log('Event ID',e.target.id)
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
-		else{
+		else {
 			// console.log("NOT UPDATING OPTIOJN")
 		}
-		
+
 	}
 
 	function setMargin() {
@@ -121,51 +121,51 @@ export default function BranchWise() {
 			})
 	}
 
-	async function fetchOption(){
-		await post({ "ID": 1,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+	async function fetchOption() {
+		await post({ "ID": 1, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
-		.then((res)=>{
-			if(res.data.lstResult.length === 0){
-				setflag(ChartType)
-				// console.log('FIRST TIME API CALLED')
-				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 1,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-				.then((res)=>{
-					post({ "ID": 1,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
-					.then((res)=>{
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-					})
-					
-					alert(res.data.Message)
-				})
+			.then((res) => {
+				if (res.data.lstResult.length === 0) {
+					setflag(ChartType)
+					// console.log('FIRST TIME API CALLED')
+					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 1, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+						.then((res) => {
+							post({ "ID": 1, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+								.then((res) => {
+									setOptionId(res.data.lstResult[0].ChartOptionID)
+								})
 
-			}
-			else{
-				
-				setOptionId(res.data.lstResult[0].ChartOptionID)
-				setflag(res.data.lstResult[0].ChartOption) 
-			}
-			
-		})	
+							alert(res.data.Message)
+						})
+
+				}
+				else {
+
+					setOptionId(res.data.lstResult[0].ChartOptionID)
+					setflag(res.data.lstResult[0].ChartOption)
+				}
+
+			})
 	}
 
-	async function addEditOption(){
-		
-		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 1,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-		.then((res)=>{
-			
-			document.getElementById('myDropdowniconbranch').style.display = 'none'
-			alert(res.data.Message)
-			
-		})
+	async function addEditOption() {
+
+		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 1, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+			.then((res) => {
+
+				document.getElementById('myDropdowniconbranch').style.display = 'none'
+				alert(res.data.Message)
+
+			})
 	}
 
 	function handleonchangeCurrency() {
-		
+
 		document.getElementById("myDropdowniconbranch").style.display === "block" ? document.getElementById("myDropdowniconbranch").style.display = "none" : document.getElementById("myDropdowniconbranch").style.display = "block";
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', {state: {grouping:"a.BranchID,b.BranchName",columnID:'BranchID',columnName:'BranchName',componentName : "Branch Wise" , filterKey : "strBranch" ,chartId : 1}})
+		navigate('/graph-detail', { state: { grouping: "a.BranchID,b.BranchName", columnID: 'BranchID', columnName: 'BranchName', componentName: "Branch Wise", filterKey: "strBranch", chartId: 1 } })
 	}
 
 	window.onclick = function (event) {
@@ -173,11 +173,11 @@ export default function BranchWise() {
 		// console.log('evennnn', event.target.className)
 		if (event.target.className !== 'dropbtn') {
 			document.getElementById("myDropdowniconbranch").style.display = "none"
-			
+
 		}
 	}
 
-	
+
 	// console.log('LOCAL STORAGE ITEM JJ',localStorage.getItem('jj'))
 
 	return (
@@ -196,52 +196,65 @@ export default function BranchWise() {
 
 						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} ></img>
 						{/* <i class="fa-solid fa-retweet"  onClick={flip}/> */}
-						<i class="fas fa-external-link-alt"/>
+						<i class="fas fa-external-link-alt" />
 
 						<div className='btnicons'>
-						
 
-						<div id="myDropdowniconbranch" className="dropdown-contenticon" onClick={handleclick}>
 
-							{flag === 'donut' ? <><a id='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >Donut</a><hr className='custom-hr' /></>}
-							{flag === 'radialBar' ? <><a id='radialBar'>RadialBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >RadialBar</a><hr className='custom-hr' /></>}
-							{flag === 'heatmap' ? <><a id='heatmap'>Heat map&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /> </>}
-							<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
+							<div id="myDropdowniconbranch" className="dropdown-contenticon" onClick={handleclick}>
+
+								{flag === 'donut' ? <><a id='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >Donut</a><hr className='custom-hr' /></>}
+								{flag === 'radialBar' ? <><a id='radialBar'>RadialBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >RadialBar</a><hr className='custom-hr' /></>}
+								{flag === 'heatmap' ? <><a id='heatmap'>Heat map&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /> </>}
+								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
+
+							</div>
 
 						</div>
 
 					</div>
 
-					</div>
 
-					
 				</div>
 
-				
-				<div className="crancy-progress-card card-contain-graph" id='flipbranch'>
-					
-					{flag === 'donut' ? <ReactApexChart options={options_donut} series={series} height={380} type={flag} /> : null}
-					{flag === 'radialBar' ? <ReactApexChart options={options_radialbar} series={series} height={380} type={flag} /> : null}
-					{flag === 'heatmap' ?
-						<div>
-							<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-								<tr>
-									<th>Branchwise</th>
-									<th>FineWt</th>
-								</tr>
-								{sales.map((data) => {
-									return (
-										<tr >
-											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-										</tr>
-									)
-								})}
+				{weight.length !== 0 ?
+					<div className="crancy-progress-card card-contain-graph" id='flipbranch'>
 
-							</table></div> : null}
-					{/* </div> */}
-					<div id="html-dist"></div>
-				</div>
+						{flag === 'donut' ? <ReactApexChart options={options_donut} series={series} height={380} type={flag} /> : null}
+						{flag === 'radialBar' ? <ReactApexChart options={options_radialbar} series={series} height={380} type={flag} /> : null}
+						{flag === 'heatmap' ?
+							<div>
+								<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+									<tr>
+										<th>Branchwise</th>
+										<th>FineWt</th>
+									</tr>
+									{sales.map((data) => {
+										return (
+											<tr >
+												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+											</tr>
+										)
+									})}
+
+								</table></div> : null}
+						{/* </div> */}
+						<div id="html-dist"></div>
+					</div> :
+					<div className="crancy-progress-card card-contain-graph"  >
+						<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div> 
+				}
 			</div>
 		</div>
 	)
