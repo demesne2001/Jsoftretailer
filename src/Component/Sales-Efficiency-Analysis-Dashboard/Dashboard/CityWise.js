@@ -47,7 +47,7 @@ export default function CityWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconcity' && e.target.id !== '') {
 
 			setflag(e.target.id)
 		}
@@ -118,21 +118,19 @@ export default function CityWise() {
 
 
 	function handleonchangeCurrency() {
-		// console.log("innn")
+		console.log("innn")
 		document.getElementById("myDropdowniconcity").style.display === "block" ? document.getElementById("myDropdowniconcity").style.display = "none" : document.getElementById("myDropdowniconcity").style.display = "block";
+		console.log(document.getElementById("myDropdowniconcity").style.display);
 	}
 
-	window.onclick = function (event) {
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById("myDropdowniconcity").style.display = "none"
-
-			// console.log("hii");
-			// console.log("cityyyyyyyyyyy", document.getElementsByClassName("dropdown-contenticon")[2])
-			if (document.getElementsByClassName("dropdown-contenticon")[2] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[2].style.display = "none";
+	
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconcity") !== null) {
+				document.getElementById("myDropdowniconcity").style.display = "none"
 			}
 		}
-	}
+	});
 
 	function handleNavigation() {
 		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity", chartId: 3 } })

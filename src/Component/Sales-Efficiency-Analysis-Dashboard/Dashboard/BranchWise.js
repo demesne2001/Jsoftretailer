@@ -160,23 +160,19 @@ export default function BranchWise() {
 	}
 
 	function handleonchangeCurrency() {
-
 		document.getElementById("myDropdowniconbranch").style.display === "block" ? document.getElementById("myDropdowniconbranch").style.display = "none" : document.getElementById("myDropdowniconbranch").style.display = "block";
 	}
 
 	function handleNavigation() {
 		navigate('/graph-detail', { state: { grouping: "a.BranchID,b.BranchName", columnID: 'BranchID', columnName: 'BranchName', componentName: "Branch Wise", filterKey: "strBranch", chartId: 1 } })
 	}
-
-	window.onclick = function (event) {
-
-		// console.log('evennnn', event.target.className)
+	document.getElementById("root").addEventListener("click", function (event) {
 		if (event.target.className !== 'dropbtn') {
-			document.getElementById("myDropdowniconbranch").style.display = "none"
-
+			if (document.getElementById("myDropdowniconbranch") !== null) {
+				document.getElementById("myDropdowniconbranch").style.display = "none"
+			}
 		}
-	}
-
+	});
 
 	// console.log('LOCAL STORAGE ITEM JJ',localStorage.getItem('jj'))
 

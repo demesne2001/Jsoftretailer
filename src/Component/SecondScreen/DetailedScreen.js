@@ -20,10 +20,11 @@ import img7 from '../Assets/image/slider/Ring12.png';
 import img8 from '../Assets/image/slider/Ring13.png';
 import img9 from '../Assets/image/slider/Ring14.png';
 import img10 from '../Assets/image/slider/Ring15.png';
-import Default_chart from './Components_Detailed/default_chart';
+import Default_chart from './Components_Detailed/Default_chart';
 import API from '../Utility/API';
 import post from '../Utility/APIHandle';
 import { elements } from 'chart.js';
+import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar';
 const ChartGroupDefault = {
     "group": "a.BranchID,b.BranchName",
     "column": "BranchID",
@@ -97,7 +98,7 @@ export default function DetailedScreen() {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll:2
+                    slidesToScroll: 2
                 }
             }
         ]
@@ -152,10 +153,10 @@ export default function DetailedScreen() {
 
 
 
-        
+
     }
 
-    
+
 
     async function fetchOption() {
         console.log(location.state.chartId)
@@ -171,7 +172,7 @@ export default function DetailedScreen() {
                             post({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
                                 .then((res) => {
 
-                                    
+
                                     setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
                                     setChartGroupId(res.data.lstResult[0].ChartGroupID)
                                     setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
@@ -204,7 +205,7 @@ export default function DetailedScreen() {
         // console.log('Chart GROUP ',chartGroupId)
         // console.log('GRAPH ',graph)
 
-        
+
 
         // console.log({ "ChartGroupID": chartGroupId,"ChartGroup": chartGroup,"ChartID": location.state.chartOptionId,"vendorID": 1,"UserID": 1})
         post({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
@@ -218,24 +219,24 @@ export default function DetailedScreen() {
 
         console.log('SELECTED ID', selectedId)
 
-        if( document.getElementById(selectedId) !== null){
+        if (document.getElementById(selectedId) !== null) {
             if (document.querySelector(".active") !== null) { // to deselect a icon
 
 
                 document.querySelector(".active").className = document.querySelector(".active").className.replace('active', '')
             }
-    
-            else{
+
+            else {
                 document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
             }
-            
+
         }
 
-        
+
 
     }
 
-   
+
 
 
     const sliderData = [
@@ -261,6 +262,7 @@ export default function DetailedScreen() {
 
     return (
         <ContexState1>
+            <Navbar />
             <div id="crancy-dark-light">
                 <div class="crancy-body-area">
                     <Header_detailed />
@@ -295,10 +297,10 @@ export default function DetailedScreen() {
                                                                                 <div class="ag-carousel_figure" >
                                                                                     <a onClick={() => { handleOnLink({ group: data.group, column: data.column, componentName: data.componentName }) }}>
                                                                                         {/* <div class="crancy-featured-user__fcontent"> */}
-                                                                                            <div class="crancy-featured-user__ficon" id={data.componentName}>
-                                                                                                <i class={data.iconClass}></i>
-                                                                                            </div>
-                                                                                            <h4 class="crancy-featured-user__fname">{data.name}</h4>
+                                                                                        <div class="crancy-featured-user__ficon" id={data.componentName}>
+                                                                                            <i class={data.iconClass}></i>
+                                                                                        </div>
+                                                                                        <h4 class="crancy-featured-user__fname">{data.name}</h4>
                                                                                         {/* </div> */}
                                                                                     </a>
                                                                                 </div>

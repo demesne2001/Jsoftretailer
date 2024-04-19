@@ -376,17 +376,13 @@ export default function SalesAgingWise() {
 		document.getElementById("myDropdowniconSalesAging").style.display === "block" ? document.getElementById("myDropdowniconSalesAging").style.display = "none" : document.getElementById("myDropdowniconSalesAging").style.display = "block";
 	}
 
-	window.onclick = function (event) {
-
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconSalesAging').style.display = 'none'
-			// console.log("hii");
-			if (document.getElementsByClassName("dropdown-contenticon")[14] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[14].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconSalesAging") !== null) {
+				document.getElementById("myDropdowniconSalesAging").style.display = "none"
 			}
-
 		}
-	}
+	});
 
 	async function fetchOption() {
 		await post({ "ID": 16 , "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')

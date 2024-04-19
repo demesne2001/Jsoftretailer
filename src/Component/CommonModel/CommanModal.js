@@ -17,6 +17,7 @@ function Commonmodel(props) {
     const contextSetparam = useContext(contex)
     const [loader, setLoader] = useState(true);
     const [loaderGrid, setLoaderGrid] = useState(true);
+    const [loaderScroll, setLoaderScroll] = useState(false);
     const [finalitem, setfinalitem] = useState([]);
     const [finalAllitem, setfinalAllitem] = useState([]);
     const [scrollTop, setScrollTop] = useState(0);
@@ -178,7 +179,7 @@ function Commonmodel(props) {
                         // console.log('IF IF ', res1);
                         // setColumn([props.modelprops.name]);
                     })
-                } else if (props.modelprops.id === 'CityName') {
+                } else if (props.modelprops.id === 'CityName' && props.modelprops.id === 'Caption') {
                     post({ "FilterGridID": 0, "FilterGrid": header[0], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
                         // console.log('IF IF ', res1);
                         // setColumn([props.modelprops.name]);
@@ -297,6 +298,7 @@ function Commonmodel(props) {
                 ref.current[i].checked = false;
             }
         }
+        ref1.current.checked = false
         setmulticheck([])
         setmulticheckName([])
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: "", [props.modelprops['LabelValue']]: "" })
@@ -342,20 +344,23 @@ function Commonmodel(props) {
             const scrollRatio = scrollTop / (scrollHeight - clientHeight);
 
             setScrollTop(scrollRatio);
-            // console.log(scrollRatio);
-            if (scrollRatio === 1) {
+            console.log(scrollRatio);
+            
+            if (scrollRatio > 0.9) {
+                setLoaderScroll(true)
                 if (multicheck.length === finalAllitem.length) {
                     ref1.current.checked = true
                 } else {
                     ref1.current.checked = false
                 }
-                var input = { ...search, ['PageNo']: page, ['PageSize']: 60 }
+                var input = { ...search, ['PageNo']: page, ['PageSize']: 50 }
                 // console.log("scroll", input);
                 delete input.undefined
                 axios.post(props.modelprops.api, input)
                     .then(response => {
                         setfinalitem([...finalitem, ...response.data.lstResult])
                         setPage(page + 1);
+                        setLoaderScroll(false)
                     })
                     .catch(error => console.error(error))
             }
@@ -367,7 +372,7 @@ function Commonmodel(props) {
 
         // console.log("api", props)
         // console.log("hii");
-        var input = { ...search, ['PageSize']: 60 }
+        var input = { ...search, ['PageSize']: 80 }
         // console.log("api", props.modelprops.api)
         delete input.undefined
         console.log(search, "input");
@@ -595,7 +600,9 @@ function Commonmodel(props) {
                                                         )
                                                         )}
                                                     </tbody>
-                                                </Table>}
+                                                </Table>}{loaderScroll === true ? <div class="spinner-grow text-primary" style={{ marginLeft: '45%' }} role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div> :null}
                                         </div>
 
                                     </div>
@@ -693,7 +700,7 @@ function Commonmodel(props) {
                                         </div> : null}
 
 
-                                    <div className="mb-3">
+                                    <div className="">
                                         {loader === true ? <div class="spinner-grow text-primary" style={{ marginLeft: '45%' }} role="status">
                                             <span class="sr-only">Loading...</span>
                                         </div> :
@@ -705,8 +712,10 @@ function Commonmodel(props) {
                                 </Modal.Body>
 
                                 <Modal.Footer>
-                                    <button class="btn close-button geex-btn__customizer-close" onClick={() => handleClose()}>Close</button>
-                                    {/* <button class="btn close-button geex-btn__customizer-close" onClick={() => handleResetfilter()}>Reset</button> */}
+                                    <div className='filter__btn'>
+                                        <button class="btn-danger close-button geex-btn__customizer-close showpreview-button " onClick={() => handleResetfilter()}>Reset</button>
+                                        <button class="showpreview-button" onClick={() => handlesavefilter()}>Save Filter</button>
+                                    </div>
                                 </Modal.Footer>
                             </Modal>
                         </>

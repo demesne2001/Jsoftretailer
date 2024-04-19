@@ -152,17 +152,13 @@ export default function MonthWise() {
     document.getElementById("myDropdowniconmonth").style.display === "block" ? document.getElementById("myDropdowniconmonth").style.display = "none" : document.getElementById("myDropdowniconmonth").style.display = "block";
   }
 
-  window.onclick = function (event) {
-
-    if (!event.target.matches('.dropbtn')) {
-      // console.log("hii");
-      document.getElementById('myDropdowniconmonth').style.display = 'none'
-      if (document.getElementsByClassName("dropdown-contenticon")[12] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[12].style.display = "none";
-      }
-
-    }
-  }
+  document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconmonth") !== null) {
+				document.getElementById("myDropdowniconmonth").style.display = "none"
+			}
+		}
+	});
 
   async function fetchOption(){
 		await post({ "ID": 14	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')

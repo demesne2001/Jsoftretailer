@@ -120,18 +120,14 @@ export default function SubItemWise() {
     // console.log("innn")
     document.getElementById("myDropdowniconsubitem").style.display === "block" ? document.getElementById("myDropdowniconsubitem").style.display = "none" : document.getElementById("myDropdowniconsubitem").style.display = "block";
   }
-
-  window.onclick = function (event) {
-
-    if (!event.target.matches('.dropbtn')) {
-      document.getElementById('myDropdowniconsubitem').style.display = 'none'
-      // console.log("hii");
-      if (document.getElementsByClassName("dropdown-contenticon")[5] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[5].style.display = "none";
-      }
-
-    }
-  }
+  
+  document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconsubitem") !== null) {
+				document.getElementById("myDropdowniconsubitem").style.display = "none"
+			}
+		}
+	});
 
   async function fetchOption(){
 		await post({ "ID": 6,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')

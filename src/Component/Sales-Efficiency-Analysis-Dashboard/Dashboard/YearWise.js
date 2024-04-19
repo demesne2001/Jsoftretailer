@@ -458,17 +458,13 @@ export default function YearWise() {
 		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 } })
 	}
 
-	window.onclick = function (event) {
-
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconyear').style.display = 'none'
-			// console.log("hii");
-			if (document.getElementsByClassName("dropdown-contenticon")[13] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[13].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconyear") !== null) {
+				document.getElementById("myDropdowniconyear").style.display = "none"
 			}
-
 		}
-	}
+	});
 
 	async function fetchOption() {
 		await post({ "ID": 15, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')

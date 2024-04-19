@@ -55,7 +55,7 @@ export function ProductWise_Bar(name) {
 					labels:{
 						formatter: function(val) {
 							
-							return ((val/1000).toFixed(0)).toString() 
+							return ((val/1000).toFixed(0)).toString() + "KG"
 						  
 						  }
 					  

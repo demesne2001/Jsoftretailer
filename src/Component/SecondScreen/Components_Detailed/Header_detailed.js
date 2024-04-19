@@ -13,6 +13,19 @@ export default function Header_detailed() {
 
     useEffect(() => {
         getSyncDate()
+        const element = document.getElementsByClassName("crancy-smenu")[0];
+        element.classList.remove("crancy-close");
+
+        const element1 = document.getElementsByClassName("crancy-header")[0];
+        element1.classList.remove("crancy-close");
+
+        const element2 = document.getElementsByClassName("crancy-adashboard")[0];
+        element2.classList.remove("crancy-close");
+
+        if (document.getElementsByClassName("crancy-adashboard")[1] !== undefined) {
+            const element3 = document.getElementsByClassName("crancy-adashboard")[1];
+            element3.classList.remove("crancy-close");
+        }
     }, [])
 
     function Handlefullscreen() {
@@ -38,7 +51,45 @@ export default function Header_detailed() {
     const navigate = useNavigate()
 
     function handleNavigation() {
+        const element = document.getElementsByClassName("crancy-smenu")[0];
+        element.classList.remove("crancy-close");
+
+        const element1 = document.getElementsByClassName("crancy-header")[0];
+        element1.classList.remove("crancy-close");
+
+        const element2 = document.getElementsByClassName("crancy-adashboard")[0];
+        element2.classList.remove("crancy-close");
         navigate('/')
+    }
+
+    function handleNavbar() {
+
+        if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
+            const element = document.getElementsByClassName("crancy-smenu")[0];
+            element.classList.remove("crancy-close");
+
+            const element1 = document.getElementsByClassName("crancy-header")[0];
+            element1.classList.remove("crancy-close");
+
+            const element2 = document.getElementsByClassName("crancy-adashboard")[0];
+            element2.classList.remove("crancy-close");
+
+            const element3 = document.getElementsByClassName("crancy-adashboard")[1];
+            element3.classList.remove("crancy-close");
+        } else {
+            const element = document.getElementsByClassName("crancy-smenu")[0];
+            element.classList.add("crancy-close");
+
+            const element1 = document.getElementsByClassName("crancy-header")[0];
+            element1.classList.add("crancy-close");
+
+            const element2 = document.getElementsByClassName("crancy-adashboard")[0];
+            element2.classList.add("crancy-close");
+            console.log("element2", document.getElementsByClassName("crancy-adashboard")[1]);
+            const element3 = document.getElementsByClassName("crancy-adashboard")[1];
+            element3.classList.add("crancy-close");
+        }
+
     }
     return (
         <header class="crancy-header">
@@ -63,7 +114,7 @@ export default function Header_detailed() {
                                         </div>
                                     </div>
 
-                                    <div id="crancy__sicon" class="crancy__sicon close-icon">
+                                    <div id="crancy__sicon" class="crancy__sicon close-icon" onClick={handleNavbar}>
                                         <i class="fas fa-angle-left" style={{ color: '#ffffff' }}></i>
                                     </div>
                                 </div>
@@ -77,7 +128,7 @@ export default function Header_detailed() {
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="geex-content__header__action">
                                         <div class="geex-content__header__action__wrap">
                                             <ul class="geex-content__header__quickaction">

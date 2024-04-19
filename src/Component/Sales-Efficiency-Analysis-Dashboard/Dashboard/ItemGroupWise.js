@@ -116,19 +116,13 @@ export default function ItemGroupWise() {
     document.getElementById("myDropdowniconigroup").style.display === "block" ? document.getElementById("myDropdowniconigroup").style.display = "none" : document.getElementById("myDropdowniconigroup").style.display = "block";
   }
 
-  window.onclick = function (event) {
-    // console.log('matchhhh', event.target.matches('.dropbtn'))
-    if (!event.target.matches('.dropbtn')) {
-      document.getElementById('myDropdowniconigroup').style.display = 'none'
-      
-      // console.log("hii");
-      // console.log('stateee', document.getElementsByClassName("dropdown-contenticon")[6])
-      if (document.getElementsByClassName("dropdown-contenticon")[5] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[5].style.display = "none";
-      }
-    }
-  }
-
+  document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconigroup") !== null) {
+				document.getElementById("myDropdowniconigroup").style.display = "none"
+			}
+		}
+	});
   async function fetchOption(){
 		await post({ "ID": 5,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
 

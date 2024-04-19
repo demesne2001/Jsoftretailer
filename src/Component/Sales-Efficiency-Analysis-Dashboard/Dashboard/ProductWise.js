@@ -116,18 +116,13 @@ export default function ProductWise() {
 		document.getElementById("myDropdowniconproduct").style.display === "block" ? document.getElementById("myDropdowniconproduct").style.display = "none" : document.getElementById("myDropdowniconproduct").style.display = "block";
 	}
 
-	window.onclick = function (event) {
-		// console.log('evennnn', event.target.className)
-
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconproduct').style.display = 'none'
-			// console.log("hii");
-			// console.log('branchhh', document.getElementsByClassName("dropdown-contenticon")[7])
-			if (document.getElementsByClassName("dropdown-contenticon")[10] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[10].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconproduct") !== null) {
+				document.getElementById("myDropdowniconproduct").style.display = "none"
 			}
 		}
-	}
+	});
 
 	function setMargin() {
 		if (weight.length < 7) {

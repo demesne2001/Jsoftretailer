@@ -121,17 +121,13 @@ export default function DesignCatalogueWise() {
     document.getElementById("myDropdownicondesigncat").style.display === "block" ? document.getElementById("myDropdownicondesigncat").style.display = "none" : document.getElementById("myDropdownicondesigncat").style.display = "block";
   }
 
-  window.onclick = function (event) {
-
-    if (!event.target.matches('.dropbtn')) {
-      // console.log("hii");
-      document.getElementById("myDropdownicondesigncat").style.display = "none"
-      
-      if (document.getElementsByClassName("dropdown-contenticon")[11] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[11].style.display = "none";
-      }
-    }
-  }
+  document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdownicondesigncat") !== null) {
+				document.getElementById("myDropdownicondesigncat").style.display = "none"
+			}
+		}
+	});
 
   async function fetchOption(){
 		await post({ "ID": 13,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')

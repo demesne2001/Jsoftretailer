@@ -170,17 +170,13 @@ export default function SalesPartyWise() {
 		document.getElementById("myDropdowniconSalesparty").style.display === "block" ? document.getElementById("myDropdowniconSalesparty").style.display = "none" : document.getElementById("myDropdowniconSalesparty").style.display = "block";
 	}
 
-	window.onclick = function (event) {
-
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconSalesparty').style.display = 'none'
-			// console.log("hii");
-			if (document.getElementsByClassName("dropdown-contenticon")[9] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[9].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconSalesparty") !== null) {
+				document.getElementById("myDropdowniconSalesparty").style.display = "none"
 			}
-
 		}
-	}
+	});
 
 	function setMargin() {
 		if (weight.length < 7) {
@@ -244,7 +240,7 @@ export default function SalesPartyWise() {
 					<div className="col-sm-2 col-md-2 col-2">
 						<div className='btnicons'>
 							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
-
+							
 							<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map</a><hr className='custom-hr' /></>}

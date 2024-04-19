@@ -496,9 +496,6 @@ export default function Header() {
   }
 
   async function downloadPdfDocument() {
-
-
-
     var nameArray = []
     document.getElementById('pdf-div').style.display = "block";
 
@@ -656,19 +653,12 @@ export default function Header() {
       : (document.getElementById("myDropdown").style.display = "block");
   }
 
-  window.onclick = function (event) {
-    // console.log(event.target.className);
-    if (event.target.className !== "dropbtn") {
-      if (
-        document.getElementsByClassName("dropdown-content")[0] !== undefined ||
-        document.getElementsByClassName("dropdown-content")[1] !== undefined
-      ) {
-
-        document.getElementsByClassName("dropdown-content")[0].style.display =
-          "none";
-      }
-    }
-  };
+  // window.onclick = function (event) {
+  //   console.log(document.getElementsByClassName("dropdown-content")[0]);
+  //   if (event.target.className === "dropbtn") {
+  //     document.getElementsByClassName("dropdown-content")[0].style.display = "none";
+  //   }
+  // };
 
   function formatedValue(str) {
     if (str !== undefined) {
@@ -679,6 +669,13 @@ export default function Header() {
       }
     }
   }
+  document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn' && event.target.className !== 'fas fa-rupee-sign' && event.target.className !== 'value_name') {
+			if (document.getElementById("myDropdown") !== null) {
+				document.getElementById("myDropdown").style.display = "none"
+			}
+		}
+	});
 
   function handleOnReset() {
     contexData.SettempState(postData)
@@ -748,6 +745,40 @@ export default function Header() {
     }
   }
 
+  function handleNavbar() {
+
+    if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
+      const element = document.getElementsByClassName("crancy-smenu")[0];
+      element.classList.remove("crancy-close");
+
+      const element1 = document.getElementsByClassName("crancy-header")[0];
+      element1.classList.remove("crancy-close");
+
+      const element2 = document.getElementsByClassName("crancy-adashboard")[0];
+      element2.classList.remove("crancy-close");
+
+      if (document.getElementsByClassName("crancy-adashboard")[1] !== undefined) {
+        const element3 = document.getElementsByClassName("crancy-adashboard")[1];
+        element3.classList.remove("crancy-close");
+      }
+
+    } else {
+      const element = document.getElementsByClassName("crancy-smenu")[0];
+      element.classList.add("crancy-close");
+
+      const element1 = document.getElementsByClassName("crancy-header")[0];
+      element1.classList.add("crancy-close");
+
+      const element2 = document.getElementsByClassName("crancy-adashboard")[0];
+      element2.classList.add("crancy-close");
+
+      if (document.getElementsByClassName("crancy-adashboard")[1] !== undefined) {
+        const element3 = document.getElementsByClassName("crancy-adashboard")[1];
+        element3.classList.add("crancy-close");
+      }
+    }
+
+  }
 
   return (
     <>
@@ -787,7 +818,7 @@ export default function Header() {
 
                     <div
                       id="crancy__sicon"
-                      className="crancy__sicon close-icon"
+                      className="crancy__sicon close-icon" onClick={handleNavbar}
                     >
                       <i
                         className="fas fa-angle-left"
@@ -1159,7 +1190,7 @@ export default function Header() {
                           closeMenuOnSelect={false}
                         /> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strRegionIDValue"])}
+                        value={formatedValue(contexData.tempstate["strRegionValue"])}
                         onClick={() => {
                           HandleOnClickComman(2);
                         }}

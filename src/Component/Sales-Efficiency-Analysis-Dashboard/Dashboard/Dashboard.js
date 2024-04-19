@@ -26,6 +26,7 @@ import TeamModeofSalesWise from './TeamModeofSalesWise'
 
 import ContexState from '../../contex/ContexState'
 import FilterPrint from '../FilterPrint'
+import Navbar from '../NavigationBar/Navbar'
 
 // import bootstrapSelectMin from '../../Assets/js/bootstrap-select.min';
 // import bootstrapMin from '../../Assets/js/bootstrap.min'
@@ -40,6 +41,7 @@ export default function Dashboard() {
     return (
         <div>
             <ContexState>
+            <Navbar />
             <Header />
             
             <section className="crancy-adashboard crancy-show">

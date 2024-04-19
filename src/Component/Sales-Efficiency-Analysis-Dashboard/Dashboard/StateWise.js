@@ -38,8 +38,8 @@ export default function StateWise() {
 	const ChartType = "treemap"
 
 	function handleclick(e) {
-
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
+		console.log("handleclick");
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconstate' && e.target.id !== '') {
 
 			setflag(e.target.id)
 		}
@@ -88,23 +88,33 @@ export default function StateWise() {
 
 
 	function handleonchangeCurrency() {
-
+		console.log("handleonchangeCurrency");
 		document.getElementById("myDropdowniconstate").style.display === "block" ? document.getElementById("myDropdowniconstate").style.display = "none" : document.getElementById("myDropdowniconstate").style.display = "block";
+		console.log(document.getElementById("myDropdowniconstate").style.display, "value");
 	}
 
-	window.onclick = function (event) {
+	// document.getElementById('root').onclick = function(event) {
+	// 	console.log(event.target.className,"class");
+	// 	if (event.target.className !== 'dropbtn') {
+	// 		document.getElementById("myDropdowniconstate").style.display = "none";
 
+	// 	}
+	// }
+	// document.getElementById('root').onclick = function(event) {
+	// 	if (event.target.className !== 'dropbtn') {
+	// 		if (document.getElementById("myDropdowniconstate") !== null) {
+	// 			document.getElementById("myDropdowniconstate").style.display = "none"
+	// 		}
+	// 	}
+	// }
 
-
-		if (!event.target.matches('#iconidstate')) {
-			document.getElementById('myDropdowniconstate').style.display = 'none'
-			if (document.getElementsByClassName("dropdown-contenticon")[1] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[1].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconstate") !== null) {
+				document.getElementById("myDropdowniconstate").style.display = "none"
 			}
 		}
-	}
-
-
+	});
 	function handleNavigation() {
 		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 } })
 	}
@@ -204,19 +214,19 @@ export default function StateWise() {
 							{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
 						</div>
 						<div id="html-dist"></div></> :
-							<div className="crancy-progress-card card-contain-graph">
-							<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-								<div class="dot-spinner__dot"></div>
-							</div>
-						</div> 
-						}
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	)

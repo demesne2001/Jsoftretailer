@@ -1,7 +1,7 @@
 export function YearWise_semiDonut(name) {
     const option ={
         dataLabels: {
-            enabled: false,
+            enabled: true,
         },
         chart: {
           type: 'donut',
@@ -26,6 +26,22 @@ export function YearWise_semiDonut(name) {
             offsetY: 80,
             dataLabels: {
                 format: 'scale'
+            },
+            donut: {
+                labels: {
+                    show: true,
+
+                    name: {
+                        fontSize: '20px',
+                        // color:"black"
+                    },
+                    value: {
+                        offsetY: -5,
+                        fontSize: '12px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 600,
+                    }
+                }
             }
           }
         },

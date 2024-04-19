@@ -149,18 +149,13 @@ export default function ItemWithSubItemWise() {
 	}
 	
 
-	window.onclick = function (event) {
-		// console.log('evennnn', event.target.className)
-
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconitemsub').style.display = 'none'
-			// console.log("hii");
-			// console.log('branchhh', document.getElementsByClassName("dropdown-contenticon")[7])
-			if (document.getElementsByClassName("dropdown-contenticon")[7] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[7].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconitemsub") !== null) {
+				document.getElementById("myDropdowniconitemsub").style.display = "none"
 			}
 		}
-	}
+	});
 
 
 

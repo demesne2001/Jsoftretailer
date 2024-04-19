@@ -210,15 +210,13 @@ export default function PurchasePartyWise() {
     document.getElementById("myDropdowniconPurchase").style.display === "block" ? document.getElementById("myDropdowniconPurchase").style.display = "none" : document.getElementById("myDropdowniconPurchase").style.display = "block";
   }
 
-  window.onclick = function (event) {
-
-    if (!event.target.matches('.dropbtn')) {
-      document.getElementById('myDropdowniconPurchase').style.display = 'none'
-      if (document.getElementsByClassName("dropdown-contenticon")[8] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[8].style.display = "none";
-      }
-    }
-  }
+  document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconPurchase") !== null) {
+				document.getElementById("myDropdowniconPurchase").style.display = "none"
+			}
+		}
+	});
 
   async function fetchOption() {
     await post({ "ID": 9, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')

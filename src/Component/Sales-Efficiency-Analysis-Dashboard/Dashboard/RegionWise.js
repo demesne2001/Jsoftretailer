@@ -40,7 +40,7 @@ export default function RegionWise() {
 	function handleclick(e) {
 		
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
-			
+			console.log(e.target.id,"options");
 			setflag(e.target.id)
 		}
 		else{
@@ -84,17 +84,13 @@ export default function RegionWise() {
 		document.getElementById("myDropdowniconregion").style.display === "block" ? document.getElementById("myDropdowniconregion").style.display = "none" : document.getElementById("myDropdowniconregion").style.display = "block";
 	}
 
-	window.onclick = function (event) {
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconregion').style.display = 'none'
-			// console.log("hii");
-			if (document.getElementsByClassName("dropdown-contenticon")[3] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[3].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconregion") !== null) {
+				document.getElementById("myDropdowniconregion").style.display = "none"
 			}
-
 		}
-	}
-
+	});
 	function handleNavigation() { 
 		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise" , filterKey : "strRegionID",chartId : 4} })
 	}
@@ -157,7 +153,7 @@ export default function RegionWise() {
 
 								{/* {flag === 'bar' ? <><a id='bar' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >lollipop chart </a><hr className='custom-hr' /></>} */}
 							    {flag === 'polarArea' ? <><a id='polarArea' >polar area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >polar area</a><hr className='custom-hr' /></>}
-								{flag === 'donut' ? <><a id='donut' >donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >donut</a><hr className='custom-hr' /></>}
+								{flag === 'donut' ? <><a id='donut' >donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >donut</a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>	
 							</div>
 							<i class="fas fa-external-link-alt"></i>

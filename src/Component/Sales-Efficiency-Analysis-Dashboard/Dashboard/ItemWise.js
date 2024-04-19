@@ -163,16 +163,13 @@ export default function ItemWise() {
 		document.getElementById("myDropdowniconitem").style.display === "block" ? document.getElementById("myDropdowniconitem").style.display = "none" : document.getElementById("myDropdowniconitem").style.display = "block";
 	}
 
-	window.onclick = function (event) {
-		if (!event.target.matches('.dropbtn')) {
-			document.getElementById('myDropdowniconitem').style.display = 'none'
-			// console.log("hii");
-			if (document.getElementsByClassName("dropdown-contenticon")[4] !== undefined) {
-				document.getElementsByClassName("dropdown-contenticon")[4].style.display = "none";
+	document.getElementById("root").addEventListener("click", function (event) {
+		if (event.target.className !== 'dropbtn') {
+			if (document.getElementById("myDropdowniconitem") !== null) {
+				document.getElementById("myDropdowniconitem").style.display = "none"
 			}
-
 		}
-	}
+	});
 
 	function handleNavigation() { 
 		navigate('/graph-detail', { state: { grouping: "d.itemID,d.ItemName", columnName: "ItemName", columnID: "itemID", componentName: "Item Group Wise",filterKey : "strItem",chartId : 7} })

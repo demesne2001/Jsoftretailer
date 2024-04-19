@@ -84,26 +84,148 @@ const options = {
         }
         
     },
-    responsive: [{
-        breakpoint: 593,
-        options: {
-            legend: {
-                show: true,
-                floating: true,
-                fontSize: '15px',
-                position: 'left',
-                offsetX: 10,
-                offsetY: 7,
-                labels: {
-                    useSeriesColors: true,
+    responsive: [
+        {
+            breakpoint: 1801,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 70,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
                 },
-                markers: {
-                    width: 0,
-                    height: 0
-                }
             },
         },
-    }]
+        {
+            breakpoint: 1706,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 20,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
+                },
+            },
+        },
+        {
+            breakpoint: 768,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 200,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
+                },
+            },
+        },
+        {
+            breakpoint: 732,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 150,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
+                },
+            },
+        },
+        {
+            breakpoint: 593,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 100,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
+                },
+            },
+        },
+        {
+            breakpoint: 529,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 50,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
+                },
+            },
+        },
+        {
+            breakpoint: 402,
+            options: {
+                legend: {
+                    show: true,
+                    floating: true,
+                    fontSize: '15px',
+                    position: 'left',
+                    offsetX: 0,
+                    offsetY: 7,
+                    labels: {
+                        useSeriesColors: true,
+                    },
+                    markers: {
+                        width: 0,
+                        height: 0
+                    }
+                },
+            },
+        },
+]
 
 }
 return options
