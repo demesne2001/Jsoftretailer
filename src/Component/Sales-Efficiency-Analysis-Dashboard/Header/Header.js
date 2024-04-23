@@ -15,6 +15,9 @@ import * as htmlToImage from 'html-to-image';
 import reactSelect from "react-select";
 import download from 'downloadjs';
 import { MultiSelect } from "react-multi-select-component";
+import { json } from "react-router-dom";
+
+
 
 // import Commonmodel from '../../CommonModel/CommanModal';
 
@@ -33,7 +36,7 @@ export default function Header() {
     ["strPurchaseParty"]: contexData.tempstate["strPurchaseParty"],
     ["strSalesParty"]: contexData.tempstate["strSalesParty"],
     ["strSaleman"]: contexData.tempstate["strSaleman"],
-    ["strProduct"]: contexData.tempstate["strProduct"].slice(0, -1),
+    ["strProduct"]: contexData.tempstate["strProduct"],
     ["strDesignCatalogue"]: contexData.tempstate["strDesignCatalogue"],
     ["strSaleAging"]: contexData.tempstate["strSaleAging"].slice(0, -1),
     ["strModeofSale"]: contexData.tempstate["strModeofSale"],
@@ -48,11 +51,13 @@ export default function Header() {
 
 
   const [filterFlag, setFIlterFlag] = useState(false);
-  const [fullScreenFlag, setFullscreenFlag] = useState(false);
+  
 
   const [file, setfile] = useState('');
   let res
-  const [count, setCount] = useState(1000)
+
+  const [count, setCount] = useState(uuidv4())
+  
   const conponentPDF = useRef(null);
 
   const [postData, setPostData] = useState({
@@ -308,9 +313,11 @@ export default function Header() {
   }
 
 
-
-  // console.log(currentDate)
-
+  function uuidv4() {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    );
+  }
 
 
   async function getSyncDate() {
@@ -328,7 +335,8 @@ export default function Header() {
       // console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
       var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
       var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-      // console.log("hii", res.data.lstResult);
+      console.log("hii", res.data.lstResult);
+     
       var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
       // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
       // console.log('TempDatabefore', TempDataID)
@@ -454,6 +462,7 @@ export default function Header() {
     let temp1 = [];
 
     post(postData, API.GetMetalType, {}, "post").then((res) => {
+      console.log(res.data.lstResult, "api");
       for (let index = 0; index < res.data.lstResult.length; index++) {
         temp1.push({
           label: res.data.lstResult[index].MetalTypeDesc,
@@ -482,8 +491,10 @@ export default function Header() {
     if (selectData.name === 'MetalTypeSelect') {
 
       setDefaultMetalType(e);
-      contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e.value, ['strMetalTypeValue']: e.label });
+      console.log(e,"DATA12");
+      contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e[0].value, ['strMetalTypeValue']: e[0].label });
     } else {
+      console.log(e,"DATA13");
       setDefaultDayBook(e);
       contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: e.value, ['strDayBookValue']: e.label });
     }
@@ -497,11 +508,15 @@ export default function Header() {
 
   async function downloadPdfDocument() {
     var nameArray = []
+    document.getElementById("downloadPdf").disabled = true
+    
     document.getElementById('pdf-div').style.display = "block";
 
     await htmlToImage.toPng(document.getElementById('rootElementId'))
       .then(function (dataUrl) {
+
         setCount(count + 1)
+
         var name = count.toString() + "Dashboard";
 
         // console.log('dataUrl', dataUrl)
@@ -530,9 +545,11 @@ export default function Header() {
             })
               .then((res) => {
                 download(res.data, "JSoftDashboard.pdf")
+                document.getElementById("downloadPdf").disabled = false
               })
               .catch((e) => {
                 console.log(e)
+                document.getElementById("downloadPdf").disabled = false
               })
 
           });
@@ -546,9 +563,20 @@ export default function Header() {
   }
 
   function handleApplyFilter() {
-    console.log('FILTER DATA', FilterData)
-    contexData.SetState(FilterData);
-    handleOnClose();
+
+    if (JSON.stringify(contexData.state) !== JSON.stringify(contexData.tempstate)){
+      console.log('FILTER DATA', contexData.tempstate)
+
+      contexData.SetState(FilterData);  
+      handleOnClose();
+    }
+
+    else{
+      handleOnClose();  
+    }
+
+    // contexData.SetState(FilterData);
+    // handleOnClose();
   }
 
   function handleDesignCommanModal() {
@@ -780,6 +808,7 @@ export default function Header() {
 
   }
 
+  
   return (
     <>
       <header className="crancy-header">
@@ -848,7 +877,7 @@ export default function Header() {
                           <li className="geex-content__header__quickaction__item">
                             <div
                               className="geex-content__header__quickaction__link crancy-header__alarm top-header-icon"
-                              id="crancy-header__full"
+                              id="Currency_Button"
                             >
                               <div className="button-open">
                                 {localStorage.getItem("value") === "" ||
@@ -962,7 +991,7 @@ export default function Header() {
                               </a>
                             </div>
                           </li>
-                          <button className="fa-solid fa-file-pdf" onClick={downloadPdfDocument} > </button>
+                          <button id="downloadPdf" className="fa-solid fa-file-pdf" onClick={downloadPdfDocument} > </button>
                           <li className="geex-content__header__quickaction__item">
                             <div
                               className="geex-content__header__quickaction__link crancy-header__alarm top-header-icon"

@@ -19,7 +19,8 @@ export default function SubItemWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   let inputdata = contexData.state;
-
+  const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
   const [flag, setflag] = useState()
   const ChartType = "bar"
   const [optionId,setOptionId] = useState()
@@ -98,7 +99,12 @@ export default function SubItemWise() {
         }
         setName(name)
         setweight(weight)
-
+        setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
         var j = []
         for (let index = 0; index < sale.length; index++) {
           j.push({ ...sale[index], ['color']: gradientArray[index] })
@@ -111,7 +117,7 @@ export default function SubItemWise() {
 
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "e.subitemID,e.subItemName", columnName: "subItemName", columnID: "subitemID", componentName: " Sub-Item Wise",filterKey : "strSubItem",chartId : 6 } })
+    navigate('/graph-detail', { state: { grouping: "e.subitemID,e.subItemName", columnName: "subItemName", columnID: "subitemID", componentName: " Sub-Item Wise",filterKey : "strSubItem",chartId : 6 }, replace:true  })
   }
 
 
@@ -195,8 +201,10 @@ export default function SubItemWise() {
         </div>
 
 
-        {weight.length !== 0 ?
-        <div className="crancy-progress-card card-contain-graph">
+
+      {dataloader !== true ?
+					loader !== true ?
+          <div className="crancy-progress-card card-contain-graph">
           {/* <ReactApexChart options={options} series={series} type="polarArea" height={390} /> */}
           {/* <RoundedBar/> */}
 
@@ -223,19 +231,24 @@ export default function SubItemWise() {
               })}
 
             </table> : null}
-        </div>:
-        <div className="crancy-progress-card card-contain-graph" >
-        <div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-        </div>
-      </div> }
+        </div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
       </div>
     </div>
   )

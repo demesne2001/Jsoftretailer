@@ -50,7 +50,7 @@ export default function StockAnalysis() {
   const [tag, settag] = useState()
   const [loose, setloose] = useState()
   let inputdata = contexData.state;
-
+  
   useEffect(() => {
     getdata()
   }, [inputdata])

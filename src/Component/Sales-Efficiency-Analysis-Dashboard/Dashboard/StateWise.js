@@ -16,7 +16,8 @@ import '../../Assets/css/Custom.css'
 
 
 export default function StateWise() {
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const contexData = useContext(contex)
 	const [state, setState] = useState([]);
 	const navigate = useNavigate()
@@ -77,6 +78,12 @@ export default function StateWise() {
 				setState(name)
 				setName(name1)
 				setweight(weight)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				// console.log("statewise", name)
 				// console.log("statewise Service", series);
 				inputdata = { ...inputdata, ['Grouping']: '' }
@@ -116,7 +123,7 @@ export default function StateWise() {
 		}
 	});
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 } })
+		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -206,7 +213,7 @@ export default function StateWise() {
 
 
 
-				{weight.length !== 0 ?
+				{/* {weight.length !== 0 ?
 					<>
 						<div className="crancy-progress-card card-contain-graph">
 
@@ -214,6 +221,32 @@ export default function StateWise() {
 							{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
 						</div>
 						<div id="html-dist"></div></> :
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				} */}
+				{dataloader !== true ?
+					loader !== true ?
+						<>
+							<div className="crancy-progress-card card-contain-graph">
+
+								{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}
+								{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
+							</div>
+							<div id="html-dist"></div></> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
 					<div className="crancy-progress-card card-contain-graph">
 						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
 							<div class="dot-spinner__dot"></div>

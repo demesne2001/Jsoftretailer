@@ -26,7 +26,8 @@ export default function PurchasePartyWise() {
 
   const navigate = useNavigate()
   const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
-
+  const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
   const [imagearr, setImageArr] = useState([])
   const [sales, setSales] = useState([])
   const [flag, setflag] = useState()
@@ -59,7 +60,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9 } })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9 }, replace:true  })
   }
 
 
@@ -171,6 +172,12 @@ export default function PurchasePartyWise() {
         setName(name)
         setweight(weight)
         setSales(j)
+        setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
         // console.log("itemgroup", weight);
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
@@ -288,7 +295,7 @@ export default function PurchasePartyWise() {
             <a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
           </div> */}
         </div>
-        {weight.length !== 0 ?
+        {/* {weight.length !== 0 ?
           <div className="crancy-progress-card card-contain-graph">
 
 
@@ -331,7 +338,57 @@ export default function PurchasePartyWise() {
               <div class="dot-spinner__dot"></div>
               <div class="dot-spinner__dot"></div>
             </div>
-          </div> }
+          </div> } */}
+          {dataloader !== true ?
+					loader !== true ?
+          <div className="crancy-progress-card card-contain-graph">
+
+
+
+          {flag === 'bar'
+            ?
+            <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
+            : null}
+          {flag === 'barl'
+            ?
+            <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
+            : null}
+          {flag === 'heatmap' ?
+            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+              <tr>
+                <th>DesignCode</th>
+                <th>FineWt</th>
+              </tr>
+
+
+              {sales.map((data) => {
+                return (
+                  <tr >
+                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+                  </tr>
+                )
+              })}
+
+            </table> : null}
+        </div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
       </div>
     </div>
   )

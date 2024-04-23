@@ -59,7 +59,7 @@ export default function Header_detailed() {
 
         const element2 = document.getElementsByClassName("crancy-adashboard")[0];
         element2.classList.remove("crancy-close");
-        navigate('/')
+        navigate('/Home',{replace:true})
     }
 
     function handleNavbar() {

@@ -1,38 +1,151 @@
-export function ModeofSales_donut(name){
-
+export default function ModeofSales_donut(name){
     const options = {
+        stroke: {
+            width: 0,
+        },
+
         chart: {
-          toolbar: {
+            type: 'donut',
+            animations: {
+                enabled: true,
+                easing: 'easein',
+            },
+            // toolbar: {
+            // 	show: true,
+            // 	offsetX: 0,
+            // 	offsetY: 0,
+            // 	tools: {
+            // 		download: true,
+            // 	},
+
+            // },
+        },
+
+    
+
+        dataLabels: {
+            opacity: 0.9,
+            dropShadow: {
+                enabled: true,
+                top: 1,
+                left: 1,
+                blur: 1,
+                color: '#000',
+                opacity: 0.6
+            },
+            enabled: true,
+            formatter: function (val, opts) {
+                return (val.toFixed(2)) + '%'
+            },
+            style: {
+                fontSize: '14px',
+                fontFamily: 'Helvetica, Arial, sans-serif',
+                fontWeight: 100,
+                colors: ['#fff'],
+
+            },
+            background: {
+                enabled: false,
+            }
+
+        },
+        tooltip: {
+            enabled: false,
+            y: {
+                formatter: function (val) {
+                    return (parseFloat(val).toFixed(2)).toString() + "%"
+                }
+            }
+        },
+
+
+        fill: {
+            type: 'solid',
+            opacity: 2
+        },
+
+        legend: {
             show: true,
+            floating: false,
+            fontSize: '13px',
+            position: 'bottom',
             offsetX: 0,
             offsetY: 0,
-            tools: {
-              download: true,
+            labels: {
+                useSeriesColors: true,
             },
-    
-          },
-          type: 'donut',
+            markers: {
+                width: 12,
+                height: 12
+            }
         },
-        colors: ['#51bde4','#265cb9','#00e396'],
-        legend: {
-          position: 'bottom'
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 300
-            },
-          }
-        }],
-        plotOptions: {
-          pie: {
-            startAngle: -90,
-            endAngle: 90,
-            offsetY: 10
-          }
-      },
-      labels : name
-    }
 
+        labels: name,
+
+        responsive: [
+            {
+                breakpoint: 850,
+                options: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        ],
+
+        plotOptions: {
+            pie: {
+                customScale: 0.9,
+                donut: {
+                    labels: {
+                        offsetY: 0,
+                        startAngle: 0,
+                        endAngle: 360,
+                        hollow: {
+                            size: '10%',
+                        },
+                        show: true,
+                        name: {
+                            show: true,
+                            fontSize: '20px',
+                            fontFamily: 'Helvetica, Arial, sans-serif',
+                            fontWeight: 600,
+                            color: undefined,
+                            offsetY: 0,
+                            formatter: function (val) {
+                                return val
+                            }
+                        },
+                        value: {
+                            show: true,
+                            fontSize: '18px',
+                            fontFamily: 'Helvetica, Arial, sans-serif',
+                            fontWeight: 400,
+                            color: undefined,
+                            offsetY: 16,
+                            formatter: function (val) {
+                                return (parseFloat(val).toFixed(2)).toString() + "%"
+                            }
+                        },
+                    },
+               
+                    total: {
+                        show: true,
+                        showAlways: true,
+                        label: 'Total',
+                        fontSize: '22px',
+                        fontFamily: 'Helvetica, Arial, sans-serif',
+                        fontWeight: 600,
+                        color: '#373d3f',
+                        formatter: function (w) {
+                          return w.globals.seriesTotals.reduce((a, b) => {
+                            return a + b
+                          }, 0)
+                        }
+                    },
+                }
+            }
+        }
+    }
+    return options
 }

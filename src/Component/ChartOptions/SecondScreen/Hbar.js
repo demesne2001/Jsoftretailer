@@ -1,39 +1,39 @@
 import { useContext } from "react"
 
 
-export function secondScreen_hbar(name , contexData , id , filterKey){
-    
-    
+export function secondScreen_hbar(name, contexData, id, filterKey) {
+
+
 
 
     const options = {
         chart: {
             type: 'bar',
             height: 350,
-            events:{
-                dataPointSelection:(event,chartContex,config)=>{
-                   
-                    
-                    // contexData.setDefaultChart({...contexData.defaultchart,["strBranch"] : config.w.config.xaxis.categories[config.dataPointIndex] })
-                //   console.log(id[config.dataPointIndex])
-                  if(id[config.dataPointIndex] === null){
-                    // console.log('INSIDE NULL')
-                    contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : '-' })
-                  }
-                  else{
-                    contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : id[config.dataPointIndex].toString() })
-                  }
+            events: {
+                dataPointSelection: (event, chartContex, config) => {
 
-                   
-                   
-                    
+
+                    // contexData.setDefaultChart({...contexData.defaultchart,["strBranch"] : config.w.config.xaxis.categories[config.dataPointIndex] })
+                    //   console.log(id[config.dataPointIndex])
+                    if (id[config.dataPointIndex] === null) {
+                        // console.log('INSIDE NULL')
+                        contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '-' })
+                    }
+                    else {
+                        contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: id[config.dataPointIndex].toString() })
+                    }
+
+
+
+
                     // console.log(config.w.config.xaxis.categories[config.dataPointIndex])
                     // console.log('CONTEX DATA',contexData.setDefaultChart)
 
                     // console.log(config.w.config.series[0].data[config.dataPointIndex],config.w.config.xaxis.categories[config.dataPointIndex])
-    
+
                 }
-              }
+            }
         },
         plotOptions: {
             bar: {
@@ -59,7 +59,19 @@ export function secondScreen_hbar(name , contexData , id , filterKey){
                 }
             }
         },
-        
+        tooltip: {
+            x: {
+                formatter: function (val) {
+                    return val
+                }
+            },
+            y: {
+                formatter: function (val) {
+                    return val
+                }
+            }
+        },
+
         responsive: [
             {
                 breakpoint: 850,
@@ -67,8 +79,24 @@ export function secondScreen_hbar(name , contexData , id , filterKey){
                     legend: {
                         position: "bottom"
                     }
+                },
+                breakpoint: 415,
+                options: {
+                    
+                    xaxis: {
+                        categories: name,
+                        labels:{
+                            style: {
+                                fontSize: "8px",
+    
+                            }
+                        
+                        }
+                        
+
+                    },
                 }
-            }
+            },
         ],
     }
     return options

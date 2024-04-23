@@ -86,8 +86,8 @@ export default function MonthWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   let inputdata = contexData.state;
-
-
+  const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
   const [flag, setflag] = useState()
   const ChartType = "bar"
   const [optionId,setOptionId] = useState()
@@ -136,13 +136,19 @@ export default function MonthWise() {
         }
         setName(name)
         setweight(weight)
+        setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
 
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise",filterKey : "strItemSubitem",chartId : 14} })
+    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise",filterKey : "strItemSubitem",chartId : 14}, replace:true  })
   }
 
 
@@ -233,7 +239,7 @@ export default function MonthWise() {
 					</div> */}
 
         </div>
-        {weight.length !== 0 ?
+        {/* {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
 
           {flag === 'bar'
@@ -256,7 +262,37 @@ export default function MonthWise() {
 					<div class="dot-spinner__dot"></div>
 					<div class="dot-spinner__dot"></div>
 				</div>
-			</div>}
+			</div>} */}
+      {dataloader !== true ?
+					loader !== true ?
+          <div className="crancy-progress-card card-contain-graph">
+
+          {flag === 'bar'
+            ?
+            <ReactApexChart options={options_bar} series={series} type={demo} height={390} />
+            : null}
+          {flag === 'area'
+            ?
+            <ReactApexChart options={options_area} series={series} type={demo} height={390} />
+            : null}
+        </div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
       </div>
     </div>
   )

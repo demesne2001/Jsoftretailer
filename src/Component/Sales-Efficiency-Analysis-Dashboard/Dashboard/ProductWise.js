@@ -14,12 +14,12 @@ import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductWise() {
-
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
-	const [optionId,setOptionId] = useState()
+	const [optionId, setOptionId] = useState()
 	const navigate = useNavigate()
 	let inputdata = contexData.state;
 
@@ -30,22 +30,22 @@ export default function ProductWise() {
 	}]
 
 	const [flag, setflag] = useState()
-	const ChartType="bar"
+	const ChartType = "bar"
 
 	const [sales, setSales] = useState([])
 
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
 	function handleclick(e) {
-		
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
+
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
-		else{
+		else {
 			// console.log("NOT UPDATING OPTIOJN")
 		}
-		
+
 	}
 
 
@@ -57,7 +57,7 @@ export default function ProductWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'i.ProductId,i.ProductName' }
-		// console.log(inputdata);
+		console.log(inputdata,"inputPro");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -85,6 +85,12 @@ export default function ProductWise() {
 				}
 				setName(name)
 				setweight(weight)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				var j = []
 				for (let index = 0; index < sale.length; index++) {
 					j.push({ ...sale[index], ['color']: gradientArray[index] })
@@ -106,7 +112,7 @@ export default function ProductWise() {
 	// }
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise",filterKey : "strProduct",chartOptionId : 12 } })
+		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise", filterKey: "strProduct", chartId: 12 }, replace: true })
 	}
 
 
@@ -132,40 +138,40 @@ export default function ProductWise() {
 		}
 	}
 
-	async function fetchOption(){
-		await post({ "ID": 12	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+	async function fetchOption() {
+		await post({ "ID": 12, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
-		.then((res)=>{
-			if(res.data.lstResult.length === 0){
-				setflag(ChartType)
-				// console.log('FIRST TIME API CALLED')
-				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 12,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-				.then((res)=>{
+			.then((res) => {
+				if (res.data.lstResult.length === 0) {
+					setflag(ChartType)
+					// console.log('FIRST TIME API CALLED')
+					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 12, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+						.then((res) => {
 
-					post({ "ID": 12	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
-          .then((res)=>{
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-          })
-					alert(res.data.Message)
-				})
+							post({ "ID": 12, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+								.then((res) => {
+									setOptionId(res.data.lstResult[0].ChartOptionID)
+								})
+							alert(res.data.Message)
+						})
 
-			}
-			else{
-        setOptionId(res.data.lstResult[0].ChartOptionID)
-				setflag(res.data.lstResult[0].ChartOption) 
-			}
-			
-		})	
+				}
+				else {
+					setOptionId(res.data.lstResult[0].ChartOptionID)
+					setflag(res.data.lstResult[0].ChartOption)
+				}
+
+			})
 	}
 
-	async function addEditOption(){
-		
-		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 12	,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-		.then((res)=>{
-			document.getElementById('myDropdowniconproduct').style.display = 'none'
-			alert(res.data.Message)
-			
-		})
+	async function addEditOption() {
+
+		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 12, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+			.then((res) => {
+				document.getElementById('myDropdowniconproduct').style.display = 'none'
+				alert(res.data.Message)
+
+			})
 	}
 
 
@@ -205,8 +211,10 @@ export default function ProductWise() {
 						<a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
 					</div> */}
 				</div>
-				{weight.length !== 0 ?
-				<div class="crancy-progress-card card-contain-graph">
+			
+					{dataloader !== true ?
+					loader !== true ?
+					<div class="crancy-progress-card card-contain-graph">
 
 					{/* <ParentSize>{({ width, height }) => <Radialbar width={width} height={350} />}</ParentSize> */}
 
@@ -235,19 +243,24 @@ export default function ProductWise() {
 						</table>
 
 						: null}
-				</div>:
-				<div className="crancy-progress-card card-contain-graph">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-				</div>
-			</div>}
+				</div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	)

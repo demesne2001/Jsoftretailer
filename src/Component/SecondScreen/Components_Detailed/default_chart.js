@@ -41,6 +41,8 @@ export default function Default_chart(props) {
                     if (res.data.lstResult[i][props.graph.column] !== null) {
                         
 
+                        console.log("IF inside loop")
+
                         name.push(res.data.lstResult[i][props.graph.column]);
                         weg.push(res.data.lstResult[i]['FineWt']);
                     }
@@ -63,6 +65,7 @@ export default function Default_chart(props) {
         data: weight
     }]
     const options = {
+
         chart: {
             type: 'bar',
             height: 350
@@ -103,6 +106,33 @@ export default function Default_chart(props) {
                 }
             }
         },
+        
+        responsive: [
+            {
+                breakpoint: 850,
+                options: {
+                    legend: {
+                        position: "bottom"
+                    }
+                },
+                breakpoint: 415,
+                options: {
+                    
+                    xaxis: {
+                        categories: name,
+                        labels:{
+                            style: {
+                                fontSize: "8px",
+    
+                            }
+                        
+                        }
+                        
+
+                    },
+                }
+            },
+        ],
     }
 
     function flip() {
@@ -120,9 +150,14 @@ export default function Default_chart(props) {
 
     return (
         <div>
-            <div class="title-top-graphdetail-withoutcolor">
+            {/* <div class="title-top-graphdetail-withoutcolor">
                 <h5>{props.graph.componentName}<button class="fa-solid fa-retweet" id='FlipDefaultChart' ></button></h5>
+            </div> */}
+
+            <div class="title-top-graphdetail-withoutcolor">
+                <h5>{props.graph.componentName}</h5>
             </div>
+
 
             {/* <div class="flip-card">
                 <div class="flip-card-inner" id='filp'>

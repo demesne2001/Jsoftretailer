@@ -11,10 +11,8 @@ import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 
 export default function SalesAgingWise() {
-
-
-
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
@@ -27,7 +25,7 @@ export default function SalesAgingWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
@@ -62,7 +60,12 @@ export default function SalesAgingWise() {
 				}
 				setName(name)
 				setweight(weight)
-
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
@@ -367,7 +370,7 @@ export default function SalesAgingWise() {
 
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging",chartId : 16} })
+		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging", chartId: 16 }, replace: true })
 	}
 
 
@@ -385,7 +388,7 @@ export default function SalesAgingWise() {
 	});
 
 	async function fetchOption() {
-		await post({ "ID": 16 , "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+		await post({ "ID": 16, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
@@ -394,7 +397,7 @@ export default function SalesAgingWise() {
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
 
-							post({ "ID": 16	, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+							post({ "ID": 16, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 								.then((res) => {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
@@ -456,22 +459,45 @@ export default function SalesAgingWise() {
             <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
           </div> */}
 				</div>
-				{weight.length !== 0 ?
-				<div class="crancy-progress-card card-contain-graph">
+				{/* {weight.length !== 0 ?
+					<div class="crancy-progress-card card-contain-graph">
 
-					<ReactApexChart options={options} series={series} height={390} />
-				</div>:<div className="crancy-progress-card card-contain-graph">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-				</div>
-			</div>}
+						<ReactApexChart options={options} series={series} height={390} />
+					</div> : <div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>} */}
+				{dataloader !== true ?
+					loader !== true ?
+						<div class="crancy-progress-card card-contain-graph">
+
+							<ReactApexChart options={options} series={series} height={390} />
+						</div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	)

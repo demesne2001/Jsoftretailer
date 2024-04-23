@@ -24,7 +24,8 @@ export default function DesignCatalogueWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   let inputdata = contexData.state;
-
+  const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
   const [flag, setflag] = useState()
   const ChartType="donut"
   const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
@@ -90,6 +91,12 @@ export default function DesignCatalogueWise() {
         }
         setName(name)
         setweight(weight)
+        setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
         var j = []
         for (let index = 0; index < sale.length; index++) {
           j.push({ ...sale[index], ['color']: gradientArray[index] })
@@ -112,7 +119,7 @@ export default function DesignCatalogueWise() {
 
 
   function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise",filterKey : "strDesignCatalogue",chartId :13} })
+		navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise",filterKey : "strDesignCatalogue",chartId :13}, replace:true  })
 	}
 
 
@@ -200,7 +207,7 @@ export default function DesignCatalogueWise() {
             <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
           </div> */}
         </div>
-        {weight.length !== 0 ?
+        {/* {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
           {flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} /> : null}
           {flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} /> : null}
@@ -238,7 +245,52 @@ export default function DesignCatalogueWise() {
 					<div class="dot-spinner__dot"></div>
 					<div class="dot-spinner__dot"></div>
 				</div>
-			</div>}
+			</div>} */}
+      {dataloader !== true ?
+					loader !== true ?
+          <div className="crancy-progress-card card-contain-graph">
+          {flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} /> : null}
+          {flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} /> : null}
+          {flag === 'donut' ? <ReactApexChart options={options_donut} type={flag} series={series1} height={350} /> : null}
+
+          {flag === 'heatmap' ?
+
+            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+              <tr>
+                <th>DesignNo</th>
+                <th>FineWt</th>
+              </tr>
+
+
+              {sales.map((data) => {
+                return (
+                  <tr >
+                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+                  </tr>
+                )
+              })}
+
+            </table> : null
+          }
+        </div>:
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
       </div>
     </div>
   )

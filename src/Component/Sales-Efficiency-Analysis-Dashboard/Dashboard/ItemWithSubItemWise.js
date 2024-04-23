@@ -20,7 +20,8 @@ export default function ItemWithSubItemWise() {
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const [flag, setflag] = useState()
 	const ChartType="bar"
 	const [optionId,setOptionId] = useState()
@@ -93,6 +94,12 @@ export default function ItemWithSubItemWise() {
 					sale.push(js)
 
 				}
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				setName(name)
 				setweight(weight)
 				var j = []
@@ -110,7 +117,7 @@ export default function ItemWithSubItemWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item With Sub Item Wise",filterKey : "strItemSubitem",chartId :7 } })
+		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item With Sub Item Wise",filterKey : "strItemSubitem",chartId :7 },replace:true  })
 	  }
 
 	  async function fetchOption(){
@@ -184,7 +191,7 @@ export default function ItemWithSubItemWise() {
 
 					
 				</div>
-				{weight.length !== 0 ?
+				{/* {weight.length !== 0 ?
 				<div className="crancy-progress-card card-contain-graph">
 
 					{flag === 'bar' ?
@@ -220,7 +227,51 @@ export default function ItemWithSubItemWise() {
 							<div class="dot-spinner__dot"></div>
 							<div class="dot-spinner__dot"></div>
 						</div>
-					</div> }
+					</div> } */}
+					{dataloader !== true ?
+					loader !== true ?
+					<div className="crancy-progress-card card-contain-graph">
+
+					{flag === 'bar' ?
+						<ReactApexChart options={options_bar} series={series} type="bar" height={330} />
+						: null}
+					{flag === 'barv' ? <ReactApexChart options={options_vbar} series={series} type="bar" height={330} /> : null}
+					{flag === 'heatmap' ?
+						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+							<tr>
+								<th>ItemWithSubItemWise</th>
+								<th>FineWt</th>
+							</tr>
+
+
+							{sales.map((data) => {
+								return (
+									<tr >
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+									</tr>
+								)
+							})}
+
+						</table> : null}
+				</div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	)

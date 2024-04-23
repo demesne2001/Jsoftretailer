@@ -200,7 +200,8 @@ export default function YearWise() {
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const [optionId, setOptionId] = useState()
 	const [flag, setflag] = useState()
 	const ChartType = "kpi"
@@ -249,7 +250,12 @@ export default function YearWise() {
 				}
 				setName(name)
 				setweight(weight)
-
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
@@ -455,7 +461,7 @@ export default function YearWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 } })
+		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 }, replace:true  })
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
@@ -519,9 +525,9 @@ export default function YearWise() {
 
 							<div id="myDropdowniconyear" className="dropdown-contenticon" onClick={handleclick}>
 
-								{flag === 'kpi' ? <><a id='kpi' className='donut'>KPI chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='kpi' className='donut'>KPI chart</a><hr className='custom-hr' /></>}
+								{flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
 								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
-								{flag === 'donut' ? <><a id='donut' className='donut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Semi Donut</a><hr className='custom-hr' /></>}
+								{flag === 'semiDonut' ? <><a id='semiDonut' className='semiDonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semiDonut' className='semiDonut'>Semi Donut</a><hr className='custom-hr' /></>}
 
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
@@ -538,11 +544,11 @@ export default function YearWise() {
 						<a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
 					</div> */}
 				</div>
-				{weight.length !== 0 ?
+				{/* {weight.length !== 0 ?
 					<div className="crancy-progress-card card-contain-graph">
-						{flag === 'kpi' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
+						{flag === 'donut' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
 						{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
-						{flag === 'donut' ? <ReactApexChart options={options_semidonut} series={series2} type={flag} height={350} /> : null}
+						{flag === 'semiDonut' ? <ReactApexChart options={options_semidonut} series={series2} type='donut' height={350} /> : null}
 					</div> :
 					<div className="crancy-progress-card card-contain-graph">
 						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
@@ -555,7 +561,31 @@ export default function YearWise() {
 							<div class="dot-spinner__dot"></div>
 							<div class="dot-spinner__dot"></div>
 						</div>
-					</div>}
+					</div>} */}
+					{dataloader !== true ?
+					loader !== true ?
+					<div className="crancy-progress-card card-contain-graph">
+					{flag === 'donut' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
+					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
+					{flag === 'semiDonut' ? <ReactApexChart options={options_semidonut} series={series2} type='donut' height={350} /> : null}
+				</div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	)

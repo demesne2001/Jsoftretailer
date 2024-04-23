@@ -287,6 +287,7 @@ function Commonmodel(props) {
         var stringNameConvert = multicheckName.toString()
         // console.log(stringConvert, stringNameConvert);
         // props.setvalues({ ...props.valuesform, [props.modelprops.labelname]: stringConvert })
+        console.log(props.modelprops['labelname'],"common");
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: stringConvert, [props.modelprops['LabelValue']]: stringNameConvert, ['FilterIndex']: props.modelprops.FilterIndex })
         contextSetparam.setchildFilterShow(false)
         setmulticheck([])

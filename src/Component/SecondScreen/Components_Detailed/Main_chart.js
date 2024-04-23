@@ -22,14 +22,15 @@ export default function Main_chart(props) {
     const [data, setdata] = useState([])
     const [flag, setFlag] = useState('bar')
     const [flagShowId, setFlagShowId] = useState(true)
+    // const [tableFlag, setTableFlag] = useState(false)
     const [componentName, setComponentName] = useState('')
     let input = contextData.state;
 
-    
 
 
-    const options_hbar = secondScreen_hbar(name,contextData,id,props.state.filterKey)
-    const options_donut = secondScreen_donut(name,contextData,id,props.state.filterKey)
+
+    const options_hbar = secondScreen_hbar(name, contextData, id, props.state.filterKey)
+    const options_donut = secondScreen_donut(name, contextData, id, props.state.filterKey)
     // const options_radialbar = secondScreen_radial(name)
 
     const series_bar = [{
@@ -108,6 +109,11 @@ export default function Main_chart(props) {
 
     }
 
+    // function tableView() {
+
+        // setTableFlag(true)
+    // }
+
     function handleChartSelect(e) {
         setFlag(e.target.id)
     }
@@ -126,18 +132,18 @@ export default function Main_chart(props) {
 
     // }
 
-    function handleFullDiv(e) {
+    // function handleFullDiv(e) {
 
-        if (document.getElementsByClassName("flip-card")[0].style.height == "600px") {
+    //     if (document.getElementsByClassName("flip-card")[0].style.height == "600px") {
 
-            document.getElementsByClassName("flip-card")[0].style.height = "390px"
-            document.getElementsByClassName("graphdetailcards graphdetail-firstcard")[0].style.height = "390px"
-        }
-        else {
-            document.getElementsByClassName("flip-card")[0].style.height = "600px"
-            document.getElementsByClassName("graphdetailcards graphdetail-firstcard")[0].style.height = "600px"
-        };
-    }
+    //         document.getElementsByClassName("flip-card")[0].style.height = "390px"
+    //         document.getElementsByClassName("graphdetailcards graphdetail-firstcard")[0].style.height = "390px"
+    //     }
+    //     else {
+    //         document.getElementsByClassName("flip-card")[0].style.height = "600px"
+    //         document.getElementsByClassName("graphdetailcards graphdetail-firstcard")[0].style.height = "600px"
+    //     };
+    // }
 
     function handledropdownMenu() {
         document.getElementById("myDropdowniconSecondScreen").style.display === "block" ? document.getElementById("myDropdowniconSecondScreen").style.display = "none" : document.getElementById("myDropdowniconSecondScreen").style.display = "block";
@@ -151,14 +157,18 @@ export default function Main_chart(props) {
             }
         }
     }
-
+    
     return (
         <div>
 
             <div class="title-top-graphdetail">
                 <h5>
                     {componentName}
+
                     <button class="fa-solid fa-retweet" style={{ float: 'right' }} onClick={flip} />
+
+                    {/* <i class="fa-light fa-table" style={{ float: 'right' }} onClick={tableView} /> */}
+
                     {/* <button class="fas fa-expand-alt" style={{ float: 'right' }} onClick={handleFullDiv} /> */}
                     <button id='dropdownbutton' class="fa-solid fa-ellipsis-vertical" style={{ float: 'right' }} onClick={handledropdownMenu} ></button>
                 </h5>
@@ -168,16 +178,82 @@ export default function Main_chart(props) {
 
                 {flag === 'bar' ? <><a id='bar'> Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar'>Bar</a><hr className='custom-hr' /> </>}
                 {flag === 'donut' ? <><a id='donut'>Donut &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Donut</a><hr className='custom-hr' /></>}
-                
+
                 {/* {flag === 'radialBar'} ?<><a id='radialBar'>Radial Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr'/></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr'/></> */}
 
             </div>
-            
-            <div class="flip-card">
-                <div class="flip-card-inner" id='filp'>
-                    <div class="flip-card-front">
+
+
+
+
+            {/* <div class="graphdetailcards graphdetail-firstcard">
+
+                {tableFlag ?
 
                     <div className="tableScroll">
+                        <table class="table table-striped table-bordered" >
+                            {flagShowId === true ?
+                                <><thead>
+                                    <td>ID</td>
+                                    <td>NAME</td>
+                                    <td>WEIGHT</td>
+                                </thead></> :
+                                <><thead>
+                                    <td>NAME</td>
+                                    <td>WEIGHT</td>
+                                </thead></>}
+
+                            <tbody>
+                                {flagShowId === true ? data.map((ele) => {
+                                    return (
+                                        <>
+                                            <tr>
+                                                <td>{ele[props.state.columnID]}</td>
+                                                <td>{ele[props.state.columnName]}</td>
+                                                <td>{ele['FineWt']}</td>
+                                            </tr>
+                                        </>
+                                    )
+                                }) : data.map((ele) => {
+                                    return (
+                                        <>
+                                            <tr>
+                                                <td>{ele[props.state.columnName]}</td>
+                                                <td>{ele['FineWt']}</td>
+                                            </tr>
+                                        </>
+                                    )
+                                })}
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    :
+
+                    <div class="">
+                        {flag === 'bar' ?
+                            <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={600} />
+                            : null}
+                        {flag === 'donut' ?
+                            <ReactApexChart options={options_donut} series={series_donut} type="donut" height={600} />
+                            : null}
+
+                    </div>
+
+
+                }
+
+            </div> */}
+
+
+            
+                <div class="flip-card">
+
+                    <div class="flip-card-inner" id='filp'>
+                        <div class="flip-card-front">
+
+                            <div className="tableScroll">
                                 <table class="table table-striped table-bordered" >
                                     {flagShowId === true ?
                                         <><thead>
@@ -215,20 +291,22 @@ export default function Main_chart(props) {
 
                                 </table>
                             </div>
-                        
-                    </div>
-                    <div class="flip-card-back">
-                        <div class="">                          
-                          {flag === 'bar' ?
-                              <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={580}/>
-                              : null}
-                          {flag === 'donut' ?
-                              <ReactApexChart options={options_donut} series={series_donut} type="donut" height={580}/>
-                              : null}                            
+
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="">
+                                {flag === 'bar' ?
+                                    <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={600} />
+                                    : null}
+                                {flag === 'donut' ?
+                                    <ReactApexChart options={options_donut} series={series_donut} type="donut" height={600} />
+                                    : null}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+            
         </div>
     )
 }

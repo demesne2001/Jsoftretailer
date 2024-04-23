@@ -14,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function CityWise() {
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
@@ -95,7 +96,12 @@ export default function CityWise() {
 				}
 				setName(name)
 				setweight(weight)
-
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				var j = []
 				for (let index = 0; index < sale.length; index++) {
 					j.push({ ...sale[index], ['color']: gradientArray[index] })
@@ -123,7 +129,7 @@ export default function CityWise() {
 		console.log(document.getElementById("myDropdowniconcity").style.display);
 	}
 
-	
+
 	document.getElementById("root").addEventListener("click", function (event) {
 		if (event.target.className !== 'dropbtn') {
 			if (document.getElementById("myDropdowniconcity") !== null) {
@@ -133,7 +139,7 @@ export default function CityWise() {
 	});
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity", chartId: 3 } })
+		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity", chartId: 3 }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -205,7 +211,7 @@ export default function CityWise() {
 				</div>
 
 
-				{weight.length !== 0 ?
+				{/* {weight.length !== 0 ?
 					<div className="crancy-progress-card card-contain-graph">
 
 						{flag === 'bar' ?
@@ -235,6 +241,54 @@ export default function CityWise() {
 							</table> : null}
 
 					</div> :
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				} */}
+				{dataloader !== true ?
+					loader !== true ?
+						<div className="crancy-progress-card card-contain-graph">
+
+							{flag === 'bar' ?
+								<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
+								: null}
+							{flag === 'barl' ?
+								<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
+								: null}
+
+							{flag === 'heatmap' ?
+								<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+									<tr>
+										<th>Citywise</th>
+										<th>FineWt</th>
+									</tr>
+
+
+									{sales.map((data) => {
+										return (
+											<tr >
+												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+											</tr>
+										)
+									})}
+
+								</table> : null}
+
+						</div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
 					<div className="crancy-progress-card card-contain-graph">
 						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
 							<div class="dot-spinner__dot"></div>

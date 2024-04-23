@@ -71,7 +71,8 @@ export default function SalesPartyWise() {
 	// const [weight, setweight] = useState([])
 	const [sales, setSales] = useState([])
 	let inputdata = contexData.state;
-
+	const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 
@@ -91,7 +92,7 @@ export default function SalesPartyWise() {
 
 	function handleclick(e) {
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ) {
+		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
 			// console.log('Updationg option')
 			setflag(e.target.id)
 		}
@@ -149,6 +150,12 @@ export default function SalesPartyWise() {
 				setName(name)
 				setweight(weight)
 				setSales(j)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
@@ -187,7 +194,7 @@ export default function SalesPartyWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "AccountName", columnID: "accountID", componentName: "Sales Party Wise", filterKey: "strSalesParty",chartId : 10 } })
+		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "AccountName", columnID: "accountID", componentName: "Sales Party Wise", filterKey: "strSalesParty", chartId: 10 }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -240,7 +247,7 @@ export default function SalesPartyWise() {
 					<div className="col-sm-2 col-md-2 col-2">
 						<div className='btnicons'>
 							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
-							
+
 							<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map</a><hr className='custom-hr' /></>}
@@ -263,47 +270,96 @@ export default function SalesPartyWise() {
 						<a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
 					</div> */}
 				</div>
-				{weight.length !== 0 ?
-				<div className="crancy-progress-card card-contain-graph">
-					{flag === 'bar'
-						?
-						<ReactApexChart options={options_bar} series={series} type={demo} height={350} />
-						: null}
-					{flag === 'barl'
-						?
-						<ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
-						: null}
-					{flag === 'heatmap' ?
-						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-							<tr>
-								<th>AccountName</th>
-								<th>FineWt</th>
-							</tr>
+				{/* {weight.length !== 0 ?
+					<div className="crancy-progress-card card-contain-graph">
+						{flag === 'bar'
+							?
+							<ReactApexChart options={options_bar} series={series} type={demo} height={350} />
+							: null}
+						{flag === 'barl'
+							?
+							<ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
+							: null}
+						{flag === 'heatmap' ?
+							<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+								<tr>
+									<th>AccountName</th>
+									<th>FineWt</th>
+								</tr>
 
 
-							{sales.map((data) => {
-								return (
-									<tr >
-										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-									</tr>
-								)
-							})}
+								{sales.map((data) => {
+									return (
+										<tr >
+											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+										</tr>
+									)
+								})}
 
-						</table> : null}
-				</div>:
-				<div className="crancy-progress-card card-contain-graph">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-				</div>
-			</div> }
+							</table> : null}
+					</div> :
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>} */}
+
+				{dataloader !== true ?
+					loader !== true ?
+						<div className="crancy-progress-card card-contain-graph">
+							{flag === 'bar'
+								?
+								<ReactApexChart options={options_bar} series={series} type={demo} height={350} />
+								: null}
+							{flag === 'barl'
+								?
+								<ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
+								: null}
+							{flag === 'heatmap' ?
+								<div style={{height:'380PX',overflow:'auto'}}>
+									<table align='center' rules='rows' border='white' style={{ border: 'white', overflow: 'auto' }}>
+										<tr>
+											<th>AccountName</th>
+											<th>FineWt</th>
+										</tr>
+
+
+										{sales.map((data) => {
+											return (
+												<tr >
+													<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+													<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+												</tr>
+											)
+										})}
+
+									</table></div> : null}
+						</div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
 			</div>
 		</div>
 	)

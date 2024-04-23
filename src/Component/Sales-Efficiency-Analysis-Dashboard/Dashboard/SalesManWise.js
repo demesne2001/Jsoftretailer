@@ -13,7 +13,8 @@ import drop from '../../Assets/img/svg/dropdown.svg'
 import { useNavigate } from 'react-router-dom';
 
 export default function SalesManWise() {
-
+  const [loader, setLoader] = useState(true)
+	const [dataloader, setdataLoader] = useState(true)
   // const contexData = useContext(contex)
 
   // let seriesData = [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
@@ -100,7 +101,7 @@ export default function SalesManWise() {
   }, [imagearr])
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman",chartId : 11 } })
+    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman",chartId : 11 },replace:true  })
   }
 
   async function getdata() {
@@ -122,6 +123,12 @@ export default function SalesManWise() {
         }
         setName(name)
         setweight(weight)
+        setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
         // console.log("itemgroup", weight);
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
@@ -369,7 +376,7 @@ export default function SalesManWise() {
           </div>
 
         </div>
-        {weight.length !== 0 ?
+        {/* {weight.length !== 0 ?
         <div className="crancy-progress-card card-contain-graph">
           <ReactApexChart options={options} series={series} type="bar" height={350} />
         </div>:
@@ -384,7 +391,29 @@ export default function SalesManWise() {
 					<div class="dot-spinner__dot"></div>
 					<div class="dot-spinner__dot"></div>
 				</div>
-			</div>}
+			</div>} */}
+      {dataloader !== true ?
+					loader !== true ?
+          <div className="crancy-progress-card card-contain-graph">
+          <ReactApexChart options={options} series={series} type="bar" height={350} />
+        </div> :
+						<div className="crancy-progress-card card-contain-graph"  >
+							Not Found
+						</div>
+					:
+					<div className="crancy-progress-card card-contain-graph">
+						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+							<div class="dot-spinner__dot"></div>
+						</div>
+					</div>
+				}
       </div>
     </div>
   )

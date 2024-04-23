@@ -491,9 +491,6 @@ select {
   background-color: #e3e9ed;
 }
 
-.flip-card:hover .flip-card-inner {
-  /* transform: rotateY(180deg); */
-}
 
 /* Position the front and back side */
 .flip-card-front,
@@ -551,12 +548,22 @@ select {
   margin-right: 20px;
   color: #094876;
   background: none;
+
+  
 }
 
 .tableScroll {
+  
+  flex: 1;
+  
+  overflow-y: scroll;
+  
+  /* height: 600px; */
+}
+
+.table-table-striped-table-bordered{
   flex: 1;
   overflow-y: scroll;
-  /* height: 650px; */
 }
 
 .fas.fa-external-link-alt {
@@ -907,7 +914,7 @@ button.dropbtn .value_name {
   outline: none;
   font-weight: 300;
   font-size: 0.9rem;
-  color: #333;
+  color: #333333;
   background-color: white;
 }
 .form-group1 {
@@ -935,10 +942,5 @@ button.dropbtn .value_name {
   font-weight: 300;
   font-size: 0.9rem;
 }
-
-
-
-
-
 
 
