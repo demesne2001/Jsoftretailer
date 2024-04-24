@@ -171,6 +171,7 @@ function Commonmodel(props) {
     }
 
     function AddDefaultColumn() {
+        console.log({ "ID": props.modelprops.grid, vendorID: 1, UserID: 1 },"filter123");
         post({ "ID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.GetFilterGridByID, {}, "post").then((res) => {
             // console.log(res, " ");
             if (res.data.lstResult.length === 0) {
@@ -185,6 +186,7 @@ function Commonmodel(props) {
                         // setColumn([props.modelprops.name]);
                     })
                 } else {
+                    console.log("column",{ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 });
                     post({ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
                         // console.log('IF IF ', res1);
                         // setColumn([props.modelprops.name]);
@@ -287,7 +289,7 @@ function Commonmodel(props) {
         var stringNameConvert = multicheckName.toString()
         // console.log(stringConvert, stringNameConvert);
         // props.setvalues({ ...props.valuesform, [props.modelprops.labelname]: stringConvert })
-        console.log(props.modelprops['labelname'],"common");
+        console.log(props.modelprops['labelname'], "common");
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: stringConvert, [props.modelprops['LabelValue']]: stringNameConvert, ['FilterIndex']: props.modelprops.FilterIndex })
         contextSetparam.setchildFilterShow(false)
         setmulticheck([])
@@ -346,7 +348,7 @@ function Commonmodel(props) {
 
             setScrollTop(scrollRatio);
             console.log(scrollRatio);
-            
+
             if (scrollRatio > 0.9) {
                 setLoaderScroll(true)
                 if (multicheck.length === finalAllitem.length) {
@@ -385,8 +387,11 @@ function Commonmodel(props) {
             axios.post(props.modelprops.api, input)
                 .then((response) => {
                     // console.log(response.data.lstResult)
-                    setfinalitem(response.data.lstResult)
+                    if (response.data.lstResult !== undefined) {
+                        setfinalitem(response.data.lstResult)
+                    }
                     setLoader(false)
+
                     // console.log(response);
                 })
                 .catch(error => console.error(error))
@@ -602,8 +607,8 @@ function Commonmodel(props) {
                                                         )}
                                                     </tbody>
                                                 </Table>}{loaderScroll === true ? <div class="spinner-grow text-primary" style={{ marginLeft: '45%' }} role="status">
-                                                <span class="sr-only">Loading...</span>
-                                            </div> :null}
+                                                    <span class="sr-only">Loading...</span>
+                                                </div> : null}
                                         </div>
 
                                     </div>

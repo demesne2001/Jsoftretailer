@@ -86,7 +86,7 @@ export default function StockAnalysis() {
         </div>
         <div className="crancy-progress-card4 top-contant-top-card">
           <div className="crancy-progress-card__content">
-            <h4 className="crancy-progress-card__title">{thousandSeparated(tag)}</h4>
+            <h4 className="crancy-progress-card__title">₹ {thousandSeparated(tag)}</h4>
             <div className="crancy-progress-card__history">
               <span>(Tag Stock)</span>
             </div>
@@ -98,7 +98,7 @@ export default function StockAnalysis() {
         </div>
         <div className="crancy-progress-card4 top-contant-botton-card">
           <div className="crancy-progress-card__content">
-            <h4 className="crancy-progress-card__title">{thousandSeparated(loose)}</h4>
+            <h4 className="crancy-progress-card__title">₹ {thousandSeparated(loose)}</h4>
             <div className="crancy-progress-card__history">
               <span>(Losse Stock)</span>
             </div>

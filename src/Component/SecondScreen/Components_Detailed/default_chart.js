@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import { useState, useEffect, useContext } from 'react';
@@ -10,7 +10,7 @@ export default function Default_chart(props) {
     const contextData = useContext(contex);
     const [name, setName] = useState([])
     const [weight, setweight] = useState([])
-    
+    const checkref = useRef(null)
     const [data, setdata] = useState([])
     let input = contextData.defaultchart;
 
@@ -182,7 +182,7 @@ export default function Default_chart(props) {
                 <div class="topimg-gd">
                     <ReactApexChart options={options} series={series} type="bar" height={450} />
                 </div>
-            </div>:
+            </div>
 			
         </div>
     )

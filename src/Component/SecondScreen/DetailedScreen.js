@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header_detailed from './Components_Detailed/Header_detailed';
@@ -20,7 +20,7 @@ import img7 from '../Assets/image/slider/Ring12.png';
 import img8 from '../Assets/image/slider/Ring13.png';
 import img9 from '../Assets/image/slider/Ring14.png';
 import img10 from '../Assets/image/slider/Ring15.png';
-import Default_chart from './Components_Detailed/default_chart';
+import Default_chart from './Components_Detailed/Default_chart';
 import API from '../Utility/API';
 import post from '../Utility/APIHandle';
 import { elements } from 'chart.js';
@@ -34,10 +34,9 @@ export default function DetailedScreen() {
     const location = useLocation()
     const [graph, setGraph] = useState("") // passed as props to handle the component name , grouping and collum name from api
     const [mainChartProps, setMainChartProps] = useState(location.state)
-
     const [chartGroupId, setChartGroupId] = useState() // To fetch api data 
     const [chartGroup, setChartGroup] = useState() // To check and uncheck default button and add selected effect on slider
-
+    const [defaultGroup, setdefaultGroup] = useState()
     if (location.state.chartId > 1) {
         defaultChartGroup = {
             "group": "a.BranchID,b.BranchName",
@@ -53,8 +52,6 @@ export default function DetailedScreen() {
             "componentName": "Item Wise"
         }
     }
-
-
 
 
     const settings = {
@@ -127,19 +124,22 @@ export default function DetailedScreen() {
 
 
     function handleOnLink(str) {
-
+    
         console.log('Onclick on data', str)
         showSelectedSlider(str.componentName)
-
-        console.log('CHART GROUP AND CLICK CHART GROUP', chartGroup, str.group)
+        console.log('aaaa',  str.group)
+        console.log('bbb',chartGroup);
         if (chartGroup === str.group) {
-            // document.getElementById("DefaultCheckBoxSeconScreen").checked = true; 
+            console.log("true in click");
+            setGraph(str)
+            document.getElementById("DefaultCheckBoxSeconScreen").checked = true; 
         }
 
         else {
             document.getElementById("DefaultCheckBoxSeconScreen").checked = false;
             setGraph(str)
-            setChartGroup(str.group)
+            setdefaultGroup(str.group)
+
         }
     }
 
@@ -178,7 +178,7 @@ export default function DetailedScreen() {
                     setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
                     setChartGroupId(res.data.lstResult[0].ChartGroupID)
                     setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
-
+                   
                     showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
 
 
@@ -195,7 +195,7 @@ export default function DetailedScreen() {
         // console.log('Chart GROUP ',chartGroupId)
         // console.log('GRAPH ',graph)
 
-        
+        setChartGroup(defaultGroup)
         // console.log({ "ChartGroupID": chartGroupId,"ChartGroup": chartGroup,"ChartID": location.state.chartOptionId,"vendorID": 1,"UserID": 1})
         console.log({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 },"addedit");
         post({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')

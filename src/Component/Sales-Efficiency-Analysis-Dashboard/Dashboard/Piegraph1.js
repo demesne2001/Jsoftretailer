@@ -75,6 +75,17 @@ export default function Piegraph1() {
               fontSize: '12px',
               fontFamily: 'Helvetica, Arial, sans-serif',
               fontWeight: 600,
+            },
+            total: {
+              show: true,
+              label: 'Total',
+              formatter: function (w) {
+                return w.globals.seriesTotals.reduce((a, b) => {
+                  console.log((a),(b));
+                  var ans = -parseFloat(a)-parseFloat(b);
+                  return parseFloat(ans).toFixed(2)
+                }, 0)
+              }
             }
           }
         }

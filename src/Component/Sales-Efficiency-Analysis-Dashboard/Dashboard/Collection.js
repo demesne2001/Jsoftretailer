@@ -142,7 +142,7 @@ export default function Collection() {
                 </div>
                 <div className="crancy-progress-card3 top-contant-botton-card">
                     <div className="crancy-progress-card__content">
-                        <h4 className="crancy-progress-card__title">{format(costAmount)}</h4>
+                        <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4>
                         <div className="crancy-progress-card__history">
                             <span>(Bank Recepit)</span>
                         </div>
@@ -154,6 +154,5 @@ export default function Collection() {
                 </div>
             </div>
         </div>
-
     )
 }

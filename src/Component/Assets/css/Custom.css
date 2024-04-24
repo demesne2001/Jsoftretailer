@@ -299,14 +299,14 @@ select {
 
 .dropdown-contenticon-second-screen {
   display: none;
-  position: absolute;
+  position: fixed;
   background-color: #fafafa;
   min-width: 160px;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 999;
   margin-top: 10px;
-  margin-left: 55%;
+  margin-left: 34%;
   border-radius: 20px;
   color: black;
 }
@@ -551,7 +551,7 @@ select {
 
   
 }
-
+/* 
 .tableScroll {
   
   flex: 1;
@@ -559,7 +559,7 @@ select {
   overflow-y: scroll;
   
   /* height: 600px; */
-}
+/* } */ */
 
 .table-table-striped-table-bordered{
   flex: 1;
@@ -669,6 +669,7 @@ select {
   color: #fff;
   text-align: center;
   padding: 10px;
+  overflow: auto;
 }
 
 .input-group-text {

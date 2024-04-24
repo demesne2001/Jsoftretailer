@@ -146,7 +146,7 @@ export default function SalesEfficiency() {
                 </div>
                 <div className="crancy-progress-card1 top-contant-botton-card">
                     <div className="crancy-progress-card__content">
-                        <h4 className="crancy-progress-card__title">{format(costAmount)}</h4>
+                        <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4>
                         <div className="crancy-progress-card__history">
                             <span>(83.43% Sold)</span>
                         </div>

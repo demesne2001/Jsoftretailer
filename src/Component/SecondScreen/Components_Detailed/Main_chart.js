@@ -165,12 +165,12 @@ export default function Main_chart(props) {
                 <h5>
                     {componentName}
 
-                    <button class="fa-solid fa-retweet" style={{ float: 'right' }} onClick={flip} />
+                    <button class="fa-solid fa-retweet" style={{ float: 'right', height:'10px' }} onClick={flip} />
 
                     {/* <i class="fa-light fa-table" style={{ float: 'right' }} onClick={tableView} /> */}
 
                     {/* <button class="fas fa-expand-alt" style={{ float: 'right' }} onClick={handleFullDiv} /> */}
-                    <button id='dropdownbutton' class="fa-solid fa-ellipsis-vertical" style={{ float: 'right' }} onClick={handledropdownMenu} ></button>
+                    <button id='dropdownbutton' class="fa-solid fa-ellipsis-vertical" style={{right:'64px', height:'10px', position:'absolute' }} onClick={handledropdownMenu} ></button>
                 </h5>
             </div>
 
@@ -294,12 +294,12 @@ export default function Main_chart(props) {
 
                         </div>
                         <div class="flip-card-back">
-                            <div class="">
+                            <div class="" style={{height:'600px'}}>
                                 {flag === 'bar' ?
                                     <ReactApexChart options={options_hbar} series={series_bar} type="bar" height={600} />
                                     : null}
                                 {flag === 'donut' ?
-                                    <ReactApexChart options={options_donut} series={series_donut} type="donut" height={600} />
+                                    <ReactApexChart options={options_donut} series={series_donut} type="donut" height={600}/>
                                     : null}
                             </div>
                         </div>

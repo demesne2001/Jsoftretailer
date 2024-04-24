@@ -59,7 +59,8 @@ export function ItemGroup_RadialBar(name) {
                   label: 'Total',
                   formatter: function (w) {
                     return w.globals.seriesTotals.reduce((a, b) => {
-                      return a + b
+                      var ans = a+b;
+                      return parseFloat(ans).toFixed(2)
                     }, 0)
                   }
                 }

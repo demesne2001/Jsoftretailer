@@ -22,10 +22,11 @@ export function ItemWithSubItemWise_bar(name) {
             enabled: true,
             textAnchor: 'start',
             style: {
-                colors: ['black']
+                colors: ['black'],
+                fontWeight: '10'
             },
             formatter: function (val, opt) {
-                return opt.w.globals.labels[opt.dataPointIndex] + ":" + val
+                return opt.w.globals.labels[opt.dataPointIndex] 
             },
             // offsetX: 0,
             // offsetY: 0,

@@ -24,6 +24,7 @@ import { json } from "react-router-dom";
 export default function Header() {
   const [fullscreen, setFullScreen] = useState(false);
   const contexData = useContext(contex);
+  const metaltypeRef = useRef(null);
   let FilterData = {
     ...contexData.tempstate,
     ["strBranch"]: contexData.tempstate["strBranch"],
@@ -38,7 +39,7 @@ export default function Header() {
     ["strSaleman"]: contexData.tempstate["strSaleman"],
     ["strProduct"]: contexData.tempstate["strProduct"],
     ["strDesignCatalogue"]: contexData.tempstate["strDesignCatalogue"],
-    ["strSaleAging"]: contexData.tempstate["strSaleAging"].slice(0, -1),
+    ["strSaleAging"]: contexData.tempstate["strSaleAging"],
     ["strModeofSale"]: contexData.tempstate["strModeofSale"],
     ["strTeamModeofSale"]: contexData.tempstate["strTeamModeofSale"],
     ["FromDate"]: contexData.tempstate["FromDate"],
@@ -51,13 +52,13 @@ export default function Header() {
 
 
   const [filterFlag, setFIlterFlag] = useState(false);
-  
+
 
   const [file, setfile] = useState('');
   let res
 
   const [count, setCount] = useState(uuidv4())
-  
+
   const conponentPDF = useRef(null);
 
   const [postData, setPostData] = useState({
@@ -178,8 +179,8 @@ export default function Header() {
     12: [
       "strModeofSale",
       API.GetModeOfSalesWise,
-      "ModeOfSaleID",
-      "ModeOfSaleName",
+      "ChallanGenerateTypeID",
+      "ChallanGenerateType",
       "strModeofSaleValue",
       12,
     ],
@@ -252,7 +253,7 @@ export default function Header() {
 
   useEffect(() => {
     getSyncDate()
-    contexData.SettempState({ ...contexData.tempstate, ["ToDate"]: currentDate, ["FromDate"]: currentDate })
+    contexData.SettempState({ ...contexData.tempstate, ["ToDate"]: currentDate })
     handleDaybook();
     handleMetaltype();
   }, [])
@@ -330,33 +331,34 @@ export default function Header() {
 
   function FetchDataDependentAPI(input, FilterIndex) {
     // console.log("FetchDataDependentAPI", contexData.tempstate[dependentfilter[FilterIndex][4]]);
-    post(input, dependentfilter[FilterIndex][1], [], 'post').then((res) => {
+    post(input, dependentfilter[FilterIndex][1], {}, 'post').then((res) => {
       // console.log("response", res);
       // console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
       var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
       var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-      console.log("hii", res.data.lstResult);
-     
-      var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
-      // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
-      // console.log('TempDatabefore', TempDataID)
-      // console.log('resultID', resultID)
-      // console.log("contexData.tempstate before", contexData.tempstate);
-      var temarrayID = []
-      var temparryValue = []
-      for (let index = 0; index < TempDataID.length; index++) {
-        console.log('delete before log', resultID.indexOf(TempDataID[index]), TempDataID[index])
-        if (resultID.indexOf(TempDataID[index]) >= 0) {
-          console.log('delete index', TempDataID[index])
-          // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
-          // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
-          // delete TempDataID[index]
-          // delete TempDataValue[index]
-          temparryValue.push(TempDataValue[index])
-          temarrayID.push(TempDataID[index])
+      console.log(res,"res+header");
+      if (res.data !== undefined) {
+        console.log("hii", res.data.lstResult);
+        var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
+        // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
+        // console.log('TempDatabefore', TempDataID)
+        // console.log('resultID', resultID)
+        // console.log("contexData.tempstate before", contexData.tempstate);
+        var temarrayID = []
+        var temparryValue = []
+        for (let index = 0; index < TempDataID.length; index++) {
+          console.log('delete before log', resultID.indexOf(TempDataID[index]), TempDataID[index])
+          if (resultID.indexOf(TempDataID[index]) >= 0) {
+            console.log('delete index', TempDataID[index])
+            // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
+            // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
+            // delete TempDataID[index]
+            // delete TempDataValue[index]
+            temparryValue.push(TempDataValue[index])
+            temarrayID.push(TempDataID[index])
+          }
         }
       }
-
 
       // console.log('TempData After', temarrayID)
 
@@ -490,11 +492,17 @@ export default function Header() {
 
     if (selectData.name === 'MetalTypeSelect') {
 
-      setDefaultMetalType(e);
-      console.log(e,"DATA12");
-      contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e[0].value, ['strMetalTypeValue']: e[0].label });
+
+      if (e.length !== 0) {
+        setDefaultMetalType(e);
+        contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e[0].value, ['strMetalTypeValue']: e[0].label });
+      } else {
+        // contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
+        // setDefaultMetalType([])
+      }
+      console.log(e, "DATA12");
     } else {
-      console.log(e,"DATA13");
+      console.log(e, "DATA13");
       setDefaultDayBook(e);
       contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: e.value, ['strDayBookValue']: e.label });
     }
@@ -509,7 +517,7 @@ export default function Header() {
   async function downloadPdfDocument() {
     var nameArray = []
     document.getElementById("downloadPdf").disabled = true
-    
+
     document.getElementById('pdf-div').style.display = "block";
 
     await htmlToImage.toPng(document.getElementById('rootElementId'))
@@ -564,15 +572,15 @@ export default function Header() {
 
   function handleApplyFilter() {
 
-    if (JSON.stringify(contexData.state) !== JSON.stringify(contexData.tempstate)){
+    if (JSON.stringify(contexData.state) !== JSON.stringify(contexData.tempstate)) {
       console.log('FILTER DATA', contexData.tempstate)
 
-      contexData.SetState(FilterData);  
+      contexData.SetState(FilterData);
       handleOnClose();
     }
 
-    else{
-      handleOnClose();  
+    else {
+      handleOnClose();
     }
 
     // contexData.SetState(FilterData);
@@ -698,15 +706,17 @@ export default function Header() {
     }
   }
   document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn' && event.target.className !== 'fas fa-rupee-sign' && event.target.className !== 'value_name') {
-			if (document.getElementById("myDropdown") !== null) {
-				document.getElementById("myDropdown").style.display = "none"
-			}
-		}
-	});
+    if (event.target.className !== 'dropbtn' && event.target.className !== 'fas fa-rupee-sign' && event.target.className !== 'value_name') {
+      if (document.getElementById("myDropdown") !== null) {
+        document.getElementById("myDropdown").style.display = "none"
+      }
+    }
+  });
 
   function handleOnReset() {
     contexData.SettempState(postData)
+    metaltypeRef.current.clearValue()
+    setDefaultMetalType([])
   }
 
   function handleArrowLeft(str) {
@@ -808,7 +818,7 @@ export default function Header() {
 
   }
 
-  
+
   return (
     <>
       <header className="crancy-header">
@@ -1117,6 +1127,7 @@ export default function Header() {
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"
                                 isMulti
+                                ref={metaltypeRef}
                                 options={MetalType}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
@@ -1504,7 +1515,7 @@ export default function Header() {
                       />
                     </div>
                   </div>
-
+{/* 
                   <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                     <div class="card-filter-contain">
                       <i class="fas fa-stream"></i>
@@ -1520,12 +1531,12 @@ export default function Header() {
 															<option value="four">Four</option>
 														</select>
 													</div> */}
-                      <input
+                      {/* <input
                         value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
                         onClick={() => HandleOnClickComman(13)}
                       />
                     </div>
-                  </div>
+                  </div>  */}
 
                   <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                     <div class="card-filter-contain">
