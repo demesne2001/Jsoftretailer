@@ -39,6 +39,7 @@ function Commonmodel(props) {
         strItemSubitem: "",
         strPurchaseParty: "",
         strSalesParty: "",
+        strDesignCodeID:"",
         strSaleman: "",
         strProduct: "",
         strDesignCatalogue: "",
@@ -378,7 +379,7 @@ function Commonmodel(props) {
         var input = { ...search, ['PageSize']: 80 }
         // console.log("api", props.modelprops.api)
         delete input.undefined
-        console.log(search, "input");
+        console.log(input, "input");
         if (props.modelprops.api !== undefined) {
             // console.log("search", input)
             // console.log("api", props)
@@ -386,7 +387,8 @@ function Commonmodel(props) {
             // console.log("hii");
             axios.post(props.modelprops.api, input)
                 .then((response) => {
-                    // console.log(response.data.lstResult)
+
+                    console.log(props.modelprops.api,"COMMONMODALINUY")
                     if (response.data.lstResult !== undefined) {
                         setfinalitem(response.data.lstResult)
                     }

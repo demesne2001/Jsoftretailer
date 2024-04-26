@@ -24,23 +24,30 @@ export default function BranchWise() {
 	let inputdata = contexData.state;
 	const navigate = useNavigate()
 	const [flag, setflag] = useState()
-
+	const [flagSort, setflagSort] = useState('')
+	let column = inputdata['column'];
+	// const [, setflag] = useState()
 	const [optionId, setOptionId] = useState()
-
 	const [sales, setSales] = useState([])
 	const ChartType = "donut"
-
-
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
-
-
 	useEffect(() => {
+		document.getElementById("downloadExcel").style.pointerEvents = "none";
+		document.getElementById("downloadExcel").style.color = "#7ca6c7";
 		fetchOption()
+		
 		getdata()
 	}, [inputdata])
 
+	useEffect(() => {
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
+
 
 	const series = handleSeriesData()
+	const series_donut = weight
 	const options_donut = BranchWise_donut(name)
 
 	const options_radialbar = BranchWise_Radial(name)
@@ -70,21 +77,25 @@ export default function BranchWise() {
 	function handleSeriesData() {
 		let percarray = []
 		let sum = 0;
+		console.log(column, "column");
+		if (column === 'NetWeight') {
+			for (let i = 0; i < weight.length; i++) {
+				sum += weight[i];
+			}
 
-		for (let i = 0; i < weight.length; i++) {
-			sum += weight[i];
+			for (let index = 0; index < weight.length; index++) {
+				percarray.push((weight[index] / sum) * 100)
+			}
+			return percarray
+		} else {
+			return weight
 		}
-
-		for (let index = 0; index < weight.length; index++) {
-			percarray.push((weight[index] / sum) * 100)
-		}
-		return percarray
 
 	}
 
 
 	async function getdata() {
-		inputdata = { ...inputdata, ['Grouping']: 'a.BranchID,b.BranchName' }
+		inputdata = { ...inputdata, ['Grouping']: 'a.BranchID,b.BranchName',['SortByLabel']:'BranchName' }
 		console.log("INPUT ", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -95,7 +106,7 @@ export default function BranchWise() {
 				console.log("hi", res.data.lstResult)
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					name1.push(res.data.lstResult[index]['BranchName'])
-					weight1.push(res.data.lstResult[index]['FineWt'])
+					weight1.push(res.data.lstResult[index][inputdata['column']])
 
 					js = { 'product': '', 'thisYearProfit': 0 }
 					if (res.data.lstResult[index]['BranchName'] === null) {
@@ -103,7 +114,7 @@ export default function BranchWise() {
 					} else {
 						js['product'] = res.data.lstResult[index]['BranchName']
 					}
-					js['thisYearProfit'] = res.data.lstResult[index]['FineWt']
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 					sale.push(js)
 				}
@@ -166,6 +177,16 @@ export default function BranchWise() {
 
 	function handleonchangeCurrency() {
 		document.getElementById("myDropdowniconbranch").style.display === "block" ? document.getElementById("myDropdowniconbranch").style.display = "none" : document.getElementById("myDropdowniconbranch").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconbranch') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
 	}
 
 	function handleNavigation() {
@@ -173,13 +194,78 @@ export default function BranchWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconbranch") !== null) {
 				document.getElementById("myDropdowniconbranch").style.display = "none"
+				document.getElementById("sorticonbranch").style.display = "none"
 			}
 		}
-	});
 
+	});
+	// console.log(document.getElementsByClassName('dropdown-contenticon')[0]['id']);
+
+	function handleSorting() {
+		document.getElementById("sorticonbranch").style.display === "block" ? document.getElementById("sorticonbranch").style.display = "none" : document.getElementById("sorticonbranch").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonbranch') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		if (e.target.id !== 'sorticonbranch' && e.target.id !== '') {
+			setflagSort(e.target.id)
+		}
+	}
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': 'BranchName', 'SortBy': flagSort, ['Grouping']: 'a.BranchID,b.BranchName' }
+		console.log(inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let name2 = [];
+			let weight2 = [];
+			let sale = [];
+			var js = {};
+			console.log("hi", res.data.lstResult)
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				name2.push(res.data.lstResult[index]['BranchName'])
+				weight2.push(res.data.lstResult[index][inputdata['column']])
+
+				js = { 'product': '', 'thisYearProfit': 0 }
+				if (res.data.lstResult[index]['BranchName'] === null) {
+					js['product'] = 'null'
+				} else {
+					js['product'] = res.data.lstResult[index]['BranchName']
+				}
+				js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+				sale.push(js)
+			}
+			setName(name2)
+			setweight(weight2)
+			console.log(weight2, "weg");
+			setdataLoader(false)
+			if (weight2.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			var j = []
+			for (let index = 0; index < sale.length; index++) {
+				j.push({ ...sale[index], ['color']: gradientArray[index] })
+			}
+			setSales(j)
+			// console.log("name", name)
+			// console.log("weight", weight);
+			inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
 
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
@@ -194,16 +280,17 @@ export default function BranchWise() {
 					</div>
 
 					<div className="col-xs-4 col-sm-2 col-md-2 col-2" >
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
 
-						<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} ></img>
-						{/* <i class="fa-solid fa-retweet"  onClick={flip}/> */}
-						<i class="fas fa-external-link-alt" />
-
+						<div id="sorticonbranch" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by Branch ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Branch ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Branch DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Branch DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
 						<div className='btnicons'>
-
-
 							<div id="myDropdowniconbranch" className="dropdown-contenticon" onClick={handleclick}>
-
 								{flag === 'donut' ? <><a id='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >Donut</a><hr className='custom-hr' /></>}
 								{flag === 'radialBar' ? <><a id='radialBar'>RadialBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >RadialBar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap'>Heat map&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='heatmap' >Heat map</a><hr className='custom-hr' /> </>}
@@ -220,14 +307,14 @@ export default function BranchWise() {
 					loader !== true ?
 						<div className="crancy-progress-card card-contain-graph" id='flipbranch'>
 
-							{flag === 'donut' ? <ReactApexChart options={options_donut} series={series} height={380} type={flag} /> : null}
+							{flag === 'donut' ? <ReactApexChart options={options_donut} series={series_donut} height={380} type={flag} /> : null}
 							{flag === 'radialBar' ? <ReactApexChart options={options_radialbar} series={series} height={380} type={flag} /> : null}
 							{flag === 'heatmap' ?
 								<div>
 									<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
 										<tr>
 											<th>Branchwise</th>
-											<th>FineWt</th>
+											<th>NetWeight</th>
 										</tr>
 										{sales.map((data) => {
 											return (

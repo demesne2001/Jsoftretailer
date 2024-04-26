@@ -10,7 +10,7 @@ const Filter = Baseurl + 'Filter/'
 const Chart = Baseurl + 'Chart/'
 const Card = Baseurl + 'Card/'
 
-const Common = BaseurlCommon + 'Comman/'
+const Common = Baseurl + 'Common/'
 
 
 const API = {
@@ -38,6 +38,7 @@ const API = {
     GetSalesAging: Filter + 'GetSalesAging',
     GetDayBook: Filter + 'GetDayBook',
     GetMetalType: Filter + 'GetMetalType',
+    Getdesigncode: Filter + 'Getdesigncode',
     GetMonth:Filter+'GetMonth',
     
 
@@ -75,7 +76,7 @@ const API = {
 
     GetChartGroupByID : Chart + 'GetChartGroupByID',
     ChartGroupAddEdit : Chart + 'ChartGroupAddEdit',
-
+    GetDetailChartImage : Chart + 'GetDetailChartImage',
     GetFilterGridByID:Filter + "GetFilterGridByID",   
     FilterGridAddEdit: Filter + "FilterGridAddEdit",
     GetDefaultScreenData:Filter+'GetDefaultScreenData',
@@ -83,7 +84,7 @@ const API = {
     uploadImage : Common + "uploadImage",
     GetPDFUsingImage : Common + "GetPDFUsingImage",
 
-    downloadPdf : BaseurlCommon + "PDF/"
+    downloadPdf : Baseurl + "PDF/"
     
 }
 export default API

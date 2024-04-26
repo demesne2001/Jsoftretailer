@@ -19,115 +19,133 @@ export default function ModeofSalesWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   const [flag, setflag] = useState()
+  const [flagSort, setflagSort] = useState()
   const [optionId, setOptionId] = useState()
   let inputdata = contexData.state;
   const ChartType = "semiDonut"
   const [loader, setLoader] = useState(true)
-	const [dataloader, setdataLoader] = useState(true)
+  const [dataloader, setdataLoader] = useState(true)
   const navigate = useNavigate()
 
 
   useEffect(() => {
-		fetchOption()
-		getdata()
-	}, [inputdata])
+    fetchOption()
+    getdata()
+  }, [inputdata])
+
+  useEffect(() => {
+    fetchSortData()
+  }, [flagSort])
 
   async function fetchOption() {
-		await post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+    await post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
-			.then((res) => {
-				if (res.data.lstResult.length === 0) {
-					setflag(ChartType)
-					// console.log('FIRST TIME API CALLED')
-					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-						.then((res) => {
-							post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-								.then((res) => {
-									setOptionId(res.data.lstResult[0].ChartOptionID)
-								})
+      .then((res) => {
+        if (res.data.lstResult.length === 0) {
+          setflag(ChartType)
+          // console.log('FIRST TIME API CALLED')
+          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+            .then((res) => {
+              post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                .then((res) => {
+                  setOptionId(res.data.lstResult[0].ChartOptionID)
+                })
 
-							alert(res.data.Message)
-						})
+              alert(res.data.Message)
+            })
 
-				}
-				else {
+        }
+        else {
 
-					setOptionId(res.data.lstResult[0].ChartOptionID)
-					setflag(res.data.lstResult[0].ChartOption)
-				}
+          setOptionId(res.data.lstResult[0].ChartOptionID)
+          setflag(res.data.lstResult[0].ChartOption)
+        }
 
-			})
-	}
+      })
+  }
 
-	async function addEditOption() {
+  async function addEditOption() {
 
-		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-			.then((res) => {
+    await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+      .then((res) => {
 
-				document.getElementById('myDropdowniconModeOfSales').style.display = 'none'
-				alert(res.data.Message)
+        document.getElementById('myDropdowniconModeOfSales').style.display = 'none'
+        alert(res.data.Message)
 
-			})
-	}
+      })
+  }
 
-	function handleonchangeCurrency() {
-		document.getElementById("myDropdowniconModeOfSales").style.display === "block" ? document.getElementById("myDropdowniconModeOfSales").style.display = "none" : document.getElementById("myDropdowniconModeOfSales").style.display = "block";
-	}
+  function handleonchangeCurrency() {
+    document.getElementById("myDropdowniconModeOfSales").style.display === "block" ? document.getElementById("myDropdowniconModeOfSales").style.display = "none" : document.getElementById("myDropdowniconModeOfSales").style.display = "block";
+    const tag_array = document.getElementsByClassName('dropdown-contenticon')
+    if (tag_array !== undefined) {
+      for (let i = 0; i < tag_array.length; i++) {
+        console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+        if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconModeOfSales') {
+          document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+        }
+      }
+    }
+  }
 
 
   function handleclick(e) {
 
-		// console.log('Event ID',e.target.id)
+    // console.log('Event ID',e.target.id)
 
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconModeOfSales' && e.target.id !== '') {
-			// console.log('Updationg option')
-			setflag(e.target.id)
-		}
-		else {
-			// console.log("NOT UPDATING OPTIOJN")
-		}
+    if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconModeOfSales' && e.target.id !== '') {
+      // console.log('Updationg option')
+      setflag(e.target.id)
+    }
+    else {
+      // console.log("NOT UPDATING OPTIOJN")
+    }
 
-	}
+  }
 
   document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
-			if (document.getElementById("myDropdowniconModeOfSales") !== null) {
-				document.getElementById("myDropdowniconModeOfSales").style.display = "none"
-			}
-		}
-	});
+    console.log(event.target, "class");
+    if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+      if (document.getElementById("myDropdowniconModeOfSales") !== null) {
+        document.getElementById("myDropdowniconModeOfSales").style.display = "none"
+        document.getElementById("sorticonModeOfScale").style.display = "none"
+      }
+    }
+
+  });
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType' }
+    inputdata = { ...inputdata, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType',['SortByLabel']:'ChallanGenerateType' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
         let name = [];
         let weight = [];
-        // console.log(res.data.lstResult)
+        console.log(res.data)
+       
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
             name.push("null")
           } else {
             name.push(res.data.lstResult[index]['ChallanGenerateType'])
           }
-          weight.push(res.data.lstResult[index]['FineWt'])
+          weight.push(res.data.lstResult[index][inputdata['column']])
         }
         setName(name)
         setweight(weight)
         setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
-				} else {
-					setLoader(true)
-				}
+        if (weight.length !== 0) {
+          setLoader(false)
+        } else {
+          setLoader(true)
+        }
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise", chartId: 17 }, replace:true  })
+    navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise", chartId: 17 }, replace: true })
   }
 
   const series = weight
@@ -186,6 +204,53 @@ export default function ModeofSalesWise() {
   //   },
   //   labels: name
   // }
+
+  function handleSorting() {
+    document.getElementById("sorticonModeOfScale").style.display === "block" ? document.getElementById("sorticonModeOfScale").style.display = "none" : document.getElementById("sorticonModeOfScale").style.display = "block";
+    const tag_array = document.getElementsByClassName('dropdown-contenticon')
+    // console.log(tag_array);
+    if (tag_array !== undefined) {
+      for (let i = 0; i < tag_array.length; i++) {
+        if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonModeOfScale') {
+          document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+        }
+      }
+    }
+  }
+
+  function handleclickSort(e) {
+    if (e.target.id !== 'sorticonModeOfScale' && e.target.id !== '') {
+      setflagSort(e.target.id)
+    }
+  }
+
+  async function fetchSortData() {
+    var inputForSort = { ...inputdata, 'SortByLabel': 'ChallanGenerateType', 'SortBy': flagSort, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType' }
+    console.log(inputForSort);
+    await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+      let name = [];
+      let weight = [];
+      // console.log(res.data.lstResult)
+      for (let index = 0; index < res.data.lstResult.length; index++) {
+        if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
+          name.push("null")
+        } else {
+          name.push(res.data.lstResult[index]['ChallanGenerateType'])
+        }
+        weight.push(res.data.lstResult[index][inputdata['column']])
+      }
+      setName(name)
+      setweight(weight)
+      setdataLoader(false)
+      if (weight.length !== 0) {
+        setLoader(false)
+      } else {
+        setLoader(true)
+      }
+      inputdata = { ...inputdata, ['Grouping']: '' }
+    })
+  }
+
   return (
     <div className="col-lg-6 col-md-6 col-12">
       <div className="graph-card">
@@ -199,9 +264,15 @@ export default function ModeofSalesWise() {
 
           <div className="col-sm-2 col-md-2 col-2" >
 
-            <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} ></img>
-            {/* <i class="fa-solid fa-retweet"  onClick={flip}/> */}
-            <i class="fas fa-external-link-alt" />
+            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+
+            <div id="sorticonModeOfScale" className="dropdown-contenticon" onClick={handleclickSort}>
+              {flagSort === 'Label' ? <><a id='Label'>Sort by ModeOfScale ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by ModeOfScale ASC&nbsp;</a><hr className='custom-hr' /></>}
+              {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by ModeOfScale DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by ModeOfScale DESC&nbsp;</a><hr className='custom-hr' /></>}
+              {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+              {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+            </div>
+            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
 
             <div className='btnicons'>
 
@@ -210,7 +281,7 @@ export default function ModeofSalesWise() {
 
                 {flag === 'semiDonut' ? <><a id='semiDonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semiDonut' >Semi Donut</a><hr className='custom-hr' /></>}
                 {flag === 'donut' ? <><a id='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >Donut</a><hr className='custom-hr' /></>}
-               
+
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 
               </div>
@@ -238,31 +309,31 @@ export default function ModeofSalesWise() {
               <div class="dot-spinner__dot"></div>
             </div>
           </div>} */}
-          {dataloader !== true ?
-					loader !== true ?
+        {dataloader !== true ?
+          loader !== true ?
+            <div className="crancy-progress-card card-contain-graph">
+
+              {flag === 'semiDonut' ? <ReactApexChart options={option_semiDonut} series={series} type="donut" height={390} /> : null}
+              {flag === 'donut' ? <ReactApexChart options={options_donut} series={series} type="donut" height={390} /> : null}
+
+            </div> :
+            <div className="crancy-progress-card card-contain-graph"  >
+              Not Found
+            </div>
+          :
           <div className="crancy-progress-card card-contain-graph">
-
-          {flag === 'semiDonut' ? <ReactApexChart options={option_semiDonut} series={series} type="donut" height={390} /> : null }
-          {flag === 'donut' ? <ReactApexChart options={options_donut} series={series} type="donut" height={390} /> : null }
-
-        </div>  :
-						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
-						</div>
-					:
-					<div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>
-				}
+            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+            </div>
+          </div>
+        }
       </div>
     </div>
   )

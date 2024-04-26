@@ -16,10 +16,12 @@ export default function FilterPrint() {
     strItemGroup: "",
     strItemSubitem: "",
     strPurchaseParty: "",
+    strDesignCodeID: "",
     strSalesParty: "",
     strSaleman: "",
     strProduct: "",
     strDesignCatalogue: "",
+    strDesignCodeID: "",
     strSaleAging: "",
     strModeofSale: "",
     strTeamModeofSale: "",
@@ -78,7 +80,7 @@ export default function FilterPrint() {
           {filter.state['strSubItem'] !== '' ? <tr><td>Sub Item Name</td><td>{filter.state['strSubItemValue']}</td></tr> : null}
           {filter.state['strItemGroup'] !== '' ? <tr><td>Item Group Name</td><td>{filter.state['strItemGroupValue']}</td></tr> : null}
           {filter.state['strItemSubitem'] !== '' ? <tr><td>Item Subitem Name</td><td>{filter.state['strItemSubitemValue']}</td></tr> : null}
-          {filter.state['strPurchaseParty'] !== '' ? <tr><td>Purchase Party Name</td><td>{filter.state['strPurchasePartyValue']}</td></tr> : null}
+          {filter.state['strDesignCodeID'] !== '' ? <tr><td>Purchase Party Name</td><td>{filter.state['strDesignCodeValue']}</td></tr> : null}
 
           {filter.state['strSalesParty'] !== '' ? <tr><td>Sales Party Name</td><td>{filter.state['strSalesPartyValue']}</td></tr> : null}
           {filter.state['strSaleman'] !== '' ? <tr><td>Saleman Name</td><td>{filter.state['strSalemanValue']}</td></tr> : null}

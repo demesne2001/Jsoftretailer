@@ -59,7 +59,7 @@ export default function Header_detailed() {
 
         const element2 = document.getElementsByClassName("crancy-adashboard")[0];
         element2.classList.remove("crancy-close");
-        navigate('/Home',{replace:true})
+        navigate('/Home', { replace: true })
     }
 
     function handleNavbar() {
@@ -134,7 +134,7 @@ export default function Header_detailed() {
                                             <ul class="geex-content__header__quickaction">
                                                 <li class="from-date-to-date-header__quickaction">
                                                     <h5>
-                                                        Synchronize-Date :
+                                                        Last Sync :
                                                         <span class="text-muted"
                                                         >{syncDate}</span
                                                         >

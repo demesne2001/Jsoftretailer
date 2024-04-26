@@ -14,6 +14,7 @@ const ContexState1 = (props) => {
         "strRegionID": "",
         "strItemSubitem": "",
         "strPurchaseParty": "",
+        "strDesignCodeID": "",
         "strSalesParty": "",
         "strSaleman": "",
         "strProduct": "",
@@ -42,6 +43,7 @@ const ContexState1 = (props) => {
         "strRegionID": "",
         "strItemSubitem": "",
         "strPurchaseParty": "",
+        "strDesignCodeID": "",
         "strSalesParty": "",
         "strSaleman": "",
         "strProduct": "",
@@ -59,10 +61,32 @@ const ContexState1 = (props) => {
         "Grouping": ""
     });
 
+    const [chartImage, setchartImage] = useState({
+        "strBranch": "",
+        "strState": "",
+        "strCity": "",
+        "strRegionID": "",
+        "strSubItem": "",
+        "strItem": "",
+        "strItemGroup": "",
+        "strItemSubitem": "",
+        "strDesignCodeID": "",
+        "strSalesParty": "",
+        "strSaleman": "",
+        "strProduct": "",
+        "strDesignCatalog": "",
+        "strSaleAging": "",
+        "strMonth": "",
+        "strFinYear": "",
+        "PageNo": 1,
+        "PageSize": 5
+      });
+
+
 
     return (
 
-        <contex.Provider value={{ state: state, SetState: SetState, defaultchart, setDefaultChart }}>
+        <contex.Provider value={{ state: state, SetState: SetState, defaultchart, setDefaultChart,chartImage, setchartImage }}>
 
             {props.children}
 

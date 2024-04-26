@@ -27,10 +27,11 @@ export default function PurchasePartyWise() {
   const navigate = useNavigate()
   const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
   const [loader, setLoader] = useState(true)
-	const [dataloader, setdataLoader] = useState(true)
+  const [dataloader, setdataLoader] = useState(true)
   const [imagearr, setImageArr] = useState([])
   const [sales, setSales] = useState([])
   const [flag, setflag] = useState()
+  const [flagSort, setflagSort] = useState()
   const ChartType = "donut"
   const [optionId, setOptionId] = useState()
   const [demo, setdemo] = useState("bar")
@@ -60,7 +61,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9 }, replace:true  })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9 }, replace: true })
   }
 
 
@@ -128,13 +129,18 @@ export default function PurchasePartyWise() {
   }, [inputdata])
 
   useEffect(() => {
+    fetchSortData()
+  }, [flagSort])
+
+
+  useEffect(() => {
     imagepoint()
 
   }, [imagearr])
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'g.DesigncodeID,g.DesignCode' }
+    inputdata = { ...inputdata, ['Grouping']: 'g.DesigncodeID,g.DesignCode', ['SortByLabel']:'DesignCode' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
@@ -149,7 +155,7 @@ export default function PurchasePartyWise() {
           } else {
             name.push(res.data.lstResult[index]['DesignCode'])
           }
-          weight.push(res.data.lstResult[index]['FineWt'])
+          weight.push(res.data.lstResult[index][inputdata['column']])
 
           js = { 'product': '', 'thisYearProfit': 0 }
           if (res.data.lstResult[index]['DesignCode'] === null) {
@@ -157,7 +163,7 @@ export default function PurchasePartyWise() {
           } else {
             js['product'] = res.data.lstResult[index]['DesignCode']
           }
-          js['thisYearProfit'] = res.data.lstResult[index]['FineWt']
+          js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
           sale.push(js)
 
@@ -173,11 +179,11 @@ export default function PurchasePartyWise() {
         setweight(weight)
         setSales(j)
         setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
-				} else {
-					setLoader(true)
-				}
+        if (weight.length !== 0) {
+          setLoader(false)
+        } else {
+          setLoader(true)
+        }
         // console.log("itemgroup", weight);
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
@@ -215,15 +221,27 @@ export default function PurchasePartyWise() {
   function handleonchangeCurrency() {
     // console.log("innn")
     document.getElementById("myDropdowniconPurchase").style.display === "block" ? document.getElementById("myDropdowniconPurchase").style.display = "none" : document.getElementById("myDropdowniconPurchase").style.display = "block";
+    const tag_array = document.getElementsByClassName('dropdown-contenticon')
+    if (tag_array !== undefined) {
+      for (let i = 0; i < tag_array.length; i++) {
+        console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+        if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconPurchase') {
+          document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+        }
+      }
+    }
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
-			if (document.getElementById("myDropdowniconPurchase") !== null) {
-				document.getElementById("myDropdowniconPurchase").style.display = "none"
-			}
-		}
-	});
+    console.log(event.target, "class");
+    if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+      if (document.getElementById("myDropdowniconPurchase") !== null) {
+        document.getElementById("myDropdowniconPurchase").style.display = "none"
+        document.getElementById("sorticonDesign").style.display = "none"
+      }
+    }
+
+  });
 
   async function fetchOption() {
     await post({ "ID": 9, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -260,6 +278,74 @@ export default function PurchasePartyWise() {
       })
   }
 
+  function handleSorting() {
+    document.getElementById("sorticonDesign").style.display === "block" ? document.getElementById("sorticonDesign").style.display = "none" : document.getElementById("sorticonDesign").style.display = "block";
+    const tag_array = document.getElementsByClassName('dropdown-contenticon')
+    // console.log(tag_array);
+    if (tag_array !== undefined) {
+      for (let i = 0; i < tag_array.length; i++) {
+        if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonDesign') {
+          document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+        }
+      }
+    }
+  }
+
+  function handleclickSort(e) {
+    if (e.target.id !== 'sorticonDesign' && e.target.id !== '') {
+      setflagSort(e.target.id)
+    }
+  }
+
+  async function fetchSortData() {
+    var inputForSort = { ...inputdata, 'SortByLabel': 'DesignCode', 'SortBy': flagSort, ['Grouping']: 'g.DesigncodeID,g.DesignCode' }
+    console.log(inputForSort);
+    await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+      let sale = [];
+      var js = {};
+      let name = [];
+      let weight = [];
+      // console.log(res.data.lstResult)
+      for (let index = 0; index < res.data.lstResult.length; index++) {
+        if (res.data.lstResult[index]['DesignCode'] === null) {
+          name.push("null")
+        } else {
+          name.push(res.data.lstResult[index]['DesignCode'])
+        }
+        weight.push(res.data.lstResult[index][inputdata['column']])
+
+        js = { 'product': '', 'thisYearProfit': 0 }
+        if (res.data.lstResult[index]['DesignCode'] === null) {
+          js['product'] = 'null'
+        } else {
+          js['product'] = res.data.lstResult[index]['DesignCode']
+        }
+        js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+        sale.push(js)
+
+
+      }
+      var j = []
+      for (let index = 0; index < sale.length; index++) {
+        j.push({ ...sale[index], ['color']: gradientArray[index] })
+      }
+
+
+      setName(name)
+      setweight(weight)
+      setSales(j)
+      setdataLoader(false)
+      if (weight.length !== 0) {
+        setLoader(false)
+      } else {
+        setLoader(true)
+      }
+      // console.log("itemgroup", weight);
+      inputdata = { ...inputdata, ['Grouping']: '' }
+    })
+  }
+
 
 
   return (
@@ -272,16 +358,22 @@ export default function PurchasePartyWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            <div className='btnicons'>
-              <img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
+            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
 
+            <div id="sorticonDesign" className="dropdown-contenticon" onClick={handleclickSort}>
+              {flagSort === 'Label' ? <><a id='Label'>Sort by Design ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Design ASC&nbsp;</a><hr className='custom-hr' /></>}
+              {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Design DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Design DESC&nbsp;</a><hr className='custom-hr' /></>}
+              {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+              {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+            </div>
+            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+            <div className='btnicons'>
               <div id="myDropdowniconPurchase" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' className='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar'>bar</a><hr className='custom-hr' /></>}
                 {/* {flag === 'barl' ? <><a id='barl' className='bar'>Lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' className='bar'>Lollipop chart </a><hr className='custom-hr' /></>} */}
                 {flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map </a><hr className='custom-hr' /></>}
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
               </div>
-              <i class="fas fa-external-link-alt"></i>
             </div>
           </div>
 
@@ -339,56 +431,56 @@ export default function PurchasePartyWise() {
               <div class="dot-spinner__dot"></div>
             </div>
           </div> } */}
-          {dataloader !== true ?
-					loader !== true ?
-          <div className="crancy-progress-card card-contain-graph">
+        {dataloader !== true ?
+          loader !== true ?
+            <div className="crancy-progress-card card-contain-graph">
 
 
 
-          {flag === 'bar'
-            ?
-            <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
-            : null}
-          {flag === 'barl'
-            ?
-            <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
-            : null}
-          {flag === 'heatmap' ?
-            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-              <tr>
-                <th>DesignCode</th>
-                <th>FineWt</th>
-              </tr>
-
-
-              {sales.map((data) => {
-                return (
-                  <tr >
-                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+              {flag === 'bar'
+                ?
+                <ReactApexChart options={options_bar} series={series} type={demo} height={350} />
+                : null}
+              {flag === 'barl'
+                ?
+                <ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
+                : null}
+              {flag === 'heatmap' ?
+                <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+                  <tr>
+                    <th>DesignCode</th>
+                    <th>NetWeight</th>
                   </tr>
-                )
-              })}
 
-            </table> : null}
-        </div> :
-						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
-						</div>
-					:
-					<div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>
-				}
+
+                  {sales.map((data) => {
+                    return (
+                      <tr >
+                        <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+                        <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+                      </tr>
+                    )
+                  })}
+
+                </table> : null}
+            </div> :
+            <div className="crancy-progress-card card-contain-graph"  >
+              Not Found
+            </div>
+          :
+          <div className="crancy-progress-card card-contain-graph">
+            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+            </div>
+          </div>
+        }
       </div>
     </div>
   )

@@ -57,12 +57,12 @@ export default function Collection() {
 
     async function getdata() {
 
-        inputdata = { ...inputdata, ['Grouping']: 'sr' }
+        inputdata = { ...inputdata, ['Grouping']: 'r' }
         // console.log("branchwise data", inputdata);
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
                 if (res.data.lstResult.length > 0) {
-                    setweight(res.data.lstResult[0]['FineWt'])
+                    setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
                     // console.log(res.data.lstResult[0]['FineWt'], "weright card");
                     inputdata = { ...inputdata, ['Grouping']: '' }

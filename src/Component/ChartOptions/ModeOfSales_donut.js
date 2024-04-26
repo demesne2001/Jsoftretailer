@@ -53,7 +53,7 @@ export default function ModeofSales_donut(name){
             enabled: false,
             y: {
                 formatter: function (val) {
-                    return (parseFloat(val).toFixed(2)).toString() + "%"
+                    return (parseFloat(val).toFixed(2)).toString()
                 }
             }
         },
@@ -124,7 +124,7 @@ export default function ModeofSales_donut(name){
                             color: undefined,
                             offsetY: 16,
                             formatter: function (val) {
-                                return (parseFloat(val).toFixed(2)).toString() + "%"
+                                return (parseFloat(val).toFixed(2)).toString()
                             }
                         },
                     },

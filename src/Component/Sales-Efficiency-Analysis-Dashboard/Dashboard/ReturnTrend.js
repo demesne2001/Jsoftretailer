@@ -51,6 +51,7 @@ export default function ReturnTrend() {
     const contexData = useContext(contex);
     const [weight, setweight] = useState([])
     const [costAmount, setcostAmount] = useState()
+    const [prc, setprc] = useState(0)
     let inputdata = contexData.state;
 
     useEffect(() => {
@@ -59,13 +60,14 @@ export default function ReturnTrend() {
 
     async function getdata() {
 
-        inputdata = { ...inputdata, ['Grouping']: 'r' }
+        inputdata = { ...inputdata, ['Grouping']: 'sr' }
         // console.log("branchwise data", inputdata);
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
                 if (res.data.lstResult.length > 0) {
-                    setweight(res.data.lstResult[0]['FineWt'])
+                    setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
+                    setprc(res.data.lstResult[0]['Prc'])
                     // console.log(res.data.lstResult[0]['FineWt'], "weright card");
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 }
@@ -107,7 +109,7 @@ export default function ReturnTrend() {
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
                         <div className="crancy-progress-card__history">
-                            <span>(00.00% Ret.)</span>
+                            <span>{prc}% Ret.</span>
                         </div>
                     </div>
                     <div className="crancy-progress__single">
@@ -119,7 +121,7 @@ export default function ReturnTrend() {
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">₹ {thousandSeparated(format(costAmount))}</h4>
                         <div className="crancy-progress-card__history">
-                            <span>(00.00% Ret.)</span>
+                            <span>{prc}% Ret.</span>
                         </div>
                     </div>
                     <div className="crancy-progress__single">

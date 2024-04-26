@@ -66,7 +66,7 @@ export default function Main_chart(props) {
                 for (let i = 0; i < res.data.lstResult.length; i++) {
                     // console.log(i)
                     name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
-                    weg.push(res.data.lstResult[i]['FineWt']);
+                    weg.push(res.data.lstResult[i]['NetWeight']);
                     id1.push(res.data.lstResult[i][props.state.columnID]);
                 }
 
@@ -152,7 +152,8 @@ export default function Main_chart(props) {
 
     window.onclick = function (event) {
         if (event.target.id !== 'dropdownbutton') {
-            if (document.getElementsByClassName("dropdown-contenticon-second-screen")[0] !== "block") {
+            if (document.getElementsByClassName("dropdown-contenticon-second-screen")[0] !== undefined) {
+                console.log('DROP DOWN STYLE',document.getElementsByClassName("dropdown-contenticon-second-screen")[0])
                 document.getElementsByClassName("dropdown-contenticon-second-screen")[0].style.display = "none";
             }
         }
@@ -273,7 +274,7 @@ export default function Main_chart(props) {
                                                     <tr>
                                                         <td>{ele[props.state.columnID]}</td>
                                                         <td>{ele[props.state.columnName]}</td>
-                                                        <td>{ele['FineWt']}</td>
+                                                        <td>{ele['NetWeight']}</td>
                                                     </tr>
                                                 </>
                                             )
@@ -282,7 +283,7 @@ export default function Main_chart(props) {
                                                 <>
                                                     <tr>
                                                         <td>{ele[props.state.columnName]}</td>
-                                                        <td>{ele['FineWt']}</td>
+                                                        <td>{ele['NetWeight']}</td>
                                                     </tr>
                                                 </>
                                             )

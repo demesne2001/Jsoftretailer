@@ -21,6 +21,7 @@ export default function ProductWise() {
 	const [weight, setweight] = useState([])
 	const [optionId, setOptionId] = useState()
 	const navigate = useNavigate()
+	const [flagSort, setflagSort] = useState()
 	let inputdata = contexData.state;
 
 	const options_Bar = ProductWise_Bar(name)
@@ -54,10 +55,14 @@ export default function ProductWise() {
 		getdata()
 	}, [inputdata])
 
+	useEffect(() => {
+		fetchSortData()
+	}, [flagSort])
+
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'i.ProductId,i.ProductName' }
-		console.log(inputdata,"inputPro");
+		inputdata = { ...inputdata, ['Grouping']: 'i.ProductId,i.ProductName', ['SortByLabel']:'ProductName' }
+		console.log(inputdata, "inputPro");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -71,14 +76,14 @@ export default function ProductWise() {
 					} else {
 						name.push(res.data.lstResult[index]['ProductName'])
 					}
-					weight.push(res.data.lstResult[index]['FineWt'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
 					js = { 'product': '', 'thisYearProfit': 0 }
 					if (res.data.lstResult[index]['ProductName'] === null) {
 						js['product'] = 'null'
 					} else {
 						js['product'] = res.data.lstResult[index]['ProductName']
 					}
-					js['thisYearProfit'] = res.data.lstResult[index]['FineWt']
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 					sale.push(js)
 
@@ -120,14 +125,26 @@ export default function ProductWise() {
 	function handleonchangeCurrency() {
 		// console.log("innn")
 		document.getElementById("myDropdowniconproduct").style.display === "block" ? document.getElementById("myDropdowniconproduct").style.display = "none" : document.getElementById("myDropdowniconproduct").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconproduct') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconproduct") !== null) {
 				document.getElementById("myDropdowniconproduct").style.display = "none"
+				document.getElementById("sorticonProduct").style.display = "none"
 			}
 		}
+
 	});
 
 	function setMargin() {
@@ -174,6 +191,69 @@ export default function ProductWise() {
 			})
 	}
 
+	function handleSorting() {
+		document.getElementById("sorticonProduct").style.display === "block" ? document.getElementById("sorticonProduct").style.display = "none" : document.getElementById("sorticonProduct").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonProduct') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		if (e.target.id !== 'sorticonProduct' && e.target.id !== '') {
+			setflagSort(e.target.id)
+		}
+	}
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': 'ProductName', 'SortBy': flagSort, ['Grouping']: 'i.ProductId,i.ProductName' }
+		console.log(inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let name = [];
+				let weight = [];
+				let sale = [];
+				var js = {};
+				// console.log(res.data.lstResult)
+				for (let index = 0; index < res.data.lstResult.length; index++) {
+					if (res.data.lstResult[index]['ProductName'] === null) {
+						name.push("null")
+					} else {
+						name.push(res.data.lstResult[index]['ProductName'])
+					}
+					weight.push(res.data.lstResult[index][inputdata['column']])
+					js = { 'product': '', 'thisYearProfit': 0 }
+					if (res.data.lstResult[index]['ProductName'] === null) {
+						js['product'] = 'null'
+					} else {
+						js['product'] = res.data.lstResult[index]['ProductName']
+					}
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+					sale.push(js)
+
+				}
+				setName(name)
+				setweight(weight)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
+				var j = []
+				for (let index = 0; index < sale.length; index++) {
+					j.push({ ...sale[index], ['color']: gradientArray[index] })
+				}
+				setSales(j)
+			inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
+
 
 
 
@@ -187,17 +267,22 @@ export default function ProductWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+
+						<div id="sorticonProduct" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by Product ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Product ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Product DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Product DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
 						<div className='btnicons'>
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency}></img>
-
 							<div id="myDropdowniconproduct" className="dropdown-contenticon" onClick={handleclick}>
-
 								{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap' >Heat map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heat map </a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 								{/* <a id='heatmap' >Heat map</a><hr className='custom-hr' /> */}
 							</div>
-							<i class="fas fa-external-link-alt"></i>
 						</div>
 					</div>
 
@@ -211,39 +296,39 @@ export default function ProductWise() {
 						<a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
 					</div> */}
 				</div>
-			
-					{dataloader !== true ?
+
+				{dataloader !== true ?
 					loader !== true ?
-					<div class="crancy-progress-card card-contain-graph">
+						<div class="crancy-progress-card card-contain-graph">
 
-					{/* <ParentSize>{({ width, height }) => <Radialbar width={width} height={350} />}</ParentSize> */}
-
-
-					{flag === 'bar' ?
-						<ReactApexChart options={options_Bar} series={series} type={flag} height={390} />
-						: null}
-
-					{flag === 'heatmap' ?
-						<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-							<tr>
-								<th>ProductWise</th>
-								<th>FineWt</th>
-							</tr>
+							{/* <ParentSize>{({ width, height }) => <Radialbar width={width} height={350} />}</ParentSize> */}
 
 
-							{sales.map((data) => {
-								return (
-									<tr >
-										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-										<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+							{flag === 'bar' ?
+								<ReactApexChart options={options_Bar} series={series} type={flag} height={390} />
+								: null}
+
+							{flag === 'heatmap' ?
+								<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
+									<tr>
+										<th>ProductWise</th>
+										<th>NetWeight</th>
 									</tr>
-								)
-							})}
 
-						</table>
 
-						: null}
-				</div> :
+									{sales.map((data) => {
+										return (
+											<tr >
+												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
+												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
+											</tr>
+										)
+									})}
+
+								</table>
+
+								: null}
+						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
 							Not Found
 						</div>

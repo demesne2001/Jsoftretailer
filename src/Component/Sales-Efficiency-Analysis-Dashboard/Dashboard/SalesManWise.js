@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SalesManWise() {
   const [loader, setLoader] = useState(true)
-	const [dataloader, setdataLoader] = useState(true)
+  const [dataloader, setdataLoader] = useState(true)
   // const contexData = useContext(contex)
 
   // let seriesData = [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
@@ -83,16 +83,19 @@ export default function SalesManWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   const [flag, setFlag] = useState()
-  const ChartType='bar'
-  const [optionId,setOptionId] = useState()
+  const ChartType = 'bar'
+  const [optionId, setOptionId] = useState()
   let inputdata = contexData.state;
   const navigate = useNavigate()
-
+  const [flagSort, setflagSort] = useState()
   useEffect(() => {
     fetchOption()
     getdata()
 
   }, [inputdata])
+  useEffect(() => {
+    fetchSortData()
+  }, [flagSort])
 
 
   useEffect(() => {
@@ -101,12 +104,12 @@ export default function SalesManWise() {
   }, [imagearr])
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman",chartId : 11 },replace:true  })
+    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman", chartId: 11 }, replace: true })
   }
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme' }
+    inputdata = { ...inputdata, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme', ['SortByLabel']:'SalesmanNAme' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
@@ -119,16 +122,16 @@ export default function SalesManWise() {
           } else {
             name.push(res.data.lstResult[index]['SalesmanNAme'])
           }
-          weight.push(res.data.lstResult[index]['FineWt'])
+          weight.push(res.data.lstResult[index][inputdata['column']])
         }
         setName(name)
         setweight(weight)
         setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
-				} else {
-					setLoader(true)
-				}
+        if (weight.length !== 0) {
+          setLoader(false)
+        } else {
+          setLoader(true)
+        }
         // console.log("itemgroup", weight);
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
@@ -288,69 +291,113 @@ export default function SalesManWise() {
 
 
   function handleclick(e) {
-		
-		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '' ){
-			// console.log('Updationg option')
-			setFlag(e.target.id)
-		}
-		else{
-			// console.log("NOT UPDATING OPTIOJN")
-		}
-		
-	}
+
+    if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
+      // console.log('Updationg option')
+      setFlag(e.target.id)
+    }
+    else {
+      // console.log("NOT UPDATING OPTIOJN")
+    }
+
+  }
 
   function handleonchangeCurrency() {
     // console.log("innn")
     document.getElementById("myDropdowniconSalesManWise").style.display === "block" ? document.getElementById("myDropdowniconSalesManWise").style.display = "none" : document.getElementById("myDropdowniconSalesManWise").style.display = "block";
   }
 
-  window.onclick = function (event) {
-
-    if (!event.target.matches('.dropbtn')) {
-      // console.log("hii");
-      if (document.getElementsByClassName("dropdown-contenticon")[9] !== undefined) {
-        document.getElementsByClassName("dropdown-contenticon")[9].style.display = "none";
+  document.getElementById("root").addEventListener("click", function (event) {
+    console.log(event.target, "class");
+    if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+      if (document.getElementById("sorticonSalesManWise") !== null) {
+        document.getElementById("sorticonSalesManWise").style.display = "none"
       }
+    }
 
+  });
+
+  async function fetchOption() {
+    await post({ "ID": 11, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+
+      .then((res) => {
+        if (res.data.lstResult.length === 0) {
+          setFlag(ChartType)
+          // console.log('FIRST TIME API CALLED')
+          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 11, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+            .then((res) => {
+
+              post({ "ID": 11, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                .then((res) => {
+                  setOptionId(res.data.lstResult[0].ChartOptionID)
+                })
+              alert(res.data.Message)
+            })
+
+        }
+        else {
+          setOptionId(res.data.lstResult[0].ChartOptionID)
+          setFlag(res.data.lstResult[0].ChartOption)
+        }
+
+      })
+  }
+
+  async function addEditOption() {
+
+    await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 11, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+      .then((res) => {
+
+        alert(res.data.Message)
+
+      })
+  }
+  function handleSorting() {
+    document.getElementById("sorticonSalesManWise").style.display === "block" ? document.getElementById("sorticonSalesManWise").style.display = "none" : document.getElementById("sorticonSalesManWise").style.display = "block";
+    const tag_array = document.getElementsByClassName('dropdown-contenticon')
+    // console.log(tag_array);
+    if (tag_array !== undefined) {
+      for (let i = 0; i < tag_array.length; i++) {
+        if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonSalesManWise') {
+          document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+        }
+      }
     }
   }
 
-  async function fetchOption(){
-		await post({ "ID": 11	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
+  function handleclickSort(e) {
+    if (e.target.id !== 'sorticonSalesManWise' && e.target.id !== '') {
+      setflagSort(e.target.id)
+    }
+  }
 
-		.then((res)=>{
-			if(res.data.lstResult.length === 0){
-        setFlag(ChartType)
-				// console.log('FIRST TIME API CALLED')
-				post({"ChartOptionID": 0,"ChartOption": ChartType,"ChartID": 11,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-				.then((res)=>{
-
-					post({ "ID": 11	,"vendorID": 1,"UserID": 1} , API.GetChartOptionByID ,{} ,'post')
-          .then((res)=>{
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-          })
-					alert(res.data.Message)
-				})
-
-			}
-			else{
-        setOptionId(res.data.lstResult[0].ChartOptionID)
-				setFlag(res.data.lstResult[0].ChartOption) 
-			}
-			
-		})	
-	}
-
-	async function addEditOption(){
-		
-		await post({"ChartOptionID": optionId,"ChartOption": flag,"ChartID": 11	,"vendorID": 1,"UserID": 1 } ,API.ChartOptionAddEdit,{},'post')
-		.then((res)=>{
-			
-			alert(res.data.Message)
-			
-		})
-	}
-
+  async function fetchSortData() {
+    var inputForSort = { ...inputdata, 'SortByLabel': 'SalesmanNAme', 'SortBy': flagSort, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme' }
+    console.log(inputForSort);
+    await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+      let name = [];
+      let weight = [];
+      // console.log(res.data.lstResult)
+      for (let index = 0; index < res.data.lstResult.length; index++) {
+        if (res.data.lstResult[index]['SalesmanNAme'] === null) {
+          name.push("null")
+        } else {
+          name.push(res.data.lstResult[index]['SalesmanNAme'])
+        }
+        weight.push(res.data.lstResult[index][inputdata['column']])
+      }
+      setName(name)
+      setweight(weight)
+      setdataLoader(false)
+      if (weight.length !== 0) {
+        setLoader(false)
+      } else {
+        setLoader(true)
+      }
+      // console.log("itemgroup", weight);
+      inputdata = { ...inputdata, ['Grouping']: '' }
+    })
+  }
   return (
     <div className="col-lg-4 col-md-6 col-12">
       <div className="graph-card">
@@ -363,6 +410,15 @@ export default function SalesManWise() {
 
 
           <div className="col-sm-2 col-md-2 col-2">
+            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+
+            <div id="sorticonSalesManWise" className="dropdown-contenticon" onClick={handleclickSort}>
+              {flagSort === 'Label' ? <><a id='Label'>Sort by SalesMan ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesMan ASC&nbsp;</a><hr className='custom-hr' /></>}
+              {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesMan DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesMan DESC&nbsp;</a><hr className='custom-hr' /></>}
+              {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+              {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+            </div>
+            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               {/* <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img> */}
 
@@ -371,7 +427,6 @@ export default function SalesManWise() {
 
                 {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
               </div>
-              <i class="fas fa-external-link-alt"></i>
             </div>
           </div>
 
@@ -392,28 +447,28 @@ export default function SalesManWise() {
 					<div class="dot-spinner__dot"></div>
 				</div>
 			</div>} */}
-      {dataloader !== true ?
-					loader !== true ?
+        {dataloader !== true ?
+          loader !== true ?
+            <div className="crancy-progress-card card-contain-graph">
+              <ReactApexChart options={options} series={series} type="bar" height={350} />
+            </div> :
+            <div className="crancy-progress-card card-contain-graph"  >
+              Not Found
+            </div>
+          :
           <div className="crancy-progress-card card-contain-graph">
-          <ReactApexChart options={options} series={series} type="bar" height={350} />
-        </div> :
-						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
-						</div>
-					:
-					<div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>
-				}
+            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+              <div class="dot-spinner__dot"></div>
+            </div>
+          </div>
+        }
       </div>
     </div>
   )

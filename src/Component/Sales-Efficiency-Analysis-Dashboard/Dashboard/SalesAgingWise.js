@@ -19,7 +19,7 @@ export default function SalesAgingWise() {
 	let inputdata = contexData.state;
 	const navigate = useNavigate()
 	const [optionId, setOptionId] = useState()
-
+	const [flagSort, setflagSort] = useState()
 	const [flag, setflag] = useState("line")
 	const ChartType = "line"
 
@@ -41,10 +41,14 @@ export default function SalesAgingWise() {
 		getdata()
 	}, [inputdata])
 
+	useEffect(() => {
+		fetchSortData()
+	}, [flagSort])
+
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'a.[rd.caption]' }
-		// console.log("branchwise data", inputdata);
+		inputdata = { ...inputdata, ['Grouping']: 'a.[rd.caption]', ['SortByLabel']:'[rd.caption]' }
+		console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -56,7 +60,7 @@ export default function SalesAgingWise() {
 					} else {
 						name.push(res.data.lstResult[index]['rd.caption'])
 					}
-					weight.push(res.data.lstResult[index]['FineWt'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
 				}
 				setName(name)
 				setweight(weight)
@@ -377,14 +381,26 @@ export default function SalesAgingWise() {
 	function handleonchangeCurrency() {
 		// console.log("innn")
 		document.getElementById("myDropdowniconSalesAging").style.display === "block" ? document.getElementById("myDropdowniconSalesAging").style.display = "none" : document.getElementById("myDropdowniconSalesAging").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconSalesAging') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesAging") !== null) {
 				document.getElementById("myDropdowniconSalesAging").style.display = "none"
+				document.getElementById("sorticonSalesAging").style.display = "none"
 			}
 		}
+
 	});
 
 	async function fetchOption() {
@@ -423,6 +439,52 @@ export default function SalesAgingWise() {
 			})
 	}
 
+	function handleSorting() {
+		document.getElementById("sorticonSalesAging").style.display === "block" ? document.getElementById("sorticonSalesAging").style.display = "none" : document.getElementById("sorticonSalesAging").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonSalesAging') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		if (e.target.id !== 'sorticonSalesAging' && e.target.id !== '') {
+			setflagSort(e.target.id)
+		}
+	}
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': '[rd.caption]', 'SortBy': flagSort, ['Grouping']: 'a.[rd.caption]' }
+		console.log("inputsort",inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let name = [];
+			let weight = [];
+			// console.log(res.data.lstResult)
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				if (res.data.lstResult[index]['rd.caption'] === null) {
+					name.push("null")
+				} else {
+					name.push(res.data.lstResult[index]['rd.caption'])
+				}
+				weight.push(res.data.lstResult[index][inputdata['column']])
+			}
+			setName(name)
+			setweight(weight)
+			setdataLoader(false)
+			if (weight.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
+
 
 
 	return (
@@ -435,8 +497,16 @@ export default function SalesAgingWise() {
 					</div>
 
 					< div className="col-sm-2 col-md-2 col-2">
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+
+						<div id="sorticonSalesAging" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by SalesAging ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesAging ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesAging DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesAging DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
 						<div className='btnicons'>
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
 
 							<div id="myDropdowniconSalesAging" className="dropdown-contenticon" onClick={handleclick}>
 
@@ -445,7 +515,6 @@ export default function SalesAgingWise() {
 								{flag === 'linebar' ? <><a id='linebar' className='line'>Combo chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='linebar' className='line'>Combo chart</a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
-							<i class="fas fa-external-link-alt"></i>
 						</div>
 					</div>
 

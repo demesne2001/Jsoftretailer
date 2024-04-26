@@ -205,7 +205,7 @@ export default function YearWise() {
 	const [optionId, setOptionId] = useState()
 	const [flag, setflag] = useState()
 	const ChartType = "kpi"
-
+	const [flagSort, setflagSort] = useState()
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
@@ -231,9 +231,13 @@ export default function YearWise() {
 		getdata()
 	}, [inputdata])
 
+	useEffect(() => {
+		fetchSortData()
+	}, [flagSort])
+
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'M.FinYearID,m.YearCode' }
+		inputdata = { ...inputdata, ['Grouping']: 'M.FinYearID,m.YearCode', ['SortByLabel']:'YearCode' }
 		// console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -246,7 +250,7 @@ export default function YearWise() {
 					} else {
 						name.push(res.data.lstResult[index]['YearCode'])
 					}
-					weight.push(res.data.lstResult[index]['FineWt'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
 				}
 				setName(name)
 				setweight(weight)
@@ -458,20 +462,31 @@ export default function YearWise() {
 	function handleonchangeCurrency() {
 		// console.log("innn")
 		document.getElementById("myDropdowniconyear").style.display === "block" ? document.getElementById("myDropdowniconyear").style.display = "none" : document.getElementById("myDropdowniconyear").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconyear') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 }, replace:true  })
+		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 }, replace: true })
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconyear") !== null) {
 				document.getElementById("myDropdowniconyear").style.display = "none"
+				document.getElementById("sorticonYear").style.display = "none"
 			}
 		}
-	});
 
+	});
 	async function fetchOption() {
 		await post({ "ID": 15, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
@@ -508,6 +523,51 @@ export default function YearWise() {
 			})
 	}
 
+	function handleSorting() {
+		document.getElementById("sorticonYear").style.display === "block" ? document.getElementById("sorticonYear").style.display = "none" : document.getElementById("sorticonYear").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonYear') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		if (e.target.id !== 'sorticonYear' && e.target.id !== '') {
+			setflagSort(e.target.id)
+		}
+	}
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': 'YearCode', 'SortBy': flagSort, ['Grouping']: 'M.FinYearID,m.YearCode' }
+		console.log(inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let name = [];
+				let weight = [];
+				// console.log(res.data.lstResult)
+				for (let index = 0; index < res.data.lstResult.length; index++) {
+					if (res.data.lstResult[index]['YearCode'] === null) {
+						name.push("null")
+					} else {
+						name.push(res.data.lstResult[index]['YearCode'])
+					}
+					weight.push(res.data.lstResult[index][inputdata['column']])
+				}
+				setName(name)
+				setweight(weight)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
+				inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
 
 
 	return (
@@ -520,9 +580,16 @@ export default function YearWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
-						<div className='btnicons'>
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
 
+						<div id="sorticonYear" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by Year ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Year ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Year DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Year DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+						<div className='btnicons'>
 							<div id="myDropdowniconyear" className="dropdown-contenticon" onClick={handleclick}>
 
 								{flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
@@ -532,7 +599,6 @@ export default function YearWise() {
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
 							</div>
-							<i class="fas fa-external-link-alt"></i>
 						</div>
 					</div>
 					{/* <i className="fas fa-external-link-alt"></i> */}
@@ -562,13 +628,13 @@ export default function YearWise() {
 							<div class="dot-spinner__dot"></div>
 						</div>
 					</div>} */}
-					{dataloader !== true ?
+				{dataloader !== true ?
 					loader !== true ?
-					<div className="crancy-progress-card card-contain-graph">
-					{flag === 'donut' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
-					{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
-					{flag === 'semiDonut' ? <ReactApexChart options={options_semidonut} series={series2} type='donut' height={350} /> : null}
-				</div> :
+						<div className="crancy-progress-card card-contain-graph">
+							{flag === 'donut' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
+							{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
+							{flag === 'semiDonut' ? <ReactApexChart options={options_semidonut} series={series2} type='donut' height={350} /> : null}
+						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
 							Not Found
 						</div>

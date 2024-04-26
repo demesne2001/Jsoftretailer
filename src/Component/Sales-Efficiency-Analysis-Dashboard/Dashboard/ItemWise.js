@@ -75,6 +75,7 @@ export default function ItemWise() {
 	const [loader, setLoader] = useState(true)
 	const [dataloader, setdataLoader] = useState(true)
 	const [flag, setflag] = useState()
+	const [flagSort, setflagSort] = useState()
 	const ChartType = "bar"
 	const [optionId, setOptionId] = useState()
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
@@ -93,6 +94,10 @@ export default function ItemWise() {
 		fetchOption()
 		getdata()
 	}, [inputdata])
+
+	useEffect(() => {
+		fetchSortData()
+	}, [flagSort])
 
 	function handleclick(e) {
 
@@ -117,8 +122,8 @@ export default function ItemWise() {
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'd.itemID,d.ItemName' }
-		// console.log("branchwise data", inputdata);
+		inputdata = { ...inputdata, ['Grouping']: 'd.itemID,d.ItemName',['SortByLabel']:'ItemName' }
+		console.log("Itemwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -133,7 +138,7 @@ export default function ItemWise() {
 					} else {
 						name.push(res.data.lstResult[index]['ItemName'])
 					}
-					weight.push(res.data.lstResult[index]['FineWt'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
 
 
 					if (res.data.lstResult[index]['ItemName'] === null) {
@@ -141,7 +146,7 @@ export default function ItemWise() {
 					} else {
 						js['product'] = res.data.lstResult[index]['ItemName']
 					}
-					js['thisYearProfit'] = res.data.lstResult[index]['FineWt']
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 					sale.push(js)
 				}
@@ -167,14 +172,26 @@ export default function ItemWise() {
 	function handleonchangeCurrency() {
 		// console.log("innn")
 		document.getElementById("myDropdowniconitem").style.display === "block" ? document.getElementById("myDropdowniconitem").style.display = "none" : document.getElementById("myDropdowniconitem").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconitem') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconitem") !== null) {
 				document.getElementById("myDropdowniconitem").style.display = "none"
+				document.getElementById("sorticonItem").style.display = "none"
 			}
 		}
+
 	});
 
 	function handleNavigation() {
@@ -216,6 +233,72 @@ export default function ItemWise() {
 			})
 	}
 
+	function handleSorting() {
+		document.getElementById("sorticonItem").style.display === "block" ? document.getElementById("sorticonItem").style.display = "none" : document.getElementById("sorticonItem").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonItem') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		if (e.target.id !== 'sorticonItem' && e.target.id !== '') {
+			setflagSort(e.target.id)
+		}
+	}
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': 'ItemName', 'SortBy': flagSort, ['Grouping']: 'd.itemID,d.ItemName' }
+		console.log(inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let name = [];
+			let weight = [];
+			let sale = [];
+			var js = {};
+			// console.log(res.data.lstResult)
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				js = { 'product': '', 'thisYearProfit': 0 }
+				if (res.data.lstResult[index]['ItemName'] === null) {
+					name.push("null")
+				} else {
+					name.push(res.data.lstResult[index]['ItemName'])
+				}
+				weight.push(res.data.lstResult[index][inputdata['column']])
+
+
+				if (res.data.lstResult[index]['ItemName'] === null) {
+					js['product'] = 'null'
+				} else {
+					js['product'] = res.data.lstResult[index]['ItemName']
+				}
+				js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+				sale.push(js)
+			}
+			setdataLoader(false)
+			if (weight.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			setName(name)
+			setweight(weight)
+			var j = []
+			for (let index = 0; index < sale.length; index++) {
+				j.push({ ...sale[index], ['color']: gradientArray[index] })
+			}
+			setSales(j)
+			// console.log("itemgroup", weight);
+			inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
+
+
 
 	return (
 
@@ -228,9 +311,16 @@ export default function ItemWise() {
 					</div>
 
 					<div className='col-sm-2 col-md-2 col-2'>
-						<div className='btnicons'>
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
 
+						<div id="sorticonItem" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by Item ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Item ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Item DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Item DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+						<div className='btnicons'>
 							<div id="myDropdowniconitem" className="dropdown-contenticon" onClick={handleclick}>
 
 								{flag === 'bar' ? <><a id='bar' className='bar'>Bar Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar'>bar chart </a><hr className='custom-hr' /></>}
@@ -239,7 +329,6 @@ export default function ItemWise() {
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 
 							</div>
-							<i class="fas fa-external-link-alt"></i>
 						</div>
 					</div>
 
@@ -301,7 +390,7 @@ export default function ItemWise() {
 								<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
 									<tr>
 										<th>Itemwise</th>
-										<th>FineWt</th>
+										<th>NetWeight</th>
 									</tr>
 
 

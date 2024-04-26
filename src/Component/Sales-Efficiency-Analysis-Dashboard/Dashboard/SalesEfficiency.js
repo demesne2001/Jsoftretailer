@@ -53,6 +53,7 @@ export default function SalesEfficiency() {
     const contexData = useContext(contex);
     const [weight, setweight] = useState([])
     const [costAmount, setcostAmount] = useState([])
+    const [prc, setprc] = useState(0)
     let inputdata = contexData.state;
 
     useEffect(() => {
@@ -66,8 +67,9 @@ export default function SalesEfficiency() {
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
                 if (res.data.lstResult.length > 0) {
-                    setweight(res.data.lstResult[0]['FineWt'])
+                    setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
+                    setprc(res.data.lstResult[0]['Prc'])
                     // console.log(res.data.lstResult[0]['FineWt'], "weright card");
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 } 
@@ -136,7 +138,7 @@ export default function SalesEfficiency() {
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
                         <div className="crancy-progress-card__history">
-                            <span>(83.43% Sold)</span>
+                            <span>{prc}% Sold</span>
                         </div>
                     </div>
                     <div className="crancy-progress__single">
@@ -148,7 +150,7 @@ export default function SalesEfficiency() {
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4>
                         <div className="crancy-progress-card__history">
-                            <span>(83.43% Sold)</span>
+                            <span>{prc}% Sold</span>
                         </div>
                     </div>
                     <div className="crancy-progress__single">

@@ -19,6 +19,7 @@ const ContexState = (props) => {
 		strSaleAging: "",
 		strModeofSale: "",
 		strTeamModeofSale: "",
+		strDesignCodeID: "",
 		strRegionID: "",
 		FromDate: "",
 		ToDate: "",
@@ -47,8 +48,12 @@ const ContexState = (props) => {
 		strStateValue: '',
 		strMonth: "",
 		strFinYear: "",
-		strMonthValue: ""
-
+		strMonthValue: "",
+		strDesignCodeValue: "",
+		column: 'NetWeight',
+		Unity: "G",
+		SortBy: "wt-desc",
+		SortByLabel:""
 	})
 	const [tempstate, SettempState] = useState({
 		strBranch: "",
@@ -66,6 +71,7 @@ const ContexState = (props) => {
 		strSaleAging: "",
 		strModeofSale: "",
 		strTeamModeofSale: "",
+		strDesignCodeID: "",
 		strRegionID: "",
 		FromDate: "",
 		ToDate: "",
@@ -94,15 +100,22 @@ const ContexState = (props) => {
 		strStateValue: '',
 		strMonth: "",
 		strFinYear: "",
-		strMonthValue: ""
+		strMonthValue: "",
+		strDesignCodeValue: "",
+		column: 'NetWeight',
+		Unity: "G",
+		SortBy: "wt-desc",
+		SortByLabel:""
 	})
 	const [childFilterShow, setchildFilterShow] = useState(false);
 	const [currency, setcurrency] = useState("");
 	const [flag, setflag] = useState(0);
+	const [flagExcel, setflagExcel] = useState(0);
+	// const [column, setColumn] = useState('FineWt')
 
 	return (
 
-		<contex.Provider value={{ state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
+		<contex.Provider value={{ setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
 
 			{props.children}
 

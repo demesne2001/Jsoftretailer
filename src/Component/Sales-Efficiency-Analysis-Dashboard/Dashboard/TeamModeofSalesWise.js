@@ -39,6 +39,7 @@ export default function TeamModeofSalesWise() {
 		"strItemGroup": "",
 		"strItemSubitem": "",
 		"strPurchaseParty": "",
+		"strDesignCodeID":"",
 		"strSalesParty": "",
 		"strSaleman": "",
 		"strProduct": "",

@@ -80,7 +80,7 @@ export default function SalesPartyWise() {
 	const ChartType = "bar"
 	const [demo, setdemo] = useState("bar")
 	const [optionId, setOptionId] = useState()
-
+	const [flagSort, setflagSort] = useState()
 	const navigate = useNavigate()
 
 	const options_lolipop = SalesPartyWiseLolipop(name)
@@ -106,13 +106,17 @@ export default function SalesPartyWise() {
 		fetchOption()
 		getdata()
 	}, [inputdata])
+
+	useEffect(() => {
+		fetchSortData()
+	}, [flagSort])
 	// useEffect(() => {
 	// 	gradientdata()
 	// }, [sales])
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'a.accountID,c.AccountName' }
+		inputdata = { ...inputdata, ['Grouping']: 'a.accountID,c.AccountName', ['SortByLabel']:'AccountName' }
 		// console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -127,7 +131,7 @@ export default function SalesPartyWise() {
 					} else {
 						name.push(res.data.lstResult[index]['AccountName'])
 					}
-					weight.push(res.data.lstResult[index]['FineWt'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
 
 
 					js = { 'product': '', 'thisYearProfit': 0 }
@@ -136,7 +140,7 @@ export default function SalesPartyWise() {
 					} else {
 						js['product'] = res.data.lstResult[index]['AccountName']
 					}
-					js['thisYearProfit'] = res.data.lstResult[index]['FineWt']
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 					sale.push(js)
 
@@ -175,14 +179,26 @@ export default function SalesPartyWise() {
 	function handleonchangeCurrency() {
 		// console.log("innn")
 		document.getElementById("myDropdowniconSalesparty").style.display === "block" ? document.getElementById("myDropdowniconSalesparty").style.display = "none" : document.getElementById("myDropdowniconSalesparty").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconSalesparty') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesparty") !== null) {
 				document.getElementById("myDropdowniconSalesparty").style.display = "none"
+				document.getElementById("sorticonSalesParty").style.display = "none"
 			}
 		}
+
 	});
 
 	function setMargin() {
@@ -233,6 +249,71 @@ export default function SalesPartyWise() {
 			})
 	}
 
+	function handleSorting() {
+		document.getElementById("sorticonSalesParty").style.display === "block" ? document.getElementById("sorticonSalesParty").style.display = "none" : document.getElementById("sorticonSalesParty").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonSalesParty') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		setflagSort(e.target.id)
+	}
+
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': 'AccountName', 'SortBy': flagSort, ['Grouping']: 'a.accountID,c.AccountName' }
+		console.log(inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let sale = [];
+				var js = {};
+				let name = [];
+				let weight = [];
+				// console.log(res.data.lstResult)
+				for (let index = 0; index < res.data.lstResult.length; index++) {
+					if (res.data.lstResult[index]['AccountName'] === null) {
+						name.push("null")
+					} else {
+						name.push(res.data.lstResult[index]['AccountName'])
+					}
+					weight.push(res.data.lstResult[index][inputdata['column']])
+
+
+					js = { 'product': '', 'thisYearProfit': 0 }
+					if (res.data.lstResult[index]['AccountName'] === null) {
+						js['product'] = 'null'
+					} else {
+						js['product'] = res.data.lstResult[index]['AccountName']
+					}
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+					sale.push(js)
+
+				}
+				// setSales(sale)
+				var j = []
+				for (let index = 0; index < sale.length; index++) {
+					j.push({ ...sale[index], ['color']: gradientArray[index] })
+				}
+
+				setName(name)
+				setweight(weight)
+				setSales(j)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
+				inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
 
 	return (
 
@@ -245,9 +326,15 @@ export default function SalesPartyWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+						<div id="sorticonSalesParty" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by SalesParty ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesParty ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesParty DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesParty DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
 						<div className='btnicons'>
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidcity'></img>
-
 							<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
 								{flag === 'heatmap' ? <><a id='heatmap' className='heatmap'>Heat map&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' className='heatmap'>Heat map</a><hr className='custom-hr' /></>}
@@ -256,7 +343,6 @@ export default function SalesPartyWise() {
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
 							</div>
-							<i class="fas fa-external-link-alt"></i>
 						</div>
 					</div>
 
@@ -324,11 +410,11 @@ export default function SalesPartyWise() {
 								<ReactApexChart options={options_lolipop} series={series} type={demo} height={350} />
 								: null}
 							{flag === 'heatmap' ?
-								<div style={{height:'380PX',overflow:'auto'}}>
+								<div style={{ height: '380PX', overflow: 'auto' }}>
 									<table align='center' rules='rows' border='white' style={{ border: 'white', overflow: 'auto' }}>
 										<tr>
 											<th>AccountName</th>
-											<th>FineWt</th>
+											<th>NetWeight</th>
 										</tr>
 
 

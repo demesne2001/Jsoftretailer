@@ -20,12 +20,13 @@ import img7 from '../Assets/image/slider/Ring12.png';
 import img8 from '../Assets/image/slider/Ring13.png';
 import img9 from '../Assets/image/slider/Ring14.png';
 import img10 from '../Assets/image/slider/Ring15.png';
-import Default_chart from './Components_Detailed/Default_chart';
+import Default_chart from './Components_Detailed/default_chart';
 import API from '../Utility/API';
 import post from '../Utility/APIHandle';
 import { elements } from 'chart.js';
 import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar';
-
+import Fancybox from './Components_Detailed/Fancybox';
+import Tag_Image from './Components_Detailed/Tag_Image';
 
 let defaultChartGroup
 
@@ -37,20 +38,16 @@ export default function DetailedScreen() {
     const [chartGroupId, setChartGroupId] = useState() // To fetch api data 
     const [chartGroup, setChartGroup] = useState() // To check and uncheck default button and add selected effect on slider
     const [defaultGroup, setdefaultGroup] = useState()
+    const [imagePath, setimagePath] = useState([])
+    const [barcode, setbarcode] = useState([])
+    const [netweight, setnetweight] = useState([])
     if (location.state.chartId > 1) {
         defaultChartGroup = {
-            "group": "a.BranchID,b.BranchName",
-            "column": "BranchName",
-            "componentName": "Branch Wise"
+            name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch'
         }
     }
     else {
-        defaultChartGroup = {
-
-            "group": "d.itemID,d.ItemName",
-            "column": "itemID",
-            "componentName": "Item Wise"
-        }
+        defaultChartGroup =  { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' }
     }
 
 
@@ -94,6 +91,7 @@ export default function DetailedScreen() {
 
 
     useEffect(() => {
+        console.log("detailedScreen");
         fetchOption()
     }, [])
 
@@ -103,7 +101,7 @@ export default function DetailedScreen() {
 
             <div
                 className={className}
-                style={{ ...style, marginLeft: '100px', zIndex: '1',display: "block", background: "#094876", width: '28px', height: '28px', top: '30%', fontSize: '10px' }}
+                style={{ ...style, marginLeft: '100px', zIndex: '1', display: "block", background: "#094876", width: '28px', height: '28px', top: '30%', fontSize: '10px' }}
                 onClick={onClick}
             />
 
@@ -124,15 +122,15 @@ export default function DetailedScreen() {
 
 
     function handleOnLink(str) {
-    
+
         console.log('Onclick on data', str)
         showSelectedSlider(str.componentName)
-        console.log('aaaa',  str.group)
-        console.log('bbb',chartGroup);
+        console.log('aaaa', str.group)
+        console.log('bbb', chartGroup);
         if (chartGroup === str.group) {
             console.log("true in click");
             setGraph(str)
-            document.getElementById("DefaultCheckBoxSeconScreen").checked = true; 
+            document.getElementById("DefaultCheckBoxSeconScreen").checked = true;
         }
 
         else {
@@ -146,17 +144,17 @@ export default function DetailedScreen() {
 
     async function fetchOption() {
 
-        console.log('CHART ID' , location.state.chartId)
+        console.log('CHART ID', location.state.chartId)
 
         post({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
             .then((res) => {
                 // console.log('API CALEED')
                 if (res.data.lstResult.length === 0) {
                     console.log('Condition True second screen')
-                    console.log({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 },"input-js");
+                    console.log({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "input-js");
                     post({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
                         .then((res) => {
-                            console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 },"inputjson");
+                            console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "inputjson");
                             post({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
                                 .then((res) => {
 
@@ -172,13 +170,13 @@ export default function DetailedScreen() {
                 }
 
                 else {
-                    console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 },"inputjson")
-                    console.log(res.data.lstResult[0],"res");
-                    console.log(res.data.lstResult[0].ChartGroup,"error");
+                    console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "inputjson")
+                    console.log(res.data.lstResult[0], "res");
+                    console.log(res.data.lstResult[0].ChartGroup, "error");
                     setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
                     setChartGroupId(res.data.lstResult[0].ChartGroupID)
                     setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
-                   
+
                     showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
 
 
@@ -197,7 +195,7 @@ export default function DetailedScreen() {
 
         setChartGroup(defaultGroup)
         // console.log({ "ChartGroupID": chartGroupId,"ChartGroup": chartGroup,"ChartID": location.state.chartOptionId,"vendorID": 1,"UserID": 1})
-        console.log({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 },"addedit");
+        console.log({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "addedit");
         post({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
             .then((res) => {
                 alert(res.data.Message)
@@ -227,27 +225,27 @@ export default function DetailedScreen() {
     }
 
 
-    console.log('LOCATION IN DETAIL SCREEN',location.state)
+    console.log('LOCATION IN DETAIL SCREEN', location.state)
 
 
     const sliderData = [
-        { name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', componentName: 'Branch Wise' },
-        { name: 'State', iconClass: 'fas fa-map-marker-alt icon-m', group: 'k.stateID,k.Statename', column: 'Statename', componentName: 'State Wise' },
-        { name: 'City', iconClass: 'fas fa-city icon-m', group: 'c.cityname', column: 'cityname', componentName: 'City Wise' },
-        { name: 'Region', iconClass: 'fas fa-globe icon-m', group: 'l.RegionID,l.RegionName', column: 'RegionName', componentName: 'Region Wise' },
-        { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', componentName: 'Item Wise' },
-        { name: 'Sub-Item', iconClass: 'fas fa-th-list icon-m', group: 'e.subitemID,e.subItemName', column: 'subItemName', componentName: 'Sub-Item Wise' },
-        { name: 'Item Group', iconClass: 'fas fa-chart-area icon-m', group: 'o.ItemGroupId,o.GroupName', column: 'GroupName', componentName: 'Item Group Wise' },
-        // { name: 'Item with Sub-item', iconClass: 'fas fa-sitemap icon-m', group: 'f.ItemSubNAme,f.ItemSubID', column: 'ItemSubNAme', componentName: 'Item with Sub-item Wise' },
-        { name: 'Design Wise', iconClass: 'fas fa-people-carry icon-m', group: 'g.DesigncodeID,g.DesignCode', column: 'DesignCode', componentName: 'Design Wise' },
-        { name: 'Sales Party', iconClass: 'fas fa-handshake icon-m', group: 'a.accountID,c.AccountName', column: 'AccountName', componentName: 'Sales Party Wise' },
-        { name: 'Saleman', iconClass: 'fas fa-users icon-m', group: 'h.SalesmanID,h.SalesmanNAme', column: 'SalesmanNAme', componentName: 'Saleman Wise' },
-        { name: 'Product', iconClass: 'fas fa-boxes icon-m', group: 'i.ProductId,i.ProductName', column: 'ProductName', componentName: 'Product Wise', },
-        { name: 'Design Catalogue', iconClass: 'fas fa-gem icon-m', group: 'j.designCatalogID,j.DesignNo', column: 'DesignNo', componentName: 'Design Catalogue Wise' },
-        { name: 'Month', iconClass: 'fas fa-calendar-week icon-m', group: 'datename(month,a.voucherDate)', column: 'MonthName', componentName: 'Month Wise' },
-        { name: 'Year', iconClass: 'fas  fa-calendar-alt icon-m', group: 'M.FinYearID,m.YearCode', column: 'YearCode', componentName: 'Year Wise' },
-        { name: 'Sale Aging', iconClass: 'fas fa-chart-line icon-m', group: 'a.[rd.caption]', column: 'rd.caption', componentName: 'Sale Aging Wise' },
-        // { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise' },
+        { name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch' },
+        { name: 'State', iconClass: 'fas fa-map-marker-alt icon-m', group: 'k.stateID,k.Statename', column: 'Statename', columnID: 'stateID', componentName: 'State Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strState' },
+        { name: 'City', iconClass: 'fas fa-city icon-m', group: 'c.cityname', column: 'cityname', columnID: 'cityname', componentName: 'City Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strCity' },
+        { name: 'Region', iconClass: 'fas fa-globe icon-m', group: 'l.RegionID,l.RegionName', column: 'RegionName', columnID: 'RegionID', componentName: 'Region Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strRegionID' },
+        { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' },
+        { name: 'Sub-Item', iconClass: 'fas fa-th-list icon-m', group: 'e.subitemID,e.subItemName', column: 'subItemName', columnID: 'subitemID', componentName: 'Sub-Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSubItem' },
+        { name: 'Item Group', iconClass: 'fas fa-chart-area icon-m', group: 'o.ItemGroupId,o.GroupName', column: 'GroupName', columnID: 'ItemGroupId', componentName: 'Item Group Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItemGroup' },
+        { name: 'Item with Sub-item', iconClass: 'fas fa-sitemap icon-m', group: 'f.ItemSubNAme,f.ItemSubID', column: 'ItemSubNAme', columnID: 'ItemSubID', componentName: 'Item with Sub-item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItemSubitem' },
+        { name: 'Design Wise', iconClass: 'fas fa-people-carry icon-m', group: 'g.DesigncodeID,g.DesignCode', column: 'DesignCode', columnID: 'DesigncodeID', componentName: 'Design Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strDesignCodeID' },
+        { name: 'Sales Party', iconClass: 'fas fa-handshake icon-m', group: 'a.accountID,c.AccountName', column: 'AccountName', columnID: 'accountID', componentName: 'Sales Party Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSalesParty' },
+        { name: 'Saleman', iconClass: 'fas fa-users icon-m', group: 'h.SalesmanID,h.SalesmanNAme', column: 'SalesmanNAme', columnID: 'SalesmanID', componentName: 'Saleman Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleman' },
+        { name: 'Product', iconClass: 'fas fa-boxes icon-m', group: 'i.ProductId,i.ProductName', column: 'ProductName', columnID: 'ProductId', componentName: 'Product Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strProduct' },
+        { name: 'Design Catalogue', iconClass: 'fas fa-gem icon-m', group: 'j.designCatalogID,j.DesignNo', column: 'DesignNo', columnID: 'designCatalogID', componentName: 'Design Catalogue Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strDesignCatalogue' },
+        { name: 'Month', iconClass: 'fas fa-calendar-week icon-m', group: 'datename(month,a.voucherDate)', column: 'MonthName', columnID: 'MonthName', componentName: 'Month Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strMonth' },
+        { name: 'Year', iconClass: 'fas  fa-calendar-alt icon-m', group: 'M.FinYearID,m.YearCode', column: 'YearCode', columnID: 'FinYearID', componentName: 'Year Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strFinYear' },
+        { name: 'Sale Aging', iconClass: 'fas fa-chart-line icon-m', group: 'a.[rd.caption]', column: 'rd.caption', columnID: 'rd.caption', componentName: 'Sale Aging Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleAging' },
+        { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale' },
         // { name: 'Team & Mode of Sale', iconClass: 'fas fa-stream icon-m', group: '', column: '', componentName: 'Team & Mode of Sale Wise' }
     ]
 
@@ -286,7 +284,7 @@ export default function DetailedScreen() {
                                                                         return (
                                                                             <li class="ag-carousel_item">
                                                                                 <div class="ag-carousel_figure" >
-                                                                                    <a onClick={() => { handleOnLink({ group: data.group, column: data.column, componentName: data.componentName }) }}>
+                                                                                    <a onClick={() => { handleOnLink({ group: data.group, column: data.column, componentName: data.componentName, columnID: data.columnID, filter_key1: data.filter_key1, filter_key2: data.filter_key2 }) }}>
                                                                                         {/* <div class="crancy-featured-user__fcontent"> */}
                                                                                         <div class="crancy-featured-user__ficon" id={data.componentName}>
                                                                                             <i class={data.iconClass}></i>
@@ -318,125 +316,124 @@ export default function DetailedScreen() {
                                     </div>
                                     <Default_chart graph={graph} />
                                 </div>
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                {/* <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                                     <div class="title-top-graphdetail">
                                         <h5>Tag Image</h5>
                                     </div>
-                                    <div class="graphdetailcards-silder graphdetail-fourthcard">
-                                        {/* <div class="ag-carousel-arrow_box">
+                                    <div class="graphdetailcards-silder graphdetail-fourthcard"> */}
+                                {/* <div class="ag-carousel-arrow_box">
                                         <i class="js-ag-carousel-arrow_prev ag-carousel-arrow top-slider-prevarrow"></i>
                                         <i class="js-ag-carousel-arrow_next ag-carousel-arrow top-slider-nextarrow"></i>
                                     </div> */}
-                                        <ul id="TagImage" class="js-carousel ag-carousel_list" >
-                                            <Slider  {...settings} >
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                {/* <ul id="TagImage" class="js-carousel ag-carousel_list" >
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            111
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+                                            <Fancybox
+                                                options={{
+                                                    Carousel: {
+                                                        infinite: false,
+                                                    },
+                                                }}
+                                            >
+                                                <Slider  {...settings} >
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            112
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                111
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            113
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                112
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            114
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
 
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                113
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            115
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            116
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                114
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            117
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
 
-                                                <li class="ag-carousel_item">
-                                                    <figure class="ag-carousel_figure">
-                                                        <a data-fancybox="gallery">
-                                                            <img src={img1} class="ag-carousel_img"
-                                                                alt="Certificates 1" />
-                                                        </a>
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
 
-                                                        <figcaption class="ag-carousel_figcaption">
-                                                            118
-                                                        </figcaption>
-                                                    </figure>
-                                                </li>
-                                            </Slider>
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                115
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
+
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
+
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
+
+
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                116
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
+
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
+
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
+
+
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                117
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
+
+                                                    <li class="ag-carousel_item">
+                                                        <figure class="ag-carousel_figure">
+
+                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
+
+
+                                                            <figcaption class="ag-carousel_figcaption">
+                                                                118
+                                                            </figcaption>
+                                                        </figure>
+                                                    </li>
+                                                </Slider>
+                                            </Fancybox>
+
                                         </ul>
                                     </div>
-                                </div>
+                                </div> */}
+                                <Tag_Image />
+
                             </div>
 
                         </div>
@@ -445,7 +442,7 @@ export default function DetailedScreen() {
                     </section >
                 </div >
             </div>
-        </ContexState1 >
+        </ContexState1>
 
 
     )

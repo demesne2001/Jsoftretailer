@@ -34,7 +34,7 @@ export default function Header() {
     ["strSubItem"]: contexData.tempstate["strSubItem"],
     ["strItemGroup"]: contexData.tempstate["strItemGroup"],
     ["strItemSubitem"]: contexData.tempstate["strItemSubitem"],
-    ["strPurchaseParty"]: contexData.tempstate["strPurchaseParty"],
+    ["strDesignCodeID"]: contexData.tempstate["strDesignCodeID"],
     ["strSalesParty"]: contexData.tempstate["strSalesParty"],
     ["strSaleman"]: contexData.tempstate["strSaleman"],
     ["strProduct"]: contexData.tempstate["strProduct"],
@@ -46,6 +46,7 @@ export default function Header() {
     ["ToDate"]: contexData.tempstate["ToDate"],
     ["strMetalType"]: contexData.tempstate["strMetalType"],
     ["strDayBook"]: contexData.tempstate["strDayBook"],
+    ["column"]: contexData.tempstate["column"]
   };
 
   const animatedComponents = makeAnimated();
@@ -58,54 +59,58 @@ export default function Header() {
   let res
 
   const [count, setCount] = useState(uuidv4())
-
+  const [percentage_check, setpercentage_check] = useState(false);
   const conponentPDF = useRef(null);
 
   const [postData, setPostData] = useState({
     strBranch: "",
-    strState: "",
-    strCity: "",
-    strItem: "",
-    strSubItem: "",
-    strItemGroup: "",
-    strItemSubitem: "",
-    strPurchaseParty: "",
-    strSalesParty: "",
-    strSaleman: "",
-    strProduct: "",
-    strDesignCatalogue: "",
-    strSaleAging: "",
-    strModeofSale: "",
-    strTeamModeofSale: "",
-    strRegionID: "",
-    FromDate: "",
-    ToDate: "",
-    strMetalType: "",
-    strDayBook: "",
-    PageNo: 0,
-    PageSize: 9999,
-    Search: "",
-    Grouping: "",
-    FilterIndex: "",
-    strBranchValue: "",
-    strItemValue: "",
-    strSubItemValue: "",
-    strItemGroupValue: "",
-    strItemSubitemValue: "",
-    strPurchasePartyValue: "",
-    strSalesPartyValue: "",
-    strSalemanValue: "",
-    strProductValue: "",
-    strDesignCatalogueValue: "",
-    strSaleAgingValue: "",
-    strModeofSaleValue: "",
-    strTeamModeofSaleValue: "",
-    strRegionValue: "",
-    strDayBookValue: "",
-    strStateValue: '',
-    strMonth: "",
-    strFinYear: "",
-    strMonthValue: ""
+		strState: "",
+		strCity: "",
+		strItem: "",
+		strSubItem: "",
+		strItemGroup: "",
+		strItemSubitem: "",
+		strDesignCodeID: "",
+		strSalesParty: "",
+		strSaleman: "",
+		strProduct: "",
+		strDesignCatalogue: "",
+		strSaleAging: "",
+		strModeofSale: "",
+		strTeamModeofSale: "",
+		strDesignCodeID:"",
+		strRegionID: "",
+		FromDate: "",
+		ToDate: "",
+		strMetalType: "",
+		strDayBook: "",
+		PageNo: 0,
+		PageSize: 9999,
+		Search: "",
+		Grouping: "",
+		FilterIndex: "",
+		strBranchValue: "",
+		strItemValue: "",
+		strSubItemValue: "",
+		strItemGroupValue: "",
+		strItemSubitemValue: "",
+		strPurchasePartyValue: "",
+		strSalesPartyValue: "",
+		strSalemanValue: "",
+		strProductValue: "",
+		strDesignCatalogueValue: "",
+		strSaleAgingValue: "",
+		strModeofSaleValue: "",
+		strTeamModeofSaleValue: "",
+		strRegionValue: "",
+		strDayBookValue: "",
+		strStateValue: '',
+		strMonth: "",
+		strFinYear: "",
+		strMonthValue: "",
+		strDesignCodeValue:"",
+		column :'NetWeight',
+		Unity: "G"
   });
 
   const dependentfilter = {
@@ -201,11 +206,11 @@ export default function Header() {
       14,
     ],
     15: [
-      "strPurchaseParty",
-      API.GetPurchaseParty,
-      "DesignCatalogID",
-      "DesignNo",
-      "strPurchasePartyValue",
+      "strDesignCodeID",
+      API.Getdesigncode,
+      "designcodeID",
+      "DesignName",
+      "strDesignCodeValue",
       15,
     ],
     16: [
@@ -244,6 +249,8 @@ export default function Header() {
   const [DefaultMetalType, setDefaultMetalType] = useState();
   const [purchaseParty, setPurcharseParty] = useState({});
   const [salesParty, setSalesParty] = useState({});
+  const [unit, setUnit] = useState([{value : 'KG', label:'KG'}, {value : 'G', label:'Gram'}]);
+  const [Defaultunit, setDefaultUnit] = useState({value : 'G', label:'Gram'});
   const [props1, setProps1] = useState();
   const [syncDate, setSyncDate] = useState()
 
@@ -256,9 +263,17 @@ export default function Header() {
     contexData.SettempState({ ...contexData.tempstate, ["ToDate"]: currentDate })
     handleDaybook();
     handleMetaltype();
+    console.log(contexData.column, "contexdata");
   }, [])
 
+  useEffect(() => {
 
+    if (contexData.state['column'] === 'Prc') {
+      setpercentage_check(true)
+    } else {
+      setpercentage_check(false)
+    }
+  }, [contexData.state['column']])
 
   useEffect(() => {
     console.log(contexData.tempstate);
@@ -336,7 +351,7 @@ export default function Header() {
       // console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
       var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
       var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-      console.log(res,"res+header");
+      console.log(res, "res+header");
       if (res.data !== undefined) {
         console.log("hii", res.data.lstResult);
         var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
@@ -481,10 +496,11 @@ export default function Header() {
     post(postData, API.GetDayBook, {}, "post").then((res) => {
       for (let index = 0; index < res.data.lstResult.length; index++) {
         temp1.push({
-          value: res.data.lstResult[index].DaybookID,
+          value: (res.data.lstResult[index].DayBookID).toString(),
           label: res.data.lstResult[index].Daybook,
         });
       }
+      console.log(res, "getDaybook");
       setDayBook(temp1);
     });
   }
@@ -521,15 +537,17 @@ export default function Header() {
     document.getElementById('pdf-div').style.display = "block";
 
     await htmlToImage.toPng(document.getElementById('rootElementId'))
-      .then(function (dataUrl) {
 
+      .then(function (dataUrl) {
+        console.log(dataUrl);
         setCount(count + 1)
 
         var name = count.toString() + "Dashboard";
-
-        // console.log('dataUrl', dataUrl)
+        console.log(API.uploadImage, "name123");
+        console.log('dataUrl', { "Base64": dataUrl, "Extension": "png", "LoginID": name })
         // download(dataUrl, "file1.png")
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
+          console.log(res, "respdf");
           nameArray.push(res.data.filename);
         })
       });
@@ -542,8 +560,8 @@ export default function Header() {
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
           // console.log(res.data.filename);
           nameArray.push(res.data.filename);
-          // console.log(count.toString() + "filter.png", count.toString() + "Dashboard.png");
-          post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, API.GetPDFUsingImage, {}, "post").then((res) => {
+          console.log({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, "input");
+          post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, 'http://103.131.196.61:52202/Common/GetPDFUsingImage', {}, "post").then((res) => {
             // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
             // console.log(res);
             // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
@@ -580,6 +598,7 @@ export default function Header() {
     }
 
     else {
+
       handleOnClose();
     }
 
@@ -611,7 +630,7 @@ export default function Header() {
   }
 
   function handlePurchaseCommanModal() {
-    let myvalue = contexData.tempstate["strPurchaseParty"];
+    let myvalue = contexData.tempstate["strDesignCodeID"];
 
     let demoo = [];
     demoo.push(myvalue.split(","));
@@ -625,8 +644,8 @@ export default function Header() {
     }
     setDemo(newarr);
     setProps1({
-      api: API.GetPurchaseParty,
-      labelname: "strPurchaseParty",
+      api: API.Getdesigncode,
+      labelname: "strDesignCodeID",
       id: "DesignCatalogID",
       name: "DesignNo",
     });
@@ -818,6 +837,23 @@ export default function Header() {
 
   }
 
+  function handlePercentageShow(e) {
+    // console.log(e.target.checked, "gg");
+    if (e.target.checked) {
+      contexData.SettempState({ ...contexData.tempstate, ['column']: 'Prc' })
+    } else {
+      contexData.SettempState({ ...contexData.tempstate, ['column']: 'NetWeight' })
+    }
+  }
+
+  function downloadExcelDocument() {
+    contexData.setflagExcel(contexData.flagExcel + 1)
+  }
+
+  function handleselectUnit(e) {
+    setDefaultUnit(e);
+    contexData.SettempState({ ...contexData.tempstate, ['Unity']: e.value})
+  }
 
   return (
     <>
@@ -878,7 +914,7 @@ export default function Header() {
                         <ul className="geex-content__header__quickaction">
                           <li className="from-date-to-date-header__quickaction">
                             <h5>
-                              Synchronize-Date :{syncDate}
+                              Last Sync :{syncDate}
                               <span className="text-muted">
                                 { }
                               </span>
@@ -1001,7 +1037,24 @@ export default function Header() {
                               </a>
                             </div>
                           </li>
-                          <button id="downloadPdf" className="fa-solid fa-file-pdf" onClick={downloadPdfDocument} > </button>
+                          <li className="geex-content__header__quickaction__item">
+                            <div
+                              className="geex-content__header__quickaction__link  geex-btn__customizer"
+                              id="Filtermodal"
+                            >
+                              <i id="downloadPdf" className="fa-solid fa-file-pdf" onClick={downloadPdfDocument} > </i>
+                            </div>
+                          </li>
+                          <li className="geex-content__header__quickaction__item">
+                            <div
+                              className="geex-content__header__quickaction__link  geex-btn__customizer"
+                              id="Filtermodal"
+                            >
+                              <i id="downloadExcel" className="fa-solid fa-file-excel" onClick={downloadExcelDocument} > </i>
+                            </div>
+                          </li>
+
+
                           <li className="geex-content__header__quickaction__item">
                             <div
                               className="geex-content__header__quickaction__link crancy-header__alarm top-header-icon"
@@ -1022,11 +1075,6 @@ export default function Header() {
                                 className="fas fa-filter"
                                 onClick={handlerOnOpen}
                               ></i>
-                            </div>
-                          </li>
-                          <li className="geex-content__header__quickaction__item">
-                            <div className="geex-content__header__quickaction__link">
-                              <i className="fas fa-sync"></i>
                             </div>
                           </li>
                         </ul>
@@ -1515,7 +1563,7 @@ export default function Header() {
                       />
                     </div>
                   </div>
-{/* 
+                  {/* 
                   <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                     <div class="card-filter-contain">
                       <i class="fas fa-stream"></i>
@@ -1531,7 +1579,7 @@ export default function Header() {
 															<option value="four">Four</option>
 														</select>
 													</div> */}
-                      {/* <input
+                  {/* <input
                         value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
                         onClick={() => HandleOnClickComman(13)}
                       />
@@ -1572,7 +1620,7 @@ export default function Header() {
 												closeMenuOnSelect={false}
 											/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strPurchasePartyValue"])}
+                        value={formatedValue(contexData.tempstate["strDesignCodeValue"])}
                         onClick={() => HandleOnClickComman(15)}
                       />
                     </div>
@@ -1616,6 +1664,33 @@ export default function Header() {
                         value={formatedValue(contexData.tempstate["strMonthValue"])}
                         onClick={() => HandleOnClickComman(17)}
                       />
+                    </div>
+                  </div>
+                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                    <div class="card-filter-contain">
+                      <i class="fas fa-calendar-alt"></i>
+                      <label for="sel1" class="form-label">
+                        Units
+                      </label>
+
+                      <Select
+                                // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                name="unit"
+                                options={unit}
+                                className="basic-multi-select"
+                                classNamePrefix="select"
+                                onChange={handleselectUnit}
+                                components={animatedComponents}
+                                closeMenuOnSelect={false}
+                                defaultValue={Defaultunit}
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    height: '45px',
+                                    borderRadius: '10px'
+                                  }),
+                                }}
+                              />
                     </div>
                   </div>
 
@@ -1674,12 +1749,14 @@ export default function Header() {
               Apply
             </button>
             <div class="form-check checkbox-filter">
+              {console.log(percentage_check, "cheeck")}
               <input
                 class="form-check-input"
                 type="checkbox"
                 value=""
                 id="flexCheckChecked"
-                checked
+                onChange={handlePercentageShow}
+                defaultChecked={percentage_check}
               />
               <label
                 class="form-check-label checkbox-filter-label text-muted"

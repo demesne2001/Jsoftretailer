@@ -26,7 +26,7 @@ export default function StateWise() {
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	const [optionId, setOptionId] = useState()
-
+	const [flagSort, setflagSort] = useState()
 	const options_semidonut = StateWise_SemiDonut(name, state)
 	const options_Treemap = StateWise_Treemap(name)
 	const series_treemap = [
@@ -50,15 +50,22 @@ export default function StateWise() {
 
 	}
 
-
+	useEffect(() => {
+		fetchSortData()
+	}, [flagSort])
 	useEffect(() => {
 		fetchOption()
 		getdata()
 	}, [inputdata])
 
+	useEffect(() => {
+		fetchOption()
+		getdata()
+	}, [inputdata['column']])
+
 	async function getdata() {
-		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename' }
-		// console.log(inputdata, "stat");
+		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']:'Statename' }
+		console.log(inputdata, "stat");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = []
@@ -67,11 +74,11 @@ export default function StateWise() {
 				// console.log("response", res.data.lstResult[0]['Statename'])
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['Statename'] != null) {
-						// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index]['FineWt']+")", y: res.data.lstResult[index]['FineWt'] })
-						name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index]['FineWt'] })
+						// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
+						name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
 						name1.push(res.data.lstResult[index]['Statename'])
 					}
-					weight.push(res.data.lstResult[index]['FineWt'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
 
 				}
 				// setweight(weight)
@@ -95,9 +102,18 @@ export default function StateWise() {
 
 
 	function handleonchangeCurrency() {
-		console.log("handleonchangeCurrency");
+
 		document.getElementById("myDropdowniconstate").style.display === "block" ? document.getElementById("myDropdowniconstate").style.display = "none" : document.getElementById("myDropdowniconstate").style.display = "block";
-		console.log(document.getElementById("myDropdowniconstate").style.display, "value");
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconstate') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+
 	}
 
 	// document.getElementById('root').onclick = function(event) {
@@ -116,11 +132,14 @@ export default function StateWise() {
 	// }
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		if (event.target.className !== 'dropbtn') {
+		console.log(event.target, "class");
+		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconstate") !== null) {
 				document.getElementById("myDropdowniconstate").style.display = "none"
+				document.getElementById("sorticonState").style.display = "none"
 			}
 		}
+
 	});
 	function handleNavigation() {
 		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 }, replace: true })
@@ -163,6 +182,58 @@ export default function StateWise() {
 			})
 	}
 
+	function handleSorting() {
+		document.getElementById("sorticonState").style.display === "block" ? document.getElementById("sorticonState").style.display = "none" : document.getElementById("sorticonState").style.display = "block";
+		const tag_array = document.getElementsByClassName('dropdown-contenticon')
+		// console.log(tag_array);
+		if (tag_array !== undefined) {
+			for (let i = 0; i < tag_array.length; i++) {
+				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonState') {
+					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+				}
+			}
+		}
+	}
+
+	function handleclickSort(e) {
+		if (e.target.id !== 'sorticonState' && e.target.id !== '') {
+			setflagSort(e.target.id)
+		}
+	}
+
+	async function fetchSortData() {
+		var inputForSort = { ...inputdata, 'SortByLabel': 'Statename', 'SortBy': flagSort, ['Grouping']: 'k.stateID,k.Statename' }
+		console.log(inputForSort);
+		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
+			let name = []
+			let name1 = [];
+			let weight = [];
+			// console.log("response", res.data.lstResult[0]['Statename'])
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				if (res.data.lstResult[index]['Statename'] != null) {
+					// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
+					name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
+					name1.push(res.data.lstResult[index]['Statename'])
+				}
+				weight.push(res.data.lstResult[index][inputdata['column']])
+
+			}
+			// setweight(weight)
+			setState(name)
+			setName(name1)
+			setweight(weight)
+			setdataLoader(false)
+			if (weight.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			// console.log("statewise", name)
+			// console.log("statewise Service", series);
+			inputdata = { ...inputdata, ['Grouping']: '' }
+		})
+	}
+
 
 	return (
 		<div className="col-lg-4 col-md-6 col-12">
@@ -176,18 +247,21 @@ export default function StateWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2" >
+						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
 
+						<div id="sorticonState" className="dropdown-contenticon" onClick={handleclickSort}>
+							{flagSort === 'Label' ? <><a id='Label'>Sort by State ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by State ASC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by State DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by State DESC&nbsp;</a><hr className='custom-hr' /></>}
+							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
+							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
+						</div>
+						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
 						<div className='btnicons'>
-
-							<img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidstate'></img>
-
 							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
-
 								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></>}
 								{flag === 'donut' ? <><a id='donut'>Semi donut &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Semi donut </a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
-							<i class="fas fa-external-link-alt"></i>
 						</div>
 
 					</div>

@@ -944,4 +944,62 @@ button.dropbtn .value_name {
   font-size: 0.9rem;
 }
 
+.sorticon {
+  color: #000000;
+  font-size: 16px;
+  /* margin-right: 10px; */
+  /* margin-left: -15px; */
+  padding-right: 18%;
+}
 
+.sorticon:hover {
+  color: white;
+}
+
+@media only screen and (max-width: 1395px) {
+  .sorticon {
+    color: #000000;
+    font-size: 16px;
+    /* margin-right: 10px; */
+    /* margin-left: -30px; */
+    padding-right: 18%;
+  }
+}
+
+.icon_drop {
+  padding-bottom: 4px;
+}
+
+#downloadPdf{
+  cursor: pointer;
+}
+
+#downloadExcel{
+  cursor: pointer;
+}
+
+.pagonationdiv{
+  margin-top: 10px;
+  display: flex;
+  float: right;
+  /* margin-left: 70px; */
+}
+
+.pageImageButtom {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin-right: 3px;
+}
+
+.pageImageButtom:hover {
+  background-color: #e3e9ed;
+  color: #094876;
+  border: 1px solid #094876;
+}
+
+figure.ag-carousel_figure a img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}

@@ -21,7 +21,7 @@ export default function Piegraph1() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 's,r' }
+    inputdata = { ...inputdata, ['Grouping']: 's,sr' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {
@@ -30,9 +30,9 @@ export default function Piegraph1() {
 
         if (res.data.lstResult.length > 0) {
           console.log(res.data.lstResult);
-          setweight(res.data.lstResult[0]['FineWt'])
+          setweight(res.data.lstResult[0]['NetWeight'])
           setname(res.data.lstResult[0]['SalesType'])
-          setweight1(res.data.lstResult[1] ? res.data.lstResult[1]['FineWt'] : 0 )
+          setweight1(res.data.lstResult[1] ? res.data.lstResult[1]['NetWeight'] : 0 )
           setname1(res.data.lstResult[1] ? res.data.lstResult[1]['SalesType'] : "Return" )
           // console.log(res.data.lstResult[0]['FineWt'], "weright card");
           inputdata = { ...inputdata, ['Grouping']: '' }
