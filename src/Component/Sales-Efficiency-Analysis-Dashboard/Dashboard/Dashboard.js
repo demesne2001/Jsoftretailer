@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import SalesEfficiency from './SalesEfficiency'
 import Header from '../Header/Header'
 import Piegraph1 from './Piegraph1'
@@ -28,6 +28,7 @@ import ContexState from '../../contex/ContexState'
 import FilterPrint from '../FilterPrint'
 import Navbar from '../NavigationBar/Navbar'
 import ExportToExcel from './ExportToExcel'
+import { useNavigate } from 'react-router-dom';
 
 // import bootstrapSelectMin from '../../Assets/js/bootstrap-select.min';
 // import bootstrapMin from '../../Assets/js/bootstrap.min'
@@ -38,6 +39,12 @@ import ExportToExcel from './ExportToExcel'
 
 
 export default function Dashboard() {
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if (localStorage.getItem('username') === null) {
+            navigate('/',{replace:true})
+        }
+    },[])
     const [data1, setdata1] = useState([])
     const [data2, setdata2] = useState([])
     const [data3, setdata3] = useState([])

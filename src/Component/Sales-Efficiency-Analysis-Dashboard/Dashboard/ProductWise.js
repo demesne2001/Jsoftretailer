@@ -21,10 +21,10 @@ export default function ProductWise() {
 	const [weight, setweight] = useState([])
 	const [optionId, setOptionId] = useState()
 	const navigate = useNavigate()
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 	let inputdata = contexData.state;
 
-	const options_Bar = ProductWise_Bar(name)
+	const options_Bar = ProductWise_Bar(name, inputdata['column'])
 	const series = [{
 		name: 'weight',
 		data: weight
@@ -56,7 +56,9 @@ export default function ProductWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 	async function getdata() {
@@ -262,8 +264,7 @@ export default function ProductWise() {
 			<div class="graph-card">
 				<div class="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-						<p><i class="fas fa-boxes"></i>
-							Product Wise </p>
+						<p><i class="fas fa-boxes"></i> Product Wise </p>
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">

@@ -75,14 +75,14 @@ export default function ItemWise() {
 	const [loader, setLoader] = useState(true)
 	const [dataloader, setdataLoader] = useState(true)
 	const [flag, setflag] = useState()
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 	const ChartType = "bar"
 	const [optionId, setOptionId] = useState()
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 	const [demo, setdemo] = useState('bar')
 
-	const options_bar = ItemWise_bar(name);
-	const options_barh = Itemwise_horiZontal_Bar(name)
+	const options_bar = ItemWise_bar(name, inputdata['column']);
+	const options_barh = Itemwise_horiZontal_Bar(name, inputdata['column'])
 	const series = [{
 		name: 'weight',
 		data: weight
@@ -96,7 +96,9 @@ export default function ItemWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 	function handleclick(e) {
@@ -306,8 +308,7 @@ export default function ItemWise() {
 			<div className="graph-card">
 				<div className="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
-						<p><i className="fas fa-project-diagram"></i>
-							Item Wise</p>
+						<p><i className="fas fa-project-diagram"></i> Item Wise</p>
 					</div>
 
 					<div className='col-sm-2 col-md-2 col-2'>

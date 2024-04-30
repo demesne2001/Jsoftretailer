@@ -1,5 +1,5 @@
 
-export function BranchWise_donut(name) {
+export function BranchWise_donut(name, column) {
     const options = {
         stroke: {
             width: 0,
@@ -54,7 +54,11 @@ export function BranchWise_donut(name) {
             enabled: false,
             y: {
                 formatter: function (val) {
-                    return (parseFloat(val).toFixed(2)).toString() 
+                    if (column === 'Prc') {
+                        return (parseFloat(val).toFixed(2)).toString() + "%"
+                    } else {
+                        return (parseFloat(val).toFixed(2)).toString()
+                    }
                 }
             }
         },

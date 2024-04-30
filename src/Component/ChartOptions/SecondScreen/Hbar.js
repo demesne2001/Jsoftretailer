@@ -4,8 +4,6 @@ import { useContext } from "react"
 export function secondScreen_hbar(name, contexData, id, filterKey) {
 
 
-
-
     const options = {
         chart: {
             type: 'bar',
@@ -21,6 +19,7 @@ export function secondScreen_hbar(name, contexData, id, filterKey) {
                         contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '-' })
                     }
                     else {
+                        console.log( id[config.dataPointIndex].toString(), "12 13 46chart");
                         contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: id[config.dataPointIndex].toString() })
                     }
 

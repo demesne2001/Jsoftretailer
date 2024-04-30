@@ -4,6 +4,7 @@ import contex from "./Contex"
 const ContexState1 = (props) => {
 
     const [state, SetState] = useState({
+
         "strBranch": "",
         "strCompanyID": "",
         "strState": "",
@@ -14,10 +15,10 @@ const ContexState1 = (props) => {
         "strRegionID": "",
         "strItemSubitem": "",
         "strPurchaseParty": "",
-        "strDesignCodeID": "",
         "strSalesParty": "",
         "strSaleman": "",
         "strProduct": "",
+        "strDesignCodeID": "",
         "strDesignCatalogue": "",
         "strSaleAging": "",
         "strModeofSale": "",
@@ -28,8 +29,14 @@ const ContexState1 = (props) => {
         "strDayBook": "",
         "PageNo": 1,
         "PageSize": 10,
+        "SortBy": "wt",
+        "SortByLabel": "",
         "Search": "",
-        "Grouping": ""
+        "Grouping": "",
+        "strMonth": "",
+        "strFinYear": "",
+        "Unity": "G"
+
     })
 
     const [defaultchart, setDefaultChart] = useState({
@@ -80,13 +87,13 @@ const ContexState1 = (props) => {
         "strFinYear": "",
         "PageNo": 1,
         "PageSize": 5
-      });
+    });
 
 
 
     return (
 
-        <contex.Provider value={{ state: state, SetState: SetState, defaultchart, setDefaultChart,chartImage, setchartImage }}>
+        <contex.Provider value={{ state: state, SetState: SetState, defaultchart, setDefaultChart, chartImage, setchartImage }}>
 
             {props.children}
 

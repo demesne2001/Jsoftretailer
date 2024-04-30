@@ -80,11 +80,11 @@ export default function SalesPartyWise() {
 	const ChartType = "bar"
 	const [demo, setdemo] = useState("bar")
 	const [optionId, setOptionId] = useState()
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 	const navigate = useNavigate()
 
-	const options_lolipop = SalesPartyWiseLolipop(name)
-	const options_bar = SalesPartyWise_bar(name)
+	const options_lolipop = SalesPartyWiseLolipop(name, inputdata['column'])
+	const options_bar = SalesPartyWise_bar(name, inputdata['column'])
 	const series = [{
 		name: 'Weight',
 		data: weight
@@ -108,7 +108,9 @@ export default function SalesPartyWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 	// useEffect(() => {
 	// 	gradientdata()
@@ -321,8 +323,7 @@ export default function SalesPartyWise() {
 			<div className="graph-card">
 				<div className="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-						<p><i className="fas fa-handshake"></i>
-							Sales Party Wise</p>
+						<p><i className="fas fa-handshake"></i> Sales Party Wise</p>
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">

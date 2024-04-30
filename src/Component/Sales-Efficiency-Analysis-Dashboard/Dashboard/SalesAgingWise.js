@@ -19,7 +19,7 @@ export default function SalesAgingWise() {
 	let inputdata = contexData.state;
 	const navigate = useNavigate()
 	const [optionId, setOptionId] = useState()
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 	const [flag, setflag] = useState("line")
 	const ChartType = "line"
 
@@ -42,7 +42,9 @@ export default function SalesAgingWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 	async function getdata() {
@@ -315,15 +317,25 @@ export default function SalesAgingWise() {
 			type: 'column',
 			data: weight,
 			name: 'weight'
-		}, {
-			type: 'line',
-			data: weight,
-			name: 'weight'
 		}]
 
-
-
 		var options = {
+			tooltip: {
+
+				y: [{
+					show: true,
+					formatter: function (val) {
+						console.log(val,"charts12");
+						return val
+					}
+				},{
+					show: false,
+					formatter: function (val) {
+						console.log(val,"charts45");
+						
+					}
+				}]
+			},
 			chart: {
 				height: 350,
 				type: 'line',
@@ -492,8 +504,7 @@ export default function SalesAgingWise() {
 			<div class="graph-card">
 				<div class="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-						<p><i class="fas fa-chart-line"></i>
-							Sales Aging Wise</p>
+						<p><i class="fas fa-chart-line"></i> Sales Aging Wise</p>
 					</div>
 
 					< div className="col-sm-2 col-md-2 col-2">

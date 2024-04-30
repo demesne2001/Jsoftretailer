@@ -1,4 +1,4 @@
-export function CityWise_Bar(name){
+export function CityWise_Bar(name, column){
     const options = {
         chart: {
             type: 'bar',
@@ -26,7 +26,11 @@ export function CityWise_Bar(name){
             },
             y: {
                 formatter: function (val) {
-                    return val
+                    if (column === 'Prc') {
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
                 }
             }
         },

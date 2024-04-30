@@ -48,9 +48,9 @@ export default function BranchWise() {
 
 	const series = handleSeriesData()
 	const series_donut = weight
-	const options_donut = BranchWise_donut(name)
+	const options_donut = BranchWise_donut(name, inputdata['column'])
 
-	const options_radialbar = BranchWise_Radial(name)
+	const options_radialbar = BranchWise_Radial(name, inputdata['column'])
 
 	function handleclick(e) {
 
@@ -275,7 +275,7 @@ export default function BranchWise() {
 
 					<div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
 
-						<p><i class="fas fa-chart-pie"></i>Branch Wise</p>
+						<p><i class="fas fa-chart-pie"></i> Branch Wise</p>
 
 					</div>
 

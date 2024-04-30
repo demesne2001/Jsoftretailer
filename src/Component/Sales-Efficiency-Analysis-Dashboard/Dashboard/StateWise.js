@@ -26,9 +26,9 @@ export default function StateWise() {
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	const [optionId, setOptionId] = useState()
-	const [flagSort, setflagSort] = useState()
-	const options_semidonut = StateWise_SemiDonut(name, state)
-	const options_Treemap = StateWise_Treemap(name)
+	const [flagSort, setflagSort] = useState('')
+	const options_semidonut = StateWise_SemiDonut(name, state, inputdata['column'])
+	const options_Treemap = StateWise_Treemap(name, inputdata['column'])
 	const series_treemap = [
 		{
 			data: state
@@ -51,17 +51,20 @@ export default function StateWise() {
 	}
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
+
 	useEffect(() => {
 		fetchOption()
 		getdata()
 	}, [inputdata])
 
-	useEffect(() => {
-		fetchOption()
-		getdata()
-	}, [inputdata['column']])
+	// useEffect(() => {
+	// 	fetchOption()
+	// 	getdata()
+	// }, [inputdata['column']])
 
 	async function getdata() {
 		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']:'Statename' }
@@ -150,7 +153,7 @@ export default function StateWise() {
 
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
-					setflag(ChartType)
+		
 					// console.log('FIRST TIME API CALLED')
 					setflag(ChartType)
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')

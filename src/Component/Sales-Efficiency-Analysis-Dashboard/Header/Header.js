@@ -25,6 +25,7 @@ export default function Header() {
   const [fullscreen, setFullScreen] = useState(false);
   const contexData = useContext(contex);
   const metaltypeRef = useRef(null);
+  const DaybookRef = useRef(null);
   let FilterData = {
     ...contexData.tempstate,
     ["strBranch"]: contexData.tempstate["strBranch"],
@@ -64,53 +65,55 @@ export default function Header() {
 
   const [postData, setPostData] = useState({
     strBranch: "",
-		strState: "",
-		strCity: "",
-		strItem: "",
-		strSubItem: "",
-		strItemGroup: "",
-		strItemSubitem: "",
-		strDesignCodeID: "",
-		strSalesParty: "",
-		strSaleman: "",
-		strProduct: "",
-		strDesignCatalogue: "",
-		strSaleAging: "",
-		strModeofSale: "",
-		strTeamModeofSale: "",
-		strDesignCodeID:"",
-		strRegionID: "",
-		FromDate: "",
-		ToDate: "",
-		strMetalType: "",
-		strDayBook: "",
-		PageNo: 0,
-		PageSize: 9999,
-		Search: "",
-		Grouping: "",
-		FilterIndex: "",
-		strBranchValue: "",
-		strItemValue: "",
-		strSubItemValue: "",
-		strItemGroupValue: "",
-		strItemSubitemValue: "",
-		strPurchasePartyValue: "",
-		strSalesPartyValue: "",
-		strSalemanValue: "",
-		strProductValue: "",
-		strDesignCatalogueValue: "",
-		strSaleAgingValue: "",
-		strModeofSaleValue: "",
-		strTeamModeofSaleValue: "",
-		strRegionValue: "",
-		strDayBookValue: "",
-		strStateValue: '',
-		strMonth: "",
-		strFinYear: "",
-		strMonthValue: "",
-		strDesignCodeValue:"",
-		column :'NetWeight',
-		Unity: "G"
+    strState: "",
+    strCity: "",
+    strItem: "",
+    strSubItem: "",
+    strItemGroup: "",
+    strItemSubitem: "",
+    strPurchaseParty: "",
+    strSalesParty: "",
+    strSaleman: "",
+    strProduct: "",
+    strDesignCatalogue: "",
+    strSaleAging: "",
+    strModeofSale: "",
+    strTeamModeofSale: "",
+    strDesignCodeID: "",
+    strRegionID: "",
+    FromDate: "",
+    ToDate: "",
+    strMetalType: "",
+    strDayBook: "",
+    PageNo: 0,
+    PageSize: 9999,
+    Search: "",
+    Grouping: "",
+    FilterIndex: "",
+    strBranchValue: "",
+    strItemValue: "",
+    strSubItemValue: "",
+    strItemGroupValue: "",
+    strItemSubitemValue: "",
+    strPurchasePartyValue: "",
+    strSalesPartyValue: "",
+    strSalemanValue: "",
+    strProductValue: "",
+    strDesignCatalogueValue: "",
+    strSaleAgingValue: "",
+    strModeofSaleValue: "",
+    strTeamModeofSaleValue: "",
+    strRegionValue: "",
+    strDayBookValue: "",
+    strStateValue: '',
+    strMonth: "",
+    strFinYear: "",
+    strMonthValue: "",
+    strDesignCodeValue: "",
+    column: 'NetWeight',
+    Unity: "G",
+    SortBy: "wt-desc",
+    SortByLabel: ""
   });
 
   const dependentfilter = {
@@ -244,13 +247,13 @@ export default function Header() {
   const [design, Setdesign] = useState({});
   const [salesman, setSalesMan] = useState({});
   const [Daybook, setDayBook] = useState({});
-  const [DefaultDaybook, setDefaultDayBook] = useState({});
+  const [DefaultDaybook, setDefaultDayBook] = useState();
   const [MetalType, setMetalType] = useState({});
   const [DefaultMetalType, setDefaultMetalType] = useState();
   const [purchaseParty, setPurcharseParty] = useState({});
   const [salesParty, setSalesParty] = useState({});
-  const [unit, setUnit] = useState([{value : 'KG', label:'KG'}, {value : 'G', label:'Gram'}]);
-  const [Defaultunit, setDefaultUnit] = useState({value : 'G', label:'Gram'});
+  const [unit, setUnit] = useState([{ value: 'KG', label: 'KG' }, { value: 'G', label: 'Gram' }]);
+  const [Defaultunit, setDefaultUnit] = useState({ value: 'G', label: 'Gram' });
   const [props1, setProps1] = useState();
   const [syncDate, setSyncDate] = useState()
 
@@ -507,20 +510,35 @@ export default function Header() {
   function handleselect(e, selectData) {
 
     if (selectData.name === 'MetalTypeSelect') {
-
-
       if (e.length !== 0) {
+        var name = [];
+        var val = [];
         setDefaultMetalType(e);
-        contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: e[0].value, ['strMetalTypeValue']: e[0].label });
+        for (let i = 0; i < e.length; i++) {
+          name.push(e[i]['label'])
+          val.push(e[i]['value'])
+        }
+        contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: val.toString(), ['strMetalTypeValue']: name.toString() });
       } else {
-        // contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
-        // setDefaultMetalType([])
+        contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
+        setDefaultMetalType([])
       }
       console.log(e, "DATA12");
     } else {
       console.log(e, "DATA13");
-      setDefaultDayBook(e);
-      contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: e.value, ['strDayBookValue']: e.label });
+      if (e.length !== 0) {
+        setDefaultDayBook(e);
+        var name = [];
+        var val = [];
+        for (let i = 0; i < e.length; i++) {
+          name.push(e[i]['label'])
+          val.push(e[i]['value'])
+        }
+        contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: val.toString(), ['strDayBookValue']: name.toString() });
+      } else {
+        contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: '', ['strDayBookValue']: '' });
+        setDefaultDayBook([])
+      }
     }
   }
 
@@ -735,6 +753,7 @@ export default function Header() {
   function handleOnReset() {
     contexData.SettempState(postData)
     metaltypeRef.current.clearValue()
+    DaybookRef.current.clearValue()
     setDefaultMetalType([])
   }
 
@@ -852,7 +871,7 @@ export default function Header() {
 
   function handleselectUnit(e) {
     setDefaultUnit(e);
-    contexData.SettempState({ ...contexData.tempstate, ['Unity']: e.value})
+    contexData.SettempState({ ...contexData.tempstate, ['Unity']: e.value })
   }
 
   return (
@@ -1174,6 +1193,7 @@ export default function Header() {
                               <Select
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"
+                                closeMenuOnSelect={false}
                                 isMulti
                                 ref={metaltypeRef}
                                 options={MetalType}
@@ -1181,7 +1201,6 @@ export default function Header() {
                                 classNamePrefix="select"
                                 onChange={handleselect}
                                 components={animatedComponents}
-                                closeMenuOnSelect={false}
                                 defaultValue={DefaultMetalType}
                                 placeholder="Select..."
                                 styles={{
@@ -1203,18 +1222,20 @@ export default function Header() {
                               </label>
                               <Select
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
+                                closeMenuOnSelect={false}
                                 name="DayBookSelect"
                                 options={Daybook}
+                                ref={DaybookRef}
+                                isMulti
                                 className="basic-multi-select"
                                 classNamePrefix="select"
                                 onChange={handleselect}
                                 components={animatedComponents}
-                                closeMenuOnSelect={false}
                                 defaultValue={DefaultDaybook}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
-                                    height: '45px',
+                                    // height: '45px',
                                     borderRadius: '10px'
                                   }),
                                 }}
@@ -1235,7 +1256,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fa-solid fa-building"></i>
                       <label for="sel1" class="form-label">
-                        Branch
+                        &nbsp;Branch
                       </label>
                       {/* <Select
 
@@ -1264,7 +1285,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-globe"></i>
                       <label for="sel1" class="form-label">
-                        Region{" "}
+                        &nbsp;Region{" "}
                       </label>
                       {/* <Select
                           // defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1290,7 +1311,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-map-marker-alt"></i>
                       <label for="sel1" class="form-label">
-                        State
+                        &nbsp;State
                       </label>
 
                       {/* <Select
@@ -1320,7 +1341,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-city"></i>
                       <label for="sel1" class="form-label">
-                        City
+                        &nbsp;City
                       </label>
                       {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1349,7 +1370,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-chart-area"></i>
                       <label for="sel1" class="form-label">
-                        Item Group
+                        &nbsp;Item Group
                       </label>
                       {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1378,7 +1399,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-boxes"></i>
                       <label for="sel1" class="form-label">
-                        Product
+                        &nbsp;Product
                       </label>
                       {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1407,7 +1428,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-project-diagram"></i>
                       <label for="sel1" class="form-label">
-                        Item
+                        &nbsp;Item
                       </label>
                       {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1436,7 +1457,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-th-list"></i>
                       <label for="sel1" class="form-label">
-                        Sub-Item
+                        &nbsp;Sub-Item
                       </label>
                       {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1465,7 +1486,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-sitemap"></i>
                       <label for="sel1" class="form-label">
-                        Item with Sub-item
+                        &nbsp;Item with Sub-item
                       </label>
                       {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1492,7 +1513,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-gem"></i>
                       <label for="sel1" class="form-label">
-                        Design Catalogue
+                        &nbsp;Design Catalogue
                       </label>
                       {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1519,7 +1540,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-users"></i>
                       <label for="sel1" class="form-label">
-                        Saleman
+                        &nbsp;Saleman
                       </label>
                       {/* <Select
 														// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1546,7 +1567,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-layer-group"></i>
                       <label for="sel1" class="form-label">
-                        Mode of Sale
+                        &nbsp;Mode of Sale
                       </label>
                       {/* <div class="dropdown">
 														<select class="selectpicker" multiple aria-label="Default select example"
@@ -1568,7 +1589,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-stream"></i>
                       <label for="sel1" class="form-label">
-                        Team & Mode of Sale
+                      &nbsp;Team & Mode of Sale
                       </label>
                       {/* <div class="dropdown">
 														<select class="selectpicker" multiple aria-label="Default select example"
@@ -1590,7 +1611,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-chart-line"></i>
                       <label for="sel1" class="form-label">
-                        Sale Aging
+                        &nbsp;Sale Aging
                       </label>
                       <input
                         value={formatedValue(contexData.tempstate["strSaleAging"])}
@@ -1603,7 +1624,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-people-carry"></i>
                       <label for="sel1" class="form-label">
-                        Design
+                        &nbsp;Design
                       </label>
                       {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1630,7 +1651,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-handshake"></i>
                       <label for="sel1" class="form-label">
-                        Sales Party
+                        &nbsp;Sales Party
                       </label>
                       {/* <Select
 												// defaultValue={[colourOptions[2], colourOptions[3]]}
@@ -1657,7 +1678,7 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-calendar-alt"></i>
                       <label for="sel1" class="form-label">
-                        Month
+                        &nbsp;Month
                       </label>
 
                       <input
@@ -1670,27 +1691,27 @@ export default function Header() {
                     <div class="card-filter-contain">
                       <i class="fas fa-calendar-alt"></i>
                       <label for="sel1" class="form-label">
-                        Units
+                        &nbsp;Units
                       </label>
 
                       <Select
-                                // defaultValue={[colourOptions[2], colourOptions[3]]}
-                                name="unit"
-                                options={unit}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                                onChange={handleselectUnit}
-                                components={animatedComponents}
-                                closeMenuOnSelect={false}
-                                defaultValue={Defaultunit}
-                                styles={{
-                                  control: (provided, state) => ({
-                                    ...provided,
-                                    height: '45px',
-                                    borderRadius: '10px'
-                                  }),
-                                }}
-                              />
+                        // defaultValue={[colourOptions[2], colourOptions[3]]}
+                        name="unit"
+                        options={unit}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={handleselectUnit}
+                        components={animatedComponents}
+                        closeMenuOnSelect={false}
+                        defaultValue={Defaultunit}
+                        styles={{
+                          control: (provided, state) => ({
+                            ...provided,
+                            height: '45px',
+                            borderRadius: '10px'
+                          }),
+                        }}
+                      />
                     </div>
                   </div>
 
@@ -1698,7 +1719,7 @@ export default function Header() {
 									<div class="card-filter-contain">
 										<i class="fas fa-calendar-week"></i>
 										<label for="sel1" class="form-label">Month</label>
-										<div class="dropdown">
+										&nbsp;<div class="dropdown">
 											<select class="selectpicker" multiple aria-label="Default select example"
 												data-live-search="true">
 												<option value="one">One</option>

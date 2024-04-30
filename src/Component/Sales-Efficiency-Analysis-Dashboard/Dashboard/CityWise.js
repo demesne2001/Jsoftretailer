@@ -21,9 +21,9 @@ export default function CityWise() {
 	const [weight, setweight] = useState([])
 	let inputdata = contexData.state;
 	const [optionId, setOptionId] = useState()
-	const [flagSort, setflagSort] = useState()
-	const options_lolipop = CityWise_LoliMap(name)
-	const options_bar = CityWise_Bar(name);
+	const [flagSort, setflagSort] = useState("")
+	const options_lolipop = CityWise_LoliMap(name, inputdata['column'])
+	const options_bar = CityWise_Bar(name, inputdata['column']);
 	const series_lolipop = [{
 		name: 'Weight',
 		data: weight
@@ -38,7 +38,9 @@ export default function CityWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== "") {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 	const [sales, setSales] = useState([])
@@ -76,7 +78,7 @@ export default function CityWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'c.cityname' ,['SortByLabel']:'cityname' }
-		// console.log(inputdata);
+		console.log(inputdata, "citywise inputdata");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];

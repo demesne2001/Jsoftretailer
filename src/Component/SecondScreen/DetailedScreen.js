@@ -33,6 +33,7 @@ let defaultChartGroup
 
 export default function DetailedScreen() {
     const location = useLocation()
+    const navigate = useNavigate()
     const [graph, setGraph] = useState("") // passed as props to handle the component name , grouping and collum name from api
     const [mainChartProps, setMainChartProps] = useState(location.state)
     const [chartGroupId, setChartGroupId] = useState() // To fetch api data 
@@ -41,15 +42,17 @@ export default function DetailedScreen() {
     const [imagePath, setimagePath] = useState([])
     const [barcode, setbarcode] = useState([])
     const [netweight, setnetweight] = useState([])
-    if (location.state.chartId > 1) {
-        defaultChartGroup = {
-            name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch'
+    console.log(location.state, "hiii");
+    if (mainChartProps !== null) {
+        if (location.state.chartId > 1) {
+            defaultChartGroup = {
+                name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch'
+            }
+        }
+        else {
+            defaultChartGroup = { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' }
         }
     }
-    else {
-        defaultChartGroup =  { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' }
-    }
-
 
     const settings = {
 
@@ -89,8 +92,10 @@ export default function DetailedScreen() {
         ]
     };
 
-
     useEffect(() => {
+        if (localStorage.getItem('username') === null) {
+            navigate('/',{replace:true})
+        }
         console.log("detailedScreen");
         fetchOption()
     }, [])

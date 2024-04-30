@@ -1,5 +1,5 @@
 
-export function BranchWise_Radial(name){
+export function BranchWise_Radial(name, column){
 const options = {
     dataLabels: {
         enabled: false,
@@ -19,6 +19,18 @@ const options = {
     tooltip: {
         enabled: true,
         followCursor: true,
+
+        y:{
+            show: true,
+            formatter: function(val) {
+                if (column === 'Prc') {
+                    return (val.toFixed(2)).toString() + "%"
+                } else {
+                    return val.toFixed(2)
+                }
+            },
+        }
+    
     },
     chart: {
         type: 'donut',

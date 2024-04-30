@@ -1,4 +1,6 @@
-export function StateWise_Treemap(name){
+import { Tooltip } from "react-bootstrap";
+
+export function StateWise_Treemap(name, column){
     const options = {
         dataLabels: {
             enabled: true,
@@ -15,6 +17,7 @@ export function StateWise_Treemap(name){
                 enabled: false,
             }
         },
+        
         legend: {
             show: false
         },
@@ -38,6 +41,31 @@ export function StateWise_Treemap(name){
                     speed: 600
                 }
             }
+        },
+        tooltip:{
+            enabled: true,
+            x:{
+                formatter: function(val) {
+                    if (column === 'Prc') {
+                        return 
+                    } else {
+                        return val
+                    }
+                },
+            },
+            y: {
+                formatter: function(val) {
+                    console.log(column, "prdcccccc");
+                    if (column === 'Prc') {
+                        return val  + "%"
+                    } else {
+                        return val
+                    }
+                },
+                title: {
+                    formatter: (seriesName) => seriesName,
+                },
+            },
         },
         title: {
             text: '',

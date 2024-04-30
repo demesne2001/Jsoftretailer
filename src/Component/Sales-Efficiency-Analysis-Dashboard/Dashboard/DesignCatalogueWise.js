@@ -30,11 +30,11 @@ export default function DesignCatalogueWise() {
   const ChartType = "donut"
   const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
   const [optionId, setOptionId] = useState()
-  const options_bar = DesignCatalogueWise_bar(name);
-  const options_donut = DesignCatalogueWise_donut(name);
-  const options_pie = DesignCatalogueWise_pie(name);
+  const options_bar = DesignCatalogueWise_bar(name, inputdata['column']);
+  const options_donut = DesignCatalogueWise_donut(name, inputdata['column']);
+  const options_pie = DesignCatalogueWise_pie(name, inputdata['column']);
   const series1 = weight;
-  const [flagSort, setflagSort] = useState()
+  const [flagSort, setflagSort] = useState('')
   const series2 = [{
     name: 'weight',
     data: weight
@@ -60,9 +60,10 @@ export default function DesignCatalogueWise() {
   }, [inputdata])
 
   useEffect(() => {
-    fetchSortData()
-  }, [flagSort])
-
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'j.designCatalogID,j.DesignNo',['SortByLabel']:'DesignNo' }
@@ -262,8 +263,7 @@ export default function DesignCatalogueWise() {
       <div className="graph-card">
         <div className="card-title-graph">
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-            <p><i className="fas fa-gem"></i>
-              Design Catalogue Wise</p>
+            <p><i className="fas fa-gem"></i> Design Catalogue Wise</p>
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">

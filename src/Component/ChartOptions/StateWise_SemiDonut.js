@@ -1,4 +1,4 @@
-export function StateWise_SemiDonut(name, state) {
+export function StateWise_SemiDonut(name, state, column) {
     let datax = []
 
     let datay = []

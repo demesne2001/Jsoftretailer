@@ -205,7 +205,7 @@ export default function YearWise() {
 	const [optionId, setOptionId] = useState()
 	const [flag, setflag] = useState()
 	const ChartType = "kpi"
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
@@ -217,9 +217,9 @@ export default function YearWise() {
 		}
 
 	}
-	const options_bar = YearWise_bar(name)
-	const options_donut = YearWise_Donut(name)
-	const options_semidonut = YearWise_semiDonut(name)
+	const options_bar = YearWise_bar(name, inputdata['column'])
+	const options_donut = YearWise_Donut(name, inputdata['column'])
+	const options_semidonut = YearWise_semiDonut(name, inputdata['column'])
 	const series1 = [{
 		name: 'weight',
 		data: weight
@@ -232,12 +232,14 @@ export default function YearWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'M.FinYearID,m.YearCode', ['SortByLabel']:'YearCode' }
+		inputdata = { ...inputdata, ['Grouping']: 'M.FinYearID,m.YearCode', ['SortByLabel']: 'YearCode' }
 		// console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -547,25 +549,25 @@ export default function YearWise() {
 		console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
-				let weight = [];
-				// console.log(res.data.lstResult)
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					if (res.data.lstResult[index]['YearCode'] === null) {
-						name.push("null")
-					} else {
-						name.push(res.data.lstResult[index]['YearCode'])
-					}
-					weight.push(res.data.lstResult[index][inputdata['column']])
-				}
-				setName(name)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+			let weight = [];
+			// console.log(res.data.lstResult)
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				if (res.data.lstResult[index]['YearCode'] === null) {
+					name.push("null")
 				} else {
-					setLoader(true)
+					name.push(res.data.lstResult[index]['YearCode'])
 				}
-				inputdata = { ...inputdata, ['Grouping']: '' }
+				weight.push(res.data.lstResult[index][inputdata['column']])
+			}
+			setName(name)
+			setweight(weight)
+			setdataLoader(false)
+			if (weight.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}
 
@@ -575,8 +577,7 @@ export default function YearWise() {
 			<div className="graph-card">
 				<div className="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-						<p><i className="fas fa-calendar-alt"></i>
-							Year Wise</p>
+						<p><i className="fas fa-calendar-alt"></i> Year Wise</p>
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">

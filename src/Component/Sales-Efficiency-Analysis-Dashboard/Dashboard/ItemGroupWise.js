@@ -20,7 +20,7 @@ export default function ItemGroupWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   const [finalarr, setarr] = useState([])
-  const [flagSort, setflagSort] = useState()
+  const [flagSort, setflagSort] = useState('')
   let inputdata = contexData.state;
   const [loader, setLoader] = useState(true)
   const [dataloader, setdataLoader] = useState(true)
@@ -29,7 +29,7 @@ export default function ItemGroupWise() {
   const [optionId, setOptionId] = useState()
 
   const options_radial = ItemGroup_RadialBar(name)
-  const options_treemap = ItemGroup_treemap(name)
+  const options_treemap = ItemGroup_treemap(name, inputdata['column'])
   const series_treemap = [
     {
       data: finalarr
@@ -76,8 +76,10 @@ export default function ItemGroupWise() {
     getdata()
   }, [inputdata])
   useEffect(() => {
-    fetchSortData()
-  }, [flagSort])
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
 
   // useEffect(() => {
   //   setseries(select_series(flag))

@@ -31,7 +31,7 @@ export default function PurchasePartyWise() {
   const [imagearr, setImageArr] = useState([])
   const [sales, setSales] = useState([])
   const [flag, setflag] = useState()
-  const [flagSort, setflagSort] = useState()
+  const [flagSort, setflagSort] = useState('')
   const ChartType = "donut"
   const [optionId, setOptionId] = useState()
   const [demo, setdemo] = useState("bar")
@@ -39,8 +39,8 @@ export default function PurchasePartyWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   let inputdata = contexData.state;
-  const options_lolipop = PurchaseParty_lolipop(name)
-  const options_bar = PurchaseParty_bar(name)
+  const options_lolipop = PurchaseParty_lolipop(name, inputdata['column'])
+  const options_bar = PurchaseParty_bar(name, inputdata['column'])
   const series = [{
     name: 'Weight',
     data: weight
@@ -129,8 +129,10 @@ export default function PurchasePartyWise() {
   }, [inputdata])
 
   useEffect(() => {
-    fetchSortData()
-  }, [flagSort])
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
 
 
   useEffect(() => {
@@ -353,8 +355,7 @@ export default function PurchasePartyWise() {
       <div className="graph-card">
         <div className="card-title-graph">
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-            <p><i className="fas fa-people-carry"></i>
-              Design Wise</p>
+            <p><i className="fas fa-people-carry"></i> Design Wise</p>
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">

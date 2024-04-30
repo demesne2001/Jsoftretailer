@@ -89,12 +89,12 @@ export default function MonthWise() {
   const [loader, setLoader] = useState(true)
   const [dataloader, setdataLoader] = useState(true)
   const [flag, setflag] = useState()
-  const [flagSort, setflagSort] = useState()
+  const [flagSort, setflagSort] = useState('')
   const ChartType = "bar"
   const [optionId, setOptionId] = useState()
   const [demo, setdemo] = useState("bar")
-  const options_bar = MonthWise_Bar(name)
-  const options_area = MonthWise_area(name)
+  const options_bar = MonthWise_Bar(name, inputdata['column'])
+  const options_area = MonthWise_area(name, inputdata['column'])
   var series = [{
     name: 'weight',
     data: weight
@@ -118,8 +118,10 @@ export default function MonthWise() {
   }, [inputdata])
 
   useEffect(() => {
-    fetchSortData()
-  }, [flagSort])
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
 
   async function getdata() {
 
@@ -271,8 +273,7 @@ export default function MonthWise() {
       <div className="graph-card">
         <div className="card-title-graph">
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-            <p><i className="fas fa-calendar-week"></i>
-              Month Wise</p>
+            <p><i className="fas fa-calendar-week"></i> Month Wise</p>
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">

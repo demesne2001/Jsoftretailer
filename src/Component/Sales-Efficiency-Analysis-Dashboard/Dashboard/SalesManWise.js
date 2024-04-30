@@ -87,16 +87,18 @@ export default function SalesManWise() {
   const [optionId, setOptionId] = useState()
   let inputdata = contexData.state;
   const navigate = useNavigate()
-  const [flagSort, setflagSort] = useState()
+  const [flagSort, setflagSort] = useState('')
   useEffect(() => {
     fetchOption()
     getdata()
 
   }, [inputdata])
-  useEffect(() => {
-    fetchSortData()
-  }, [flagSort])
 
+  useEffect(() => {
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
 
   useEffect(() => {
     imagepoint()
@@ -404,8 +406,7 @@ export default function SalesManWise() {
         <div className="card-title-graph">
 
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-            <p><i className="fas fa-users"></i>
-              Salesmen Wise</p>
+            <p><i className="fas fa-users"></i> Salesmen Wise</p>
           </div>
 
 

@@ -25,15 +25,15 @@ export default function ItemWithSubItemWise() {
 	const [flag, setflag] = useState()
 	const ChartType = "bar"
 	const [optionId, setOptionId] = useState()
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 	const [sales, setSales] = useState([])
 
 	const navigate = useNavigate()
 
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
-	const options_bar = ItemWithSubItemWise_bar(name);
-	const options_vbar = ItemWithSubItemWise_vbar(name);
+	const options_bar = ItemWithSubItemWise_bar(name, inputdata['column']);
+	const options_vbar = ItemWithSubItemWise_vbar(name, inputdata['column']);
 	const series = [{
 		data: weight
 	}]
@@ -66,9 +66,10 @@ export default function ItemWithSubItemWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
-
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'f.ItemSubNAme,f.ItemSubID', ['SortByLabel']:'ItemSubNAme' }
@@ -249,8 +250,7 @@ export default function ItemWithSubItemWise() {
 			<div className="graph-card">
 				<div className="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-						<p><i className="fas fa-sitemap"></i>
-							Item with Sub item Wise</p>
+						<p><i className="fas fa-sitemap"></i> Item with Sub item Wise</p>
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">

@@ -25,11 +25,11 @@ export default function RegionWise() {
 	const [flag, setflag] = useState()
 	const [optionId, setOptionId] = useState()
 	const ChartType = "bar"
-	const [flagSort, setflagSort] = useState()
+	const [flagSort, setflagSort] = useState('')
 
-	const options_lolipop = RegionWise_lolipop(name)
-	const options_polar = RegionWise_Polar(name)
-	const options_donut = BranchWise_donut(name)
+	const options_lolipop = RegionWise_lolipop(name, inputdata['column'])
+	const options_polar = RegionWise_Polar(name, inputdata['column'])
+	const options_donut = BranchWise_donut(name, inputdata['column'])
 
 	const series_lolipop = [{
 		name: 'Weight',
@@ -57,12 +57,14 @@ export default function RegionWise() {
 	}, [inputdata])
 
 	useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'l.RegionID,l.RegionName', ['SortByLabel']:'RegionName' }
+		inputdata = { ...inputdata, ['Grouping']: 'l.RegionID,l.RegionName', ['SortByLabel']: 'RegionName' }
 		// console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -211,8 +213,7 @@ export default function RegionWise() {
 			<div className="graph-card">
 				<div className="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
-						<p><i className="fas fa-globe"></i>
-							Region Wise</p>
+						<p><i className="fas fa-globe"></i> Region Wise</p>
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">

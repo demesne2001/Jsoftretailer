@@ -9,9 +9,15 @@ import img1 from './Jsoft.png'
 import img2 from './jsoft-initial.png'
 import './Login-Custom.css'
 import { Link, useNavigate } from 'react-router-dom';
+import post from '../Utility/APIHandle'
+import API from '../Utility/API'
 const Main = () => {
     const navigate = useNavigate()
     const [count, setcount] = useState('')
+    const [login, setLogin] = useState({
+        "LoginID": "",
+        "PassWord": ""
+    })
     useEffect(() => {
         if (count === '') {
             setTimeout(() => {
@@ -36,8 +42,29 @@ const Main = () => {
 
 
     function handleLogin() {
-        navigate('/Home', { replace: true })
+        post(login, API.login, {}, "post").then((res) => {
+            console.log(res, "loginoutput");
+            if (res.data === undefined) {
+                alert(res.Error)
+            } else {
+                if (res.data.HasError === false) {
+                    if (res.data.UserName === undefined) {
+                        alert(res.data.Message)
+                    } else {
+                        localStorage.setItem('username', res.data.UserName.UserName)
+                        navigate('/Home', { replace: true })
+                    }
+                } else {
+                    alert(res.data.Message)
+                }
+            }
+        })
 
+
+    }
+
+    function handleoninputChange(e) {
+        setLogin({ ...login, [e.target.name]: e.target.value })
     }
 
     return (
@@ -55,22 +82,22 @@ const Main = () => {
                                 <h2>Login</h2>
                                 <form>
                                     <div class="user-box dd">
-                                        <input type="text" name="" required />
+                                        <input type="text" name="LoginID" required onChange={handleoninputChange} />
                                         <label>Username</label>
                                     </div>
                                     <div class="user-box">
-                                        <input type="password" name="" required />
+                                        <input type="password" name="PassWord" required onChange={handleoninputChange} />
                                         <label>Password</label>
                                     </div>
-                                
-                                        <a id='Log' onClick={handleLogin}>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            LOGIN
-                                        </a>
-                                   
+
+                                    <a id='Log' onClick={handleLogin}>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        LOGIN
+                                    </a>
+
                                 </form>
                             </div>
                         </div>

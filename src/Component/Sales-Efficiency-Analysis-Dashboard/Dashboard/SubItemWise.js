@@ -25,9 +25,9 @@ export default function SubItemWise() {
   const ChartType = "bar"
   const [optionId, setOptionId] = useState()
   const [sales, setSales] = useState([])
-	const [flagSort, setflagSort] = useState()
-  const options_Polar = SubItem_Polar(name)
-  const options_bar = SubItemWise_bar(name)
+	const [flagSort, setflagSort] = useState('')
+  const options_Polar = SubItem_Polar(name, inputdata['column'])
+  const options_bar = SubItemWise_bar(name, inputdata['column'])
   const series_bar = [{
     name: 'Weight',
     data: weight
@@ -59,7 +59,9 @@ export default function SubItemWise() {
   }, [inputdata])
 
   useEffect(() => {
-		fetchSortData()
+		if (flagSort !== '') {
+			fetchSortData()
+		}
 	}, [flagSort])
 
 
@@ -257,8 +259,7 @@ export default function SubItemWise() {
       <div className="graph-card">
         <div className="card-title-graph">
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
-            <p><i className="fas fa-th-list"></i>
-              Sub-Item Wise</p>
+            <p><i className="fas fa-th-list"></i> Sub-Item Wise</p>
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">

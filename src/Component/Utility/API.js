@@ -9,6 +9,7 @@ const Baseurl ="http://103.131.196.61:52202/"
 const Filter = Baseurl + 'Filter/'
 const Chart = Baseurl + 'Chart/'
 const Card = Baseurl + 'Card/'
+const Login = Baseurl + 'Login/'
 
 const Common = Baseurl + 'Common/'
 
@@ -84,8 +85,8 @@ const API = {
     uploadImage : Common + "uploadImage",
     GetPDFUsingImage : Common + "GetPDFUsingImage",
 
-    downloadPdf : Baseurl + "PDF/"
-    
+    downloadPdf : Baseurl + "PDF/",
+    login : Login + "login/"
 }
 export default API
 

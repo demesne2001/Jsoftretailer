@@ -16,6 +16,10 @@ export function SalesPartyWise_bar(name) {
             x: {
                 show: true,
                 formatter: function(val) {
+                    var val_origin = val.split('')
+                    val_origin.splice(15, 0, "\n")
+                    val = val_origin.join('');
+                    console.log(val, "charts_data");
                   return val
                 }
               },

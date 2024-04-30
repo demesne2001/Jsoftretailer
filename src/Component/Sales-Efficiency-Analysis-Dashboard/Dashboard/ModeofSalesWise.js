@@ -19,7 +19,7 @@ export default function ModeofSalesWise() {
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
   const [flag, setflag] = useState()
-  const [flagSort, setflagSort] = useState()
+  const [flagSort, setflagSort] = useState('')
   const [optionId, setOptionId] = useState()
   let inputdata = contexData.state;
   const ChartType = "semiDonut"
@@ -34,8 +34,10 @@ export default function ModeofSalesWise() {
   }, [inputdata])
 
   useEffect(() => {
-    fetchSortData()
-  }, [flagSort])
+		if (flagSort !== '') {
+			fetchSortData()
+		}
+	}, [flagSort])
 
   async function fetchOption() {
     await post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -150,8 +152,8 @@ export default function ModeofSalesWise() {
 
   const series = weight
 
-  const option_semiDonut = ModeofSales_semiDonut(name)
-  const options_donut = ModeofSales_donut(name)
+  const option_semiDonut = ModeofSales_semiDonut(name, inputdata['column'])
+  const options_donut = ModeofSales_donut(name, inputdata['column'])
 
 
   // const options = {
@@ -258,7 +260,7 @@ export default function ModeofSalesWise() {
 
           <div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
 
-            <p><i class="fas fa-chart-pie"></i>Mode of Sales Wise</p>
+            <p><i class="fas fa-chart-pie"></i> Mode of Sales Wise</p>
 
           </div>
 
