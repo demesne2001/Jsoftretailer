@@ -226,7 +226,7 @@ export default function PurchasePartyWise() {
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconPurchase') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -235,7 +235,7 @@ export default function PurchasePartyWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    console.log(event.target, "class");
+    // console.log(event.target, "class");
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconPurchase") !== null) {
         document.getElementById("myDropdowniconPurchase").style.display = "none"
@@ -301,7 +301,7 @@ export default function PurchasePartyWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'DesignCode', 'SortBy': flagSort, ['Grouping']: 'g.DesigncodeID,g.DesignCode' }
-    console.log(inputForSort);
+    // console.log(inputForSort);
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let sale = [];
       var js = {};

@@ -131,7 +131,7 @@ export default function ItemGroupWise() {
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconigroup') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -140,7 +140,7 @@ export default function ItemGroupWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    console.log(event.target, "class");
+    // console.log(event.target, "class");
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconigroup") !== null) {
         document.getElementById("myDropdowniconigroup").style.display = "none"
@@ -210,7 +210,7 @@ export default function ItemGroupWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'GroupName', 'SortBy': flagSort, ['Grouping']: 'o.ItemGroupId,o.GroupName' }
-    console.log(inputForSort);
+    // console.log(inputForSort);
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];

@@ -50,7 +50,7 @@ export default function SalesAgingWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'a.[rd.caption]', ['SortByLabel']: '[rd.caption]' }
-		console.log("branchwise data", inputdata);
+		// console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -408,7 +408,7 @@ export default function SalesAgingWise() {
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconSalesAging') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -417,7 +417,7 @@ export default function SalesAgingWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		console.log(event.target, "class");
+		// console.log(event.target, "class");
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesAging") !== null) {
 				document.getElementById("myDropdowniconSalesAging").style.display = "none"

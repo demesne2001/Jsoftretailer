@@ -55,7 +55,7 @@ export default function Main_chart(props) {
         }
         fetchData()
 
-        console.log(props, "useEffect_Main_Chart effect11 effect12");
+        // console.log(props, "useEffect_Main_Chart effect11 effect12");
 
     }, [input])
 
@@ -92,7 +92,7 @@ export default function Main_chart(props) {
             let id1 = [];
 
             if (res.data.lstResult.length !== 0) {
-                console.log(res)
+                // console.log(res)
                 for (let i = 0; i < res.data.lstResult.length; i++) {
                     // console.log(i)
                     name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
@@ -131,10 +131,10 @@ export default function Main_chart(props) {
 
     function flip() {
         if (document.getElementById("filp").style.transform === "rotateY(360deg)" || document.getElementById("filp").style.transform === "") {
-            console.log(document.getElementById("filp").style.transform);
+            // console.log(document.getElementById("filp").style.transform);
             document.getElementById("filp").style.transform = "rotateY(180deg)"
         } else {
-            console.log(document.getElementById("filp").style.transform);
+            // console.log(document.getElementById("filp").style.transform);
             document.getElementById("filp").style.transform = "rotateY(360deg)"
         }
 
@@ -146,7 +146,10 @@ export default function Main_chart(props) {
     // }
 
     function handleChartSelect(e) {
-        setFlag(e.target.id)
+        // console.log(e.target.id,"log in sls");
+        if (e.target.id !== "") {
+            setFlag(e.target.id)
+        }
     }
 
     // function handleFullDiv() {
@@ -177,11 +180,11 @@ export default function Main_chart(props) {
     // }
 
     function handledropdownMenu() {
-        console.log("call", document.getElementById("myDropdowniconSecondScreen").style.display);
+        // console.log("call", document.getElementById("myDropdowniconSecondScreen").style.display);
         if ( document.getElementById("myDropdowniconSecondScreen").style.display === "block") {
             document.getElementById("myDropdowniconSecondScreen").style.display = "none"
         } else {
-            console.log("condition trueee");
+            // console.log("condition trueee");
             document.getElementById("myDropdowniconSecondScreen").style.display = "block";
         }
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')

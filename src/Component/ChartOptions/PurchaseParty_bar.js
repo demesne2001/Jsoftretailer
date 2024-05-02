@@ -37,7 +37,7 @@ export function PurchaseParty_bar(name, column) {
         show: true,
         formatter: function (val) {
           if (column === 'Prc') {
-            console.log(column, "column");
+            // console.log(column, "column");
             return val.toString() + "%"
           } else {
             return val

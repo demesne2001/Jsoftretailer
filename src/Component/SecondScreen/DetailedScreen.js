@@ -42,7 +42,7 @@ export default function DetailedScreen() {
     const [imagePath, setimagePath] = useState([])
     const [barcode, setbarcode] = useState([])
     const [netweight, setnetweight] = useState([])
-    console.log(location.state, "hiii");
+    // console.log(location.state, "hiii");
     if (mainChartProps !== null) {
         if (mainChartProps.chartId > 1) {
             defaultChartGroup = {
@@ -96,7 +96,7 @@ export default function DetailedScreen() {
         if (localStorage.getItem('username') === null) {
             navigate('/',{replace:true})
         }
-        console.log("detailedScreen");
+        // console.log("detailedScreen");
         fetchOption()
     }, [])
 
@@ -128,12 +128,12 @@ export default function DetailedScreen() {
 
     function handleOnLink(str) {
 
-        console.log('Onclick on data', str)
+        // console.log('Onclick on data', str)
         showSelectedSlider(str.componentName)
-        console.log('aaaa', str.group)
-        console.log('bbb', chartGroup);
+        // console.log('aaaa', str.group)
+        // console.log('bbb', chartGroup);
         if (chartGroup === str.group) {
-            console.log("true in click");
+            // console.log("true in click");
             setGraph(str)
             document.getElementById("DefaultCheckBoxSeconScreen").checked = true;
         }
@@ -149,17 +149,17 @@ export default function DetailedScreen() {
 
     async function fetchOption() {
 
-        console.log('CHART ID', location.state.chartId)
+        // console.log('CHART ID', location.state.chartId)
 
         post({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
             .then((res) => {
                 // console.log('API CALEED')
                 if (res.data.lstResult.length === 0) {
-                    console.log('Condition True second screen')
-                    console.log({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "input-js");
+                    // console.log('Condition True second screen')
+                    // console.log({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "input-js");
                     post({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
                         .then((res) => {
-                            console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "inputjson");
+                            // console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "inputjson");
                             post({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
                                 .then((res) => {
 
@@ -175,9 +175,9 @@ export default function DetailedScreen() {
                 }
 
                 else {
-                    console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "inputjson")
-                    console.log(res.data.lstResult[0], "res");
-                    console.log(res.data.lstResult[0].ChartGroup, "error");
+                    // console.log({ "ID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "inputjson")
+                    // console.log(res.data.lstResult[0], "res");
+                    // console.log(res.data.lstResult[0].ChartGroup, "error");
                     setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
                     setChartGroupId(res.data.lstResult[0].ChartGroupID)
                     setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
@@ -200,10 +200,10 @@ export default function DetailedScreen() {
 
         setChartGroup(defaultGroup)
         // console.log({ "ChartGroupID": chartGroupId,"ChartGroup": chartGroup,"ChartID": location.state.chartOptionId,"vendorID": 1,"UserID": 1})
-        console.log({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "addedit");
+        // console.log({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "addedit");
         post({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
             .then((res) => {
-                console.log(res,"login save");
+                // console.log(res,"login save");
                 alert(res.data.Message)
             })
 
@@ -211,12 +211,12 @@ export default function DetailedScreen() {
 
     function showSelectedSlider(selectedId) {
 
-        console.log('SELECTED ID', selectedId)
+        // console.log('SELECTED ID', selectedId)
 
         if (document.getElementById(selectedId) !== null) {
             if (document.querySelector(".active") !== null) { // to deselect a icon
 
-                console.log("SELECTED ID IF");
+                // console.log("SELECTED ID IF");
                 document.querySelector(".active").className = document.querySelector(".active").className.replace('active', '')
             }
 
@@ -233,7 +233,7 @@ export default function DetailedScreen() {
     }
 
 
-    console.log('LOCATION IN DETAIL SCREEN', location.state)
+    // console.log('LOCATION IN DETAIL SCREEN', location.state)
 
 
     const sliderData = [

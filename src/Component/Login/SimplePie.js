@@ -11,7 +11,7 @@ const SimplePie = () => {
     {
        var domm = document.getElementById('chart-container');
        let dom=domm
-        console.log(dom)
+        // console.log(dom)
         if (dom !== null) {
             var myChart = echarts.init(dom, null, {
                 renderer: 'canvas',

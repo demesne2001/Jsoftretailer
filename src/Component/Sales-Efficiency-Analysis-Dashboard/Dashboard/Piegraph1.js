@@ -29,7 +29,7 @@ export default function Piegraph1() {
         
 
         if (res.data.lstResult.length > 0) {
-          console.log(res.data.lstResult);
+          // console.log(res.data.lstResult);
           setweight(res.data.lstResult[0]['NetWeight'])
           setname(res.data.lstResult[0]['SalesType'])
           setweight1(res.data.lstResult[1] ? res.data.lstResult[1]['NetWeight'] : 0 )
@@ -81,7 +81,7 @@ export default function Piegraph1() {
               label: 'Total',
               formatter: function (w) {
                 return w.globals.seriesTotals.reduce((a, b) => {
-                  console.log((a),(b));
+                  // console.log((a),(b));
                   var ans = -parseFloat(a)-parseFloat(b);
                   return parseFloat(ans).toFixed(2)
                 }, 0)

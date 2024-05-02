@@ -50,23 +50,23 @@ export default function Default_chart(props) {
     }, [flagSort])
 
     useEffect(() => {
-        console.log(input, "effect12");
+        // console.log(input, "effect12");
         fetchData()
     }, [input])
 
 
     // console.log(props);
     async function fetchData() {
-        console.log(props.graph.group, "props");
+        // console.log(props.graph.group, "props");
         if (props.graph.group !== undefined) {
 
 
             input = { ...input, ['Grouping']: props.graph.group };
-            console.log(input, "DEFAULT CHART API");
+            // console.log(input, "DEFAULT CHART API");
             await post(input, API.CommonChart, {}, "post").then((res) => {
-                console.log(res, "res_default");
-                console.log('INPUT FOR CLICK', input)
-                console.log(props.graph.columnID, "columnID");
+                // console.log(res, "res_default");
+                // console.log('INPUT FOR CLICK', input)
+                // console.log(props.graph.columnID, "columnID");
                 if (res.data.lstResult !== 0) {
 
 

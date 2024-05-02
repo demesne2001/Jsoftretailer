@@ -90,7 +90,7 @@ export function DesignCatalogueWise_donut(name, column) {
             y:{
               formatter: function (val) {
                 if (column === 'Prc') {
-                    console.log(column, "column");
+                    // console.log(column, "column");
                     return val.toString() + "%"
                 } else {
                     return val

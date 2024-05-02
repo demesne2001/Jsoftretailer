@@ -125,7 +125,7 @@ export default function ItemWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'd.itemID,d.ItemName', ['SortByLabel']: 'ItemName' }
-		console.log("Itemwise data", inputdata);
+
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -177,7 +177,7 @@ export default function ItemWise() {
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconitem') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -186,7 +186,7 @@ export default function ItemWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		console.log(event.target, "class");
+		// console.log(event.target, "class");
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconitem") !== null) {
 				document.getElementById("myDropdowniconitem").style.display = "none"
@@ -256,7 +256,7 @@ export default function ItemWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'ItemName', 'SortBy': flagSort, ['Grouping']: 'd.itemID,d.ItemName' }
-		console.log(inputForSort);
+		// console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];

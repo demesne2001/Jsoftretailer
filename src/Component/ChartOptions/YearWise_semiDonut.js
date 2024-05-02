@@ -54,7 +54,7 @@ export function YearWise_semiDonut(name, column) {
                             fontWeight: 600,
                             formatter: function (val) {
                                 if (column === 'Prc') {
-                                    console.log(column, "column");
+                                    // console.log(column, "column");
                                     return val.toString() + "%"
                                 } else {
                                     return val

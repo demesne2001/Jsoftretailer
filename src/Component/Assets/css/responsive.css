@@ -1666,7 +1666,7 @@
     justify-content: center;
     display: flex;
   }
-  @media .graphdetail-text {
+  .graphdetail-text {
     font-size: 14px;
   }
   .crancy-featured-user__fcontent.graphdetaildefault {

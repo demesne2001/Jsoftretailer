@@ -77,7 +77,7 @@ export default function BranchWise() {
 	function handleSeriesData() {
 		let percarray = []
 		let sum = 0;
-		console.log(column, "column");
+		// console.log(column, "column");
 		if (column === 'NetWeight') {
 			for (let i = 0; i < weight.length; i++) {
 				sum += weight[i];
@@ -96,14 +96,14 @@ export default function BranchWise() {
 
 	async function getdata() {
 		inputdata = { ...inputdata, ['Grouping']: 'a.BranchID,b.BranchName', ['SortByLabel']: 'BranchName' }
-		console.log("INPUT ", inputdata);
+		// console.log("INPUT ", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name1 = [];
 				let weight1 = [];
 				let sale = [];
 				var js = {};
-				console.log("hi", res.data.lstResult)
+				// console.log("hi", res.data.lstResult)
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					name1.push(res.data.lstResult[index]['BranchName'])
 					weight1.push(res.data.lstResult[index][inputdata['column']])
@@ -181,7 +181,7 @@ export default function BranchWise() {
 		// console.log(tag_array);
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconbranch') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -194,7 +194,7 @@ export default function BranchWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		console.log(event.target, "class");
+		// console.log(event.target, "class");
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconbranch") !== null) {
 				document.getElementById("myDropdowniconbranch").style.display = "none"
@@ -226,13 +226,13 @@ export default function BranchWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'BranchName', 'SortBy': flagSort, ['Grouping']: 'a.BranchID,b.BranchName' }
-		console.log(inputForSort);
+		// console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name2 = [];
 			let weight2 = [];
 			let sale = [];
 			var js = {};
-			console.log("hi", res.data.lstResult)
+			// console.log("hi", res.data.lstResult)
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				name2.push(res.data.lstResult[index]['BranchName'])
 				weight2.push(res.data.lstResult[index][inputdata['column']])
@@ -249,7 +249,7 @@ export default function BranchWise() {
 			}
 			setName(name2)
 			setweight(weight2)
-			console.log(weight2, "weg");
+			// console.log(weight2, "weg");
 			setdataLoader(false)
 			if (weight2.length !== 0) {
 				setLoader(false)

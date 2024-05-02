@@ -184,7 +184,7 @@ export default function SalesPartyWise() {
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconSalesparty') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -193,7 +193,7 @@ export default function SalesPartyWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		console.log(event.target, "class");
+		// console.log(event.target, "class");
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesparty") !== null) {
 				document.getElementById("myDropdowniconSalesparty").style.display = "none"
@@ -271,7 +271,7 @@ export default function SalesPartyWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'AccountName', 'SortBy': flagSort, ['Grouping']: 'a.accountID,c.AccountName' }
-		console.log(inputForSort);
+		// console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let sale = [];
 			var js = {};

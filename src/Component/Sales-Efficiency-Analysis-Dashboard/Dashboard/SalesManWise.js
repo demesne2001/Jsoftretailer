@@ -314,7 +314,7 @@ export default function SalesManWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    console.log(event.target, "class");
+    // console.log(event.target, "class");
     if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("sorticonSalesManWise") !== null) {
         document.getElementById("sorticonSalesManWise").style.display = "none"
@@ -379,7 +379,7 @@ export default function SalesManWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'SalesmanNAme', 'SortBy': flagSort, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme' }
-    console.log(inputForSort);
+    // console.log(inputForSort);
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];

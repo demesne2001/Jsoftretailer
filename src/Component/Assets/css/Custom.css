@@ -1232,7 +1232,7 @@ img.hover-shadow {
 
 .basic-multi-select .select__control {
   background-color: #f1f1f1;
-  height: 43px;
+  /* height: 43px; */
   border: 1px solid #e5e5e5;
   border-radius: 8px;
 }
@@ -1268,7 +1268,7 @@ img.hover-shadow {
 }
 .filter-top .basic-multi-select .select__control{
   background-color: #ffffff;
-  height: 46px;
+  /* height: 46px; */
   border: none; 
 }
 

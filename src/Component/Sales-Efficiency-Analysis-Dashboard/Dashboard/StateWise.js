@@ -39,7 +39,7 @@ export default function StateWise() {
 	const ChartType = "treemap"
 
 	function handleclick(e) {
-		console.log("handleclick");
+		// console.log("handleclick");
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconstate' && e.target.id !== '') {
 
 			setflag(e.target.id)
@@ -68,7 +68,7 @@ export default function StateWise() {
 
 	async function getdata() {
 		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']: 'Statename' }
-		console.log(inputdata, "stat");
+		// console.log(inputdata, "stat");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = []
@@ -110,7 +110,7 @@ export default function StateWise() {
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconstate') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -135,7 +135,7 @@ export default function StateWise() {
 	// }
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		console.log(event.target, "class");
+		// console.log(event.target, "class");
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconstate") !== null) {
 				document.getElementById("myDropdowniconstate").style.display = "none"
@@ -206,7 +206,7 @@ export default function StateWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'Statename', 'SortBy': flagSort, ['Grouping']: 'k.stateID,k.Statename' }
-		console.log(inputForSort);
+		// console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = []
 			let name1 = [];

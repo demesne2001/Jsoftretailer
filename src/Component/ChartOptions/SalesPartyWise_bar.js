@@ -19,7 +19,7 @@ export function SalesPartyWise_bar(name, column) {
                     var val_origin = val.split('')
                     val_origin.splice(15, 0, "\n")
                     val = val_origin.join('');
-                    console.log(val, "charts_data");
+                    // console.log(val, "charts_data");
                   return val
                 }
               },
@@ -27,7 +27,7 @@ export function SalesPartyWise_bar(name, column) {
                 show: true,
                 formatter: function(val) {
                     if (column === 'Prc') {
-                        console.log(column, "column");
+                        // console.log(column, "column");
                         return val.toString() + "%"
                     } else {
                         return val

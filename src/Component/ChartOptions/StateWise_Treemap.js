@@ -51,7 +51,7 @@ export function StateWise_Treemap(name, column){
             },
             y: {
                 formatter: function(val) {
-                    console.log(column, "prdcccccc");
+                    // console.log(column, "prdcccccc");
                     if (column === 'Prc') {
                         return val  + "%"
                     } else {

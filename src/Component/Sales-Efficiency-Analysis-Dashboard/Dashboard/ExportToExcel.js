@@ -150,10 +150,10 @@ const ExportToExcel = ({ tableTitles }) => {
 
     function getData() {
         inputdata = { ...inputdata, ['Grouping']: 'a.BranchID,b.BranchName' }
-        console.log(inputdata, 'excelinput');
+        // console.log(inputdata, 'excelinput');
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                console.log("excel123", response);
+                // console.log("excel123", response);
                 setdata1(response.data.lstResult);
                 // console.log('length1', response.data.lstResult.length)
                 array1.push({ "index": 1, "length": response.data.lstResult.length })
@@ -340,10 +340,10 @@ const ExportToExcel = ({ tableTitles }) => {
     }
     function getData18() {
         inputdata = { ...inputdata, ['Grouping']: 's' }
-        console.log(inputdata, "cardexcelinput");
+        // console.log(inputdata, "cardexcelinput");
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
-                console.log('data10', response)
+                // console.log('data10', response)
                 setdata18(response.data.lstResult);
 
 
@@ -380,7 +380,7 @@ const ExportToExcel = ({ tableTitles }) => {
                 // console.log('data10', response.data.lstResult.length)
                 setarray(array1)
                 setobj(obj)
-                console.log(array1, 'sorted array')
+                // console.log(array1, 'sorted array')
             })
     }
 
@@ -391,7 +391,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post({ Base64: img, Extension: "png", LoginID: data16.toString() }, API.uploadImage, {}, "post")
             .then((response) => {
                 // setdata16(uuidv4());
-                console.log(' new respomnse', response.data)
+                // console.log(' new respomnse', response.data)
             })
     }
 
@@ -401,20 +401,20 @@ const ExportToExcel = ({ tableTitles }) => {
         setinput17({ FileName: data16.toString() + ".png" })
         post({ FileName: data16.toString() + ".png" }, API.DeleteFile, {}, "post")
             .then((response) => {
-                console.log(response.data, "delete response")
+                // console.log(response.data, "delete response")
             })
     }
 
     function exporttoimage() {
         var node = document.getElementById('rootElementId');
-        console.log(node, "ele");
+        // console.log(node, "ele");
         htmlToImage.toPng(node)
             .then(function (dataUrl) {
                 document.getElementById("downloadExcel").style.color = "#0d4876";
                 document.getElementById("downloadExcel").style.pointerEvents = "";
                 var img = new Image();
                 img.src = dataUrl;
-                console.log(dataUrl, " new dataurllllll")
+                // console.log(dataUrl, " new dataurllllll")
                 // console.log(img, " new image")
                 // console.log(input16, " new input16")
                 getData16(dataUrl)
@@ -434,7 +434,6 @@ const ExportToExcel = ({ tableTitles }) => {
                 document.getElementById("downloadExcel").style.pointerEvents = "";
                 // var img = new Image();
                 // img.src = dataUrl;
-                console.log(dataUrl, " new dataurllllll")
                 // console.log(img, " new image")
                 // console.log(input16, " new input16")
                 getData16(dataUrl)
@@ -598,7 +597,6 @@ const ExportToExcel = ({ tableTitles }) => {
 
 
         // console.log(data6, "fffffffff")         //Image
-        console.log(data16, "data16");
         const response = await fetch(`http://103.131.196.61:52202/image/${(data16).toString() + ".png"}`);
 
         // console.log(response, " new image response")

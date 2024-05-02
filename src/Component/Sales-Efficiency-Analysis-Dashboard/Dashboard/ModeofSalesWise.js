@@ -82,7 +82,7 @@ export default function ModeofSalesWise() {
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconModeOfSales') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -106,7 +106,7 @@ export default function ModeofSalesWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    console.log(event.target, "class");
+    // console.log(event.target, "class");
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconModeOfSales") !== null) {
         document.getElementById("myDropdowniconModeOfSales").style.display = "none"
@@ -124,7 +124,7 @@ export default function ModeofSalesWise() {
       .then((res) => {
         let name = [];
         let weight = [];
-        console.log(res.data)
+        // console.log(res.data)
 
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
@@ -228,7 +228,7 @@ export default function ModeofSalesWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'ChallanGenerateType', 'SortBy': flagSort, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType' }
-    console.log(inputForSort);
+    // console.log(inputForSort);
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];

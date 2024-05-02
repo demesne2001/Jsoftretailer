@@ -75,7 +75,7 @@ export function YearWise_Donut(name, column) {
                         value: {
                             formatter: function (val) {
                                 if (column === 'Prc') {
-                                    console.log(column, "column");
+                                    // console.log(column, "column");
                                     return val.toString() + "%"
                                 } else {
                                     return val

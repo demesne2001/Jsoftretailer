@@ -30,7 +30,7 @@ export default function Tag_Image() {
     let inputdata = contextData.chartImage
     useEffect(() => {
         handleShowPhotos()
-        console.log(inputdata, "effectimage");
+        // console.log(inputdata, "effectimage");
         setCurrentPage(1)
         setPageNo(0)
     }, [inputdata])
@@ -43,7 +43,7 @@ export default function Tag_Image() {
         } else {
             document.getElementById('prev').style.display = 'block';
         }
-        console.log(TotalCount, "effectTotalcount"); 
+        // console.log(TotalCount, "effectTotalcount"); 
         if ((pageNo + 5) * 5 >= TotalCount) {
             document.getElementById('nxt').style.display = 'none';
         } else {
@@ -131,14 +131,14 @@ export default function Tag_Image() {
         }
     }
     function handleRightFivePage() {
-        console.log(pageNo * 5, "lof");
+        // console.log(pageNo * 5, "lof");
         if ((pageNo + 5) * 5 < TotalCount) {
             setPageNo(pageNo + 5);
         }
     }
 
     async function handlePageNoChange(page) {
-        console.log(page, "pages");
+        // console.log(page, "pages");
         var inputPageUpdate = { ...inputdata, ['PageNo']: page }
         setCurrentPage(page)
         await post(inputPageUpdate, API.GetDetailChartImage, {}, "post").then((res) => {
@@ -172,7 +172,7 @@ export default function Tag_Image() {
 
 
 
-    console.log(document.getElementsByClassName('f-button')[4], "closebuttpnfancybox");
+    // console.log(document.getElementsByClassName('f-button')[4], "closebuttpnfancybox");
     
     return (
         <>

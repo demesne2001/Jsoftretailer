@@ -55,7 +55,7 @@ export default function FilterPrint() {
     strFinYear: "",
     strMonthValue: ""
   }
-  console.log(JSON.stringify(filter.state), JSON.stringify(default_filter));
+  // console.log(JSON.stringify(filter.state), JSON.stringify(default_filter));
 
   return (
     <div align='right'>
