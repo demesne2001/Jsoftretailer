@@ -60,13 +60,13 @@ export default function DesignCatalogueWise() {
   }, [inputdata])
 
   useEffect(() => {
-		if (flagSort !== '') {
-			fetchSortData()
-		}
-	}, [flagSort])
+    if (flagSort !== '') {
+      fetchSortData()
+    }
+  }, [flagSort])
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'j.designCatalogID,j.DesignNo',['SortByLabel']:'DesignNo' }
+    inputdata = { ...inputdata, ['Grouping']: 'j.designCatalogID,j.DesignNo', ['SortByLabel']: 'DesignNo' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
@@ -145,7 +145,7 @@ export default function DesignCatalogueWise() {
 
   document.getElementById("root").addEventListener("click", function (event) {
     console.log(event.target, "class");
-    if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+    if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdownicondesigncat") !== null) {
         document.getElementById("myDropdownicondesigncat").style.display = "none"
         document.getElementById("sorticonDesignCat").style.display = "none"
@@ -214,45 +214,45 @@ export default function DesignCatalogueWise() {
     console.log(inputForSort);
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
-        let weight = [];
-        let sale = [];
-        var js = {};
+      let weight = [];
+      let sale = [];
+      var js = {};
 
 
-        for (let index = 0; index < res.data.lstResult.length; index++) {
-          js = { 'product': '', 'thisYearProfit': 0 }
-          if (res.data.lstResult[index]['DesignNo'] === null) {
-            name.push("null")
-          } else {
-            name.push(res.data.lstResult[index]['DesignNo'])
-          }
-          weight.push(res.data.lstResult[index][inputdata['column']])
-
-          if (res.data.lstResult[index]['DesignNo'] === null) {
-            js['product'] = 'null'
-          } else {
-            js['product'] = res.data.lstResult[index]['DesignNo']
-          }
-          js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-          sale.push(js)
-
-        }
-        setName(name)
-        setweight(weight)
-        setdataLoader(false)
-        if (weight.length !== 0) {
-          setLoader(false)
+      for (let index = 0; index < res.data.lstResult.length; index++) {
+        js = { 'product': '', 'thisYearProfit': 0 }
+        if (res.data.lstResult[index]['DesignNo'] === null) {
+          name.push("null")
         } else {
-          setLoader(true)
+          name.push(res.data.lstResult[index]['DesignNo'])
         }
-        var j = []
-        for (let index = 0; index < sale.length; index++) {
-          j.push({ ...sale[index], ['color']: gradientArray[index] })
-        }
-        setSales(j)
+        weight.push(res.data.lstResult[index][inputdata['column']])
 
-        inputdata = { ...inputdata, ['Grouping']: '' }
+        if (res.data.lstResult[index]['DesignNo'] === null) {
+          js['product'] = 'null'
+        } else {
+          js['product'] = res.data.lstResult[index]['DesignNo']
+        }
+        js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+        sale.push(js)
+
+      }
+      setName(name)
+      setweight(weight)
+      setdataLoader(false)
+      if (weight.length !== 0) {
+        setLoader(false)
+      } else {
+        setLoader(true)
+      }
+      var j = []
+      for (let index = 0; index < sale.length; index++) {
+        j.push({ ...sale[index], ['color']: gradientArray[index] })
+      }
+      setSales(j)
+
+      inputdata = { ...inputdata, ['Grouping']: '' }
 
     })
   }
@@ -267,15 +267,22 @@ export default function DesignCatalogueWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+            <div className='d-flex '>
+              <div className='dropbtngraph'>
+                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+              </div>
+              <div className='dropbtngraph'>
+                <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+              </div>
+            </div>
             <div id="sorticonDesignCat" className="dropdown-contenticon" onClick={handleclickSort}>
               {flagSort === 'Label' ? <><a id='Label'>Sort by DesignCatalog ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by DesignCatalog ASC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by DesignCatalog DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by DesignCatalog DESC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
 
               <div id="myDropdownicondesigncat" className="dropdown-contenticon" onClick={handleclick}>

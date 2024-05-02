@@ -118,14 +118,14 @@ export default function MonthWise() {
   }, [inputdata])
 
   useEffect(() => {
-		if (flagSort !== '') {
-			fetchSortData()
-		}
-	}, [flagSort])
+    if (flagSort !== '') {
+      fetchSortData()
+    }
+  }, [flagSort])
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'datename(month,a.voucherDate)',['SortByLabel']:'MonthName' }
+    inputdata = { ...inputdata, ['Grouping']: 'datename(month,a.voucherDate)', ['SortByLabel']: 'MonthName' }
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
 
@@ -176,7 +176,7 @@ export default function MonthWise() {
 
   document.getElementById("root").addEventListener("click", function (event) {
     console.log(event.target, "class");
-    if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+    if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconmonth") !== null) {
         document.getElementById("myDropdowniconmonth").style.display = "none"
         document.getElementById("sorticonMonth").style.display = "none"
@@ -277,15 +277,22 @@ export default function MonthWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+            <div className='d-flex '>
+              <div className='dropbtngraph'>
+                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+              </div>
+              <div className='dropbtngraph'>
+                <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+              </div>
+            </div>
             <div id="sorticonMonth" className="dropdown-contenticon" onClick={handleclickSort}>
               {flagSort === 'Label' ? <><a id='Label'>Sort by Month ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Month ASC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Month DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Month DESC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               <div id="myDropdowniconmonth" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}

@@ -67,7 +67,7 @@ export default function StateWise() {
 	// }, [inputdata['column']])
 
 	async function getdata() {
-		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']:'Statename' }
+		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']: 'Statename' }
 		console.log(inputdata, "stat");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -136,7 +136,7 @@ export default function StateWise() {
 
 	document.getElementById("root").addEventListener("click", function (event) {
 		console.log(event.target, "class");
-		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconstate") !== null) {
 				document.getElementById("myDropdowniconstate").style.display = "none"
 				document.getElementById("sorticonState").style.display = "none"
@@ -153,7 +153,7 @@ export default function StateWise() {
 
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
-		
+
 					// console.log('FIRST TIME API CALLED')
 					setflag(ChartType)
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
@@ -250,15 +250,22 @@ export default function StateWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2" >
-						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+						<div className='d-flex '>
+							<div className='dropbtngraph'>
+								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+							</div>
+							<div className='dropbtngraph'>
+								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+							</div>
+						</div>
 						<div id="sorticonState" className="dropdown-contenticon" onClick={handleclickSort}>
 							{flagSort === 'Label' ? <><a id='Label'>Sort by State ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by State ASC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by State DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by State DESC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></>}

@@ -25,7 +25,7 @@ export default function SubItemWise() {
   const ChartType = "bar"
   const [optionId, setOptionId] = useState()
   const [sales, setSales] = useState([])
-	const [flagSort, setflagSort] = useState('')
+  const [flagSort, setflagSort] = useState('')
   const options_Polar = SubItem_Polar(name, inputdata['column'])
   const options_bar = SubItemWise_bar(name, inputdata['column'])
   const series_bar = [{
@@ -59,10 +59,10 @@ export default function SubItemWise() {
   }, [inputdata])
 
   useEffect(() => {
-		if (flagSort !== '') {
-			fetchSortData()
-		}
-	}, [flagSort])
+    if (flagSort !== '') {
+      fetchSortData()
+    }
+  }, [flagSort])
 
 
   function setMargin() {
@@ -76,7 +76,7 @@ export default function SubItemWise() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'e.subitemID,e.subItemName', ['SortByLabel']:'subItemName' }
+    inputdata = { ...inputdata, ['Grouping']: 'e.subitemID,e.subItemName', ['SortByLabel']: 'subItemName' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
@@ -143,15 +143,15 @@ export default function SubItemWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-		console.log(event.target, "class");
-		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
-			if (document.getElementById("myDropdowniconsubitem") !== null) {
-				document.getElementById("myDropdowniconsubitem").style.display = "none"
-				document.getElementById("sorticonSubItem").style.display = "none"
-			}
-		}
+    console.log(event.target, "class");
+    if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+      if (document.getElementById("myDropdowniconsubitem") !== null) {
+        document.getElementById("myDropdowniconsubitem").style.display = "none"
+        document.getElementById("sorticonSubItem").style.display = "none"
+      }
+    }
 
-	});
+  });
 
   async function fetchOption() {
     await post({ "ID": 6, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -263,15 +263,22 @@ export default function SubItemWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+            <div className='d-flex '>
+              <div className='dropbtngraph'>
+                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+              </div>
+              <div className='dropbtngraph'>
+                <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+              </div>
+            </div>  
             <div id="sorticonSubItem" className="dropdown-contenticon" onClick={handleclickSort}>
               {flagSort === 'Label' ? <><a id='Label'>Sort by SubItem ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SubItem ASC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SubItem DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SubItem DESC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               <div id="myDropdowniconsubitem" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar </a><hr className='custom-hr' /></>}

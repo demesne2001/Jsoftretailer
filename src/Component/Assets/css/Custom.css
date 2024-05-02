@@ -1299,10 +1299,10 @@ img.hover-shadow {
 }
 
 .graphdetail-fourthcard .ag-carousel_item {
-  padding: 16px;
+  padding: 8px;
   box-sizing: border-box;
   background: #fff;
-  margin: 10px;
+  margin: 3px;
   border-radius: 12px;
 }
 .pageImageButtom {
@@ -1317,3 +1317,26 @@ img.hover-shadow {
   background: #094876 !important;
   color: #fff;
 }
+.sales-detail-ti {
+  position: absolute;
+  right: 0px;
+} 
+.dropbtngraph {
+  align-items: center;
+  width: 50px;
+  justify-content: center;
+  display: flex;
+  margin-left: 5px;
+}
+button.geex-btn.geex-btn__customizer-close:hover {
+  background: #ee5f23;
+}
+.graph-card .card-title-graph div{
+  transition: none !important;
+}
+
+#dropdownbutton{
+  position: absolute;
+  right: 0px;
+}
+ 

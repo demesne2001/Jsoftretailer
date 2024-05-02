@@ -177,7 +177,13 @@ export default function Main_chart(props) {
     // }
 
     function handledropdownMenu() {
-        document.getElementById("myDropdowniconSecondScreen").style.display === "block" ? document.getElementById("myDropdowniconSecondScreen").style.display = "none" : document.getElementById("myDropdowniconSecondScreen").style.display = "block";
+        console.log("call", document.getElementById("myDropdowniconSecondScreen").style.display);
+        if ( document.getElementById("myDropdowniconSecondScreen").style.display === "block") {
+            document.getElementById("myDropdowniconSecondScreen").style.display = "none"
+        } else {
+            console.log("condition trueee");
+            document.getElementById("myDropdowniconSecondScreen").style.display = "block";
+        }
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')
         console.log(tag_array, "Tage_array_of_secondScreem");
         if (tag_array !== undefined) {
@@ -185,7 +191,6 @@ export default function Main_chart(props) {
                 console.log(document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'], "each_element_id");
                 if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== 'myDropdowniconSecondScreen') {
                     document.getElementsByClassName('dropdown-contenticon-second-screen')[i].style.display = 'none';
-
                 }
             }
         }
@@ -201,8 +206,9 @@ export default function Main_chart(props) {
     // }
     document.getElementById("root").addEventListener("click", function (event) {
         console.log(event.target, "class");
-        if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.className !== 'fa-solid fa-ellipsis-vertical') {
+        if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.id !== 'dropdownbutton') {
             if (document.getElementById("myDropdowniconSecondScreen") !== null) {
+                // console.log("condition True of click");
                 document.getElementById("myDropdowniconSecondScreen").style.display = "none"
                 document.getElementById("sorticonsecondScreen").style.display = "none"
             }
@@ -270,7 +276,7 @@ export default function Main_chart(props) {
 
                     {/* <button class="fas fa-expand-alt" style={{ float: 'right' }} onClick={handleFullDiv} /> */}
 
-                    <button id='dropdownbutton' class="fa-solid fa-ellipsis-vertical" style={{ right: '64px', height: '10px', position: 'absolute' }} onClick={handledropdownMenu} ></button>
+                    <button id='dropdownbutton' className="fa-solid fa-ellipsis-vertical" onClick={handledropdownMenu} ></button>
                     {/* <i className="fa-solid fa-arrow-down-short-wide sort-icon-second-screen" onClick={handleSorting} ></i> */}
                 </h5>
             </div>
@@ -412,17 +418,17 @@ export default function Main_chart(props) {
                                         <ReactApexChart options={options_donut} series={series_donut} type="donut" height={600} />
                                         : null}
                                 </>
-                                : 
-                                    <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div>
-                              
+                                :
+                                <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div>
+
                                 </div>}</div>
                     </div>
                 </div>

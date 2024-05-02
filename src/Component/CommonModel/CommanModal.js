@@ -239,7 +239,7 @@ function Commonmodel(props) {
             inputForAlldata = { ...inputForAlldata, ['Search']: multicheckName.toString() }
             if (props.modelprops.api !== undefined) {
                 // console.log("search", input)
-                axios.post(props.modelprops.api, inputForAlldata)
+                post(inputForAlldata, props.modelprops.api, {}, "post")
                     .then((response) => {
                         console.log(response.data.lstResult, "result");
                         setfinalAllitem(response.data.lstResult)
@@ -360,7 +360,7 @@ function Commonmodel(props) {
                 var input = { ...search, ['PageNo']: page, ['PageSize']: 50 }
                 // console.log("scroll", input);
                 delete input.undefined
-                axios.post(props.modelprops.api, input)
+                post( input, props.modelprops.api, {}, 'post')
                     .then(response => {
                         setfinalitem([...finalitem, ...response.data.lstResult])
                         setPage(page + 1);
@@ -385,7 +385,7 @@ function Commonmodel(props) {
             // console.log("api", props)
             // console.log(input, "input");
             // console.log("hii");
-            axios.post(props.modelprops.api, input)
+            post(input, props.modelprops.api, {}, "post")
                 .then((response) => {
 
                     console.log(props.modelprops.api,"COMMONMODALINUY")

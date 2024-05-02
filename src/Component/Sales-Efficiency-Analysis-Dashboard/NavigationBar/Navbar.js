@@ -2,10 +2,10 @@ import React from 'react'
 
 import jsoftInitial from '../../Assets/image/logo/jsoft-initial.png'
 import jsoftMini from '../../Assets/image/Jsoft.png'
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
-
+  const navigate = useNavigate()
   function handleNavbar() {
     // console.log(document.getElementsByClassName("crancy-close")[0],"element");
     if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
@@ -40,6 +40,10 @@ export default function Navbar() {
 
   }
 
+  function HandleLogoClick() {
+    navigate('/Home',{replace:true})
+  }
+
   return (
     <div className="crancy-body-area">
 
@@ -48,7 +52,7 @@ export default function Navbar() {
         <div className="admin-menu">
 
           <div className="logo crancy-sidebar-padding pd-right-0">
-            <a className="crancy-logo">
+            <a className="crancy-logo" onClick={HandleLogoClick}>
 
               <img className="crancy-logo__main" src={jsoftInitial} alt="#" />
               <img className="crancy-logo__main--dark" src={jsoftInitial} alt="#" />

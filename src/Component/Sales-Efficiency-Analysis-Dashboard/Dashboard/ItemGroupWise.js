@@ -41,19 +41,19 @@ export default function ItemGroupWise() {
 
   function handleSeriesData() {
     let percarray = []
-		let sum = 0;
-		if (inputdata['column'] === 'NetWeight') {
-			for (let i = 0; i < weight.length; i++) {
-				sum += weight[i];
-			}
+    let sum = 0;
+    if (inputdata['column'] === 'NetWeight') {
+      for (let i = 0; i < weight.length; i++) {
+        sum += weight[i];
+      }
 
-			for (let index = 0; index < weight.length; index++) {
-				percarray.push((weight[index] / sum) * 100)
-			}
-			return percarray
-		} else {
-			return weight
-		}
+      for (let index = 0; index < weight.length; index++) {
+        percarray.push((weight[index] / sum) * 100)
+      }
+      return percarray
+    } else {
+      return weight
+    }
   }
 
   function handleclick(e) {
@@ -76,10 +76,10 @@ export default function ItemGroupWise() {
     getdata()
   }, [inputdata])
   useEffect(() => {
-		if (flagSort !== '') {
-			fetchSortData()
-		}
-	}, [flagSort])
+    if (flagSort !== '') {
+      fetchSortData()
+    }
+  }, [flagSort])
 
   // useEffect(() => {
   //   setseries(select_series(flag))
@@ -89,7 +89,7 @@ export default function ItemGroupWise() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'o.ItemGroupId,o.GroupName', ['SortByLabel']:'GroupName' }
+    inputdata = { ...inputdata, ['Grouping']: 'o.ItemGroupId,o.GroupName', ['SortByLabel']: 'GroupName' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
@@ -141,7 +141,7 @@ export default function ItemGroupWise() {
 
   document.getElementById("root").addEventListener("click", function (event) {
     console.log(event.target, "class");
-    if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+    if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconigroup") !== null) {
         document.getElementById("myDropdowniconigroup").style.display = "none"
         document.getElementById("sorticonItemGroup").style.display = "none"
@@ -251,15 +251,22 @@ export default function ItemGroupWise() {
 
 
           <div className="col-sm-2 col-md-2 col-2">
-            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+            <div className='d-flex '>
+              <div className='dropbtngraph'>
+                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+              </div>
+              <div className='dropbtngraph'>
+                <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+              </div>
+            </div>
             <div id="sorticonItemGroup" className="dropdown-contenticon" onClick={handleclickSort}>
               {flagSort === 'Label' ? <><a id='Label'>Sort by ItemGroup ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by ItemGroup ASC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by ItemGroup DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by ItemGroup DESC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               <div id="myDropdowniconigroup" className="dropdown-contenticon" onClick={handleclick}>
                 {/* {flag === 'radialBar' ? <><a id='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr' /></>} */}

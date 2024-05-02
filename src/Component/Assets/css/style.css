@@ -4553,8 +4553,7 @@ span.crancy-featured-user__ficon svg {
 }
 
 .ag-carousel_figure img:hover {
-    transform: scale(1.3);
-    box-shadow: 5px 5px 5px 0px #eee;
+    transform: scale(1); 
 }
 
 .ag-carousel_figure img {

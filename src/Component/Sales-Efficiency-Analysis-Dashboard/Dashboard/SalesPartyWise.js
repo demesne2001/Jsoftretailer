@@ -118,7 +118,7 @@ export default function SalesPartyWise() {
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'a.accountID,c.AccountName', ['SortByLabel']:'AccountName' }
+		inputdata = { ...inputdata, ['Grouping']: 'a.accountID,c.AccountName', ['SortByLabel']: 'AccountName' }
 		// console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -194,7 +194,7 @@ export default function SalesPartyWise() {
 
 	document.getElementById("root").addEventListener("click", function (event) {
 		console.log(event.target, "class");
-		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesparty") !== null) {
 				document.getElementById("myDropdowniconSalesparty").style.display = "none"
 				document.getElementById("sorticonSalesParty").style.display = "none"
@@ -274,46 +274,46 @@ export default function SalesPartyWise() {
 		console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let sale = [];
-				var js = {};
-				let name = [];
-				let weight = [];
-				// console.log(res.data.lstResult)
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					if (res.data.lstResult[index]['AccountName'] === null) {
-						name.push("null")
-					} else {
-						name.push(res.data.lstResult[index]['AccountName'])
-					}
-					weight.push(res.data.lstResult[index][inputdata['column']])
-
-
-					js = { 'product': '', 'thisYearProfit': 0 }
-					if (res.data.lstResult[index]['AccountName'] === null) {
-						js['product'] = 'null'
-					} else {
-						js['product'] = res.data.lstResult[index]['AccountName']
-					}
-					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-					sale.push(js)
-
-				}
-				// setSales(sale)
-				var j = []
-				for (let index = 0; index < sale.length; index++) {
-					j.push({ ...sale[index], ['color']: gradientArray[index] })
-				}
-
-				setName(name)
-				setweight(weight)
-				setSales(j)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+			var js = {};
+			let name = [];
+			let weight = [];
+			// console.log(res.data.lstResult)
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				if (res.data.lstResult[index]['AccountName'] === null) {
+					name.push("null")
 				} else {
-					setLoader(true)
+					name.push(res.data.lstResult[index]['AccountName'])
 				}
-				inputdata = { ...inputdata, ['Grouping']: '' }
+				weight.push(res.data.lstResult[index][inputdata['column']])
+
+
+				js = { 'product': '', 'thisYearProfit': 0 }
+				if (res.data.lstResult[index]['AccountName'] === null) {
+					js['product'] = 'null'
+				} else {
+					js['product'] = res.data.lstResult[index]['AccountName']
+				}
+				js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+				sale.push(js)
+
+			}
+			// setSales(sale)
+			var j = []
+			for (let index = 0; index < sale.length; index++) {
+				j.push({ ...sale[index], ['color']: gradientArray[index] })
+			}
+
+			setName(name)
+			setweight(weight)
+			setSales(j)
+			setdataLoader(false)
+			if (weight.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}
 
@@ -327,14 +327,22 @@ export default function SalesPartyWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
-						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+						<div className='d-flex '>
+							<div className='dropbtngraph'>
+								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+							</div>
+							<div className='dropbtngraph'>
+								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+							</div>
+						</div>
+						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div id="sorticonSalesParty" className="dropdown-contenticon" onClick={handleclickSort}>
 							{flagSort === 'Label' ? <><a id='Label'>Sort by SalesParty ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesParty ASC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesParty DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesParty DESC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}

@@ -15,7 +15,6 @@ const Common = Baseurl + 'Common/'
 
 
 const API = {
-
     BranchFilter: Filter+'GetBranch',
     stateFilter : Filter + 'GetState',
     regionFilter : Filter + 'GetRegion',
@@ -83,6 +82,7 @@ const API = {
     GetDefaultScreenData:Filter+'GetDefaultScreenData',
 
     uploadImage : Common + "uploadImage",
+    DeleteFile : Common + "DeleteFile",
     GetPDFUsingImage : Common + "GetPDFUsingImage",
 
     downloadPdf : Baseurl + "PDF/",

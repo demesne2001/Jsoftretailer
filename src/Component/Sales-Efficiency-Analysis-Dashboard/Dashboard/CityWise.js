@@ -77,7 +77,7 @@ export default function CityWise() {
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'c.cityname' ,['SortByLabel']:'cityname' }
+		inputdata = { ...inputdata, ['Grouping']: 'c.cityname', ['SortByLabel']: 'cityname' }
 		console.log(inputdata, "citywise inputdata");
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -146,7 +146,7 @@ export default function CityWise() {
 
 	document.getElementById("root").addEventListener("click", function (event) {
 		console.log(event.target, "class");
-		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconcity") !== null) {
 				document.getElementById("myDropdowniconcity").style.display = "none"
 				document.getElementById("sorticoncity").style.display = "none"
@@ -222,38 +222,38 @@ export default function CityWise() {
 		console.log(inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
-				let weight = [];
-				let sale = [];
-				var js = {};
+			let weight = [];
+			let sale = [];
+			var js = {};
 
-				// console.log(res.data.lstResult)
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					name.push(res.data.lstResult[index]['cityname'])
-					weight.push(res.data.lstResult[index][inputdata['column']])
-					js = { 'product': '', 'thisYearProfit': 0 }
-					if (res.data.lstResult[index]['cityname'] === null) {
-						js['product'] = 'null'
-					} else {
-						js['product'] = res.data.lstResult[index]['cityname']
-					}
-					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-					sale.push(js)
-				}
-				setName(name)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+			// console.log(res.data.lstResult)
+			for (let index = 0; index < res.data.lstResult.length; index++) {
+				name.push(res.data.lstResult[index]['cityname'])
+				weight.push(res.data.lstResult[index][inputdata['column']])
+				js = { 'product': '', 'thisYearProfit': 0 }
+				if (res.data.lstResult[index]['cityname'] === null) {
+					js['product'] = 'null'
 				} else {
-					setLoader(true)
+					js['product'] = res.data.lstResult[index]['cityname']
 				}
-				var j = []
-				for (let index = 0; index < sale.length; index++) {
-					j.push({ ...sale[index], ['color']: gradientArray[index] })
-				}
-				setSales(j)
-			
+				js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+				sale.push(js)
+			}
+			setName(name)
+			setweight(weight)
+			setdataLoader(false)
+			if (weight.length !== 0) {
+				setLoader(false)
+			} else {
+				setLoader(true)
+			}
+			var j = []
+			for (let index = 0; index < sale.length; index++) {
+				j.push({ ...sale[index], ['color']: gradientArray[index] })
+			}
+			setSales(j)
+
 			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}
@@ -270,14 +270,23 @@ export default function CityWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2" >
-						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
+						<div className='d-flex '>
+							<div className='dropbtngraph'>
+								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+							</div>
+							<div className='dropbtngraph'>
+								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+							</div>
+						</div>
+
+						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div id="sorticoncity" className="dropdown-contenticon" onClick={handleclickSort}>
 							{flagSort === 'Label' ? <><a id='Label'>Sort by City ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by City ASC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by City DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by City DESC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconcity" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' >bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >bar </a><hr className='custom-hr' /></>}

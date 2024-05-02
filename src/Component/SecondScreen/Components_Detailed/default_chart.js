@@ -58,76 +58,46 @@ export default function Default_chart(props) {
     // console.log(props);
     async function fetchData() {
         console.log(props.graph.group, "props");
-
-        input = { ...input, ['Grouping']: props.graph.group };
-        console.log(input, "DEFAULT CHART API");
-        // await axios.post(API.GetDetailCommanChart, input).then((res) => {
-        //     console.log(res, "res_default");
-        //     console.log('INPUT FOR CLICK', input)
-        //     console.log(props.graph.columnID, "columnID");
-        //     if (res.data.lstResult !== 0) {
+        if (props.graph.group !== undefined) {
 
 
-        //         let name = [];
-        //         let weg = [];
-        //         let id1 = [];
-        //         for (let i = 0; i < res.data.lstResult.length; i++) {
-        //             if (res.data.lstResult[i][props.graph.column] !== null) {
+            input = { ...input, ['Grouping']: props.graph.group };
+            console.log(input, "DEFAULT CHART API");
+            await post(input, API.CommonChart, {}, "post").then((res) => {
+                console.log(res, "res_default");
+                console.log('INPUT FOR CLICK', input)
+                console.log(props.graph.columnID, "columnID");
+                if (res.data.lstResult !== 0) {
 
 
-        //                 console.log("IF inside loop")
-
-        //                 name.push(res.data.lstResult[i][props.graph.column]);
-        //                 weg.push(res.data.lstResult[i]['NetWeight']);
-        //                 id1.push(res.data.lstResult[i][props.graph.columnID]);
-        //             }
-        //             else {
-        //                 name.push('null');
-        //                 weg.push(res.data.lstResult[i]['NetWeight']);
-        //                 id1.push(res.data.lstResult[i][props.graph.columnID])
-        //             }
-        //         }
-        //         // console.log(name, weg);
-        //         setName(name);
-        //         setweight(weg);
-        //         setid(id1);
-        //         setdata(res.data.lstResult)
-        //     }
-        // })
-        await post(input, API.CommonChart, {}, "post").then((res) => {
-            console.log(res, "res_default");
-            console.log('INPUT FOR CLICK', input)
-            console.log(props.graph.columnID, "columnID");
-            if (res.data.lstResult !== 0) {
+                    let name = [];
+                    let weg = [];
+                    let id1 = [];
+                    for (let i = 0; i < res.data.lstResult.length; i++) {
+                        if (res.data.lstResult[i][props.graph.column] !== null) {
 
 
-                let name = [];
-                let weg = [];
-                let id1 = [];
-                for (let i = 0; i < res.data.lstResult.length; i++) {
-                    if (res.data.lstResult[i][props.graph.column] !== null) {
+                            console.log("IF inside loop")
 
-
-                        console.log("IF inside loop")
-
-                        name.push(res.data.lstResult[i][props.graph.column]);
-                        weg.push(res.data.lstResult[i]['NetWeight']);
-                        id1.push(res.data.lstResult[i][props.graph.columnID]);
+                            name.push(res.data.lstResult[i][props.graph.column]);
+                            weg.push(res.data.lstResult[i]['NetWeight']);
+                            id1.push(res.data.lstResult[i][props.graph.columnID]);
+                        }
+                        else {
+                            name.push('null');
+                            weg.push(res.data.lstResult[i]['NetWeight']);
+                            id1.push(res.data.lstResult[i][props.graph.columnID])
+                        }
                     }
-                    else {
-                        name.push('null');
-                        weg.push(res.data.lstResult[i]['NetWeight']);
-                        id1.push(res.data.lstResult[i][props.graph.columnID])
-                    }
+                    // console.log(name, weg);
+                    setName(name);
+                    setweight(weg);
+                    setid(id1);
+                    setdata(res.data.lstResult)
+                    setLoader(false)
                 }
-                // console.log(name, weg);
-                setName(name);
-                setweight(weg);
-                setid(id1);
-                setdata(res.data.lstResult)
-                setLoader(false)
-            }
-        })
+            })
+        }
 
 
     }
@@ -227,7 +197,7 @@ export default function Default_chart(props) {
     }
     document.getElementById("root").addEventListener("click", function (event) {
         console.log(event.target, "class");
-        if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen'  && event.target.className !== 'fa-solid fa-ellipsis-vertical') {
+        if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.className !== 'fa-solid fa-ellipsis-vertical') {
             if (document.getElementById("myDropdowniconSecondScreen") !== null) {
                 document.getElementById("myDropdowniconSecondScreen").style.display = "none"
                 document.getElementById("sorticonsecondScreenDefault").style.display = "none"
@@ -311,11 +281,11 @@ export default function Default_chart(props) {
             {loader === false ?
                 <div class="graphdetailcards graphdetail-secondcard">
                     <div class="topimg-gd">
-                        <ReactApexChart options={options} series={series} type="bar" height={450} /> 
+                        <ReactApexChart options={options} series={series} type="bar" height={450} />
                     </div>
                 </div> :
                 <div class="graphdetailcards graphdetail-secondcard">
-                    <div class="topimg-gd" style={{ height:500}}>
+                    <div class="topimg-gd" style={{ height: 500 }}>
                         <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                             <div class="dot-spinner__dot"></div>
                             <div class="dot-spinner__dot"></div>

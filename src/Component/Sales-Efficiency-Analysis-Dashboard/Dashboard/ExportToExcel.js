@@ -22,10 +22,10 @@ const ExportToExcel = ({ tableTitles }) => {
 
         if (flag1 !== 0) {
             setTimeout(() => {
-              exporttoimage()
+                exporttoimage()
             }, 20000);
             exportToExcel()
-            
+
         }
 
     }, [flag1])
@@ -52,8 +52,13 @@ const ExportToExcel = ({ tableTitles }) => {
     const [data19, setdata19] = useState([])
     const [data20, setdata20] = useState([])
     const [data21, setdata21] = useState([])
-    const [data16, setdata16] = useState(51)
+    const [data16, setdata16] = useState(uuidv4())
 
+    function uuidv4() {
+        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+            (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+        );
+    }
 
 
     const [input16, setinput16] = useState({
@@ -334,16 +339,20 @@ const ExportToExcel = ({ tableTitles }) => {
             })
     }
     function getData18() {
-        post(inputdata, API.GetSalesEfficiencyCard, {}, "post")
+        inputdata = { ...inputdata, ['Grouping']: 's' }
+        console.log(inputdata, "cardexcelinput");
+        post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
+                console.log('data10', response)
                 setdata18(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
 
                 array1.push({ "index": 18, "length": response.data.lstResult.length })
             })
     }
     function getData19() {
-        post(inputdata, API.GetReturnTrendCard, {}, "post")
+        inputdata = { ...inputdata, ['Grouping']: 'sr' }
+        post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
                 setdata19(response.data.lstResult);
                 // console.log('data10', response.data.lstResult.length)
@@ -353,7 +362,8 @@ const ExportToExcel = ({ tableTitles }) => {
             })
     }
     function getData20() {
-        post(inputdata, API.GetCollectionCard, {}, "post")
+        inputdata = { ...inputdata, ['Grouping']: 'r' }
+        post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
                 setdata20(response.data.lstResult);
                 // console.log('data10', response.data.lstResult.length)
@@ -363,13 +373,13 @@ const ExportToExcel = ({ tableTitles }) => {
             })
     }
     function getData21() {
-        post(inputdata, API.GetStockAnalysisCard, {}, "post")
+        inputdata = { ...inputdata, ['Grouping']: 'stock' }
+        post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
                 setdata21(response.data.lstResult);
                 // console.log('data10', response.data.lstResult.length)
                 setarray(array1)
                 setobj(obj)
-                array1.sort((a, b) => a.index - b.index);
                 console.log(array1, 'sorted array')
             })
     }
@@ -378,9 +388,9 @@ const ExportToExcel = ({ tableTitles }) => {
         // console.log(img, "imageeee")
         setinput16({ Base64: img, Extension: "png", LoginID: data16.toString() + ".png" })
         // console.log(input16, "new sssssssssssssssss")
-        axios.post('http://103.131.196.61:52202/Common/uploadImage', { Base64: img, Extension: "png", LoginID: data16.toString() })
+        post({ Base64: img, Extension: "png", LoginID: data16.toString() }, API.uploadImage, {}, "post")
             .then((response) => {
-                setdata16(data16 + 1);
+                // setdata16(uuidv4());
                 console.log(' new respomnse', response.data)
             })
     }
@@ -389,7 +399,7 @@ const ExportToExcel = ({ tableTitles }) => {
         // console.log(data16.toString() + ".png", "tttttttttttt")
         // console.log(img, "delete image")
         setinput17({ FileName: data16.toString() + ".png" })
-        axios.post('http://103.131.196.61:52202/Common/DeleteFile', { FileName: data16.toString() + ".png" })
+        post({ FileName: data16.toString() + ".png" }, API.DeleteFile, {}, "post")
             .then((response) => {
                 console.log(response.data, "delete response")
             })
@@ -397,7 +407,7 @@ const ExportToExcel = ({ tableTitles }) => {
 
     function exporttoimage() {
         var node = document.getElementById('rootElementId');
-        console.log(node,"ele");
+        console.log(node, "ele");
         htmlToImage.toPng(node)
             .then(function (dataUrl) {
                 document.getElementById("downloadExcel").style.color = "#0d4876";
@@ -510,6 +520,7 @@ const ExportToExcel = ({ tableTitles }) => {
         // console.log(obj1, 'object main')
         // console.log(array, 'object array')
         // console.log(flag111.length, "object flag length outside")
+        array.sort((a, b) => a.index - b.index); //sort array
 
 
         for (var i = 0; i < array.length; i++) {
@@ -587,8 +598,9 @@ const ExportToExcel = ({ tableTitles }) => {
 
 
         // console.log(data6, "fffffffff")         //Image
-        console.log(data16,"data16");
-        const response = await fetch(`http://103.131.196.61:52202/image/${(data16 - 1).toString() + ".png"}`);
+        console.log(data16, "data16");
+        const response = await fetch(`http://103.131.196.61:52202/image/${(data16).toString() + ".png"}`);
+
         // console.log(response, " new image response")
 
         const image = await response.arrayBuffer();

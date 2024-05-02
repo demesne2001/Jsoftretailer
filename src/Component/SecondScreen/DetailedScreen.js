@@ -203,6 +203,7 @@ export default function DetailedScreen() {
         console.log({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, "addedit");
         post({ "ChartGroupID": chartGroupId, "ChartGroup": JSON.stringify(graph), "ChartID": location.state.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
             .then((res) => {
+                console.log(res,"login save");
                 alert(res.data.Message)
             })
 
@@ -215,13 +216,15 @@ export default function DetailedScreen() {
         if (document.getElementById(selectedId) !== null) {
             if (document.querySelector(".active") !== null) { // to deselect a icon
 
-
+                console.log("SELECTED ID IF");
                 document.querySelector(".active").className = document.querySelector(".active").className.replace('active', '')
             }
 
-            else {
-                document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
-            }
+            // else {
+            //     console.log("SELECTED ID ELSE");
+            //     document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
+            // }
+            document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
 
         }
 

@@ -378,10 +378,13 @@ export default function Header() {
         }
       }
 
-      // console.log('TempData After', temarrayID)
-
-
-      contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+      console.log('TempData After', temarrayID)
+      // contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+      if (temarrayID !== undefined) {
+        contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+      } else {
+        contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: '', [dependentfilter[FilterIndex][4]]: '', ['FilterIndex']: 0 })
+      }
       // console.log("contexData.tempstate After ", contexData.tempstate);
 
     })
@@ -579,6 +582,7 @@ export default function Header() {
             // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
             // console.log(res);
             // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
+            console.log(count,"count pdf");
             const pdfUrl = API.downloadPdf + count.toString() + "aa.pdf";
             axios.get(pdfUrl, {
               responseType: 'blob',

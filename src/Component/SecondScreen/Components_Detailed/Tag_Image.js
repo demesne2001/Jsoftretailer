@@ -32,6 +32,7 @@ export default function Tag_Image() {
         handleShowPhotos()
         console.log(inputdata, "effectimage");
         setCurrentPage(1)
+        setPageNo(0)
     }, [inputdata])
     useEffect(() => {
         handleShowPhotos()
@@ -42,12 +43,13 @@ export default function Tag_Image() {
         } else {
             document.getElementById('prev').style.display = 'block';
         }
-        if ((pageNo + 5) * 5 < TotalCount) {
-            document.getElementById('prev').style.display = 'block';
+        console.log(TotalCount, "effectTotalcount"); 
+        if ((pageNo + 5) * 5 >= TotalCount) {
+            document.getElementById('nxt').style.display = 'none';
         } else {
-            document.getElementById('prev').style.display = 'none';
+            document.getElementById('nxt').style.display = 'block';
         }
-    },[pageNo])
+    },[pageNo, TotalCount])
     const settings = {
 
         speed: 500,
@@ -132,8 +134,6 @@ export default function Tag_Image() {
         console.log(pageNo * 5, "lof");
         if ((pageNo + 5) * 5 < TotalCount) {
             setPageNo(pageNo + 5);
-        } else {
-            document.getElementById('nxt').style.display=  'none'
         }
     }
 
@@ -235,6 +235,7 @@ export default function Tag_Image() {
                         }
 
                         <div className='pagonationdiv'>
+                            {/* {TotalCount} */}
                             <button id='prev' class="fa-solid fa-angles-left pageImageButtom prev-nxt" onClick={handleLeftFivePage}></button>
                             {(pageNo + 1) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 1)} onClick={() => handlePageNoChange((pageNo + 1))}>{pageNo + 1}</button> : null}
                             {(pageNo + 2) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 2)} onClick={() => handlePageNoChange((pageNo + 2))}>{pageNo + 2}</button> : null}

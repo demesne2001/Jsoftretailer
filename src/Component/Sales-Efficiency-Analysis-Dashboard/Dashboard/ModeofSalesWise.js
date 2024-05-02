@@ -34,10 +34,10 @@ export default function ModeofSalesWise() {
   }, [inputdata])
 
   useEffect(() => {
-		if (flagSort !== '') {
-			fetchSortData()
-		}
-	}, [flagSort])
+    if (flagSort !== '') {
+      fetchSortData()
+    }
+  }, [flagSort])
 
   async function fetchOption() {
     await post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -107,7 +107,7 @@ export default function ModeofSalesWise() {
 
   document.getElementById("root").addEventListener("click", function (event) {
     console.log(event.target, "class");
-    if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+    if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconModeOfSales") !== null) {
         document.getElementById("myDropdowniconModeOfSales").style.display = "none"
         document.getElementById("sorticonModeOfScale").style.display = "none"
@@ -118,14 +118,14 @@ export default function ModeofSalesWise() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType',['SortByLabel']:'ChallanGenerateType' }
+    inputdata = { ...inputdata, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', ['SortByLabel']: 'ChallanGenerateType' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
         let name = [];
         let weight = [];
         console.log(res.data)
-       
+
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
             name.push("null")
@@ -266,15 +266,22 @@ export default function ModeofSalesWise() {
 
           <div className="col-sm-2 col-md-2 col-2" >
 
-            <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+            <div className='d-flex '>
+              <div className='dropbtngraph'>
+                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+              </div>
+              <div className='dropbtngraph'>
+                <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+              </div>
+            </div>
             <div id="sorticonModeOfScale" className="dropdown-contenticon" onClick={handleclickSort}>
               {flagSort === 'Label' ? <><a id='Label'>Sort by ModeOfScale ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by ModeOfScale ASC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by ModeOfScale DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by ModeOfScale DESC&nbsp;</a><hr className='custom-hr' /></>}
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 
             <div className='btnicons'>
 

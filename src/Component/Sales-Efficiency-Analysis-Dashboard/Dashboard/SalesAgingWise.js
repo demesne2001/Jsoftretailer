@@ -418,7 +418,7 @@ export default function SalesAgingWise() {
 
 	document.getElementById("root").addEventListener("click", function (event) {
 		console.log(event.target, "class");
-		if (event.target.className !== 'dropbtn icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesAging") !== null) {
 				document.getElementById("myDropdowniconSalesAging").style.display = "none"
 				document.getElementById("sorticonSalesAging").style.display = "none"
@@ -520,15 +520,22 @@ export default function SalesAgingWise() {
 					</div>
 
 					< div className="col-sm-2 col-md-2 col-2">
-						<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i>
-
+						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+						<div className='d-flex '>
+							<div className='dropbtngraph'>
+								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+							</div>
+							<div className='dropbtngraph'>
+								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
+							</div>
+						</div>
 						<div id="sorticonSalesAging" className="dropdown-contenticon" onClick={handleclickSort}>
 							{flagSort === 'Label' ? <><a id='Label'>Sort by SalesAging ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesAging ASC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesAging DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesAging DESC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						<img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img>
+						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 
 							<div id="myDropdowniconSalesAging" className="dropdown-contenticon" onClick={handleclick}>
