@@ -1,4 +1,4 @@
-export function YearWise_bar(name) {
+export function YearWise_bar(name, column) {
     const option ={
         chart: {
             height: 350,
@@ -22,7 +22,11 @@ export function YearWise_bar(name) {
               y: {
                 show: true,
                 formatter: function(val) {
-                  return val
+                    if (column === 'Prc') {
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
                 }
               },
         },

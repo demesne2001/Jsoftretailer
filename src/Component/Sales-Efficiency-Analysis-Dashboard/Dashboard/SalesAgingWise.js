@@ -49,7 +49,7 @@ export default function SalesAgingWise() {
 
 	async function getdata() {
 
-		inputdata = { ...inputdata, ['Grouping']: 'a.[rd.caption]', ['SortByLabel']:'[rd.caption]' }
+		inputdata = { ...inputdata, ['Grouping']: 'a.[rd.caption]', ['SortByLabel']: '[rd.caption]' }
 		console.log("branchwise data", inputdata);
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
@@ -173,7 +173,11 @@ export default function SalesAgingWise() {
 				y: {
 					show: true,
 					formatter: function (val) {
-						return val
+						if (inputdata['column'] === 'Prc') {
+							return val.toString() + "%"
+						} else {
+							return val
+						}
 					}
 				},
 			},
@@ -244,7 +248,19 @@ export default function SalesAgingWise() {
 				width: 2,
 				colors: ['#008ae6']
 			},
+			tooltip: {
 
+				y: {
+					show: true,
+					formatter: function (val) {
+						if (inputdata['column'] === 'Prc') {
+							return val.toString() + "%"
+						} else {
+							return val
+						}
+					}
+				},
+			},
 			fill: {
 				opacity: 0.1,
 				type: 'gradient',
@@ -321,18 +337,14 @@ export default function SalesAgingWise() {
 
 		var options = {
 			tooltip: {
-
 				y: [{
 					show: true,
 					formatter: function (val) {
-						console.log(val,"charts12");
-						return val
-					}
-				},{
-					show: false,
-					formatter: function (val) {
-						console.log(val,"charts45");
-						
+						if (inputdata['column'] === 'Prc') {
+							return val.toString() + "%"
+						} else {
+							return val
+						}
 					}
 				}]
 			},
@@ -472,7 +484,7 @@ export default function SalesAgingWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': '[rd.caption]', 'SortBy': flagSort, ['Grouping']: 'a.[rd.caption]' }
-		console.log("inputsort",inputForSort);
+		console.log("inputsort", inputForSort);
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];

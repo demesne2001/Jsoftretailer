@@ -24,6 +24,7 @@ import { json } from "react-router-dom";
 export default function Header() {
   const [fullscreen, setFullScreen] = useState(false);
   const contexData = useContext(contex);
+  const unitRef = useRef(null);
   const metaltypeRef = useRef(null);
   const DaybookRef = useRef(null);
   let FilterData = {
@@ -63,7 +64,7 @@ export default function Header() {
   const [percentage_check, setpercentage_check] = useState(false);
   const conponentPDF = useRef(null);
 
-  const [postData, setPostData] = useState({
+  const postData = {
     strBranch: "",
     strState: "",
     strCity: "",
@@ -114,7 +115,7 @@ export default function Header() {
     Unity: "G",
     SortBy: "wt-desc",
     SortByLabel: ""
-  });
+  };
 
   const dependentfilter = {
     1: [
@@ -266,7 +267,6 @@ export default function Header() {
     contexData.SettempState({ ...contexData.tempstate, ["ToDate"]: currentDate })
     handleDaybook();
     handleMetaltype();
-    console.log(contexData.column, "contexdata");
   }, [])
 
   useEffect(() => {
@@ -437,11 +437,7 @@ export default function Header() {
     contexData.setchildFilterShow(true);
   }
 
-  useEffect(() => {
-    // handleDaybook();
-    // handleMetaltype();
-    // console.log(contexData.tempstate, "useffect temp");
-  }, [])
+
 
   function handlerOnOpen() {
     setFIlterFlag(true);
@@ -520,7 +516,7 @@ export default function Header() {
         }
         contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: val.toString(), ['strMetalTypeValue']: name.toString() });
       } else {
-        contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
+        // contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
         setDefaultMetalType([])
       }
       console.log(e, "DATA12");
@@ -536,7 +532,7 @@ export default function Header() {
         }
         contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: val.toString(), ['strDayBookValue']: name.toString() });
       } else {
-        contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: '', ['strDayBookValue']: '' });
+        // contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: '', ['strDayBookValue']: '' });
         setDefaultDayBook([])
       }
     }
@@ -607,19 +603,14 @@ export default function Header() {
   }
 
   function handleApplyFilter() {
-
-    if (JSON.stringify(contexData.state) !== JSON.stringify(contexData.tempstate)) {
-      console.log('FILTER DATA', contexData.tempstate)
-
+    if (JSON.stringify(contexData.state) !== JSON.stringify(FilterData)) {
+      console.log('FILTER DATA', FilterData)
       contexData.SetState(FilterData);
       handleOnClose();
     }
-
     else {
-
       handleOnClose();
     }
-
     // contexData.SetState(FilterData);
     // handleOnClose();
   }
@@ -742,6 +733,7 @@ export default function Header() {
       }
     }
   }
+
   document.getElementById("root").addEventListener("click", function (event) {
     if (event.target.className !== 'dropbtn' && event.target.className !== 'fas fa-rupee-sign' && event.target.className !== 'value_name') {
       if (document.getElementById("myDropdown") !== null) {
@@ -751,10 +743,14 @@ export default function Header() {
   });
 
   function handleOnReset() {
-    contexData.SettempState(postData)
+    contexData.SettempState(postData);
+    FilterData = contexData.tempstate
     metaltypeRef.current.clearValue()
     DaybookRef.current.clearValue()
+    unitRef.current.clearValue()
     setDefaultMetalType([])
+    setDefaultDayBook([])
+    setDefaultUnit([])
   }
 
   function handleArrowLeft(str) {
@@ -870,8 +866,10 @@ export default function Header() {
   }
 
   function handleselectUnit(e) {
-    setDefaultUnit(e);
-    contexData.SettempState({ ...contexData.tempstate, ['Unity']: e.value })
+    if (e !== null) {
+      setDefaultUnit(e);
+      contexData.SettempState({ ...contexData.tempstate, ['Unity']: e.value })
+    }
   }
 
   return (
@@ -1145,9 +1143,9 @@ export default function Header() {
                             <label for="sel1" class="form-label">
                               From Date
                             </label>
-                            <div style={{ display: 'flex' }}>
+                            <div class="date-picker-filter">
 
-                              <i class="fa-solid fa-caret-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('FromDate') }} />
+                              <i class="fa-solid fa-chevron-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('FromDate') }} />
                               <input
                                 class="form-control  date-spacing "
                                 type="date"
@@ -1156,7 +1154,8 @@ export default function Header() {
                                 id="FromDate"
                                 value={contexData.tempstate["FromDate"]}
                               />
-                              <i class="fa-solid fa-caret-right date-arrow-right" onClick={() => { handleArrowRight('FromDate') }} />
+                              {/* <i class="fa-solid fa-chevron-right"></i>fa-solid fa-caret-right date-arrow-right */}
+                              <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('FromDate') }} />
                             </div>
 
                           </div>
@@ -1166,9 +1165,9 @@ export default function Header() {
                             <label for="sel1" class="form-label">
                               To Date
                             </label>
-                            <div style={{ display: 'flex' }}>
+                            <div class="date-picker-filter">
 
-                              <i class="fa-solid fa-caret-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('ToDate') }} />
+                              <i class="fa-solid fa-chevron-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('ToDate') }} />
                               <input
                                 class="form-control"
                                 type="date"
@@ -1178,7 +1177,7 @@ export default function Header() {
                                 id="ToDate"
 
                               />
-                              <i class="fa-solid fa-caret-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
+                              <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
                             </div>
                           </div>
                         </div>
@@ -1207,6 +1206,7 @@ export default function Header() {
                                   control: (provided, state) => ({
                                     ...provided,
                                     // height: '45px',
+                                    // overflow:'auto',
                                     borderRadius: '10px'
                                   }),
                                 }}
@@ -1273,7 +1273,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strBranchValue"])}
+                        className="filter-input" id='123' value={formatedValue(contexData.tempstate["strBranchValue"])}
                         onClick={() => {
                           HandleOnClickComman(1);
                         }}
@@ -1299,7 +1299,7 @@ export default function Header() {
                           closeMenuOnSelect={false}
                         /> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strRegionValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strRegionValue"])}
                         onClick={() => {
                           HandleOnClickComman(2);
                         }}
@@ -1329,7 +1329,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strStateValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strStateValue"])}
                         onClick={() => {
                           HandleOnClickComman(3);
                         }}
@@ -1358,7 +1358,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strCity"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strCity"])}
                         onClick={() => {
                           HandleOnClickComman(4);
                         }}
@@ -1387,7 +1387,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strItemGroupValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strItemGroupValue"])}
                         onClick={() => {
                           HandleOnClickComman(5);
                         }}
@@ -1416,7 +1416,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strProductValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strProductValue"])}
                         onClick={() => {
                           HandleOnClickComman(6);
                         }}
@@ -1445,7 +1445,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strItemValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strItemValue"])}
                         onClick={() => {
                           HandleOnClickComman(7);
                         }}
@@ -1474,7 +1474,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strSubItemValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strSubItemValue"])}
                         onClick={() => {
                           HandleOnClickComman(8);
                         }}
@@ -1503,7 +1503,7 @@ export default function Header() {
 												closeMenuOnSelect={false}
 											/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strItemSubitemValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strItemSubitemValue"])}
                         onClick={() => HandleOnClickComman(9)}
                       />
                     </div>
@@ -1530,7 +1530,7 @@ export default function Header() {
 												closeMenuOnSelect={false}
 											/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strDesignCatalogueValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strDesignCatalogueValue"])}
                         onClick={() => HandleOnClickComman(10)}
                       />
                     </div>
@@ -1557,7 +1557,7 @@ export default function Header() {
 														closeMenuOnSelect={false}
 													/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strSalemanValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strSalemanValue"])}
                         onClick={() => HandleOnClickComman(11)}
                       />
                     </div>
@@ -1579,7 +1579,7 @@ export default function Header() {
 														</select>
 													</div> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strModeofSaleValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strModeofSaleValue"])}
                         onClick={() => HandleOnClickComman(12)}
                       />
                     </div>
@@ -1601,7 +1601,7 @@ export default function Header() {
 														</select>
 													</div> */}
                   {/* <input
-                        value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
                         onClick={() => HandleOnClickComman(13)}
                       />
                     </div>
@@ -1614,7 +1614,7 @@ export default function Header() {
                         &nbsp;Sale Aging
                       </label>
                       <input
-                        value={formatedValue(contexData.tempstate["strSaleAging"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strSaleAging"])}
                         onClick={() => HandleOnClickComman(14)}
                       />
                     </div>
@@ -1641,7 +1641,7 @@ export default function Header() {
 												closeMenuOnSelect={false}
 											/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strDesignCodeValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strDesignCodeValue"])}
                         onClick={() => HandleOnClickComman(15)}
                       />
                     </div>
@@ -1668,7 +1668,7 @@ export default function Header() {
 												closeMenuOnSelect={false}
 											/> */}
                       <input
-                        value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
                         onClick={() => HandleOnClickComman(16)}
                       />
                     </div>
@@ -1682,7 +1682,7 @@ export default function Header() {
                       </label>
 
                       <input
-                        value={formatedValue(contexData.tempstate["strMonthValue"])}
+                        className="filter-input" value={formatedValue(contexData.tempstate["strMonthValue"])}
                         onClick={() => HandleOnClickComman(17)}
                       />
                     </div>
@@ -1697,6 +1697,7 @@ export default function Header() {
                       <Select
                         // defaultValue={[colourOptions[2], colourOptions[3]]}
                         name="unit"
+                        ref={unitRef}
                         options={unit}
                         className="basic-multi-select"
                         classNamePrefix="select"

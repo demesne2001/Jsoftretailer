@@ -129,7 +129,11 @@ export function BranchWise_donut(name, column) {
                             color: undefined,
                             offsetY: 16,
                             formatter: function (val) {
-                                return (parseFloat(val).toFixed(2)).toString()
+                                if (column === 'Prc') {
+                                    return (parseFloat(val).toFixed(2)).toString() + "%"
+                                } else {
+                                    return (parseFloat(val).toFixed(2)).toString()
+                                }
                             }
                         },
                     },

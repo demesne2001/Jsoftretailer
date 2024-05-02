@@ -1,8 +1,20 @@
-export function DesignCatalogueWise_bar(name) {
+export function DesignCatalogueWise_bar(name, column) {
     
     const option = {
         legend: {
             show: false
+          },
+          tooltip:{
+            y:{
+              formatter: function (val) {
+                if (column === 'Prc') {
+                    console.log(column, "column");
+                    return val.toString() + "%"
+                } else {
+                    return val
+                }
+            }
+            }
           },
           chart: {
             animations: {
@@ -102,6 +114,7 @@ export function DesignCatalogueWise_bar(name) {
             // points: imagearr,
             tooltip: {
               enabled: true,
+             
             }
           },
           responsive: [{

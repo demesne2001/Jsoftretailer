@@ -1,4 +1,4 @@
-export default function ModeofSales_donut(name){
+export default function ModeofSales_donut(name, column) {
     const options = {
         stroke: {
             width: 0,
@@ -21,7 +21,7 @@ export default function ModeofSales_donut(name){
             // },
         },
 
-    
+
 
         dataLabels: {
             opacity: 0.9,
@@ -50,10 +50,14 @@ export default function ModeofSales_donut(name){
 
         },
         tooltip: {
-            enabled: false,
+            enabled: true,
             y: {
                 formatter: function (val) {
-                    return (parseFloat(val).toFixed(2)).toString()
+                    if (column === 'Prc') {
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
                 }
             }
         },
@@ -124,11 +128,15 @@ export default function ModeofSales_donut(name){
                             color: undefined,
                             offsetY: 16,
                             formatter: function (val) {
-                                return (parseFloat(val).toFixed(2)).toString()
+                                if (column === 'Prc') {
+                                    return (parseFloat(val).toFixed(2)).toString() + "%"
+                                } else {
+                                    return (parseFloat(val).toFixed(2)).toString()
+                                }
                             }
                         },
                     },
-               
+
                     total: {
                         show: true,
                         showAlways: true,
@@ -138,9 +146,9 @@ export default function ModeofSales_donut(name){
                         fontWeight: 600,
                         color: '#373d3f',
                         formatter: function (w) {
-                          return w.globals.seriesTotals.reduce((a, b) => {
-                            return a + b
-                          }, 0)
+                            return w.globals.seriesTotals.reduce((a, b) => {
+                                return a + b
+                            }, 0)
                         }
                     },
                 }

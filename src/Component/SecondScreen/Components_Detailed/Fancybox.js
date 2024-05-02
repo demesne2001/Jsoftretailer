@@ -79,7 +79,7 @@ function Fancybox(props) {
       NativeFancybox.unbind(container);
 
       // !!! Commented out to prevent closing on re-render
-      // NativeFancybox.close();
+      NativeFancybox.close();
     };
   });
 

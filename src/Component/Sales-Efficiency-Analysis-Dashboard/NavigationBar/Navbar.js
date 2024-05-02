@@ -1,6 +1,7 @@
 import React from 'react'
 
 import jsoftInitial from '../../Assets/image/logo/jsoft-initial.png'
+import jsoftMini from '../../Assets/image/Jsoft.png'
 
 
 export default function Navbar() {
@@ -52,8 +53,8 @@ export default function Navbar() {
               <img className="crancy-logo__main" src={jsoftInitial} alt="#" />
               <img className="crancy-logo__main--dark" src={jsoftInitial} alt="#" />
 
-              <img className="crancy-logo__main--small" src={jsoftInitial} alt="#" />
-              <img className="crancy-logo__main--small--dark" src={jsoftInitial} alt="#" />
+              <img className="crancy-logo__main--small" src={jsoftMini} alt="#" />
+              <img className="crancy-logo__main--small--dark" src={jsoftMini} alt="#" />
             </a>
             <div id="crancy__sicon" className="crancy__sicon close-icon" onClick={handleNavbar}>
               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">

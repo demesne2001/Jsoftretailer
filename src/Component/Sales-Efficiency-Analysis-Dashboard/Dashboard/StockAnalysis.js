@@ -128,7 +128,7 @@ export default function StockAnalysis() {
           <div className="crancy-progress-card__content">
             <h4 className="crancy-progress-card__title">₹ {format(loose)}</h4>
             <div className="crancy-progress-card__history">
-              <span>(Losse Stock)</span>
+              <span>(Loose Stock)</span>
             </div>
           </div>
           <div className="crancy-progress__single">

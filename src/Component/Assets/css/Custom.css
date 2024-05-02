@@ -280,7 +280,7 @@ select {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.56);
   z-index: 27;
   margin-top: 10px;
-  margin-left: -150px;
+  margin-left: -100px;
   border-radius: 20px;
   color: black;
 }
@@ -635,7 +635,7 @@ select {
   /* padding: 20px; */
   /* height: 60vh; */
   height: fit-content;
-  max-height: 60vh;
+  max-height: 45vh;
   /* height: 400px; */
   overflow-y: auto;
   /* box-shadow: 20px 20px 50px rgb(204, 204, 204); */
@@ -649,7 +649,7 @@ select {
 }
 .flip-card .flip-card-inner {
   transform: rotateY(180deg);
-  box-shadow: -5px 5px 5px #aaa;
+  box-shadow: none;
 }
 .flip-card-front {
   position: absolute;
@@ -946,7 +946,7 @@ button.dropbtn .value_name {
 
 .sorticon {
   color: #000000;
-  font-size: 16px;
+  font-size: 20px;
   /* margin-right: 10px; */
   /* margin-left: -15px; */
   padding-right: 18%;
@@ -979,10 +979,9 @@ button.dropbtn .value_name {
 }
 
 .pagonationdiv{
-  margin-top: 10px;
   display: flex;
-  float: right;
-  /* margin-left: 70px; */
+    justify-content: center;
+    margin-top: 40px;
 }
 
 .pageImageButtom {
@@ -1031,6 +1030,10 @@ figure.ag-carousel_figure img {
   }
 }
 
+.modal-filter .modal-body {
+  max-height: 70vh !important;
+  overflow-y: auto;
+}
 
 /* custom modal css */
 
@@ -1191,4 +1194,126 @@ img.hover-shadow {
   width: 1000px !important;
   height: 700px !important;
   overflow-y: auto Impo !important;
+}
+
+
+.graph-card:hover .card-title-graph i.sorticon  {
+  color: #fff !important;
+}
+ 
+.graph-card:hover .card-title-graph img {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.card-filter-contain.top-card-filter input {
+  margin: 0px 4px;
+}
+
+.card-title-graph img.dropbtn {
+  width: 20px;
+}
+.card-filter-contain.top-card-filter i {
+  font-size: 25px;
+  color: #a8bdcd;
+}
+
+.filter-top .date-picker-filter {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 0px 6px;
+}
+.card-filter-contain.top-card-filter label {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.basic-multi-select .select__control {
+  background-color: #f1f1f1;
+  height: 43px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+}
+
+.select__control .select__value-container {
+  padding: 0px 8px;
+}
+
+.modal-body form .card-filter-contain {
+  margin-bottom: 10px;
+  display: block;
+}
+.modal-body form .card-filter-contain label{
+  margin-bottom: 3px;
+}
+
+.card-filter-contain input.filter-input {
+  padding: 0px 8px;
+}
+.card-filter-contain i {
+  font-size: 18px;
+}
+
+.modal-content .input-group input {
+  border: 1px solid #ced4da !important;
+}
+.filter-top .card-filter-contain.top-card-filter {
+  padding: 12px 5px;
+  margin-bottom: 0px;
+}
+.filter-top label.form-label {
+  padding-top: 0px;
+}
+.filter-top .basic-multi-select .select__control{
+  background-color: #ffffff;
+  height: 46px;
+  border: none; 
+}
+
+.fa-solid .fa-check {
+  color: #094876 !important;
+}
+
+.graph-card:hover .card-title-graph i .fa-solid .fa-check {
+  color: #094876 !important;
+}
+.graph-card .btnicons button {
+  margin: 10px 0px;
+}
+.btnicons .dropdown-contenticon a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.graph-card h4 {
+  font-weight: 600;
+}
+.graph-card .crancy-progress-card__content h4 {
+  font-weight: 400;
+}
+
+.filter-top form input[type=date]{
+  padding: 0 5px 0 5px;
+}
+
+.graphdetail-fourthcard .ag-carousel_item {
+  padding: 16px;
+  box-sizing: border-box;
+  background: #fff;
+  margin: 10px;
+  border-radius: 12px;
+}
+.pageImageButtom {
+  background: #a8c6dd;
+  color: #094876;
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+  font-weight: 600;
+}
+.pageImageButtom.prev-nxt {
+  background: #094876 !important;
+  color: #fff;
 }

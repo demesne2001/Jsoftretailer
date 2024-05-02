@@ -44,7 +44,7 @@ export default function DetailedScreen() {
     const [netweight, setnetweight] = useState([])
     console.log(location.state, "hiii");
     if (mainChartProps !== null) {
-        if (location.state.chartId > 1) {
+        if (mainChartProps.chartId > 1) {
             defaultChartGroup = {
                 name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch'
             }
@@ -282,7 +282,7 @@ export default function DetailedScreen() {
                                                         <Slider {...settings} >
                                                             {
                                                                 sliderData.map((data) => {
-                                                                    if (data.group === location.state.grouping) {
+                                                                    if (data.group === mainChartProps.grouping) {
                                                                         // console.log('SAME GROUP', data.group)
                                                                     }
                                                                     else {

@@ -85,6 +85,13 @@ export function StateWise_SemiDonut(name, state, column) {
                             fontSize: '12px',
                             fontFamily: 'Helvetica, Arial, sans-serif',
                             fontWeight: 600,
+                            formatter: function (val) {
+                                if (column === 'Prc') {
+                                    return val.toString() + "%"
+                                } else {
+                                    return val
+                                }
+                            },
                         }
                     }
                 }
@@ -232,13 +239,13 @@ export function StateWise_SemiDonut(name, state, column) {
                         offsetX: 10,
                         dataLabels: {
                             format: 'scale',
-                           
-                        
+
+
                         },
                         donut: {
                             labels: {
                                 show: true,
-        
+
                                 name: {
                                     fontSize: '13px',
                                     // color:"black"

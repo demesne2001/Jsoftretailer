@@ -1,4 +1,4 @@
-export function MonthWise_area(name) {
+export function MonthWise_area(name, column) {
     const option = {
         chart: {
             type: 'area',
@@ -23,7 +23,11 @@ export function MonthWise_area(name) {
               y: {
                 show: true,
                 formatter: function(val) {
-                  return val
+                  if (column === 'Prc') {
+                    return val.toString() + "%"
+                } else {
+                    return val
+                }
                 }
               },
         },

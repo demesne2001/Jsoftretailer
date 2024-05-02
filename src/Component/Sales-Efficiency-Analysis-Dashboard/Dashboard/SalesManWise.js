@@ -95,10 +95,10 @@ export default function SalesManWise() {
   }, [inputdata])
 
   useEffect(() => {
-		if (flagSort !== '') {
-			fetchSortData()
-		}
-	}, [flagSort])
+    if (flagSort !== '') {
+      fetchSortData()
+    }
+  }, [flagSort])
 
   useEffect(() => {
     imagepoint()
@@ -111,7 +111,7 @@ export default function SalesManWise() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme', ['SortByLabel']:'SalesmanNAme' }
+    inputdata = { ...inputdata, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme', ['SortByLabel']: 'SalesmanNAme' }
     // console.log("branchwise data", inputdata);
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
@@ -214,7 +214,11 @@ export default function SalesManWise() {
       y: {
         show: true,
         formatter: function (val) {
-          return val
+          if (inputdata['column'] === 'Prc') {
+            return val.toString() + "%"
+          } else {
+            return val
+          }
         }
       },
     },

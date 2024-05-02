@@ -1,4 +1,4 @@
-export function ItemWise_bar(name) {
+export function ItemWise_bar(name, column) {
     const options = {
         chart: {
             offsetX: 10,
@@ -13,7 +13,12 @@ export function ItemWise_bar(name) {
             },
             y: {
                 formatter: function (val) {
-                    return val
+                    if (column === 'Prc') {
+                        console.log(column, "column");
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
                 }
             }
         },

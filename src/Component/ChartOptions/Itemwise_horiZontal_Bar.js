@@ -1,4 +1,4 @@
-export function Itemwise_horiZontal_Bar(name) {
+export function Itemwise_horiZontal_Bar(name, column) {
     const options = {
         chart: {
             type: 'bar',
@@ -26,7 +26,12 @@ export function Itemwise_horiZontal_Bar(name) {
             },
             y: {
                 formatter: function (val) {
-                    return val
+                    if (column === 'Prc') {
+                        console.log(column, "column");
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
                 }
             }
         },

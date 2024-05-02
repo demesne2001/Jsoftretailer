@@ -1,16 +1,16 @@
-export function YearWise_Donut(name) {
-    const option ={
+export function YearWise_Donut(name, column) {
+    const option = {
         dataLabels: {
             enabled: true,
-           
-                
+
+
         },
         tooltip: {
             enabled: false,
             followCursor: true,
         },
-        colors: ['#51bde4','#265cb9','#00e396'],
-    
+        colors: ['#51bde4', '#265cb9', '#00e396'],
+
         chart: {
             animations: {
                 enabled: true,
@@ -30,10 +30,10 @@ export function YearWise_Donut(name) {
                 offsetX: 0,
                 offsetY: 0,
                 tools: {
-                  download: true,
+                    download: true,
                 },
-        
-              },
+
+            },
             type: 'donut',
         },
         legend: {
@@ -73,22 +73,37 @@ export function YearWise_Donut(name) {
 
                         },
                         value: {
-
+                            formatter: function (val) {
+                                if (column === 'Prc') {
+                                    console.log(column, "column");
+                                    return val.toString() + "%"
+                                } else {
+                                    return val
+                                }
+                            },
                         }
                     },
                     total: {
                         show: true,
                         label: 'Total',
                         formatter: function (w) {
-                          return w.globals.seriesTotals.reduce((a, b) => {
-                            return a + b
-                          }, 0)
+                            if (column === 'Prc') {
+
+                                return (w.globals.seriesTotals.reduce((a, b) => {
+                                    return a + b
+                                }, 0)).toString() + "%"
+                            } else {
+                                return w.globals.seriesTotals.reduce((a, b) => {
+                                    return a + b
+                                }, 0)
+                            }
+
                         }
-                      }
+                    }
                 }
             }
         }
-      }
+    }
 
     return option
 }

@@ -1,4 +1,4 @@
-export function SalesPartyWise_bar(name) {
+export function SalesPartyWise_bar(name, column) {
     const options = {
         chart: {
             height: 350,
@@ -26,7 +26,12 @@ export function SalesPartyWise_bar(name) {
               y: {
                 show: true,
                 formatter: function(val) {
-                  return val
+                    if (column === 'Prc') {
+                        console.log(column, "column");
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
                 }
               },
         },

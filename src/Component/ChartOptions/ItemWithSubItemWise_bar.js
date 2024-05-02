@@ -1,4 +1,4 @@
-export function ItemWithSubItemWise_bar(name) {
+export function ItemWithSubItemWise_bar(name, column) {
     const options = {
         chart: {
             type: 'bar',
@@ -64,6 +64,13 @@ export function ItemWithSubItemWise_bar(name) {
                 show: false
             },
             y: {
+                formatter: function (val) {
+                    if (column === 'Prc') {
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
+                },
                 title: {
                     formatter: function () {
                         return ''

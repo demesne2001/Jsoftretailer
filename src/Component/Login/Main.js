@@ -51,7 +51,8 @@ const Main = () => {
                     if (res.data.UserName === undefined) {
                         alert(res.data.Message)
                     } else {
-                        localStorage.setItem('username', res.data.UserName.UserName)
+                        localStorage.setItem('username', res.data.UserName)
+                        localStorage.setItem('token', res.data.Token)
                         navigate('/Home', { replace: true })
                     }
                 } else {

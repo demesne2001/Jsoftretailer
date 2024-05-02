@@ -1,4 +1,4 @@
-export function SubItem_Polar(name) {
+export function SubItem_Polar(name, column) {
     const options = {
         chart: {
             width: 380,
@@ -20,6 +20,18 @@ export function SubItem_Polar(name) {
               },
             }
           },
+          tooltip: {
+            enabled: true,
+            y: {
+                formatter: function (val) {
+                    if (column === 'Prc') {
+                        return val.toString() + "%"
+                    } else {
+                        return val
+                    }
+                }
+            }
+        },
           labels: name,
           fill: {
             opacity: 1

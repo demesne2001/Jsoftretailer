@@ -46,11 +46,7 @@ export function StateWise_Treemap(name, column){
             enabled: true,
             x:{
                 formatter: function(val) {
-                    if (column === 'Prc') {
-                        return 
-                    } else {
-                        return val
-                    }
+                    return val
                 },
             },
             y: {
@@ -63,7 +59,7 @@ export function StateWise_Treemap(name, column){
                     }
                 },
                 title: {
-                    formatter: (seriesName) => seriesName,
+                    // formatter: (seriesName) => seriesName,
                 },
             },
         },

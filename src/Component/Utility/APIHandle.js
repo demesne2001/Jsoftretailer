@@ -11,7 +11,7 @@ export default async function post(inputJson, APINAME, defaultRes, methodType) {
             'Content-Type': 'application/json'
         }
         // return await axios.post(APINAME, inputJson, { headers: header })
-        return await axios.post(APINAME, inputJson)
+        return await axios.post(APINAME, inputJson, { headers: header })
             .then((res) => {
                 
                 if (res.data.HasError === true) 

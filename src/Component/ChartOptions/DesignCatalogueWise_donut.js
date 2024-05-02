@@ -1,4 +1,4 @@
-export function DesignCatalogueWise_donut(name) {
+export function DesignCatalogueWise_donut(name, column) {
 
 //   const option ={
 //     dataLabels: {
@@ -86,6 +86,18 @@ export function DesignCatalogueWise_donut(name) {
             show: true,
             position:'bottom'
           },
+          tooltip:{
+            y:{
+              formatter: function (val) {
+                if (column === 'Prc') {
+                    console.log(column, "column");
+                    return val.toString() + "%"
+                } else {
+                    return val
+                }
+            }
+            }
+          },
           chart: {
             animations: {
               enabled: true,
@@ -132,9 +144,16 @@ export function DesignCatalogueWise_donut(name) {
                     showAlways: false,
                     show: true,
                     formatter: function (w) {
-                        return w.globals.seriesTotals.reduce((a, b) => {                            
+                      if (column === 'Prc') {
+                        return (w.globals.seriesTotals.reduce((a, b) => {                            
                           return a+ b
-                        }, 0).toFixed(2)
+                        }, 0).toFixed(2)).toString() + "%"
+                    } else {
+                      return w.globals.seriesTotals.reduce((a, b) => {                            
+                        return a+ b
+                      }, 0).toFixed(2)
+                    }
+                       
                       }
                   }
                 }
