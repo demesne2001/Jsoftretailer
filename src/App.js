@@ -25,6 +25,7 @@ import './Component/Assets/css/Custom.css'
 import './Component/Assets/css/slick.css'
 import './Component/Assets/css/responsive.css'
 import Main from './Component/Login/Main';
+import Schedule_Analysis_MainScreen from './Component/Schedule_Analysis/Schedule_Analysis_MainScreen';
 
 
 
@@ -51,6 +52,7 @@ function App() {
           <Routes>
             <Route exact path='/Home' element={<Dashboard />}></Route>
             <Route exact path='/graph-detail' element={<DetailedScreen />}></Route>
+            <Route exact path='/schedual_analysis' element={<Schedule_Analysis_MainScreen />}></Route>
             <Route exact path='/' element={<Main />}></Route>
           </Routes>
 

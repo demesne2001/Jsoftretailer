@@ -103,6 +103,7 @@ export default function Main_chart(props) {
                 // console.log(props.state.columnId)
                 setName(name);
                 setweight(weg);
+                console.log(weg, "weight main chart");
                 setId(id1)
                 setdata(res.data.lstResult)
                 setLoader(false)

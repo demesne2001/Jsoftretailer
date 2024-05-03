@@ -187,7 +187,7 @@ export default function Header() {
     ],
     12: [
       "strModeofSale",
-      API.GetModeOfSalesWise,
+      API.GetModeSale,
       "ChallanGenerateTypeID",
       "ChallanGenerateType",
       "strModeofSaleValue",

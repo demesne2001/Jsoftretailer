@@ -44,6 +44,10 @@ export default function Navbar() {
     navigate('/Home',{replace:true})
   }
 
+  function handleSchedualAnalysisClick() {
+    navigate('/schedual_analysis', {replace:true})
+  }
+
   return (
     <div className="crancy-body-area">
 
@@ -87,7 +91,7 @@ export default function Navbar() {
                   <i className="fas fa-user-clock"></i>
                   <span className="menu-bar__name">Outstanding</span></span></a>
                 </li>
-                <li><a className="collapsed"><span className="menu-bar__text">
+                <li><a className="collapsed" onClick={handleSchedualAnalysisClick}><span className="menu-bar__text">
                   <i className="far fa-calendar-alt"></i>
                   <span className="menu-bar__name last-silderbar-title">Schedule
                     Analysis</span></span></a>
