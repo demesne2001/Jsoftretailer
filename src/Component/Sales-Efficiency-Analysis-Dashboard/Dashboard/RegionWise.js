@@ -12,6 +12,7 @@ import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import { BranchWise_donut } from '../../ChartOptions/BranchWise_donut';
+import Notify from '../Notification/Notify';
 
 
 export default function RegionWise() {
@@ -26,7 +27,7 @@ export default function RegionWise() {
 	const [optionId, setOptionId] = useState()
 	const ChartType = "bar"
 	const [flagSort, setflagSort] = useState('')
-
+	let localloader = localStorage.getItem('load')
 	const options_lolipop = RegionWise_lolipop(name, inputdata['column'])
 	const options_polar = RegionWise_Polar(name, inputdata['column'])
 	const options_donut = BranchWise_donut(name, inputdata['column'])
@@ -53,7 +54,8 @@ export default function RegionWise() {
 
 	useEffect(() => {
 		fetchOption()
-		getdata()
+		console.log(localStorage.getItem('load'),"regionwose");
+		 getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -136,7 +138,7 @@ export default function RegionWise() {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
 
-							alert(res.data.Message)
+							Notify()
 						})
 
 
@@ -154,7 +156,7 @@ export default function RegionWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 4, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				document.getElementById('myDropdowniconregion').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}

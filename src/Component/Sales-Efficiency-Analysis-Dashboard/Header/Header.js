@@ -448,6 +448,8 @@ export default function Header() {
 
   function handleOnClose() {
     setFIlterFlag(false);
+    var element =   document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
   }
 
   function Handlefullscreen() {
@@ -615,6 +617,9 @@ export default function Header() {
     else {
       handleOnClose();
     }
+    var element =   document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
+    localStorage.setItem('load', '0')
     // contexData.SetState(FilterData);
     // handleOnClose();
   }
@@ -1135,7 +1140,7 @@ export default function Header() {
           </Modal.Header>
 
 
-          <Modal.Body class="modal-body">
+          <Modal.Body className="shedule">
             <div class="container">
               <div class="card-graph-detail">
                 <div class="row">
@@ -1707,7 +1712,7 @@ export default function Header() {
                         classNamePrefix="select"
                         onChange={handleselectUnit}
                         components={animatedComponents}
-                        closeMenuOnSelect={false}
+                        closeMenuOnSelect={true}
                         defaultValue={Defaultunit}
                         styles={{
                           control: (provided, state) => ({

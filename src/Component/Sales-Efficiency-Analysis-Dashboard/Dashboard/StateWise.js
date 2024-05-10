@@ -13,6 +13,7 @@ import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
+import Notify from '../Notification/Notify';
 
 
 export default function StateWise() {
@@ -58,7 +59,9 @@ export default function StateWise() {
 
 	useEffect(() => {
 		fetchOption()
+
 		getdata()
+
 	}, [inputdata])
 
 	// useEffect(() => {
@@ -163,13 +166,14 @@ export default function StateWise() {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
 
-							alert(res.data.Message)
+							Notify()
 						})
 
 				}
 				else {
 					setOptionId(res.data.lstResult[0].ChartOptionID)
 					setflag(res.data.lstResult[0].ChartOption)
+					console.log(res.data.lstResult[0].ChartOption, "statewisedata");
 				}
 
 			})
@@ -180,7 +184,7 @@ export default function StateWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				document.getElementById('myDropdowniconstate').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}
@@ -267,6 +271,7 @@ export default function StateWise() {
 						</div>
 						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
+
 							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></>}
 								{flag === 'donut' ? <><a id='donut'>Semi donut &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Semi donut </a><hr className='custom-hr' /></>}
@@ -321,6 +326,7 @@ export default function StateWise() {
 				{dataloader !== true ?
 					loader !== true ?
 						<>
+
 							<div className="crancy-progress-card card-contain-graph">
 
 								{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}

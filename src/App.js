@@ -19,6 +19,7 @@ import './Component/Assets/css/reset.css'
 
 // import './Component/Assets/css/style.css'
 import './Component/Assets/css/style copy.css'
+// import './Component/Assets/css/final_style.css'
 
 
 import './Component/Assets/css/Custom.css'
@@ -26,6 +27,7 @@ import './Component/Assets/css/slick.css'
 import './Component/Assets/css/responsive.css'
 import Main from './Component/Login/Main';
 import Schedule_Analysis_MainScreen from './Component/Schedule_Analysis/Schedule_Analysis_MainScreen';
+import DetailedCommanScheduleScreen from './Component/Schedule_Analysis/DetailedScheduleComponants/DetailedCommanScheduleScreen';
 
 
 
@@ -53,6 +55,7 @@ function App() {
             <Route exact path='/Home' element={<Dashboard />}></Route>
             <Route exact path='/graph-detail' element={<DetailedScreen />}></Route>
             <Route exact path='/schedual_analysis' element={<Schedule_Analysis_MainScreen />}></Route>
+            <Route exact path='/schedual_analysis_detail' element={<DetailedCommanScheduleScreen />}></Route>
             <Route exact path='/' element={<Main />}></Route>
           </Routes>
 

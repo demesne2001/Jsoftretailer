@@ -1,0 +1,95 @@
+.crancy-progress-card__history.shedule-card-bt {
+    font-size: 20px;
+}
+h4.crancy-progress-card__title.shedule-card-tt {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.graph-card.schedule-graph-card div {
+    padding-bottom: 6px;
+    padding-top: 6px;
+}
+@media only screen and (max-width: 1550px){
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 1440px){
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 15px;
+    }
+    
+}
+@media only screen and (max-width: 1024px){
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 20px;
+    }
+    a.card-title-graph.schedule-graph p {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 425px) {
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 20px;
+    }
+    a.card-title-graph.schedule-graph p {
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 320px) {
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 18px;
+    }
+}
+
+a.card-title-graph.schedule-graph p i {
+    padding-right: 10px;
+}
+.card-filter-contain.top-card-filter.schedual-icon i {
+    color: #094876;
+}
+.filter-top.schedule-filter {
+    background-color: #fff;
+}
+.filter-top.schedule-filter input[type=date] {
+    width: 100%;
+    height: 46px;
+    border: none;
+    background: #f1f1f1;
+    border-radius: 0px;
+}
+.filter-top.schedule-filter .date-picker-filter {
+    background: #f1f1f1;
+    border-radius: 8px;
+    padding: 0px 6px;
+    border: 1px solid #e5e5e5;
+}
+.filter-top.schedule-filter .basic-multi-select .select__control {
+    background: #f1f1f1;
+    height: 46px;
+    border: 1px solid #e5e5e5;
+}
+.filter-top.schedule-filter label {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.filter-top.schedule-filter{
+    padding: 0px;
+}
+.filter-top.schedule-filter .card-filter-contain.top-card-filter {
+    padding: 12px 0px;
+}
+.modal-body.model-schedule {
+    padding: 0rem 1rem 0rem 1rem;
+}
+.card-title-graph.schedule-graph div i {
+    padding-right: 10px;
+}

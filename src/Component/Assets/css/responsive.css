@@ -1367,7 +1367,7 @@
   .crancy__item-group__title,
   .crancy-ptabs__stitle,
   .crancy-default-cd .fc-toolbar-title {
-    font-size: 20px !important;
+    font-size: 20px;
   }
 
   .crancy-single-integration__title {
@@ -1848,6 +1848,12 @@
   .ag-carousel_figure {
     width: 50%;
   }
+  .dropbtngraph {
+    margin-right: -15px;
+}
+.card-title-graph.schedule-graph div i {
+  padding-right: 6px;
+}
 }
 
 @media only screen and (max-width: 325px) {

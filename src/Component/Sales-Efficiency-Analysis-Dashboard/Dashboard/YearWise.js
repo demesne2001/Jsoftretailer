@@ -12,6 +12,7 @@ import { YearWise_Donut } from '../../ChartOptions/YearWise_Donut';
 import { YearWise_bar } from '../../ChartOptions/YearWise_bar';
 import { YearWise_semiDonut } from '../../ChartOptions/YearWise_semiDonut';
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 
 
@@ -228,7 +229,7 @@ export default function YearWise() {
 
 	useEffect(() => {
 		fetchOption()
-		getdata()
+		 getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -503,7 +504,7 @@ export default function YearWise() {
 								.then((res) => {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
-							alert(res.data.Message)
+								Notify()
 						})
 
 				}
@@ -520,7 +521,7 @@ export default function YearWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 15, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				document.getElementById('myDropdowniconyear').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}

@@ -111,11 +111,12 @@ const ContexState = (props) => {
 	const [currency, setcurrency] = useState("");
 	const [flag, setflag] = useState(0);
 	const [flagExcel, setflagExcel] = useState(0);
+	const [LazyLoading, setLazyLoading] = useState(0);
 	// const [column, setColumn] = useState('FineWt')
 
 	return (
 
-		<contex.Provider value={{ setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
+		<contex.Provider value={{setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
 
 			{props.children}
 

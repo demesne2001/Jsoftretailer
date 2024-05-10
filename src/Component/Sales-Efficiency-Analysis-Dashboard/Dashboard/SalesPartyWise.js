@@ -11,6 +11,7 @@ import { SalesPartyWise_bar } from '../../ChartOptions/SalesPartyWise_bar';
 import { useNavigate } from 'react-router-dom';
 
 import '../../Assets/css/Custom.css'
+import Notify from '../Notification/Notify';
 
 export default function SalesPartyWise() {
 
@@ -104,7 +105,7 @@ export default function SalesPartyWise() {
 
 	useEffect(() => {
 		fetchOption()
-		getdata()
+		 getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -229,7 +230,7 @@ export default function SalesPartyWise() {
 								.then((res) => {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
-							alert(res.data.Message)
+								Notify()
 						})
 
 				}
@@ -246,7 +247,7 @@ export default function SalesPartyWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 13, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				document.getElementById('myDropdowniconSalesparty').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}

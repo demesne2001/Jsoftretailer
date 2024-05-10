@@ -48,6 +48,10 @@ export default function Navbar() {
     navigate('/schedual_analysis', {replace:true})
   }
 
+  function handleOnDashboardClick() {
+    navigate('/Home',{replace:true})
+  }
+
   return (
     <div className="crancy-body-area">
 
@@ -79,9 +83,9 @@ export default function Navbar() {
 
             <div className="menu-bar">
               <ul id="CrancyMenu" className="menu-bar__one crancy-dashboard-menu">
-                <li><a className="collapsed"><span className="menu-bar__text">
+                <li><a className="collapsed" onClick={handleOnDashboardClick}><span className="menu-bar__text">
                   <i className="fas fa-home"></i>
-                  <span className="menu-bar__name">Dashboard</span></span></a>
+                  <span className="menu-bar__name" >Dashboard</span></span></a>
                 </li>
                 <li><a className="collapsed"><span className="menu-bar__text">
                   <i className="fas fa-chart-line"></i>

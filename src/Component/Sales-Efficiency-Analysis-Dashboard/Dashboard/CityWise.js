@@ -11,6 +11,7 @@ import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 
 export default function CityWise() {
@@ -33,8 +34,10 @@ export default function CityWise() {
 	}]
 
 	useEffect(() => {
-		fetchOption()
-		getdata()
+		fetchOption();
+	
+			getdata()
+	
 	}, [inputdata])
 
 	useEffect(() => {
@@ -174,7 +177,7 @@ export default function CityWise() {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
 
-							alert(res.data.Message)
+								Notify()
 						})
 
 				}
@@ -193,7 +196,7 @@ export default function CityWise() {
 			.then((res) => {
 				// console.log(res)
 				document.getElementById('myDropdowniconcity').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}

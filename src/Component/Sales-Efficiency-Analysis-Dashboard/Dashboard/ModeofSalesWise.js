@@ -10,6 +10,7 @@ import contex from '../../contex/Contex';
 import { useNavigate } from 'react-router-dom';
 import ModeofSales_donut from '../../ChartOptions/ModeOfSales_donut';
 import { ModeofSales_semiDonut } from '../../ChartOptions/ModeOfSales_semiDonut';
+import Notify from '../Notification/Notify';
 
 
 export default function ModeofSalesWise() {
@@ -30,7 +31,7 @@ export default function ModeofSalesWise() {
 
   useEffect(() => {
     fetchOption()
-    getdata()
+     getdata()
   }, [inputdata])
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function ModeofSalesWise() {
                   setOptionId(res.data.lstResult[0].ChartOptionID)
                 })
 
-              alert(res.data.Message)
+              Notify()
             })
 
         }
@@ -72,7 +73,7 @@ export default function ModeofSalesWise() {
       .then((res) => {
 
         document.getElementById('myDropdowniconModeOfSales').style.display = 'none'
-        alert(res.data.Message)
+        Notify()
 
       })
   }

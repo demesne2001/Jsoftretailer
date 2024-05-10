@@ -11,6 +11,7 @@ import ReactApexChart from 'react-apexcharts';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 export default function ItemWise() {
 
@@ -92,7 +93,7 @@ export default function ItemWise() {
 
 	useEffect(() => {
 		fetchOption()
-		getdata()
+		 getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -213,7 +214,7 @@ export default function ItemWise() {
 								.then((res) => {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
-							alert(res.data.Message)
+								Notify()
 						})
 
 				}
@@ -230,7 +231,7 @@ export default function ItemWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 7, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				document.getElementById('myDropdowniconitem').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}

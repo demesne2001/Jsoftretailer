@@ -52,7 +52,9 @@ export default function StockAnalysis() {
   let inputdata = contexData.state;
 
   useEffect(() => {
+
     getdata()
+
   }, [inputdata])
 
   async function getdata() {
@@ -82,11 +84,11 @@ export default function StockAnalysis() {
     if (localStorage.getItem('value') === 'k') {
       return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
         minimumFractionDigits: 0
-      }) + " " +"K");
+      }) + " " + "K");
     } else if (localStorage.getItem('value') === 'l') {
       return (Number(parseFloat(((((val / 100000).toFixed(1)).toString())))).toLocaleString('en', {
         minimumFractionDigits: 0
-      })+ " " + "L");
+      }) + " " + "L");
     } else if (localStorage.getItem('value') === 'm') {
       return (Number(parseFloat(((((val / 1000000).toFixed(1)).toString())))).toLocaleString('en', {
         minimumFractionDigits: 0

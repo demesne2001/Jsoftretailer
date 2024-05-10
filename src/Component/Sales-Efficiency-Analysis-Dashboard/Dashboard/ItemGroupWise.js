@@ -13,6 +13,7 @@ import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 
 export default function ItemGroupWise() {
@@ -73,7 +74,7 @@ export default function ItemGroupWise() {
 
   useEffect(() => {
     fetchOption()
-    getdata()
+     getdata()
   }, [inputdata])
   useEffect(() => {
     if (flagSort !== '') {
@@ -164,7 +165,7 @@ export default function ItemGroupWise() {
                 .then((res) => {
                   setOptionId(res.data.lstResult[0].ChartOptionID)
                 })
-              alert(res.data.Message)
+                Notify()
             })
 
 
@@ -182,7 +183,7 @@ export default function ItemGroupWise() {
     await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 5, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
       .then((res) => {
         document.getElementById('myDropdowniconigroup').style.display = 'none'
-        alert(res.data.Message)
+        Notify()
 
       })
 

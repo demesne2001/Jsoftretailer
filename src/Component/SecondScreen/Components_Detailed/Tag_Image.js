@@ -30,14 +30,14 @@ export default function Tag_Image() {
     let inputdata = contextData.chartImage
     useEffect(() => {
         handleShowPhotos()
-        // console.log(inputdata, "effectimage");
+        console.log(inputdata, "effectimage");
         setCurrentPage(1)
         setPageNo(0)
     }, [inputdata])
     useEffect(() => {
         handleShowPhotos()
     }, [])
-    useEffect(()=>{
+    useEffect(() => {
         if (pageNo === 0) {
             document.getElementById('prev').style.display = 'none';
         } else {
@@ -49,7 +49,7 @@ export default function Tag_Image() {
         } else {
             document.getElementById('nxt').style.display = 'block';
         }
-    },[pageNo, TotalCount])
+    }, [pageNo, TotalCount])
     const settings = {
 
         speed: 500,
@@ -173,7 +173,7 @@ export default function Tag_Image() {
 
 
     // console.log(document.getElementsByClassName('f-button')[4], "closebuttpnfancybox");
-    
+
     return (
         <>
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -182,7 +182,7 @@ export default function Tag_Image() {
 
                 </div>
                 <div class="graphdetailcards-silder graphdetail-fourthcard">
-                    <div align='right'>Page No.{currentPage}</div>
+
                     {/* <div class="ag-carousel-arrow_box">
                                         <i class="js-ag-carousel-arrow_prev ag-carousel-arrow top-slider-prevarrow"></i>
                                         <i class="js-ag-carousel-arrow_next ag-carousel-arrow top-slider-nextarrow"></i>
@@ -191,22 +191,14 @@ export default function Tag_Image() {
 
                     <ul id="TagImage" class="js-carousel ag-carousel_list" >
                         {ImageData.length > 0 ?
-                            <Fancybox
-                                options={{
-                                    Carousel: {
-                                        infinite: false,
-                                    },
-                                }}
-                            >
-
+                            <Fancybox>
                                 <Slider  {...settings} >
-
-
                                     {
                                         ImageData.map((e, i) => {
 
                                             return <><li class="ag-carousel_item">
                                                 <figure class="ag-carousel_figure">
+                                                    {console.log(e['ImagePath'])}
                                                     <a data-fancybox="gallery" href={e['ImagePath']} data-caption={"NetWeight : " + e['netweight'] + ",  Barcode : " + e['barcode']}><img src={e['ImagePath']} /></a>
                                                     {/* <img src={e['ImagePath']} onClick={(e) => { openModal() }} class="hover-shadow cursor" /> */}
                                                     <figcaption class="ag-carousel_figcaption">
@@ -218,11 +210,7 @@ export default function Tag_Image() {
                                             </>
                                         })
                                     }
-
-
                                 </Slider>
-
-
                             </Fancybox> :
                             <li class="ag-carousel_item">
                                 <figure class="ag-carousel_figure">
@@ -230,19 +218,21 @@ export default function Tag_Image() {
 
                                 </figure>
                             </li >
-
-
                         }
+                        <div className='padonation'>
+                            <div className='pagonationdiv'>
+                                {/* {TotalCount} */}
+                                {/* {(TotalCount + (TotalCount % 5) + 1)} */}
+                                <button id='prev' class="fa-solid fa-angles-left pageImageButtom prev-nxt" onClick={handleLeftFivePage}></button>
+                                {(pageNo + 1) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 1)} onClick={() => handlePageNoChange((pageNo + 1))}>{pageNo + 1}</button> : null}
+                                {(pageNo + 2) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 2)} onClick={() => handlePageNoChange((pageNo + 2))}>{pageNo + 2}</button> : null}
+                                {(pageNo + 3) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 3)} onClick={() => handlePageNoChange((pageNo + 3))}>{pageNo + 3}</button> : null}
+                                {(pageNo + 4) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 4)} onClick={() => handlePageNoChange((pageNo + 4))}>{pageNo + 4}</button> : null}
+                                {(pageNo + 5) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 5)} onClick={() => handlePageNoChange((pageNo + 5))}>{pageNo + 5}</button> : null}
+                                <button id='nxt' class="fa-solid fa-angles-right pageImageButtom prev-nxt" onClick={handleRightFivePage}></button>
 
-                        <div className='pagonationdiv'>
-                            {/* {TotalCount} */}
-                            <button id='prev' class="fa-solid fa-angles-left pageImageButtom prev-nxt" onClick={handleLeftFivePage}></button>
-                            {(pageNo + 1) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 1)} onClick={() => handlePageNoChange((pageNo + 1))}>{pageNo + 1}</button> : null}
-                            {(pageNo + 2) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 2)} onClick={() => handlePageNoChange((pageNo + 2))}>{pageNo + 2}</button> : null}
-                            {(pageNo + 3) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 3)} onClick={() => handlePageNoChange((pageNo + 3))}>{pageNo + 3}</button> : null}
-                            {(pageNo + 4) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 4)} onClick={() => handlePageNoChange((pageNo + 4))}>{pageNo + 4}</button> : null}
-                            {(pageNo + 5) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 5)} onClick={() => handlePageNoChange((pageNo + 5))}>{pageNo + 5}</button> : null}
-                            <button id='nxt' class="fa-solid fa-angles-right pageImageButtom prev-nxt" onClick={handleRightFivePage}></button>
+                            </div>
+                            <div className='pageNo' align="right" >Page No.{currentPage}</div>
                         </div>
                     </ul>
 
@@ -250,7 +240,7 @@ export default function Tag_Image() {
 
 
             </div>
-           
+
         </>
 
     )

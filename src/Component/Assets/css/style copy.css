@@ -4731,7 +4731,7 @@ select,
     .crancy__item-group__title,
     .crancy-ptabs__stitle,
     .crancy-default-cd .fc-toolbar-title {
-        font-size: 20px !important
+        font-size: 20px;
     }
 
     .crancy-single-integration__title {
@@ -5002,7 +5002,7 @@ select,
 .crancy-progress-card1.top-contant-botton-card{
     border-radius: 0px 0px 10px 10px;
     padding-top: 7px;
-    border-top: 1px solid rgba(219, 219, 219, 1);
+    border-top: 0.5px solid #dbdbdb;
     max-height: fit-content;
 }
 
@@ -5024,7 +5024,7 @@ select,
 .crancy-progress-card2.top-contant-botton-card{
     border-radius: 0px 0px 10px 10px;
     padding-top: 7px;
-    border-top: 1px solid #0d83d914;
+    border-top: 0.5px solid #dbdbdb;
     max-height: fit-content;
 }
 
@@ -5046,7 +5046,7 @@ select,
 .crancy-progress-card3.top-contant-botton-card{
     border-radius: 0px 0px 10px 10px;
     padding-top: 7px;
-    border-top: 1px solid rgba(61, 46, 151, 0.06);
+    border-top: 0.5px solid #dbdbdb;
     max-height: fit-content;
 }
 
@@ -5068,7 +5068,7 @@ select,
 .crancy-progress-card4.top-contant-botton-card{
     border-radius: 0px 0px 10px 10px;
     padding-top: 7px;
-    border-top: 1px solid rgba(11, 118, 9, 0.05);
+    border-top: 0.5px solid #dbdbdb;
     max-height: fit-content;
 }
 .crancy-progress-card.top-graph-card{

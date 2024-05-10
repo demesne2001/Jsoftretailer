@@ -44,47 +44,70 @@
 
 // export default Fancybox
 
-import React, { useRef, useEffect, PropsWithChildren } from 'react';
+// import React, { useRef, useEffect, PropsWithChildren } from 'react';
 
-import { Fancybox as NativeFancybox } from '@fancyapps/ui';
+// import { Fancybox as NativeFancybox } from '@fancyapps/ui';
+// import '@fancyapps/ui/dist/fancybox/fancybox.css';
+
+
+// // import { OptionsType } from '@fancyapps/ui/types/Fancybox/options';
+
+
+// function Fancybox(props) {
+//   const containerRef = useRef(null);
+//   const setFancyboxIsActive = props.setFancyboxIsActive || undefined;
+
+//   if (setFancyboxIsActive) {
+//     NativeFancybox.defaults.on = {
+//       init: () => {
+//         setFancyboxIsActive(true);
+//       },
+//       close: () => {
+//         setFancyboxIsActive(false);
+//       },
+//     };
+//   }
+
+//   const delegate = props.delegate || '[data-fancybox]';
+//   const options = props.options || {};
+
+//   useEffect(() => {
+//     const container = containerRef.current;
+
+//     NativeFancybox.bind(container, delegate, options);
+
+//     return () => {
+//       NativeFancybox.unbind(container);
+
+//       // !!! Commented out to prevent closing on re-render
+//       NativeFancybox.close();
+//     };
+//   });
+
+//   return <div ref={containerRef}>{props.children}</div>;
+// }
+
+// export default Fancybox;
+
+import React, { useEffect } from "react";
+import { Fancybox as NativeFancybox } from "@fancyapps/ui/dist/fancybox/fancybox.esm.js";
+import '@fancyapps/ui/dist/fancybox/fancybox.umd';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
-// import { OptionsType } from '@fancyapps/ui/types/Fancybox/options';
-
-
 function Fancybox(props) {
-  const containerRef = useRef(null);
-  const setFancyboxIsActive = props.setFancyboxIsActive || undefined;
-
-  if (setFancyboxIsActive) {
-    NativeFancybox.defaults.on = {
-      init: () => {
-        setFancyboxIsActive(true);
-      },
-      close: () => {
-        setFancyboxIsActive(false);
-      },
-    };
-  }
-
-  const delegate = props.delegate || '[data-fancybox]';
-  const options = props.options || {};
+  const delegate = props.delegate || "[data-fancybox]";
 
   useEffect(() => {
-    const container = containerRef.current;
+    const opts = props.options || {};
 
-    NativeFancybox.bind(container, delegate, options);
+    NativeFancybox.bind(delegate, opts);
 
     return () => {
-      NativeFancybox.unbind(container);
-
-      // !!! Commented out to prevent closing on re-render
-      NativeFancybox.close();
+      NativeFancybox.destroy();
     };
-  });
+  }, []);
 
-  return <div ref={containerRef}>{props.children}</div>;
-}
+  return <>{props.children}</>;
+}     
 
 export default Fancybox;
-

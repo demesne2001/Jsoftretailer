@@ -12,6 +12,7 @@ import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 export default function SubItemWise() {
 
@@ -55,7 +56,7 @@ export default function SubItemWise() {
 
   useEffect(() => {
     fetchOption()
-    getdata()
+     getdata()
   }, [inputdata])
 
   useEffect(() => {
@@ -167,7 +168,7 @@ export default function SubItemWise() {
                 .then((res) => {
                   setOptionId(res.data.lstResult[0].ChartOptionID)
                 })
-              alert(res.data.Message)
+                Notify()
             })
 
         }
@@ -184,7 +185,7 @@ export default function SubItemWise() {
     await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 6, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
       .then((res) => {
         document.getElementById('myDropdowniconsubitem').style.display = 'none'
-        alert(res.data.Message)
+        Notify()
 
       })
   }

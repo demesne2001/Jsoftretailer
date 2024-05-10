@@ -15,6 +15,7 @@ import dots from '../../Assets/image/dots.jpg'
 import strip from '../../Assets/image/strips.jpg'
 import Gradient from "javascript-color-gradient";
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 
 export default function DesignCatalogueWise() {
@@ -56,7 +57,7 @@ export default function DesignCatalogueWise() {
   useEffect(() => {
     // console.log("123456", inputdata['column']);
     fetchOption()
-    getdata()
+     getdata()
   }, [inputdata])
 
   useEffect(() => {
@@ -168,7 +169,7 @@ export default function DesignCatalogueWise() {
                 .then((res) => {
                   setOptionId(res.data.lstResult[0].ChartOptionID)
                 })
-              alert(res.data.Message)
+                Notify()
             })
 
         }
@@ -185,7 +186,7 @@ export default function DesignCatalogueWise() {
     await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 13, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
       .then((res) => {
 
-        alert(res.data.Message)
+        Notify()
 
       })
   }

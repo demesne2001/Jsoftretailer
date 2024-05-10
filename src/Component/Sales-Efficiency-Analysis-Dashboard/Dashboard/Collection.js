@@ -52,7 +52,7 @@ export default function Collection() {
     let inputdata = contexData.state;
 
     useEffect(() => {
-        getdata()
+       getdata()
     }, [inputdata])
 
     async function getdata() {

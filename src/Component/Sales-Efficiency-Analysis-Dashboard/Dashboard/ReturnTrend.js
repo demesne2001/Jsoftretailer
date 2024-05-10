@@ -55,7 +55,7 @@ export default function ReturnTrend() {
     let inputdata = contexData.state;
 
     useEffect(() => {
-        getdata()
+       getdata()
     }, [inputdata])
 
     async function getdata() {

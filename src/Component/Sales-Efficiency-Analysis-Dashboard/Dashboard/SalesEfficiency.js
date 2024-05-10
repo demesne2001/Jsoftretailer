@@ -57,7 +57,8 @@ export default function SalesEfficiency() {
     let inputdata = contexData.state;
 
     useEffect(() => {
-        getdata()
+      console.log(localStorage.getItem('load'), "localstporage");
+       getdata()
     }, [inputdata])
 
     async function getdata() {

@@ -11,8 +11,10 @@ import './Login-Custom.css'
 import { Link, useNavigate } from 'react-router-dom';
 import post from '../Utility/APIHandle'
 import API from '../Utility/API'
+import { LineElement } from 'chart.js'
 const Main = () => {
     const navigate = useNavigate()
+    const [flag, setflag] = useState(true);
     const [count, setcount] = useState('')
     const [login, setLogin] = useState({
         "LoginID": "",
@@ -35,7 +37,7 @@ const Main = () => {
                     }, 1500);
                 }
             } else {
-                setcount(0)
+               setflag(false)
             }
         }
     }, [count])
@@ -91,19 +93,20 @@ const Main = () => {
                                         <label>Password</label>
                                     </div>
 
-                                    <a id='Log' onClick={handleLogin}>
+                                    <Link id='Log' onClick={handleLogin} replace>
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                         LOGIN
-                                    </a>
+                                    </Link>
 
                                 </form>
                             </div>
                         </div>
                     }
-                    {count === 0 ? <Pie /> : count === 1 ? <Parliament /> : count === 2 ? <Bar /> : count === 3 ? <Barpol /> : count === 4 ? <Map /> : count === 5 ? <RacChart /> : null}
+                    {flag === true?
+                    count === 0 ? <Pie /> : count === 1 ? <Parliament /> : count === 2 ? <Bar /> : count === 3 ? <Barpol /> : count === 4 ? <Map /> : count === 5 ? <RacChart /> : null : <Bar/>}
 
 
                 </span>

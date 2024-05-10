@@ -12,6 +12,7 @@ import Gradient from "javascript-color-gradient";
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 export default function ProductWise() {
 	const [loader, setLoader] = useState(true)
@@ -52,7 +53,7 @@ export default function ProductWise() {
 
 	useEffect(() => {
 		fetchOption()
-		getdata()
+		 getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -171,7 +172,7 @@ export default function ProductWise() {
 								.then((res) => {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
-							alert(res.data.Message)
+								Notify()
 						})
 
 				}
@@ -188,7 +189,7 @@ export default function ProductWise() {
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 12, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
 				document.getElementById('myDropdowniconproduct').style.display = 'none'
-				alert(res.data.Message)
+				Notify()
 
 			})
 	}

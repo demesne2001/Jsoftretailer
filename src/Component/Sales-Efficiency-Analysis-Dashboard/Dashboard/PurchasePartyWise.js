@@ -11,6 +11,7 @@ import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 // import { flat } from '../../Assets/font/js/v4-shims';
 
 
@@ -124,7 +125,7 @@ export default function PurchasePartyWise() {
 
   useEffect(() => {
     fetchOption()
-    getdata()
+     getdata()
 
   }, [inputdata])
 
@@ -258,7 +259,7 @@ export default function PurchasePartyWise() {
                 .then((res) => {
                   setOptionId(res.data.lstResult[0].ChartOptionID)
                 })
-              alert(res.data.Message)
+              Notify()
             })
 
         }
@@ -275,7 +276,7 @@ export default function PurchasePartyWise() {
     await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 9, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
       .then((res) => {
         document.getElementById('myDropdowniconPurchase').style.display = 'none'
-        alert(res.data.Message)
+        Notify()
 
       })
   }

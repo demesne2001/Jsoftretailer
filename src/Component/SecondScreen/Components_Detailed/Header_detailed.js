@@ -6,7 +6,7 @@ import API from '../../Utility/API';
 
 
 
-export default function Header_detailed() {
+export default function Header_detailed(props) {
 
     const [fullscreen, setFullScreen] = useState(false);
     const [syncDate, setSyncDate] = useState()
@@ -59,7 +59,11 @@ export default function Header_detailed() {
 
         const element2 = document.getElementsByClassName("crancy-adashboard")[0];
         element2.classList.remove("crancy-close");
-        navigate('/Home', { replace: true })
+        if (props.screen === 2) {
+            navigate('/schedual_analysis', { replace: true })
+        } else {
+            navigate('/Home', { replace: true })
+        }
     }
 
     function handleNavbar() {

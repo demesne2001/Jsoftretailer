@@ -1,18 +1,16 @@
-
-
-// const Baseurl="http://192.168.1.208:5000/"
+const Baseurl="http://192.168.1.208:52202/"
 
 const BaseurlCommon="http://103.131.196.61:42202/"
 
-const Baseurl ="http://103.131.196.61:52202/"
+// const Baseurl ="http://103.131.196.61:52202/"
 
 const Filter = Baseurl + 'Filter/'
-const Chart = Baseurl + 'Chart/'
+const Chart = Baseurl + 'Chart/'          
 const Card = Baseurl + 'Card/'
 const Login = Baseurl + 'Login/'
 
 const Common = Baseurl + 'Common/'
-
+const Schedule = Baseurl + 'Schedule/'
 
 const API = {
     BranchFilter: Filter+'GetBranch',
@@ -41,7 +39,6 @@ const API = {
     Getdesigncode: Filter + 'Getdesigncode',
     GetMonth:Filter+'GetMonth',
     
-
     GetSalesEfficiencyCard : Card + 'GetSalesEfficiencyCard',
     GetReturnTrendCard : Card + 'GetReturnTrendCard',
     GetSalesWeightCard : Card + 'GetSalesWeightCard',
@@ -86,7 +83,12 @@ const API = {
     GetPDFUsingImage : Common + "GetPDFUsingImage",
 
     downloadPdf : Baseurl + "PDF/",
-    login : Login + "login/"
+    login : Login + "login/",
+
+    scheduleGetcommonChart : Schedule + "GetcommonChart",
+    scheduleGetcommonCard : Schedule + "GetcommonCard",
+    GetChartDetailWise: Schedule + "GetChartDetailWise",
+    GetChartPartyDetails : Schedule + "GetChartPartyDetails",
 }
 export default API
 

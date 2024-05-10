@@ -10,11 +10,10 @@ import { BranchWise_Radial } from "./../../ChartOptions/Branchwise_Radial";
 import { render } from '@testing-library/react';
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
-
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import { Axios } from 'axios';
-
+import Notify from '../Notification/Notify';
 
 export default function BranchWise() {
 	const [loader, setLoader] = useState(true)
@@ -38,6 +37,7 @@ export default function BranchWise() {
 		fetchOption()
 
 		getdata()
+
 	}, [inputdata])
 
 	useEffect(() => {
@@ -152,7 +152,7 @@ export default function BranchWise() {
 									setOptionId(res.data.lstResult[0].ChartOptionID)
 								})
 
-							alert(res.data.Message)
+							Notify()
 						})
 
 				}
@@ -171,8 +171,7 @@ export default function BranchWise() {
 			.then((res) => {
 
 				document.getElementById('myDropdowniconbranch').style.display = 'none'
-				alert(res.data.Message)
-
+				Notify()
 			})
 	}
 

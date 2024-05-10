@@ -10,6 +10,7 @@ import '../../Assets/css/Custom.css'
 import { MonthWise_Bar } from '../../ChartOptions/MonthWise_Bar';
 import { MonthWise_area } from '../../ChartOptions/MonthWise_area';
 import { useNavigate } from 'react-router-dom';
+import Notify from '../Notification/Notify';
 
 
 
@@ -114,7 +115,7 @@ export default function MonthWise() {
 
   useEffect(() => {
     fetchOption()
-    getdata()
+     getdata()
   }, [inputdata])
 
   useEffect(() => {
@@ -199,7 +200,7 @@ export default function MonthWise() {
                 .then((res) => {
                   setOptionId(res.data.lstResult[0].ChartOptionID)
                 })
-              alert(res.data.Message)
+                Notify()
             })
 
         }
@@ -216,7 +217,7 @@ export default function MonthWise() {
     await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 14, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
       .then((res) => {
         document.getElementById('myDropdowniconmonth').style.display = 'none'
-        alert(res.data.Message)
+        Notify()
 
       })
   }
