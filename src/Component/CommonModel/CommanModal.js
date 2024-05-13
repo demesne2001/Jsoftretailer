@@ -302,7 +302,9 @@ function Commonmodel(props) {
                 ref.current[i].checked = false;
             }
         }
-        ref1.current.checked = false
+        if (ref1.current !== null) {
+            ref1.current.checked = false
+        }
         setmulticheck([])
         setmulticheckName([])
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: "", [props.modelprops['LabelValue']]: "" })

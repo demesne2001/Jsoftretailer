@@ -49,8 +49,8 @@ export default function ReturnTrend() {
     //     })
     // }
     const contexData = useContext(contex);
-    const [weight, setweight] = useState([])
-    const [costAmount, setcostAmount] = useState()
+    const [weight, setweight] = useState([0])
+    const [costAmount, setcostAmount] = useState(0)
     const [prc, setprc] = useState(0)
     let inputdata = contexData.state;
 

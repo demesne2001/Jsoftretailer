@@ -51,8 +51,8 @@ export default function SalesEfficiency() {
     // }
 
     const contexData = useContext(contex);
-    const [weight, setweight] = useState([])
-    const [costAmount, setcostAmount] = useState([])
+    const [weight, setweight] = useState([0])
+    const [costAmount, setcostAmount] = useState([0])
     const [prc, setprc] = useState(0)
     let inputdata = contexData.state;
 
@@ -101,6 +101,7 @@ export default function SalesEfficiency() {
     }
 
     function format(val) {
+      console.log("value changes");
         if (localStorage.getItem('value') === 'k') {
           return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
             minimumFractionDigits: 0
@@ -122,6 +123,7 @@ export default function SalesEfficiency() {
             minimumFractionDigits: 0
           }) + " " + "B");
         } else {
+          console.log("default");
           return (Number(parseFloat(Math.floor(val))).toLocaleString('en', {
             minimumFractionDigits: 0
           }));

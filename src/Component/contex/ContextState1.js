@@ -29,7 +29,7 @@ const ContexState1 = (props) => {
         "strDayBook": "",
         "PageNo": 1,
         "PageSize": 10,
-        "SortBy": "wt",
+        "SortBy": "wt-desc",
         "SortByLabel": "",
         "Search": "",
         "Grouping": "",
@@ -65,7 +65,9 @@ const ContexState1 = (props) => {
         "PageNo": 1,
         "PageSize": 10,
         "Search": "",
-        "Grouping": ""
+        "Grouping": "",
+        "SortBy": "wt-desc",
+        "SortByLabel": "",
     });
 
     const [chartImage, setchartImage] = useState({

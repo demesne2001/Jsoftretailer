@@ -161,8 +161,16 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                 offsetX: 60
             },
         },
+        plotOptions: {
+            line: {
+                horizontal: false,
+            },
+            bar: {
+                horizontal: false,
+            }
+        },
         legend: {
-            horizontalAlign: 'left',
+            horizontalAlign: 'center',
             offsetX: 40
         }
     }

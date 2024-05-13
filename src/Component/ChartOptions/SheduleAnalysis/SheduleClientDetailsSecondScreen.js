@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextData, id) {
-  const option = {
+export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextData, id, chartid) {
+  let option = {
     chart: {
       type: 'bar',
       height: 350,
@@ -13,7 +13,16 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
             contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
           }
           else {
-            contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
+            if (chartid === 14) {
+              if (id[config.dataPointIndex] === null) {
+                contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
+              }
+              else {
+                contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
+              }
+            } else {
+              contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
+            }
           }
         }
       },
@@ -41,6 +50,14 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
     yaxis: {
       title: {
         text: undefined
+      },
+
+      labels: {
+        formatter: function (val) {
+          if (typeof (val) === 'string') {
+            return val.slice(0, 6) + '...'
+          }
+        }
       },
     },
     tooltip: {
@@ -75,6 +92,11 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
   }, {
     name: 'VisitedParty',
     data: yAxis[1]
-  }]
+  }];
+  if (chartid === 14) {
+    option = { ...option, plotOptions: { bar: { ['horizontal']: false } } }
+  } else {
+
+  }
   return [option, series]
 }

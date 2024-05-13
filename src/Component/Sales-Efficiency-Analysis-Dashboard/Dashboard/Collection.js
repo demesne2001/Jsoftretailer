@@ -47,8 +47,8 @@ export default function Collection() {
     //     })
     // }
     const contexData = useContext(contex);
-    const [weight, setweight] = useState([])
-    const [costAmount, setcostAmount] = useState([])
+    const [weight, setweight] = useState([0])
+    const [costAmount, setcostAmount] = useState([0])
     let inputdata = contexData.state;
 
     useEffect(() => {

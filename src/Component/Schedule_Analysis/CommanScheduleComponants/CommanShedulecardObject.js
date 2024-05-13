@@ -32,7 +32,17 @@ const CommanShedulecardObject = {
         innerContainerClass2: "crancy-progress-card4 top-contant-botton-card schedule-card-bottom",
         imageTag2: <img class="crancy-color2__fill" width="38" height="38" viewBox="0 0 20 20" fill="none" src={Schedule_img_weight} />
     },
-
+    3: {
+        containerClass: "col-xl-2 col-lg-6 col-md-6 col-12",
+        innerContainerClass1: "crancy-progress-card3 top-contant-top-card schedule-card-top",
+        firstLabel: 'Visited Party',
+        secondLabel: "No. of Bill",
+        apiLabel1: 'TotalParty',
+        apiLabel2: 'No.Bill',
+        imageTag1:  <img class="crancy-color2__fill" width="40" height="40" viewBox="0 0 20 20" fill="none" src={Schedule_img_visitparty} />,
+        innerContainerClass2: "crancy-progress-card3 top-contant-botton-card schedule-card-bottom",
+        imageTag2: <img class="crancy-color2__fill" width="40" height="40" viewBox="0 0 20 20" fill="none" src={Schedule_img_bill} />
+    },
 }
 
 export default CommanShedulecardObject;

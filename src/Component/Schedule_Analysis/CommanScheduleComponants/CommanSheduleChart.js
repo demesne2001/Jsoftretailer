@@ -133,7 +133,7 @@ export default function CommanSheduleChart(props) {
     }
 
     function handleNavigate() {
-        if (props.screen === 1) {
+        if (props.screen === 1 && props.id !== 6) {
             navigate('/schedual_analysis_detail', { state: props.id, replace: true })
         }
     }
@@ -147,7 +147,7 @@ export default function CommanSheduleChart(props) {
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>
                         <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']}</p>
                     </div>
-                    <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
+                    {/* <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
                         <div className='d-flex schedule-card-icon'>
                             <div className='dropbtngraph'>
                                 {props.screen !== 2 ? <i className="fa-solid fa-arrow-down-short-wide sorticon" /> : null}
@@ -156,13 +156,12 @@ export default function CommanSheduleChart(props) {
                                 <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
-                {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
+                {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
                 props.screen !== 3 ? 
                     <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div>:
-                    <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
-
+                    <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
             </div>
 
         </div>

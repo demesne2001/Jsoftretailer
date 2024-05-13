@@ -422,7 +422,7 @@ export default function Header_shedual_Analysis() {
                               </a>
                             </div>
                           </li>
-                          <li className="geex-content__header__quickaction__item">
+                          {/* <li className="geex-content__header__quickaction__item">
                             <div
                               className="geex-content__header__quickaction__link  geex-btn__customizer"
                               id="Filtermodal"
@@ -437,7 +437,7 @@ export default function Header_shedual_Analysis() {
                             >
                               <i id="downloadExcel" className="fa-solid fa-file-excel"  > </i>
                             </div>
-                          </li>
+                          </li> */}
 
 
                           <li className="geex-content__header__quickaction__item">

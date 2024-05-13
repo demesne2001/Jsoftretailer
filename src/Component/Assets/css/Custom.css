@@ -1432,10 +1432,11 @@ button.geex-btn.geex-btn__customizer-close:hover {
   position: relative;
   transition: var(--btn-transition);
   margin: 10px;
+  width: 90%;
 }
 
 .button-message {
-  height: 100px;
+  height: fit-content;
   padding: 8px 20px 8px 8px;
   background-color: var(--bg-hover-color);
   transition: var(--btn-transition);
@@ -1534,6 +1535,7 @@ button.geex-btn.geex-btn__customizer-close:hover {
   opacity: 1;
   transform: translateY(0);
   transition: var(--btn-transition);
+  margin-bottom: 5px;
 }
 
 .button-message .user-id {
@@ -1578,7 +1580,7 @@ button.geex-btn.geex-btn__customizer-close:hover {
   }
 
   66.33% {
-    background-color: #93e200;
+    background-color: #93e200; 
   }
 
   100% {

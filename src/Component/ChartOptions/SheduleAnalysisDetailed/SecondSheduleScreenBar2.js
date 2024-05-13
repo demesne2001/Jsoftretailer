@@ -78,7 +78,7 @@ export default function SecondSheduleScreenBar2(xAxis, yAxis, contextData, id) {
         }
     };
     const series = [{
-        name: 'Shedule',
+        name: 'day',
         data: yAxis[0]
     }];
     return [options, series];

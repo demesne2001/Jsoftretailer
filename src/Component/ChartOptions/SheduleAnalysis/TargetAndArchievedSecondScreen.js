@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id) {
+export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id, chartid) {
     console.log(xAxis, yAxis, "secondScreen");
     function formateSeriesData(xAxis, yAxis) {
         var tempseries = []
@@ -20,13 +20,22 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                         contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
                     }
                     else {
-                        
-                        contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
+                        if (chartid === 11) {
+                            if (id[config.dataPointIndex] === null) {
+                                contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
+                            }
+                            else {
+
+                                contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
+                            }
+                        } else {
+                            contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
+                        }
                     }
                 }
             },
         },
-        
+
         tooltip: {
             x: {
                 show: true,

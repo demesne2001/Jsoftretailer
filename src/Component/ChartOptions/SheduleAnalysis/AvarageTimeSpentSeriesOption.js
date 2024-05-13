@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function AvarageTimeSpentSeriesOption(xAxis, yAxis) {
+export default function AvarageTimeSpentSeriesOption(xAxis, yAxis, chartid) {
     const option = {
         chart: {
             type: 'bar',
@@ -17,13 +17,41 @@ export default function AvarageTimeSpentSeriesOption(xAxis, yAxis) {
             enabled: false
         },
         xaxis: {
-            categories: xAxis
+            categories: xAxis,
+            
+        },
+        yaxis: {
+            labels: {
+                formatter: function (val) {
+                    if (typeof (val) === 'string') {
+                        return val.slice(0, 6) + '...'
+                    }
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                title: {
+                    formatter: (seriesName) => seriesName + " :",
+                },
+                formatter: function(val){
+                    return val
+                }
+            }
         }
     }
-
-    const series = [{
-        data: yAxis[0]
-    }]
+    let series;
+    if (chartid === 2) {
+        series = [{
+            name: 'minutes',
+            data: yAxis[0]
+        }]
+    } else {
+        series = [{
+            name: 'days',
+            data: yAxis[0]
+        }]
+    }
 
 
 

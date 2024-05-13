@@ -40,6 +40,7 @@ export default function Default_chart(props) {
 
     useEffect(() => {
         if (props.graph !== '' && props.graph.group !== undefined) {
+            // setflagSort('wt-desc')
             fetchData()
         }
     }, [props])
@@ -50,6 +51,7 @@ export default function Default_chart(props) {
     }, [flagSort])
 
     useEffect(() => {
+        // setflagSort('wt-desc')
         // console.log(input, "effect12");
         fetchData()
     }, [input])
@@ -59,26 +61,19 @@ export default function Default_chart(props) {
     async function fetchData() {
         // console.log(props.graph.group, "props");
         if (props.graph.group !== undefined) {
-
-
-            input = { ...input, ['Grouping']: props.graph.group };
+            input = { ...input, ['Grouping']: props.graph.group, ['SortByLabel']: props.graph.column };
             // console.log(input, "DEFAULT CHART API");
             await post(input, API.CommonChart, {}, "post").then((res) => {
                 // console.log(res, "res_default");
                 // console.log('INPUT FOR CLICK', input)
                 // console.log(props.graph.columnID, "columnID");
                 if (res.data.lstResult !== 0) {
-
-
                     let name = [];
                     let weg = [];
                     let id1 = [];
                     for (let i = 0; i < res.data.lstResult.length; i++) {
                         if (res.data.lstResult[i][props.graph.column] !== null) {
-
-
                             console.log("IF inside loop")
-
                             name.push(res.data.lstResult[i][props.graph.column]);
                             weg.push(res.data.lstResult[i]['NetWeight']);
                             id1.push(res.data.lstResult[i][props.graph.columnID]);
@@ -273,8 +268,8 @@ export default function Default_chart(props) {
                 <i className="fa-solid fa-arrow-down-short-wide sort-icon-second-screen" onClick={handleSorting} ></i>
             </div>
             <div id="sorticonsecondScreenDefault" className="dropdown-contenticon-second-screen" onClick={handleclickSort}>
-                {flagSort === 'Label' ? <><a id='Label'>Sort by Branch ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by Branch ASC&nbsp;</a><hr className='custom-hr' /></>}
-                {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by Branch DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by Branch DESC&nbsp;</a><hr className='custom-hr' /></>}
+                {flagSort === 'Label' ? <><a id='Label'>Sort by {props.graph.componentName !== undefined ? (props.graph.componentName).split(' ')[0]:""} ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by {props.graph.componentName !== undefined ? (props.graph.componentName).split(' ')[0]:""} ASC&nbsp;</a><hr className='custom-hr' /></>}
+                {flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by {props.graph.componentName !== undefined ? (props.graph.componentName).split(' ')[0]:""} DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by {props.graph.componentName !== undefined ? (props.graph.componentName).split(' ')[0]:""} DESC&nbsp;</a><hr className='custom-hr' /></>}
                 {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
                 {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>

@@ -43,7 +43,7 @@ export default function ExpensesDetails() {
                         <p><i class="fas fa-money-bill-wave"></i>Expense to Sales, Expense per kg. and Trips</p>
                     </div>
 
-                    <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
+                    {/* <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
                         <div className='d-flex schedule-card-icon'>
                             <div className='dropbtngraph'>
                                 <i className="fa-solid fa-arrow-down-short-wide sorticon" />
@@ -53,7 +53,7 @@ export default function ExpensesDetails() {
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
 
                 </div>
                 <div class="crancy-progress-card card-contain-graph">

@@ -11,7 +11,6 @@ export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id) {
             contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
           }
           else {
-
             contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
           }
         }
@@ -36,7 +35,7 @@ export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id) {
     dataLabels: {
       enabled: true,
       formatter: function (val) {
-        return val + "%";
+        return val;
       },
       offsetY: -20,
       style: {
@@ -86,7 +85,7 @@ export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id) {
       labels: {
         show: false,
         formatter: function (val) {
-          return val + "%";
+          return val;
         }
       }
 
@@ -94,7 +93,7 @@ export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id) {
 
   };
   const series = [{
-    name: 'Schedule',
+    name: 'days',
     data: yAxis[0]
   }];
   return [options, series];

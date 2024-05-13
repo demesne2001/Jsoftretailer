@@ -8,12 +8,12 @@ export default function BillShowComponents(props) {
     let inputdata = contextData.billstate;
     const [billData, setBillData] = useState([]);
     const keyOfBillObject = {
-        1: ['AccountName', 'NetWeight', 'targetWt'],
-        2: ['AccountName', 'Avgtime', 'SpendMin'],
-        3: ['AccountName', 'BillAmount', 'AvgExpe'],
-        4: ['AccountName', 'NetWeight', 'targetWt'],
-        5: ['AccountName', 'OutTime', 'SpendMin', 'SpendDays'],
-        6: ['AccountName', 'Amount', 'TotalSales']
+        1: ['AccountName', 'NetWeight targetWt'],
+        2: ['AccountName', 'Avgtime SpendMin'],
+        3: ['AccountName', 'BillAmount AvgExpe'],
+        4: ['AccountName', 'NetWeight targetWt'],
+        5: ['AccountName', 'OutTime', 'SpendMin SpendDays'],
+        6: ['AccountName', 'Amount TotalSales',]
     }
 
     useEffect(() => {
@@ -45,8 +45,11 @@ export default function BillShowComponents(props) {
                                 </div>
                             </div>
                             <div class="notice-content">
-                                {keyOfBillObject[props.id].map((key) => {      
-                                    return <div class="username">{key} : {e[key]}</div>
+
+                                {props.id !== 5 ?keyOfBillObject[props.id].map((key, i) => {      
+                                    return i === 0? <div class="username">{key} : {e[key]}</div> : <div class="username">{key.split(' ')[0]} : {e[key.split(' ')[0]]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{key.split(' ')[1]} : {e[key.split(' ')[1]]}</div>
+                                }):keyOfBillObject[props.id].map((key, i) => {      
+                                    return i === 0 || i === 1? <div class="username">{key} : {e[key]}</div> : <div class="username">{key.split(' ')[0]} : {e[key.split(' ')[0]]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{key.split(' ')[1]} : {e[key.split(' ')[1]]}</div>
                                 })}
                             </div>
                         </button>

@@ -12,20 +12,20 @@ export function SalesPartyWise_bar(name, column) {
                 },
             }
         },
-        tooltip:{
+        tooltip: {
             x: {
                 show: true,
-                formatter: function(val) {
+                formatter: function (val) {
                     var val_origin = val.split('')
                     val_origin.splice(15, 0, "\n")
                     val = val_origin.join('');
                     // console.log(val, "charts_data");
-                  return val
+                    return val
                 }
-              },
-              y: {
+            },
+            y: {
                 show: true,
-                formatter: function(val) {
+                formatter: function (val) {
                     if (column === 'Prc') {
                         // console.log(column, "column");
                         return val.toString() + "%"
@@ -33,7 +33,13 @@ export function SalesPartyWise_bar(name, column) {
                         return val
                     }
                 }
-              },
+            },
+            fixed: {
+                enabled: true,
+                position: 'center',
+                offsetX: 20,
+                offsetY: 0,
+            },
         },
         dataLabels: {
             enabled: false,
@@ -63,13 +69,13 @@ export function SalesPartyWise_bar(name, column) {
             labels: {
                 show: true,
                 formatter: function (val) {
-                  if (val.length > 7) {
-                    return val.slice(0, 6) + "..."
-                  } else {
-                    return val
-                  }
+                    if (val.length > 7) {
+                        return val.slice(0, 6) + "..."
+                    } else {
+                        return val
+                    }
                 }
-              },
+            },
             axisBorder: {
                 show: false
             },
@@ -113,27 +119,27 @@ export function SalesPartyWise_bar(name, column) {
         responsive: [{
             breakpoint: 593,
             options: {
-                
-                xaxis:{
-                    labels:{
-                      formatter: function (val) {
-                        if (val.length > 3) {
-                            return val.slice(0, 3) + "..."
-                        } else {
-                            return val
+
+                xaxis: {
+                    labels: {
+                        formatter: function (val) {
+                            if (val.length > 3) {
+                                return val.slice(0, 3) + "..."
+                            } else {
+                                return val
+                            }
                         }
-                    }
                     }
                 },
                 yaxis: {
                     labels: {
                         show: true,
-                        formatter: function(val) {
-                            
-                          return ((val/1000).toFixed(0)).toString() + "KG"
-                        
+                        formatter: function (val) {
+
+                            return ((val / 1000).toFixed(0)).toString() + "KG"
+
                         }
-                       
+
                     }
                 }
             },

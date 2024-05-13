@@ -53,7 +53,7 @@ export function ProductWise_Bar(name, column) {
 			},
 		},
 		responsive: [{
-			breakpoint: 593,
+			breakpoint: 1491,
 			options: {
 
 				xaxis: {
