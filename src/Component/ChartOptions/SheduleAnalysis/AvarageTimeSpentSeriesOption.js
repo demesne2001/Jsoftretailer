@@ -30,6 +30,11 @@ export default function AvarageTimeSpentSeriesOption(xAxis, yAxis, chartid) {
             }
         },
         tooltip: {
+            x:{
+                formatter: function(val){
+                    return val
+                }
+            },
             y: {
                 title: {
                     formatter: (seriesName) => seriesName + " :",

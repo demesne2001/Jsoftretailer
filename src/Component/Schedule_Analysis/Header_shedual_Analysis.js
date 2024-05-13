@@ -17,71 +17,115 @@ export default function Header_shedual_Analysis() {
   const [syncDate, setSyncDate] = useState();
   const [filterFlag, setFIlterFlag] = useState(false);
   const [fullscreen, setFullScreen] = useState(false);
+  const [branchData, setBranchData] = useState([]);
   const [tempFilterData, setTempFilterData] = useState(contextData.state)
   const DefaultFilter = {
-		strBranch: "",
-		strState: "",
-		strCity: "",
-		strItem: "",
-		strSubItem: "",
-		strItemGroup: "",
-		strItemSubitem: "",
-		strPurchaseParty: "",
-		strSalesParty: "",
-		strSaleman: "",
-		strProduct: "",
-		strDesignCatalogue: "",
-		strSaleAging: "",
-		strModeofSale: "",
-		strTeamModeofSale: "",
-		strDesignCodeID: "",
-		strRegionID: "",
-		FromDate: "",
-		ToDate: "",
-		strMetalType: "",
-		strDayBook: "",
-		PageNo: 0,
-		PageSize: 9999,
-		Search: "",
-		Grouping: "",
-		FilterIndex: "",
-		strBranchValue: "",
-		strItemValue: "",
-		strSubItemValue: "",
-		strItemGroupValue: "",
-		strItemSubitemValue: "",
-		strPurchasePartyValue: "",
-		strSalesPartyValue: "",
-		strSalemanValue: "",
-		strProductValue: "",
-		strDesignCatalogueValue: "",
-		strSaleAgingValue: "",
-		strModeofSaleValue: "",
-		strTeamModeofSaleValue: "",
-		strRegionValue: "",
-		strDayBookValue: "",
-		strStateValue: '',
-		strMonth: "",
-		strFinYear: "",
-		strMonthValue: "",
-		strDesignCodeValue: "",
-		column: 'NetWeight',
-		Unity: "G",
-		SortBy: "wt-desc",
-		SortByLabel:""
-	};
-  
+    strBranch: "",
+    strState: "",
+    strCity: "",
+    strItem: "",
+    strSubItem: "",
+    strItemGroup: "",
+    strItemSubitem: "",
+    strPurchaseParty: "",
+    strSalesParty: "",
+    strSaleman: "",
+    strProduct: "",
+    strDesignCatalogue: "",
+    strSaleAging: "",
+    strModeofSale: "",
+    strTeamModeofSale: "",
+    strDesignCodeID: "",
+    strRegionID: "",
+    FromDate: "",
+    ToDate: "",
+    strMetalType: "",
+    strDayBook: "",
+    PageNo: 0,
+    PageSize: 9999,
+    Search: "",
+    Grouping: "",
+    FilterIndex: "",
+    strBranchValue: "",
+    strItemValue: "",
+    strSubItemValue: "",
+    strItemGroupValue: "",
+    strItemSubitemValue: "",
+    strPurchasePartyValue: "",
+    strSalesPartyValue: "",
+    strSalemanValue: "",
+    strProductValue: "",
+    strDesignCatalogueValue: "",
+    strSaleAgingValue: "",
+    strModeofSaleValue: "",
+    strTeamModeofSaleValue: "",
+    strRegionValue: "",
+    strDayBookValue: "",
+    strStateValue: '',
+    strMonth: "",
+    strFinYear: "",
+    strMonthValue: "",
+    strDesignCodeValue: "",
+    column: 'NetWeight',
+    Unity: "G",
+    SortBy: "wt-desc",
+    SortByLabel: ""
+  };
+  const commanfilter = {
+    "strBranch": "",
+    "strCompanyID": "",
+    "strState": "",
+    "strCity": "",
+    "strItem": "",
+    "strSubItem": "",
+    "strItemGroup": "",
+    "strRegionID": "",
+    "strItemSubitem": "",
+    "strPurchaseParty": "",
+    "strSalesParty": "",
+    "strSaleman": "",
+    "strProduct": "",
+    "strDesignCodeID": "",
+    "strDesignCatalogue": "",
+    "strSaleAging": "",
+    "strModeofSale": "",
+    "strTeamModeofSale": "",
+    "FromDate": "",
+    "ToDate": "",
+    "strMetalType": "",
+    "strDayBook": "",
+    "PageNo": 1,
+    "PageSize": 10,
+    "SortBy": "wt",
+    "SortByLabel": "",
+    "Search": "",
+    "Grouping": "",
+    "strMonth": "",
+    "strFinYear": "",
+    "Unity": "G"
+  }
+
 
   //useEffect
   useEffect(() => {
     getSyncDate()
-    setCurrentDate()
+    setCurrentDate();
+    fetchBrandData();
   }, [])
 
 
   //function
   function fetchBrandData() {
-    post()
+    post(commanfilter, API.BranchFilter, {}, "post").then((res)=>{
+      if (res.data !== undefined) {
+        var tempBranchData = [];
+        for (let i = 0; i < res.data.lstResult.length; i++) {
+          tempBranchData.push({label:res.data.lstResult})
+        }
+      } else {
+        alert("Network Error!!!")
+      }
+    })
   }
 
   function setCurrentDate() {

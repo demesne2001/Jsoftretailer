@@ -27,6 +27,22 @@ export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, 
         horizontal: true,
       }
     },
+    yaxis: {
+      labels: {
+        formatter: function (val) {
+          if (typeof (val) === 'string') {
+            return val.slice(0, 6) + '...'
+          }
+        }
+      }
+    },
+    tooltip: {
+      x: {
+        formatter: function (val) {
+          return val
+        }
+      },
+    },
     dataLabels: {
       enabled: false
     },

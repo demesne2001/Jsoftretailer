@@ -62,6 +62,11 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
     },
     tooltip: {
       shared: false,
+      x: {
+        formatter: function (val) {
+          return val
+        }
+      },
       y: {
         formatter: function (val) {
           return val

@@ -133,7 +133,7 @@ export default function CommanSheduleChart(props) {
     }
 
     function handleNavigate() {
-        if (props.screen === 1 && props.id !== 6) {
+        if (props.screen === 1) {
             navigate('/schedual_analysis_detail', { state: props.id, replace: true })
         }
     }

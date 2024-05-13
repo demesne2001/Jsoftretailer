@@ -41,6 +41,11 @@ export default function SheduleClientDetailsSeriesOptions(xAxis, yAxis) {
     },
     tooltip: {
       shared: false,
+      x:{
+        formatter: function(val){
+            return val
+        }
+    },
       y: {
         formatter: function (val) {
           return val
