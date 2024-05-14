@@ -11,6 +11,14 @@ const ContexState1 = (props) => {
         "Mode": 0
     })
 
+    const [tempstate, SettempState] = useState({
+        "FromDate": "",
+        "Todate": "",
+        "strBranchID": "",
+        "Unit": "G",
+        "Mode": 0
+    })
+
     const [detailedstate, SetdetailedState] = useState({
         "TravellingTeamID": 0,
         "Mode": 0
@@ -28,7 +36,7 @@ const ContexState1 = (props) => {
 
     return (
 
-        <contex.Provider value={{ state: state, SetState: SetState, currency, setcurrency, detailedstate, SetdetailedState, billstate, setbillState }}>
+        <contex.Provider value={{tempstate, SettempState,  state: state, SetState: SetState, currency, setcurrency, detailedstate, SetdetailedState, billstate, setbillState }}>
 
             {props.children}
 

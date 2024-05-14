@@ -13,64 +13,25 @@ import download from 'downloadjs';
 export default function Header_shedual_Analysis() {
   //define variable
   const contextData = useContext(contex);
+  const unitRef = useRef(null);
+  const Branchref = useRef(null);
   const animatedComponents = makeAnimated();
   const [syncDate, setSyncDate] = useState();
   const [filterFlag, setFIlterFlag] = useState(false);
   const [fullscreen, setFullScreen] = useState(false);
   const [branchData, setBranchData] = useState([]);
-  const [tempFilterData, setTempFilterData] = useState(contextData.state)
+  const [DefaultBranch, setDefaultBranch] = useState([]);
+  // let tempFilterData = contextData.temp;
+  const [unit, setUnit] = useState([{ value: 'KG', label: 'KG' }, { value: 'G', label: 'Gram' }]);
+  const [Defaultunit, setDefaultUnit] = useState({ value: 'G', label: 'Gram' });
   const DefaultFilter = {
-    strBranch: "",
-    strState: "",
-    strCity: "",
-    strItem: "",
-    strSubItem: "",
-    strItemGroup: "",
-    strItemSubitem: "",
-    strPurchaseParty: "",
-    strSalesParty: "",
-    strSaleman: "",
-    strProduct: "",
-    strDesignCatalogue: "",
-    strSaleAging: "",
-    strModeofSale: "",
-    strTeamModeofSale: "",
-    strDesignCodeID: "",
-    strRegionID: "",
-    FromDate: "",
-    ToDate: "",
-    strMetalType: "",
-    strDayBook: "",
-    PageNo: 0,
-    PageSize: 9999,
-    Search: "",
-    Grouping: "",
-    FilterIndex: "",
-    strBranchValue: "",
-    strItemValue: "",
-    strSubItemValue: "",
-    strItemGroupValue: "",
-    strItemSubitemValue: "",
-    strPurchasePartyValue: "",
-    strSalesPartyValue: "",
-    strSalemanValue: "",
-    strProductValue: "",
-    strDesignCatalogueValue: "",
-    strSaleAgingValue: "",
-    strModeofSaleValue: "",
-    strTeamModeofSaleValue: "",
-    strRegionValue: "",
-    strDayBookValue: "",
-    strStateValue: '',
-    strMonth: "",
-    strFinYear: "",
-    strMonthValue: "",
-    strDesignCodeValue: "",
-    column: 'NetWeight',
-    Unity: "G",
-    SortBy: "wt-desc",
-    SortByLabel: ""
+    "FromDate": "",
+    "Todate": "",
+    "strBranchID": "",
+    "Unit": "G",
+    "Mode": 0
   };
+
   const commanfilter = {
     "strBranch": "",
     "strCompanyID": "",
@@ -108,6 +69,7 @@ export default function Header_shedual_Analysis() {
 
   //useEffect
   useEffect(() => {
+    console.log("header");
     getSyncDate()
     setCurrentDate();
     fetchBrandData();
@@ -116,12 +78,14 @@ export default function Header_shedual_Analysis() {
 
   //function
   function fetchBrandData() {
-    post(commanfilter, API.BranchFilter, {}, "post").then((res)=>{
+    post(commanfilter, API.BranchFilter, {}, "post").then((res) => {
       if (res.data !== undefined) {
         var tempBranchData = [];
+        console.log(res.data);
         for (let i = 0; i < res.data.lstResult.length; i++) {
-          tempBranchData.push({label:res.data.lstResult})
+          tempBranchData.push({ label: res.data.lstResult[i]['BranchName'], value: res.data.lstResult[i]['BranchId'] })
         }
+        setBranchData(tempBranchData)
       } else {
         alert("Network Error!!!")
       }
@@ -150,7 +114,7 @@ export default function Header_shedual_Analysis() {
         currentDate = `${year}-0${month}-${day}`;
       }
     }
-    setTempFilterData({ ...tempFilterData, ['ToDate']: currentDate });
+    contextData.SettempState({ ...contextData.tempstate, ['ToDate']: currentDate });
 
   }
 
@@ -221,9 +185,9 @@ export default function Header_shedual_Analysis() {
   }
 
   function handleArrowLeft(str) {
-    if (tempFilterData[str] !== "") {
+    if (contextData.tempstate[str] !== "") {
       var ans = ""
-      const date = new Date(tempFilterData[str]);
+      const date = new Date(contextData.tempstate[str]);
       var month = date.getMonth() + 1
       if (date.getDate() === 1) {
         if (month === 1) {
@@ -242,16 +206,16 @@ export default function Header_shedual_Analysis() {
         listarr[2] = "0" + listarr[2]
       }
       ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
-      setTempFilterData({ ...tempFilterData, [str]: ans })
+      contextData.SettempState({ ...contextData.tempstate, [str]: ans });
     }
 
   }
 
   function handleArrowRight(str) {
-    if (tempFilterData[str] !== "") {
+    if (contextData.tempstate[str] !== "") {
       var ans = ""
 
-      const date = new Date(tempFilterData[str]);
+      const date = new Date(contextData.tempstate[str]);
       var month = date.getMonth() + 1
       if (date.getDate() === new Date(date.getFullYear(), month, 0).getDate()) {
         if (month === 12) {
@@ -270,7 +234,7 @@ export default function Header_shedual_Analysis() {
         listarr[2] = "0" + listarr[2]
       }
       ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
-      setTempFilterData({ ...tempFilterData, [str]: ans })
+      contextData.SettempState({ ...contextData.tempstate, [str]: ans });
     }
   }
 
@@ -281,8 +245,53 @@ export default function Header_shedual_Analysis() {
   }
 
   function handleOnDateChange(e) {
-    setTempFilterData({ ...tempFilterData, [e.target.name]: e.tareget.value });
+    contextData.SettempState({ ...contextData.tempstate, [e.target.name]: e.target.value });
   }
+
+  function handleOnBranchSelect(e) {
+    setDefaultBranch(e);
+    var inputString = "";
+    for (let i = 0; i < e.length; i++) {
+      if (i === e.length - 1) {
+        inputString += e[i]['value'];
+      } else {
+        inputString += e[i]['value'] + ",";
+      }
+      contextData.SettempState({ ...contextData.tempstate, ['strBranchID']: inputString });
+    }
+  }
+
+  function handleselectUnit(e) {
+    if (e !== null) {
+      setDefaultUnit(e);
+      contextData.SettempState({ ...contextData.tempstate, ['Unit']: e.value });
+    }
+  }
+
+  function handleOnApply() {
+    if (JSON.stringify(contextData.state) !== JSON.stringify(contextData.tempstate)) {
+      contextData.SetState(contextData.tempstate);
+    }
+    setFIlterFlag(false)
+  }
+
+  function handleOnReset() {
+    if (JSON.stringify(contextData.stat) !== JSON.stringify(DefaultFilter)) {
+      // contextData.SetState(DefaultFilter);
+      contextData.SettempState(DefaultFilter);
+      unitRef.current.clearValue();
+      Branchref.current.clearValue();
+    }
+
+  }
+
+  document.getElementById("root").addEventListener("click", function (event) {
+    if (event.target.className !== 'dropbtn' && event.target.className !== 'fas fa-rupee-sign' && event.target.className !== 'value_name') {
+      if (document.getElementById("myDropdown") !== null) {
+        document.getElementById("myDropdown").style.display = "none"
+      }
+    }
+  });
 
   return (
     <>
@@ -555,12 +564,13 @@ export default function Header_shedual_Analysis() {
                           <div class="date-picker-filter">
 
                             <i class="fa-solid fa-chevron-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('FromDate') }} />
+                            {/* {console.log(contextData.tempstate['FromDate'],"datecurrent")} */}
                             <input
                               class="form-control  date-spacing "
                               type="date"
                               name="FromDate"
                               id="FromDate"
-                              value={tempFilterData['FromDate']}
+                              value={contextData.tempstate['FromDate']}
                               onChange={handleOnDateChange}
                             />
                             {/* <i class="fa-solid fa-chevron-right"></i>fa-solid fa-caret-right date-arrow-right */}
@@ -582,7 +592,7 @@ export default function Header_shedual_Analysis() {
                               type="date"
                               name="ToDate"
                               id="ToDate"
-                              value={tempFilterData['ToDate']}
+                              value={contextData.tempstate['ToDate']}
                               onChange={handleOnDateChange}
                             />
                             <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
@@ -596,10 +606,23 @@ export default function Header_shedual_Analysis() {
                             &nbsp;Branch
                           </label>
                           <Select
+                            ref={Branchref}
                             // defaultValue={[colourOptions[2], colourOptions[3]]}
                             name="unit"
+                            isMulti
                             className="basic-multi-select"
                             classNamePrefix="select"
+                            options={branchData}
+                            closeMenuOnSelect={false}
+                            onChange={handleOnBranchSelect}
+                            defaultValue={DefaultBranch}
+                            styles={{
+                              control: (provided, state) => ({
+                                ...provided,
+                                height: 'fit-content',
+                                borderRadius: '10px'
+                              }),
+                            }}
                           />
 
                         </div>
@@ -614,8 +637,21 @@ export default function Header_shedual_Analysis() {
                           <Select
                             // defaultValue={[colourOptions[2], colourOptions[3]]}
                             name="unit"
+                            ref={unitRef}
+                            options={unit}
                             className="basic-multi-select"
                             classNamePrefix="select"
+                            onChange={handleselectUnit}
+                            components={animatedComponents}
+                            closeMenuOnSelect={true}
+                            defaultValue={Defaultunit}
+                            styles={{
+                              control: (provided, state) => ({
+                                ...provided,
+                                height: '45px',
+                                borderRadius: '10px'
+                              }),
+                            }}
                           />
                         </div>
                       </div>
@@ -633,6 +669,7 @@ export default function Header_shedual_Analysis() {
             type="button"
             class="filter-footer-button"
             data-mdb-ripple-init
+            onClick={handleOnReset}
           >
             {" "}
             Reset{" "}
@@ -641,6 +678,7 @@ export default function Header_shedual_Analysis() {
             type="button"
             class="filter-footer-button"
             data-mdb-ripple-init
+            onClick={handleOnApply}
           >
             Apply
           </button>

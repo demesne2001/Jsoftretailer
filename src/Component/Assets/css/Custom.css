@@ -1593,3 +1593,8 @@ button.geex-btn.geex-btn__customizer-close:hover {
   height: 239px;
   overflow: auto;
 }
+
+
+.Shedule-piechart {
+  display: block !important;
+}

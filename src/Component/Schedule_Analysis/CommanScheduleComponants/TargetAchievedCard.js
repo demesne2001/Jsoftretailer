@@ -60,7 +60,7 @@ export default function TargetAchievedCard() {
     return (
         <div class="col-xl-2 col-lg-4 col-md-4 col-12">
             <div class="graph-card">
-                <div class="crancy-progress-card top-graph-card">
+                <div class="crancy-progress-card top-graph-card Shedule-piechart">
                     <div class="text-center">
                         <ReactApexChart options={options} series={chartData[0] !== undefined ? [chartData[0]['Prc']] : [0]} type="radialBar" height={200} />
                     </div>

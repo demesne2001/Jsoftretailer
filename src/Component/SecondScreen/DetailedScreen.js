@@ -138,7 +138,7 @@ export default function DetailedScreen() {
             { name: 'Month', iconClass: 'fas fa-calendar-week icon-m', group: 'datename(month,a.voucherDate)', column: 'MonthName', columnID: 'MonthName', componentName: 'Month Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strMonth' },
             { name: 'Year', iconClass: 'fas  fa-calendar-alt icon-m', group: 'M.FinYearID,m.YearCode', column: 'YearCode', columnID: 'FinYearID', componentName: 'Year Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strFinYear' },
             { name: 'Sale Aging', iconClass: 'fas fa-chart-line icon-m', group: 'a.[rd.caption]', column: 'rd.caption', columnID: 'rd.caption', componentName: 'Sale Aging Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleAging' },
-            { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale' },
+            { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise',  columnID: 'ChallanGenerateTypeID', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale' },
             // { name: 'Team & Mode of Sale', iconClass: 'fas fa-stream icon-m', group: '', column: '', componentName: 'Team & Mode of Sale Wise' }
         ])
     }

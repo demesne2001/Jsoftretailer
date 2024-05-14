@@ -128,7 +128,7 @@ export default function SalesEfficiency() {
             minimumFractionDigits: 0
           }));
         }
-      }
+    }
 
     return (
 
