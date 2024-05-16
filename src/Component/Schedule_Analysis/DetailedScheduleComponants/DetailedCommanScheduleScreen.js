@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Navbar from '../../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar';
 import Header_detailed from '../../SecondScreen/Components_Detailed/Header_detailed';
 import CommanSheduleChart from '../CommanScheduleComponants/CommanSheduleChart';
@@ -6,18 +6,20 @@ import ScheduleContextState from '../../contex/ScheduleContextState';
 import { useLocation } from 'react-router-dom';
 import ExpensesDetails from '../CommanScheduleComponants/ExpensesDetails';
 import BillShowComponents from './BillShowComponents';
+import contex from '../../contex/Contex';
 
 
 export default function DetailedCommanScheduleScreen() {
     const location = useLocation()
     const id = location.state;
-
+    const contextData = useContext(contex);
+    // console.log(contextData.state,"context");
     return (
         <ScheduleContextState>
             <Navbar />
             <div id="crancy-dark-light">
                 <div class="crancy-body-area">
-                    <Header_detailed screen={2} />
+                    <Header_detailed screen={2} context={contextData} />
                     <section class="crancy-adashboard crancy-show">
                     </section>
                     <section class="crancy-adashboard dashboard-graphdetail">

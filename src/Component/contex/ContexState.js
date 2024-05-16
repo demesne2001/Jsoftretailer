@@ -108,7 +108,7 @@ const ContexState = (props) => {
 		SortByLabel:""
 	})
 	const [childFilterShow, setchildFilterShow] = useState(false);
-	const [currency, setcurrency] = useState("");
+	const [currency, setcurrency] = useState(localStorage.value);
 	const [flag, setflag] = useState(0);
 	const [flagExcel, setflagExcel] = useState(0);
 	const [LazyLoading, setLazyLoading] = useState(0);

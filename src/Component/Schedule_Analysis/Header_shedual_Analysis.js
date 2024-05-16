@@ -115,11 +115,9 @@ export default function Header_shedual_Analysis() {
       }
     }
     contextData.SettempState({ ...contextData.tempstate, ['ToDate']: currentDate });
-
   }
 
   function handleNavbar() {
-
     if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
       const element = document.getElementsByClassName("crancy-smenu")[0];
       element.classList.remove("crancy-close");
@@ -155,6 +153,8 @@ export default function Header_shedual_Analysis() {
 
   function handleOnClose() {
     setFIlterFlag(false);
+    var element = document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
   }
 
   function handlerOnOpen() {
@@ -173,6 +173,7 @@ export default function Header_shedual_Analysis() {
   }
 
   function handleThousand(n) {
+    console.log("value", n);
     localStorage.setItem("value", n);
     contextData.setcurrency(n);
   }
@@ -245,6 +246,7 @@ export default function Header_shedual_Analysis() {
   }
 
   function handleOnDateChange(e) {
+    console.log(e.target.name, e.target.value);
     contextData.SettempState({ ...contextData.tempstate, [e.target.name]: e.target.value });
   }
 
@@ -272,9 +274,10 @@ export default function Header_shedual_Analysis() {
     if (JSON.stringify(contextData.state) !== JSON.stringify(contextData.tempstate)) {
       contextData.SetState(contextData.tempstate);
     }
+    var element = document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
     setFIlterFlag(false)
   }
-
   function handleOnReset() {
     if (JSON.stringify(contextData.stat) !== JSON.stringify(DefaultFilter)) {
       // contextData.SetState(DefaultFilter);
@@ -334,7 +337,7 @@ export default function Header_shedual_Analysis() {
                       className="crancy__sicon close-icon" onClick={handleNavbar}
                     >
                       <i
-                        className="fas fa-angle-left"
+                        className="fas fa-angle-right"
                         style={{ color: "#ffffff" }}
                       ></i>
                     </div>
@@ -549,7 +552,7 @@ export default function Header_shedual_Analysis() {
         </Modal.Header>
 
 
-        <Modal.Body class="modal-body model-schedule">
+        <Modal.Body class="modal-body model-schedule dashboard-filter">
           <div class="container">
             <div class="card-graph-detail">
               <div class="row">
@@ -608,9 +611,9 @@ export default function Header_shedual_Analysis() {
                           <Select
                             ref={Branchref}
                             // defaultValue={[colourOptions[2], colourOptions[3]]}
-                            name="unit"
+                            name="branch"
                             isMulti
-                            className="basic-multi-select"
+                            className="basic-multi-select branch-select"
                             classNamePrefix="select"
                             options={branchData}
                             closeMenuOnSelect={false}
@@ -619,7 +622,7 @@ export default function Header_shedual_Analysis() {
                             styles={{
                               control: (provided, state) => ({
                                 ...provided,
-                                height: 'fit-content',
+                                height: '100%',
                                 borderRadius: '10px'
                               }),
                             }}

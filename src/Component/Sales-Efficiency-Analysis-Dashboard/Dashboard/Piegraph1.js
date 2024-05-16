@@ -81,9 +81,9 @@ export default function Piegraph1() {
               label: 'Total',
               formatter: function (w) {
                 return w.globals.seriesTotals.reduce((a, b) => {
-                  // console.log((a),(b));
-                  var ans = -parseFloat(a)-parseFloat(b);
-                  return parseFloat(ans).toFixed(2)
+                  console.log("ab",(a),(b));
+                  var ans = parseFloat(a)+parseFloat(b);
+                  return (parseFloat(ans).toFixed(2))
                 }, 0)
               }
             }

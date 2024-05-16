@@ -922,7 +922,7 @@ export default function Header() {
                       className="crancy__sicon close-icon" onClick={handleNavbar}
                     >
                       <i
-                        className="fas fa-angle-left"
+                        className="fas fa-angle-right"
                         style={{ color: "#ffffff" }}
                       ></i>
                     </div>

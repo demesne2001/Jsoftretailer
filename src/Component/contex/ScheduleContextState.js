@@ -29,7 +29,7 @@ const ContexState1 = (props) => {
         "Mode": 0
     })
 
-    const [currency, setcurrency] = useState("");
+    const [currency, setcurrency] = useState(localStorage.value);
 
 
 

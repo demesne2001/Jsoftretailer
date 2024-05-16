@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar'
 import '../Assets/css/schedule-analysis.css'
 import Header_shedual_Analysis from './Header_shedual_Analysis'
@@ -19,6 +19,11 @@ import TargetAchievedCard from './CommanScheduleComponants/TargetAchievedCard'
 
 
 export default function Schedule_Analysis_MainScreen() {
+  useEffect(() => {
+    var element = document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
+  }, [])
+
   return (
     <div>
       <ScheduleContextState>
@@ -30,7 +35,7 @@ export default function Schedule_Analysis_MainScreen() {
 
               <div class="crancy-dsinner">
                 <div class="row">
-                  <TargetAchievedCard/>
+                  <TargetAchievedCard />
                   <div class="col-xl-2 col-lg-4 col-md-4 col-12">
                     <div class="graph-card schedule-graph-card">
                       <div class="crancy-progress-card1 top-contant-top-card schedule-card-top">
@@ -59,9 +64,9 @@ export default function Schedule_Analysis_MainScreen() {
                       </div>
                     </div>
                   </div>
-                  <CommanSheduleCard id ={2}/>
-                  <CommanSheduleCard id ={3}/>
-                  <CommanSheduleCard id ={4}/>
+                  <CommanSheduleCard id={2} />
+                  <CommanSheduleCard id={3} />
+                  <CommanSheduleCard id={4} />
                 </div>
 
               </div>
@@ -73,12 +78,12 @@ export default function Schedule_Analysis_MainScreen() {
         <section class="crancy-adashboard dashboard-graphdetail">
           <div class="container">
             <div class="row">
-              <CommanSheduleChart id={1} screen={1}/>
-              <CommanSheduleChart id={2} screen={1}/>
-              <ExpensesDetails/>
-              <CommanSheduleChart id={4} screen={1}/>
-              <CommanSheduleChart id={5} screen={1}/>
-              <CommanSheduleChart id={6} screen={1}/>
+              <CommanSheduleChart id={1} screen={1} />
+              <CommanSheduleChart id={2} screen={1} />
+              <ExpensesDetails />
+              <CommanSheduleChart id={4} screen={1} />
+              <CommanSheduleChart id={5} screen={1} />
+              <CommanSheduleChart id={6} screen={1} />
 
             </div>
           </div>

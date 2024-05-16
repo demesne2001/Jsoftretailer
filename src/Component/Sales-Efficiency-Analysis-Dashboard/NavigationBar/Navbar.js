@@ -69,13 +69,13 @@ export default function Navbar() {
               <img className="crancy-logo__main--small--dark" src={jsoftMini} alt="#" />
             </a>
             <div id="crancy__sicon" className="crancy__sicon close-icon" onClick={handleNavbar}>
-              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+              {/* <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="m9 5 7 7-7 7" />
-              </svg>
+              </svg> */}
               
 
               {/* <i style={{fontSize:'10px'}} class='fas'>&#xf105;</i> */}
-              {/* <i className="fas fa-angle-right" style={{ color: "#ffffff" }}></i> */}
+              <i className="fas fa-angle-left" style={{ color: "#ffffff" }}></i>
             </div>
           </div>
 

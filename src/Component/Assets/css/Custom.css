@@ -1032,7 +1032,12 @@ figure.ag-carousel_figure img {
 
 .modal-filter .modal-body {
   max-height: 70vh !important;
-  overflow-y: auto;
+  overflow-y: auto; 
+}
+
+.dashboard-filter {
+  max-height: 70vh !important;
+  overflow-y: auto;  
 }
 
 /* custom modal css */
@@ -1597,4 +1602,16 @@ button.geex-btn.geex-btn__customizer-close:hover {
 
 .Shedule-piechart {
   display: block !important;
+}
+
+.branch-select .select__control {
+  height: fit-content !important;
+}
+
+.model-schedule {
+  overflow: none !important;
+}
+
+.Tabel-Card {
+  height: fit-content !important;
 }

@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import post from '../../Utility/APIHandle';
 import API from '../../Utility/API';
+import contex from '../../contex/Contex';
 
 
 
 export default function Header_detailed(props) {
 
     const [fullscreen, setFullScreen] = useState(false);
-    const [syncDate, setSyncDate] = useState()
+    const [syncDate, setSyncDate] = useState();
+    const contextData = useContext(contex)
 
     useEffect(() => {
         getSyncDate()
@@ -95,6 +97,70 @@ export default function Header_detailed(props) {
         }
 
     }
+    function handleResetAllContext() {
+        console.log(props);
+        if (props.screen === 2) {
+            contextData.SetdetailedState({
+                "TravellingTeamID": 0,
+                "Mode": 0
+            });
+            contextData.setbillState({
+                "ScheduleID": 0,
+                "Mode": 0
+            })
+        } else {
+            contextData.setDefaultChart({
+                "strBranch": "",
+                "strCompanyID": "",
+                "strState": "",
+                "strCity": "",
+                "strItem": "",
+                "strSubItem": "",
+                "strItemGroup": "",
+                "strRegionID": "",
+                "strItemSubitem": "",
+                "strPurchaseParty": "",
+                "strDesignCodeID": "",
+                "strSalesParty": "",
+                "strSaleman": "",
+                "strProduct": "",
+                "strDesignCatalogue": "",
+                "strSaleAging": "",
+                "strModeofSale": "",
+                "strTeamModeofSale": "",
+                "FromDate": "",
+                "ToDate": "",
+                "strMetalType": "",
+                "strDayBook": "",
+                "PageNo": 1,
+                "PageSize": 10,
+                "Search": "",
+                "Grouping": "",
+                "SortBy": "wt-desc",
+                "SortByLabel": "",
+            })
+            contextData.setchartImage({
+                "strBranch": "",
+                "strState": "",
+                "strCity": "",
+                "strRegionID": "",
+                "strSubItem": "",
+                "strItem": "",
+                "strItemGroup": "",
+                "strItemSubitem": "",
+                "strDesignCodeID": "",
+                "strSalesParty": "",
+                "strSaleman": "",
+                "strProduct": "",
+                "strDesignCatalog": "",
+                "strSaleAging": "",
+                "strMonth": "",
+                "strFinYear": "",
+                "PageNo": 1,
+                "PageSize": 5
+            })
+        }
+    }
     return (
         <header class="crancy-header">
             <div class="container g-0">
@@ -119,7 +185,7 @@ export default function Header_detailed(props) {
                                     </div>
 
                                     <div id="crancy__sicon" class="crancy__sicon close-icon" onClick={handleNavbar}>
-                                        <i class="fas fa-angle-left" style={{ color: '#ffffff' }}></i>
+                                        <i class="fas fa-angle-right" style={{ color: '#ffffff' }}></i>
                                     </div>
                                 </div>
                                 <div class="geex-content__header">
@@ -127,7 +193,7 @@ export default function Header_detailed(props) {
                                         <div class="geex-content__header__content">
                                             <div class="geex-content__header__customizer">
                                                 <h2 class="geex-content__header__title">
-                                                    Sales Efficiency Analysis Dashboard
+                                                    {props.screen === 2 ? "Schedule Analysis" : "Sales Efficiency Analysis Dashboard"}
                                                 </h2>
                                             </div>
                                         </div>
@@ -156,7 +222,7 @@ export default function Header_detailed(props) {
                                                     <div
                                                         class="geex-content__header__quickaction__link"
                                                     >
-                                                        <i class="fas fa-sync"></i>
+                                                        <i class="fas fa-sync" onClick={handleResetAllContext}></i>
                                                     </div>
                                                 </li>
                                                 <li class="geex-content__header__quickaction__item">

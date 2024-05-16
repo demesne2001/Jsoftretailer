@@ -18,8 +18,10 @@ export default function BillShowComponents(props) {
 
     useEffect(() => {
         getBillcardData();
+        console.log(inputdata, "bill");
     }, [inputdata])
 
+   
 
     function getBillcardData() {
         inputdata = { ...inputdata, ['Mode']: props.id };
@@ -46,10 +48,10 @@ export default function BillShowComponents(props) {
                             </div>
                             <div class="notice-content">
 
-                                {props.id !== 5 ?keyOfBillObject[props.id].map((key, i) => {      
-                                    return i === 0? <div class="username">{key} : {e[key]}</div> : <div class="username">{key.split(' ')[0]} : {e[key.split(' ')[0]]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{key.split(' ')[1]} : {e[key.split(' ')[1]]}</div>
-                                }):keyOfBillObject[props.id].map((key, i) => {      
-                                    return i === 0 || i === 1? <div class="username">{key} : {e[key]}</div> : <div class="username">{key.split(' ')[0]} : {e[key.split(' ')[0]]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{key.split(' ')[1]} : {e[key.split(' ')[1]]}</div>
+                                {props.id !== 5 ? keyOfBillObject[props.id].map((key, i) => {
+                                    return i === 0 ? <div class="username">{key} : {e[key]}</div> : <div class="username">{key.split(' ')[0]} : {e[key.split(' ')[0]]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{key.split(' ')[1]} : {e[key.split(' ')[1]]}</div>
+                                }) : keyOfBillObject[props.id].map((key, i) => {
+                                    return i === 0 || i === 1 ? <div class="username">{key} : {e[key]}</div> : <div class="username">{key.split(' ')[0]} : {e[key.split(' ')[0]]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{key.split(' ')[1]} : {e[key.split(' ')[1]]}</div>
                                 })}
                             </div>
                         </button>

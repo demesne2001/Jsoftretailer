@@ -3,24 +3,20 @@
 }
 h4.crancy-progress-card__title.shedule-card-tt {
   margin-bottom: 8px;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 600; 
 }
 .graph-card.schedule-graph-card div {
     padding-bottom: 6px;
     padding-top: 6px;
 }
+ 
 @media only screen and (max-width: 1550px){
     h4.crancy-progress-card__title.shedule-card-tt {
-        font-size: 18px;
+        font-size: 16px;
     }
 }
-@media only screen and (max-width: 1440px){
-    h4.crancy-progress-card__title.shedule-card-tt {
-        font-size: 15px;
-    }
-    
-}
+
 @media only screen and (max-width: 1024px){
     h4.crancy-progress-card__title.shedule-card-tt {
         font-size: 20px;
@@ -92,4 +88,22 @@ a.card-title-graph.schedule-graph p i {
 }
 .card-title-graph.schedule-graph div i {
     padding-right: 10px;
+}
+
+
+.dashboard-filter {
+    overflow-y: unset !important;
+}
+.graph-card.schedule-graph-card .crancy-progress__single {
+    position: absolute;
+    right: 13px;
+    top: 30px;
+}
+.graph-card.schedule-graph-card .schedule-card-top {
+    display: block;
+}
+@media only screen and (max-width: 1199px) {
+    h4.crancy-progress-card__title.shedule-card-tt {
+        font-size: 20px;
+    }
 }

@@ -56,8 +56,8 @@ export default function ExpensesDetails() {
                     </div> */}
 
                 </div>
-                <div class="crancy-progress-card card-contain-graph">
-                    <Table striped bordered hover>
+                <div class="crancy-progress-card card-contain-graph Tabel-Card">
+                    <Table responsive striped bordered hover>
                         <thead>
                             <th>Teams</th>
                             <th colSpan={2}>Expense to Sales</th>
