@@ -163,7 +163,7 @@ export default function CommanSheduleChart(props) {
                 </div>
                 {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
                     props.screen !== 3 ?
-                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
+                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
                         window.innerWidth < 1870 && props.id === 13 && props.screen === 3 ? <div class="crancy-progress-card card-contain-graph shedule-thirdscreen">
                             <Table responsive striped bordered hover>
                                 <thead>

@@ -1,7 +1,7 @@
 
 import React from 'react'
 
-export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, id) {
+export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, id, chartid) {
   console.log("caledddddd");
   const option = {
     chart: {
@@ -42,6 +42,14 @@ export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, 
           return val
         }
       },
+      y: {
+        title: {
+          formatter: (seriesName) => seriesName + " :",
+        },
+        formatter: function (val) {
+          return val
+        }
+      }
     },
     dataLabels: {
       enabled: false
@@ -51,10 +59,18 @@ export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, 
     }
   }
 
-  const series = [{
-    data: yAxis[0]
-  }]
-
+  let series;
+  if (chartid === 2) {
+    series = [{
+      name: 'minutes',
+      data: yAxis[0]
+    }]
+  } else {
+    series = [{
+      name: 'days',
+      data: yAxis[0]
+    }]
+  }
 
 
   return [option, series]

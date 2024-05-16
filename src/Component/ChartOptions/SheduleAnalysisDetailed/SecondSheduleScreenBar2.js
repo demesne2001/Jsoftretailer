@@ -50,7 +50,7 @@ export default function SecondSheduleScreenBar2(xAxis, yAxis, contextData, id) {
                 borderRadiusWhenStacked: 'last', // 'all', 'last'
                 dataLabels: {
                     total: {
-                        enabled: true,
+                        enabled: false,
                         style: {
                             fontSize: '13px',
                             fontWeight: 900
@@ -78,7 +78,7 @@ export default function SecondSheduleScreenBar2(xAxis, yAxis, contextData, id) {
         }
     };
     const series = [{
-        name: 'day',
+        name: 'minutes',
         data: yAxis[0]
     }];
     return [options, series];
