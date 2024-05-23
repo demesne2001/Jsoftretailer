@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-export default function TargetAndAchievedSeriesOptions(xAxis, yAxis) {
+export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
+    let unitofTooltip = unit
+    useEffect(()=>{
+
+    },[unitofTooltip]);
   
     function formateSeriesData(xAxis, yAxis) {
         var tempseries = []
@@ -14,6 +18,20 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis) {
         chart: {
             height: 350,
             type: 'bar'
+        },
+        tooltip: {
+            x: {
+                show: true,
+                formatter: function (val) {
+                    return val
+                }
+            },
+            y:{
+                show: true,
+                formatter: function (val) {
+                    return val
+                }
+            }
         },
         plotOptions: {
             bar: {

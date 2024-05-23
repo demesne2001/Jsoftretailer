@@ -19,6 +19,7 @@ export default function ModeofSalesWise() {
   const contexData = useContext(contex);
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
+  const [prc, setprc] = useState([])
   const [flag, setflag] = useState()
   const [flagSort, setflagSort] = useState('')
   const [optionId, setOptionId] = useState()
@@ -125,6 +126,7 @@ export default function ModeofSalesWise() {
       .then((res) => {
         let name = [];
         let weight = [];
+        let prce = [];
         // console.log(res.data)
 
         for (let index = 0; index < res.data.lstResult.length; index++) {
@@ -134,9 +136,12 @@ export default function ModeofSalesWise() {
             name.push(res.data.lstResult[index]['ChallanGenerateType'])
           }
           weight.push(res.data.lstResult[index][inputdata['column']])
+          prce.push(res.data.lstResult[index]['Prc'])
         }
+        console.log(prce, "percentage");
         setName(name)
         setweight(weight)
+        setprc(prce)
         setdataLoader(false)
         if (weight.length !== 0) {
           setLoader(false)
@@ -153,7 +158,7 @@ export default function ModeofSalesWise() {
 
   const series = weight
 
-  const option_semiDonut = ModeofSales_semiDonut(name, inputdata['column'])
+  const option_semiDonut = ModeofSales_semiDonut(name, inputdata['column'], prc)
   const options_donut = ModeofSales_donut(name, inputdata['column'])
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextData, id, chartid) {
+export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextData, id, chartid) {  
   let option = {
     chart: {
       type: 'bar',
@@ -100,8 +100,6 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
   }];
   if (chartid === 14) {
     option = { ...option, plotOptions: { bar: { ['horizontal']: false } } }
-  } else {
-
   }
   return [option, series]
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id) {
+export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id, chartId) {
   const options = {
     chart: {
       height: 350,
@@ -92,10 +92,19 @@ export default function SecondSheduleScreenBar1(xAxis, yAxis, contextData, id) {
     },
 
   };
-  const series = [{
-    name: 'days',
-    data: yAxis[0]
-  }];
+  let series = []
+  if (chartId === 16) {
+    series = [{
+      name: 'Bills',
+      data: yAxis[0]
+    }];
+  } else {
+    series = [{
+      name: 'Days',
+      data: yAxis[0]
+    }];
+  }
+ 
   return [options, series];
 }
 

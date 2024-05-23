@@ -42,14 +42,20 @@ export default function Navbar() {
 
   function HandleLogoClick() {
     navigate('/Home',{replace:true})
+    var element =   document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
   }
 
   function handleSchedualAnalysisClick() {
     navigate('/schedual_analysis', {replace:true})
+    var element =   document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
   }
 
   function handleOnDashboardClick() {
     navigate('/Home',{replace:true})
+    var element =   document.getElementById("root");  
+    element.scrollIntoView({ block: 'start' })
   }
 
   return (

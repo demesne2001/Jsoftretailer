@@ -78,6 +78,7 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                     }
                 },
 
+
             },
             {
                 min: 0,
@@ -116,6 +117,11 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                     style: {
                         colors: '#FEB019',
                     },
+
+                    formatter: function (val) {
+                        console.log("val", val);
+                        return val.toFixed(0)
+                    },
                 },
                 title: {
                     text: "kgPerEx",
@@ -137,6 +143,10 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                 labels: {
                     style: {
                         colors: '#fe645c',
+                    },
+                    formatter: function (val) {
+                        console.log("val", val);
+                        return val.toFixed(0)
                     },
 
                 },

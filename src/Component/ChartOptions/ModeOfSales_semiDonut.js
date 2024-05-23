@@ -1,4 +1,4 @@
-export function ModeofSales_semiDonut(name, column) {
+export function ModeofSales_semiDonut(name, column, prc) {
 
   const options = {
     chart: {
@@ -12,6 +12,13 @@ export function ModeofSales_semiDonut(name, column) {
 
       },
       type: 'donut',
+    },
+    dataLabels: {
+      enabled: true,
+      formatter: function (val, opts) {
+        console.log(opts);
+        return prc[opts.seriesIndex] + "%"
+      },
     },
     tooltip: {
       enabled: true,

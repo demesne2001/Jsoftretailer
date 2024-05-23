@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id, chartid) {
     console.log(xAxis, yAxis, "secondScreen");
+    // console.log("idog", id);
     function formateSeriesData(xAxis, yAxis) {
         var tempseries = []
         for (let i = 0; i < xAxis.length; i++) {
@@ -9,8 +10,8 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
         }
         return tempseries
     }
-
-    const option = {
+    let option = {}
+    option = {
         chart: {
             height: 350,
             type: 'bar',
@@ -25,7 +26,6 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                                 contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
                             }
                             else {
-
                                 contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
                             }
                         } else {
@@ -38,6 +38,12 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
 
         tooltip: {
             x: {
+                show: true,
+                formatter: function (val) {
+                    return val
+                }
+            },
+            y:{
                 show: true,
                 formatter: function (val) {
                     return val
@@ -72,6 +78,8 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
             }
         }
     }
+
+
     const series = [
         {
             name: 'achievedWt',

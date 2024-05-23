@@ -98,7 +98,8 @@ export default function Default_chart(props) {
     }
     // console.log(weight);
     const series = [{
-        data: weight
+        data: weight,
+        name:'weight'
     }]
     const options = {
         chart: {

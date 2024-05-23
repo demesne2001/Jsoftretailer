@@ -10,10 +10,10 @@ export default function BillShowComponents(props) {
     const keyOfBillObject = {
         1: ['AccountName', 'NetWeight targetWt'],
         2: ['AccountName', 'Avgtime SpendMin'],
-        3: ['AccountName', 'BillAmount AvgExpe'],
+        3: ['AccountName', 'NetWeight AvgExpe'],
         4: ['AccountName', 'NetWeight targetWt'],
         5: ['AccountName', 'OutTime', 'SpendMin SpendDays'],
-        6: ['AccountName', 'Amount TotalSales',]
+        6: ['AccountName', 'BillNetWeight TotalSalesNetWeight']
     }
 
     useEffect(() => {

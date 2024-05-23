@@ -67,7 +67,7 @@ export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, 
     }]
   } else {
     series = [{
-      name: 'days',
+      name: 'Avg days',
       data: yAxis[0]
     }]
   }

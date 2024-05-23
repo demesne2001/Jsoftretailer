@@ -66,7 +66,11 @@ export default function CommanSheduleCard(props) {
           <div class="crancy-progress-card__content schedule-content">
             <h4 class="crancy-progress-card__title shedule-card-tt">{CommanShedulecardObject[props.id]['firstLabel']}</h4>
             <div class="crancy-progress-card__history shedule-card-bt">
-              {CommanShedulecardObject[props.id]['firstLabel'] === "Per Day Expense" ? <span>₹ {chartData[0] !== undefined ? format(chartData[0][CommanShedulecardObject[props.id]['apiLabel1']]) : 0}</span> : <span>{chartData[0] !== undefined ? chartData[0][CommanShedulecardObject[props.id]['apiLabel1']] : 0}</span>}
+              {CommanShedulecardObject[props.id]['firstLabel'] === "Per Day Expense" 
+              ?<span>₹ {chartData[0] !== undefined ? format(chartData[0][CommanShedulecardObject[props.id]['apiLabel1']]) : 0}</span> 
+              :CommanShedulecardObject[props.id]['firstLabel'] === "Total Sales" 
+              ? <span>{chartData[0] !== undefined ? chartData[0][CommanShedulecardObject[props.id]['apiLabel1']]  + " " + contexData.state['Unit'] : 0}</span>
+              :<span>{chartData[0] !== undefined ? chartData[0][CommanShedulecardObject[props.id]['apiLabel1']] : 0}</span>}
             </div>
           </div>
           <div class="crancy-progress__single">

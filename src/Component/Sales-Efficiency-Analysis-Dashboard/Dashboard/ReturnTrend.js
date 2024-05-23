@@ -117,7 +117,7 @@ export default function ReturnTrend() {
                 </div>
                 <div className="crancy-progress-card2 top-contant-top-card">
                     <div className="crancy-progress-card__content">
-                        <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
+                        <h4 className="crancy-progress-card__title">{thousandSeparated(weight) + " " + contexData.state['Unity']}</h4>
                         <div className="crancy-progress-card__history">
                             <span>{prc}% Ret.</span>
                         </div>
