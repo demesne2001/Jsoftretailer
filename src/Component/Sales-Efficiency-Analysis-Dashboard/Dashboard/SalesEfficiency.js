@@ -57,29 +57,29 @@ export default function SalesEfficiency() {
     let inputdata = contexData.state;
 
     useEffect(() => {
-      console.log(localStorage.getItem('load'), "localstporage");
+
        getdata()
     }, [inputdata])
 
     async function getdata() {
 
         inputdata = { ...inputdata, ['Grouping']: 's' }
-        // console.log("branchwise data", inputdata);
+
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
                 if (res.data.lstResult.length > 0) {
                     setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
                     setprc(res.data.lstResult[0]['Prc'])
-                    // console.log(res.data.lstResult[0]['FineWt'], "weright card");
+
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 } 
             })
     }
     // function format(val) {
-    //     // console.log("value", typeof(val));
+
     //     if (localStorage.getItem('value') === 'k') {
-    //         // console.log("thousand selected");
+
     //         return ((((val / 1000).toFixed(1)).toString()) + "K");
     //     } else if (localStorage.getItem('value') === 'l') {
     //         return ((((val / 100000).toFixed(1)).toString()) + "L");
@@ -101,7 +101,7 @@ export default function SalesEfficiency() {
     }
 
     function format(val) {
-      console.log("value changes");
+
         if (localStorage.getItem('value') === 'k') {
           return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
             minimumFractionDigits: 0
@@ -123,7 +123,7 @@ export default function SalesEfficiency() {
             minimumFractionDigits: 0
           }) + " " + "B");
         } else {
-          console.log("default");
+
           return (Number(parseFloat(Math.floor(val))).toLocaleString('en', {
             minimumFractionDigits: 0
           }));

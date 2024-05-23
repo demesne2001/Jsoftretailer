@@ -25,7 +25,7 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
             stacked: false,
             events: {
                 dataPointSelection: (event, chartContex, config) => {
-                    console.log(id, "combo");
+
                     if (id[config.dataPointIndex] === null) {
                         contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
                     }
@@ -119,7 +119,7 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                     },
 
                     formatter: function (val) {
-                        console.log("val", val);
+
                         return val.toFixed(0)
                     },
                 },
@@ -145,7 +145,7 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                         colors: '#fe645c',
                     },
                     formatter: function (val) {
-                        console.log("val", val);
+
                         return val.toFixed(0)
                     },
 

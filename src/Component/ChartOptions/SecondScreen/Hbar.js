@@ -13,23 +13,23 @@ export function secondScreen_hbar(name, contexData, id, filterKey) {
 
 
                     // contexData.setDefaultChart({...contexData.defaultchart,["strBranch"] : config.w.config.xaxis.categories[config.dataPointIndex] })
-                    //   console.log(id[config.dataPointIndex])
+
                     if (id[config.dataPointIndex] === null) {
-                        // console.log('INSIDE NULL')
+
                         contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '-' })
                     }
                     else {
-                        // console.log( id[config.dataPointIndex].toString(), "12 13 46chart");
+
                         contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: id[config.dataPointIndex].toString() })
                     }
 
 
 
 
-                    // console.log(config.w.config.xaxis.categories[config.dataPointIndex])
-                    // console.log('CONTEX DATA',contexData.setDefaultChart)
 
-                    // console.log(config.w.config.series[0].data[config.dataPointIndex],config.w.config.xaxis.categories[config.dataPointIndex])
+
+
+
 
                 }
             }

@@ -2,7 +2,7 @@ import { color } from 'echarts';
 import React from 'react'
 
 export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, contextData, id, chartid) {
-    console.log(xAxis, yAxis, id);
+
     const series = [{
         name: 'achievedWt',
         type: 'column',
@@ -20,7 +20,7 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
             stacked: false,
             events: {
                 dataPointSelection: (event, chartContex, config) => {
-                    console.log(id, "idddd");
+
                     if (id[config.dataPointIndex] === null) {
                         contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
                     }

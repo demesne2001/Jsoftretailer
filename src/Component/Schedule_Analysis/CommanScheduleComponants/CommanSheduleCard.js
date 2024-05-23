@@ -13,7 +13,7 @@ export default function CommanSheduleCard(props) {
     getCardData();
   }, [inputdata])
   useEffect(() => {
-    console.log("called currency", currency);
+
     getCardData();
   }, [currency])
 
@@ -21,7 +21,7 @@ export default function CommanSheduleCard(props) {
     inputdata = { ...inputdata, 'Mode': props.id };
     post(inputdata, API.scheduleGetcommonCard, {}, "post").then((res) => {
       if (res.data !== undefined) {
-        console.log(res, "carddata");
+
         setChartData(res.data.lstResult);
       } else {
         alert("Network Error!!!")
@@ -30,7 +30,7 @@ export default function CommanSheduleCard(props) {
 
   }
   function format(val) {
-    console.log("value changes");
+
     if (localStorage.getItem('value') === 'k') {
       return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
         minimumFractionDigits: 0
@@ -52,7 +52,7 @@ export default function CommanSheduleCard(props) {
         minimumFractionDigits: 0
       }) + " " + "B");
     } else {
-      console.log("default");
+
       return (Number(parseFloat(Math.floor(val))).toLocaleString('en', {
         minimumFractionDigits: 0
       }));

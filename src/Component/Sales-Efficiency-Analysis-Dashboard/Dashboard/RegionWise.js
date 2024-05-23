@@ -43,18 +43,18 @@ export default function RegionWise() {
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
-			// console.log(e.target.id, "options");
+
 			setflag(e.target.id)
 		}
 		else {
-			// console.log("NOT UPDATING OPTIOJN")
+
 		}
 
 	}
 
 	useEffect(() => {
 		fetchOption()
-		console.log(localStorage.getItem('load'),"regionwose");
+
 		 getdata()
 	}, [inputdata])
 
@@ -67,12 +67,12 @@ export default function RegionWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'l.RegionID,l.RegionName', ['SortByLabel']: 'RegionName' }
-		// console.log("branchwise data", inputdata);
+
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
 				let weight = [];
-				// console.log(res.data.lstResult)
+
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['RegionName'] === null) {
 						name.push("null")
@@ -90,18 +90,18 @@ export default function RegionWise() {
 				} else {
 					setLoader(true)
 				}
-				// console.log("name in region", name)
-				// console.log("weight in reign", weight);
+
+
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
 	function handleonchangeCurrency() {
-		// console.log("innn")
+
 		document.getElementById("myDropdowniconregion").style.display === "block" ? document.getElementById("myDropdowniconregion").style.display = "none" : document.getElementById("myDropdowniconregion").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconregion') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -110,7 +110,7 @@ export default function RegionWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		// console.log(event.target, "class");
+
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconregion") !== null) {
 				document.getElementById("myDropdowniconregion").style.display = "none"
@@ -129,7 +129,7 @@ export default function RegionWise() {
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
 					setflag(ChartType)
-					// console.log('FIRST TIME API CALLED')
+
 					setflag(ChartType)
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 4, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
@@ -164,7 +164,7 @@ export default function RegionWise() {
 	function handleSorting() {
 		document.getElementById("sorticonRegion").style.display === "block" ? document.getElementById("sorticonRegion").style.display = "none" : document.getElementById("sorticonRegion").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
-		// console.log(tag_array);
+
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonRegion') {
@@ -182,11 +182,11 @@ export default function RegionWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'RegionName', 'SortBy': flagSort, ['Grouping']: 'l.RegionID,l.RegionName' }
-		// console.log(inputForSort);
+
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];
-			// console.log(res.data.lstResult)
+
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				if (res.data.lstResult[index]['RegionName'] === null) {
 					name.push("null")
@@ -204,8 +204,8 @@ export default function RegionWise() {
 			} else {
 				setLoader(true)
 			}
-			// console.log("name in region", name)
-			// console.log("weight in reign", weight);
+
+
 			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}

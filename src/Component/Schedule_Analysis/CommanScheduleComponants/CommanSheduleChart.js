@@ -60,7 +60,7 @@ export default function CommanSheduleChart(props) {
     }, [inputdata])
 
     useEffect(() => {
-        console.log(CommanSheduleObject[props.id]);
+
         if (props.screen === 3) {
             getChartDetailData()
         }
@@ -70,9 +70,9 @@ export default function CommanSheduleChart(props) {
 
     function getChartData() {
         inputdata = { ...inputdata, 'Mode': props.id }
-        console.log(API.scheduleGetcommonChart);
+
         post(inputdata, API.scheduleGetcommonChart, {}, "post").then((res) => {
-            console.log(res);
+
             if (res.data !== undefined) {
                 var tempYaxis = [];
                 for (let i = 0; i < CommanSheduleObject[props.id]['yAxis'].length; i++) {
@@ -102,9 +102,9 @@ export default function CommanSheduleChart(props) {
 
     function getChartDetailData() {
         inputdataDetail = { ...inputdataDetail, 'Mode': props.id - 10 }
-        console.log(inputdataDetail, "dtailed");
+
         post(inputdataDetail, API.GetChartDetailWise, {}, "post").then((res) => {
-            console.log(res, "detailed");
+
             if (res.data !== undefined) {
                 var tempYaxis = [];
                 for (let i = 0; i < CommanSheduleObject[props.id]['yAxis'].length; i++) {
@@ -146,7 +146,7 @@ export default function CommanSheduleChart(props) {
 
     return (
         <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-            {console.log(chartOptionsScreen2[props.id], props.screen)}
+
             <div className="graph-card">
                 <div className='card-title-graph schedule-graph'>
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>

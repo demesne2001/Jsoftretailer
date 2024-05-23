@@ -62,7 +62,7 @@ export default function CityWise() {
 			setflag(e.target.id)
 		}
 		else {
-			// console.log("NOT UPDATING OPTIOJN")
+
 		}
 
 	}
@@ -81,7 +81,7 @@ export default function CityWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'c.cityname', ['SortByLabel']: 'cityname' }
-		// console.log(inputdata, "citywise inputdata");
+
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
@@ -89,7 +89,7 @@ export default function CityWise() {
 				let sale = [];
 				var js = {};
 
-				// console.log(res.data.lstResult)
+
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					name.push(res.data.lstResult[index]['cityname'])
 					weight.push(res.data.lstResult[index][inputdata['column']])
@@ -116,8 +116,8 @@ export default function CityWise() {
 					j.push({ ...sale[index], ['color']: gradientArray[index] })
 				}
 				setSales(j)
-				// console.log("name", name)
-				// console.log("weight", weight);
+
+
 			})
 	}
 
@@ -133,12 +133,12 @@ export default function CityWise() {
 
 
 	function handleonchangeCurrency() {
-		// console.log("innn")
+
 		document.getElementById("myDropdowniconcity").style.display === "block" ? document.getElementById("myDropdowniconcity").style.display = "none" : document.getElementById("myDropdowniconcity").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconcity') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -148,7 +148,7 @@ export default function CityWise() {
 
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		// console.log(event.target, "class");
+
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconcity") !== null) {
 				document.getElementById("myDropdowniconcity").style.display = "none"
@@ -168,7 +168,7 @@ export default function CityWise() {
 			.then((res) => {
 				setflag(ChartType)
 				if (res.data.lstResult.length === 0) {
-					// console.log('FIRST TIME API CALLED')
+
 					setflag(ChartType)
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 3, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
@@ -194,7 +194,7 @@ export default function CityWise() {
 
 		await post({ "ChartOptionID": optionId, "ChartOption": flag, "ChartID": 3, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 			.then((res) => {
-				// console.log(res)
+
 				document.getElementById('myDropdowniconcity').style.display = 'none'
 				Notify()
 
@@ -204,7 +204,7 @@ export default function CityWise() {
 	function handleSorting() {
 		document.getElementById("sorticoncity").style.display === "block" ? document.getElementById("sorticoncity").style.display = "none" : document.getElementById("sorticoncity").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
-		// console.log(tag_array);
+
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticoncity') {
@@ -222,14 +222,14 @@ export default function CityWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'cityname', 'SortBy': flagSort, ['Grouping']: 'c.cityname' }
-		// console.log(inputForSort);
+
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];
 			let sale = [];
 			var js = {};
 
-			// console.log(res.data.lstResult)
+
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				name.push(res.data.lstResult[index]['cityname'])
 				weight.push(res.data.lstResult[index][inputdata['column']])

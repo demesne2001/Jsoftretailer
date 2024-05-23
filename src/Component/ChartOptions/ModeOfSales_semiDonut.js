@@ -16,7 +16,7 @@ export function ModeofSales_semiDonut(name, column, prc) {
     dataLabels: {
       enabled: true,
       formatter: function (val, opts) {
-        console.log(opts);
+
         return prc[opts.seriesIndex] + "%"
       },
     },

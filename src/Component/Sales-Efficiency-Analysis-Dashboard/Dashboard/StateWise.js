@@ -40,13 +40,13 @@ export default function StateWise() {
 	const ChartType = "treemap"
 
 	function handleclick(e) {
-		// console.log("handleclick");
+
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconstate' && e.target.id !== '') {
 
 			setflag(e.target.id)
 		}
 		else {
-			// console.log("NOT UPDATING OPTIOJN")
+
 		}
 
 	}
@@ -71,13 +71,13 @@ export default function StateWise() {
 
 	async function getdata() {
 		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']: 'Statename' }
-		// console.log(inputdata, "stat");
+
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = []
 				let name1 = [];
 				let weight = [];
-				// console.log("response", res.data.lstResult[0]['Statename'])
+
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['Statename'] != null) {
 						// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
@@ -97,8 +97,8 @@ export default function StateWise() {
 				} else {
 					setLoader(true)
 				}
-				// console.log("statewise", name)
-				// console.log("statewise Service", series);
+
+
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
@@ -113,7 +113,7 @@ export default function StateWise() {
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconstate') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -123,7 +123,7 @@ export default function StateWise() {
 	}
 
 	// document.getElementById('root').onclick = function(event) {
-	// 	console.log(event.target.className,"class");
+
 	// 	if (event.target.className !== 'dropbtn') {
 	// 		document.getElementById("myDropdowniconstate").style.display = "none";
 
@@ -138,7 +138,7 @@ export default function StateWise() {
 	// }
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		// console.log(event.target, "class");
+
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconstate") !== null) {
 				document.getElementById("myDropdowniconstate").style.display = "none"
@@ -157,7 +157,7 @@ export default function StateWise() {
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
 
-					// console.log('FIRST TIME API CALLED')
+
 					setflag(ChartType)
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
@@ -173,7 +173,7 @@ export default function StateWise() {
 				else {
 					setOptionId(res.data.lstResult[0].ChartOptionID)
 					setflag(res.data.lstResult[0].ChartOption)
-					console.log(res.data.lstResult[0].ChartOption, "statewisedata");
+
 				}
 
 			})
@@ -192,7 +192,7 @@ export default function StateWise() {
 	function handleSorting() {
 		document.getElementById("sorticonState").style.display === "block" ? document.getElementById("sorticonState").style.display = "none" : document.getElementById("sorticonState").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
-		// console.log(tag_array);
+
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonState') {
@@ -210,12 +210,12 @@ export default function StateWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'Statename', 'SortBy': flagSort, ['Grouping']: 'k.stateID,k.Statename' }
-		// console.log(inputForSort);
+
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = []
 			let name1 = [];
 			let weight = [];
-			// console.log("response", res.data.lstResult[0]['Statename'])
+
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				if (res.data.lstResult[index]['Statename'] != null) {
 					// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
@@ -235,8 +235,8 @@ export default function StateWise() {
 			} else {
 				setLoader(true)
 			}
-			// console.log("statewise", name)
-			// console.log("statewise Service", series);
+
+
 			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}

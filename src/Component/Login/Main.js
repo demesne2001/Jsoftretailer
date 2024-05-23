@@ -51,7 +51,7 @@ const Main = () => {
 
     function handleLogin() {
         post(login, API.login, {}, "post").then((res) => {
-            // console.log(res, "loginoutput");
+
             if (res.data === undefined) {
                 alert(res.Error)
                 document.getElementsByClassName('user')[0].focus()

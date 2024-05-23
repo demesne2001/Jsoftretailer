@@ -104,7 +104,7 @@ const ExportToExcel = ({ tableTitles }) => {
 
 
     useEffect(() => {
-        // console.log("first useEffect")
+
         getData();
         getData2();
         getData3();
@@ -126,12 +126,12 @@ const ExportToExcel = ({ tableTitles }) => {
         getData19();
         getData20();
         getData21();
-        // console.log(list11, "list11")
+
     }, [inputdata])
 
     useEffect(() => {
         setTimeout(() => {
-            // console.log("second UseEffect")
+
             exporttoimage()
         }, 20000);
     }, [inputdata])
@@ -150,14 +150,14 @@ const ExportToExcel = ({ tableTitles }) => {
 
     function getData() {
         inputdata = { ...inputdata, ['Grouping']: 'a.BranchID,b.BranchName' }
-        // console.log(inputdata, 'excelinput');
+
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                // console.log("excel123", response);
+
                 setdata1(response.data.lstResult);
-                // console.log('length1', response.data.lstResult.length)
+
                 array1.push({ "index": 1, "length": response.data.lstResult.length })
-                // console.log(array1, "array1")
+
             })
     }
     function getData2() {
@@ -165,9 +165,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata2(response.data.lstResult);
-                // console.log('length2', response.data.lstResult.length)
+
                 array1.push({ "index": 2, "length": response.data.lstResult.length })
-                // console.log(array1, "array2")
+
             })
     }
 
@@ -176,9 +176,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata3(response.data.lstResult);
-                // console.log('length2', response.data.lstResult.length)
+
                 array1.push({ "index": 3, "length": response.data.lstResult.length })
-                // console.log(array1, "array2")
+
             })
     }
     function getData4() {
@@ -186,9 +186,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata4(response.data.lstResult);
-                // console.log('length3', response.data.lstResult.length)
+
                 array1.push({ "index": 4, "length": response.data.lstResult.length })
-                // console.log(array1, "array3")
+
 
             })
     }
@@ -197,9 +197,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata5(response.data.lstResult);
-                // console.log('length4', response.data.lstResult.length)
+
                 array1.push({ "index": 5, "length": response.data.lstResult.length })
-                // console.log(array1, "array4")
+
 
             })
     }
@@ -208,9 +208,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata6(response.data.lstResult);
-                // console.log('length5', response.data.lstResult.length)
+
                 array1.push({ "index": 6, "length": response.data.lstResult.length })
-                // console.log(array1, "array5")
+
 
             })
     }
@@ -222,9 +222,9 @@ const ExportToExcel = ({ tableTitles }) => {
             .then((response) => {
                 // if (response.data.lstResult[0]["Total"] !== null) {
                 setdata7(response.data.lstResult);
-                // console.log('length6', response.data.lstResult.length)
+
                 array1.push({ "index": 7, "length": response.data.lstResult.length })
-                // console.log(array1, "array6")
+
 
                 // }
             })
@@ -234,9 +234,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata8(response.data.lstResult);
-                // console.log('length7', response.data.lstResult.length)
+
                 array1.push({ "index": 8, "length": response.data.lstResult.length })
-                // console.log(array1, "array7")
+
             })
     }
     function getData9() {
@@ -244,9 +244,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata9(response.data.lstResult);
-                // console.log('length8', response.data.lstResult.length)
+
                 array1.push({ "index": 9, "length": response.data.lstResult.length })
-                // console.log(array1, "array8")
+
 
             })
     }
@@ -255,9 +255,9 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata10(response.data.lstResult);
-                // console.log('length9', response.data.lstResult.length)
+
                 array1.push({ "index": 10, "length": response.data.lstResult.length })
-                // console.log(array1, "array9")
+
                 // setarray([ ...array , ...array1])
 
             })
@@ -267,7 +267,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata11(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
                 array1.push({ "index": 11, "length": response.data.lstResult.length })
 
             })
@@ -277,7 +277,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata12(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
                 array1.push({ "index": 12, "length": response.data.lstResult.length })
 
 
@@ -288,7 +288,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata13(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
 
                 array1.push({ "index": 13, "length": response.data.lstResult.length })
 
@@ -299,7 +299,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata14(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
 
                 array1.push({ "index": 14, "length": response.data.lstResult.length })
 
@@ -310,7 +310,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata15(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
                 array1.push({ "index": 15, "length": response.data.lstResult.length })
 
 
@@ -321,7 +321,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata16a(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
 
                 array1.push({ "index": 16, "length": response.data.lstResult.length })
 
@@ -332,7 +332,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
                 setdata17b(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
 
                 array1.push({ "index": 17, "length": response.data.lstResult.length })
 
@@ -340,10 +340,10 @@ const ExportToExcel = ({ tableTitles }) => {
     }
     function getData18() {
         inputdata = { ...inputdata, ['Grouping']: 's' }
-        // console.log(inputdata, "cardexcelinput");
+
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
-                // console.log('data10', response)
+
                 setdata18(response.data.lstResult);
 
 
@@ -355,7 +355,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
                 setdata19(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
                 array1.push({ "index": 19, "length": response.data.lstResult.length })
 
 
@@ -366,7 +366,7 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
                 setdata20(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
                 array1.push({ "index": 20, "length": response.data.lstResult.length })
 
 
@@ -377,46 +377,46 @@ const ExportToExcel = ({ tableTitles }) => {
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
                 setdata21(response.data.lstResult);
-                // console.log('data10', response.data.lstResult.length)
+
                 setarray(array1)
                 setobj(obj)
-                // console.log(array1, 'sorted array')
+
             })
     }
 
     function getData16(img) {
-        // console.log(img, "imageeee")
+
         setinput16({ Base64: img, Extension: "png", LoginID: data16.toString() + ".png" })
-        // console.log(input16, "new sssssssssssssssss")
+
         post({ Base64: img, Extension: "png", LoginID: data16.toString() }, API.uploadImage, {}, "post")
             .then((response) => {
                 // setdata16(uuidv4());
-                // console.log(' new respomnse', response.data)
+
             })
     }
 
     function getData17(img) {
-        // console.log(data16.toString() + ".png", "tttttttttttt")
-        // console.log(img, "delete image")
+
+
         setinput17({ FileName: data16.toString() + ".png" })
         post({ FileName: data16.toString() + ".png" }, API.DeleteFile, {}, "post")
             .then((response) => {
-                // console.log(response.data, "delete response")
+
             })
     }
 
     function exporttoimage() {
         var node = document.getElementById('rootElementId');
-        // console.log(node, "ele");
+
         htmlToImage.toPng(node)
             .then(function (dataUrl) {
                 document.getElementById("downloadExcel").style.color = "#0d4876";
                 document.getElementById("downloadExcel").style.pointerEvents = "";
                 var img = new Image();
                 img.src = dataUrl;
-                // console.log(dataUrl, " new dataurllllll")
-                // console.log(img, " new image")
-                // console.log(input16, " new input16")
+
+
+
                 getData16(dataUrl)
                 getData17(dataUrl)
             })
@@ -428,14 +428,14 @@ const ExportToExcel = ({ tableTitles }) => {
 
     const exportToExcel = async () => {
         // var node = ;
-        // console.log(typeof(node), '123123');
+
         htmlToImage.toPng(document.getElementById('rootElementId'))
             .then(function (dataUrl) {
                 document.getElementById("downloadExcel").style.pointerEvents = "";
                 // var img = new Image();
                 // img.src = dataUrl;
-                // console.log(img, " new image")
-                // console.log(input16, " new input16")
+
+
                 getData16(dataUrl)
                 getData17(dataUrl)
             })
@@ -460,29 +460,29 @@ const ExportToExcel = ({ tableTitles }) => {
             const header2 = ['FilterName', 'Filtervalue']
 
             const header = list11.map((item) => Object.keys(item)).flat();
-            // console.log(header2, 'header');
+
             ws1.addRow(header2);
             if (header.length === 0 || header.length === 'undefined') {
                 header = Object.keys(list11[1])
             }
-            // console.log([header], "header2")
+
 
             list11.forEach(item => {
                 const value = Object.values(item);
-                // console.log(value, 'before value')
+
                 if (value[1] !== '') {
                     ws1.addRow(value)
                     flag111.push(value)
-                    // console.log(flag111.length, "new array value")
+
                     count++
-                    // console.log(count, 'count')
+
                 }
                 obj1 = [count + 3]
                 setobj([count + 3])
-                // console.log(count, 'count')
+
             })
         }
-        // console.log(flag111.length, "flag111")
+
 
 
 
@@ -500,14 +500,14 @@ const ExportToExcel = ({ tableTitles }) => {
             if (headerRow.length === 0 || headerRow.length === 'undefined') {
                 headerRow = Object.keys(table[1]).map((key) => (key));
             }
-            // console.log(headerRow.length, 'headerrow')
+
 
             const dataRows = table.map((row) =>
                 Object.values(row).map((cell) => {
                     return cell;
                 })
             );
-            // console.log(dataRows, 'datarows')
+
             return [titleRow, headerRow, ...dataRows, ([]), ([])];  //return arrays of array //2 empty row
         })
             .reduce((acc, curr) => acc.concat(curr), [])
@@ -516,14 +516,14 @@ const ExportToExcel = ({ tableTitles }) => {
 
 
 
-        // console.log(obj1, 'object main')
-        // console.log(array, 'object array')
-        // console.log(flag111.length, "object flag length outside")
+
+
+
         array.sort((a, b) => a.index - b.index); //sort array
 
 
         for (var i = 0; i < array.length; i++) {
-            // console.log("inside for loop")
+
             if (i === 0) {
                 if (array[i]['length'] !== 0) {
                     obj1.push((flag111.length + 3) + array[i]['length'] + 4)
@@ -546,7 +546,7 @@ const ExportToExcel = ({ tableTitles }) => {
         }
 
 
-        // console.log(obj1,"new object")
+
         //     for (let i = 0; i < obj1.length; i++) {
         //       if ( 'C' + obj1[i].toString()!== "") {
         //         ['A' + obj1[i].toString(), 'B' + obj1[i].toString(), 'C' + obj1[i].toString()].map(key => {
@@ -562,13 +562,13 @@ const ExportToExcel = ({ tableTitles }) => {
         //             right: { style: 'thin' }
         //           };
         //         });
-        //         console.log('A' + (13).toString(), "string");
+
 
         //       }
         //   }
 
 
-        // console.log(obj1, "object1")
+
         for (let i = 0; i < obj1.length; i++) {
             ws1.getRow(obj1[i] - 1).font = { bold: true, size: 20, underline: true, name: 'Calibri', color: { argb: '0d4876' } };
             ws1.getRow(obj1[i]).font = { bold: true, size: 13, color: { argb: 'D20103' } }
@@ -596,15 +596,15 @@ const ExportToExcel = ({ tableTitles }) => {
         }
 
 
-        // console.log(data6, "fffffffff")         //Image
+
         const response = await fetch(`http://103.131.196.61:52202/image/${(data16).toString() + ".png"}`);
 
-        // console.log(response, " new image response")
+
 
         const image = await response.arrayBuffer();
 
         const base64Image = Buffer.from(image).toString('base64');
-        // console.log(base64Image)
+
 
         const ws2 = workbook.addWorksheet('DashBoard');
 

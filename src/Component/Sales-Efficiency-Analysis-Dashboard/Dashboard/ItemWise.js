@@ -105,11 +105,11 @@ export default function ItemWise() {
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
-			// console.log('Updationg option')
+
 			setflag(e.target.id)
 		}
 		else {
-			// console.log("NOT UPDATING OPTIOJN")
+
 		}
 
 	}
@@ -133,7 +133,7 @@ export default function ItemWise() {
 				let weight = [];
 				let sale = [];
 				var js = {};
-				// console.log(res.data.lstResult)
+
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					js = { 'product': '', 'thisYearProfit': 0 }
 					if (res.data.lstResult[index]['ItemName'] === null) {
@@ -166,19 +166,19 @@ export default function ItemWise() {
 					j.push({ ...sale[index], ['color']: gradientArray[index] })
 				}
 				setSales(j)
-				// console.log("itemgroup", weight);
+
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
 
 
 	function handleonchangeCurrency() {
-		// console.log("innn")
+
 		document.getElementById("myDropdowniconitem").style.display === "block" ? document.getElementById("myDropdowniconitem").style.display = "none" : document.getElementById("myDropdowniconitem").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconitem') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -187,7 +187,7 @@ export default function ItemWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		// console.log(event.target, "class");
+
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconitem") !== null) {
 				document.getElementById("myDropdowniconitem").style.display = "none"
@@ -207,7 +207,7 @@ export default function ItemWise() {
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
 					setflag(ChartType)
-					// console.log('FIRST TIME API CALLED')
+
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 7, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
 							post({ "ID": 7, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -239,7 +239,7 @@ export default function ItemWise() {
 	function handleSorting() {
 		document.getElementById("sorticonItem").style.display === "block" ? document.getElementById("sorticonItem").style.display = "none" : document.getElementById("sorticonItem").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
-		// console.log(tag_array);
+
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonItem') {
@@ -257,13 +257,13 @@ export default function ItemWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'ItemName', 'SortBy': flagSort, ['Grouping']: 'd.itemID,d.ItemName' }
-		// console.log(inputForSort);
+
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];
 			let sale = [];
 			var js = {};
-			// console.log(res.data.lstResult)
+
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				js = { 'product': '', 'thisYearProfit': 0 }
 				if (res.data.lstResult[index]['ItemName'] === null) {
@@ -296,7 +296,7 @@ export default function ItemWise() {
 				j.push({ ...sale[index], ['color']: gradientArray[index] })
 			}
 			setSales(j)
-			// console.log("itemgroup", weight);
+
 			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}

@@ -30,7 +30,7 @@ export default function Tag_Image() {
     let inputdata = contextData.chartImage
     useEffect(() => {
         handleShowPhotos()
-        console.log(inputdata, "effectimage");
+
         setCurrentPage(1)
         setPageNo(0)
     }, [inputdata])
@@ -43,7 +43,7 @@ export default function Tag_Image() {
         } else {
             document.getElementById('prev').style.display = 'block';
         }
-        // console.log(TotalCount, "effectTotalcount"); 
+
         if ((pageNo + 5) * 5 >= TotalCount) {
             document.getElementById('nxt').style.display = 'none';
         } else {
@@ -103,7 +103,7 @@ export default function Tag_Image() {
 
     function SamplePrevArrow(props) {
         const { className, style, onClick } = props;
-        // console.log(style, className);
+
         return (
             null
         );
@@ -131,14 +131,14 @@ export default function Tag_Image() {
         }
     }
     function handleRightFivePage() {
-        // console.log(pageNo * 5, "lof");
+
         if ((pageNo + 5) * 5 < TotalCount) {
             setPageNo(pageNo + 5);
         }
     }
 
     async function handlePageNoChange(page) {
-        // console.log(page, "pages");
+
         var inputPageUpdate = { ...inputdata, ['PageNo']: page }
         setCurrentPage(page)
         await post(inputPageUpdate, API.GetDetailChartImage, {}, "post").then((res) => {
@@ -152,14 +152,14 @@ export default function Tag_Image() {
             }
         })
         // for (let i = 0; i < document.getElementsByClassName('pageImageButtom').length; i++) {
-        //     console.log((parseInt(document.getElementsByClassName('pageImageButtom')[i]['id'])), page, 'tagsimage');
+
         //     if (parseInt(document.getElementsByClassName('pageImageButtom')[i]['id']) === page) {
-        //         console.log("image_true",document.getElementById(page) );
+
         //         document.getElementById(page).style.backgroundColor = "#e3e9ed";
         //         document.getElementById(page).style.color = "#094876";
         //         document.getElementById(page).style.border = "1px solid #094876";
         //     } else {
-        //         console.log("image_false");
+
 
         //         document.getElementById(page).style.backgroundColor = "#094876";
         //         document.getElementById(page).style.color = "#e3e9ed";
@@ -172,7 +172,7 @@ export default function Tag_Image() {
 
 
 
-    // console.log(document.getElementsByClassName('f-button')[4], "closebuttpnfancybox");
+
 
     return (
         <>
@@ -198,7 +198,7 @@ export default function Tag_Image() {
 
                                             return <><li class="ag-carousel_item">
                                                 <figure class="ag-carousel_figure">
-                                                    {console.log(e['ImagePath'])}
+
                                                     <a data-fancybox="gallery" href={e['ImagePath']} data-caption={"NetWeight : " + e['netweight'] + ",  Barcode : " + e['barcode']}><img src={e['ImagePath']} /></a>
                                                     {/* <img src={e['ImagePath']} onClick={(e) => { openModal() }} class="hover-shadow cursor" /> */}
                                                     <figcaption class="ag-carousel_figcaption">

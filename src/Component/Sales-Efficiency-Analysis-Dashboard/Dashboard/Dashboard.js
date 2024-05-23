@@ -72,7 +72,7 @@ export default function Dashboard() {
     const apiData = [data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13, data14, data15, data16a, data17b, data18, data19, data20, data21]
 
     function handleOnscroll() {
-        console.log("scrolling......");
+
         localStorage.setItem('load', (parseInt(localStorage.getItem('load')) + 1).toString())
     }
 

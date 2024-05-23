@@ -18,14 +18,14 @@ export default function BillShowComponents(props) {
 
     useEffect(() => {
         getBillcardData();
-        console.log(inputdata, "bill");
+
     }, [inputdata])
 
    
 
     function getBillcardData() {
         inputdata = { ...inputdata, ['Mode']: props.id };
-        console.log(inputdata);
+
         post(inputdata, API.GetChartPartyDetails, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 setBillData(res.data.lstResult);

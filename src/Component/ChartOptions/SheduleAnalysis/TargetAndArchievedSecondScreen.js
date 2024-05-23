@@ -1,8 +1,8 @@
 import React from 'react'
 
 export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id, chartid) {
-    console.log(xAxis, yAxis, "secondScreen");
-    // console.log("idog", id);
+
+
     function formateSeriesData(xAxis, yAxis) {
         var tempseries = []
         for (let i = 0; i < xAxis.length; i++) {

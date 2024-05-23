@@ -18,10 +18,10 @@ export function secondScreen_donut(name, contexData , id , filterKey){
                     
                     
                     // contexData.setDefaultChart({...contexData.defaultchart,["strBranch"] : config.w.config.xaxis.categories[config.dataPointIndex] })
-                    //   console.log(id[config.dataPointIndex])
+
                   
                     if(id[config.dataPointIndex] === null){
-                        // console.log('INSIDE NULL')
+
                         contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : '-' })
                       }
                     else if(id[config.dataPointIndex].toString() === contexData.defaultchart[filterKey]){
@@ -33,10 +33,10 @@ export function secondScreen_donut(name, contexData , id , filterKey){
                    
                    
                     
-                    // console.log(config.w.config.xaxis.categories[config.dataPointIndex])
+
                     
 
-                    // console.log(config.w.config.series[0].data[config.dataPointIndex],config.w.config.xaxis.categories[config.dataPointIndex])
+
     
                 }
               }

@@ -8,7 +8,7 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
       stacked: true,
       events: {
         dataPointSelection: (event, chartContex, config) => {
-          console.log("clicked");
+
           if (id[config.dataPointIndex] === null) {
             contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
           }

@@ -60,14 +60,14 @@ export default function StockAnalysis() {
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'stock' }
-    // console.log("branchwise data", inputdata);
+
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {
         if (res.data.lstResult.length > 0) {
-          // console.log(res.data.lstResult);
+
           settag(res.data.lstResult[1]['NetAmount']);
           setloose(res.data.lstResult[0]['NetAmount'])
-          // console.log(res.data.lstResult[0]['FineWt'], "weright card");
+
           inputdata = { ...inputdata, ['Grouping']: '' }
         }
       })

@@ -58,20 +58,20 @@ export default function Collection() {
     async function getdata() {
 
         inputdata = { ...inputdata, ['Grouping']: 'r' }
-        // console.log("branchwise data", inputdata);
+
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
                 if (res.data.lstResult.length > 0) {
                     setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
-                    // console.log(res.data.lstResult[0]['FineWt'], "weright card");
+
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 }
             })
     }
     // function format(val) {
     //     if (localStorage.getItem('value') === 'k') {
-    //         // console.log("thousand selected");
+
     //         return ((((val / 1000).toFixed(1)).toString()) + "K");
     //     } else if (localStorage.getItem('value') === 'l') {
     //         return ((((val / 100000).toFixed(1)).toString()) + "L");

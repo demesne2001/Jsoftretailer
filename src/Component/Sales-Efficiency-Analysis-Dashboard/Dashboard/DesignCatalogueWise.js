@@ -45,17 +45,17 @@ export default function DesignCatalogueWise() {
   function handleclick(e) {
 
     if (e.target.id !== 'save') {
-      // console.log('Updationg option')
+
       setflag(e.target.id)
     }
     else {
-      // console.log("NOT UPDATING OPTIOJN")
+
     }
 
   }
 
   useEffect(() => {
-    // console.log("123456", inputdata['column']);
+
     fetchOption()
      getdata()
   }, [inputdata])
@@ -68,7 +68,7 @@ export default function DesignCatalogueWise() {
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'j.designCatalogID,j.DesignNo', ['SortByLabel']: 'DesignNo' }
-    // console.log("branchwise data", inputdata);
+
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
         let name = [];
@@ -131,12 +131,12 @@ export default function DesignCatalogueWise() {
 
 
   function handleonchangeCurrency() {
-    // console.log("innn")
+
     document.getElementById("myDropdownicondesigncat").style.display === "block" ? document.getElementById("myDropdownicondesigncat").style.display = "none" : document.getElementById("myDropdownicondesigncat").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdownicondesigncat') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -145,7 +145,7 @@ export default function DesignCatalogueWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    // console.log(event.target, "class");
+
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdownicondesigncat") !== null) {
         document.getElementById("myDropdownicondesigncat").style.display = "none"
@@ -161,7 +161,7 @@ export default function DesignCatalogueWise() {
       .then((res) => {
         if (res.data.lstResult.length === 0) {
           setflag(ChartType)
-          // console.log('FIRST TIME API CALLED')
+
           post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 13, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
             .then((res) => {
 
@@ -194,7 +194,7 @@ export default function DesignCatalogueWise() {
   function handleSorting() {
     document.getElementById("sorticonDesignCat").style.display === "block" ? document.getElementById("sorticonDesignCat").style.display = "none" : document.getElementById("sorticonDesignCat").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
-    // console.log(tag_array);
+
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonDesignCat') {
@@ -212,7 +212,7 @@ export default function DesignCatalogueWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'DesignNo', 'SortBy': flagSort, ['Grouping']: 'j.designCatalogID,j.DesignNo' }
-    // console.log(inputForSort);
+
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];

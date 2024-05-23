@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Navbar() {
   const navigate = useNavigate()
   function handleNavbar() {
-    // console.log(document.getElementsByClassName("crancy-close")[0],"element");
+
     if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
       const element = document.getElementsByClassName("crancy-smenu")[0];
       element.classList.remove("crancy-close");

@@ -31,7 +31,7 @@ export default function ExpensesDetails() {
     }
 
     function handleonClickRow(id) {
-        console.log("clicked");
+
         contexData.SetdetailedState({...contexData.detailedstate, ['TravellingTeamID'] : id.toString()})
     }
     return (

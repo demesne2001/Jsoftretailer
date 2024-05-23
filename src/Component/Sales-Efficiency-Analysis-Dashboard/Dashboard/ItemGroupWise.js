@@ -64,7 +64,7 @@ export default function ItemGroupWise() {
       setflag(e.target.id)
     }
     else {
-      // console.log("NOT UPDATING OPTIOJN")
+
     }
 
   }
@@ -91,14 +91,14 @@ export default function ItemGroupWise() {
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'o.ItemGroupId,o.GroupName', ['SortByLabel']: 'GroupName' }
-    // console.log("branchwise data", inputdata);
+
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
         let name = [];
         let weight = [];
         let finalarr = [];
 
-        // console.log(res.data.lstResult)
+
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['GroupName'] === null) {
             name.push("null")
@@ -117,7 +117,7 @@ export default function ItemGroupWise() {
         setName(name)
         setweight(weight)
         setarr(finalarr)
-        // console.log("itemgroup", weight);
+
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
@@ -127,12 +127,12 @@ export default function ItemGroupWise() {
   }
 
   function handleonchangeCurrency() {
-    // console.log("innn")
+
     document.getElementById("myDropdowniconigroup").style.display === "block" ? document.getElementById("myDropdowniconigroup").style.display = "none" : document.getElementById("myDropdowniconigroup").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconigroup') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -141,7 +141,7 @@ export default function ItemGroupWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    // console.log(event.target, "class");
+
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconigroup") !== null) {
         document.getElementById("myDropdowniconigroup").style.display = "none"
@@ -156,7 +156,7 @@ export default function ItemGroupWise() {
       .then((res) => {
         if (res.data.lstResult.length === 0) {
 
-          // console.log('FIRST TIME API CALLED')
+
           setflag(ChartType)
           post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 5, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
             .then((res) => {
@@ -193,7 +193,7 @@ export default function ItemGroupWise() {
   function handleSorting() {
     document.getElementById("sorticonItemGroup").style.display === "block" ? document.getElementById("sorticonItemGroup").style.display = "none" : document.getElementById("sorticonItemGroup").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
-    // console.log(tag_array);
+
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonItemGroup') {
@@ -211,13 +211,13 @@ export default function ItemGroupWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'GroupName', 'SortBy': flagSort, ['Grouping']: 'o.ItemGroupId,o.GroupName' }
-    // console.log(inputForSort);
+
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];
       let finalarr = [];
 
-      // console.log(res.data.lstResult)
+
       for (let index = 0; index < res.data.lstResult.length; index++) {
         if (res.data.lstResult[index]['GroupName'] === null) {
           name.push("null")
@@ -236,7 +236,7 @@ export default function ItemGroupWise() {
       setName(name)
       setweight(weight)
       setarr(finalarr)
-      // console.log("itemgroup", weight);
+
       inputdata = { ...inputdata, ['Grouping']: '' }
     })
   }

@@ -47,7 +47,7 @@ export default function ModeofSalesWise() {
       .then((res) => {
         if (res.data.lstResult.length === 0) {
           setflag(ChartType)
-          // console.log('FIRST TIME API CALLED')
+
           post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
             .then((res) => {
               post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -84,7 +84,7 @@ export default function ModeofSalesWise() {
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconModeOfSales') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -95,20 +95,20 @@ export default function ModeofSalesWise() {
 
   function handleclick(e) {
 
-    // console.log('Event ID',e.target.id)
+
 
     if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconModeOfSales' && e.target.id !== '') {
-      // console.log('Updationg option')
+
       setflag(e.target.id)
     }
     else {
-      // console.log("NOT UPDATING OPTIOJN")
+
     }
 
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    // console.log(event.target, "class");
+
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconModeOfSales") !== null) {
         document.getElementById("myDropdowniconModeOfSales").style.display = "none"
@@ -121,13 +121,13 @@ export default function ModeofSalesWise() {
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', ['SortByLabel']: 'ChallanGenerateType' }
-    // console.log("branchwise data", inputdata);
+
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
         let name = [];
         let weight = [];
         let prce = [];
-        // console.log(res.data)
+
 
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
@@ -138,7 +138,7 @@ export default function ModeofSalesWise() {
           weight.push(res.data.lstResult[index][inputdata['column']])
           prce.push(res.data.lstResult[index]['Prc'])
         }
-        console.log(prce, "percentage");
+
         setName(name)
         setweight(weight)
         setprc(prce)
@@ -216,7 +216,7 @@ export default function ModeofSalesWise() {
   function handleSorting() {
     document.getElementById("sorticonModeOfScale").style.display === "block" ? document.getElementById("sorticonModeOfScale").style.display = "none" : document.getElementById("sorticonModeOfScale").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
-    // console.log(tag_array);
+
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonModeOfScale') {
@@ -234,11 +234,11 @@ export default function ModeofSalesWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'ChallanGenerateType', 'SortBy': flagSort, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType' }
-    // console.log(inputForSort);
+
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];
-      // console.log(res.data.lstResult)
+
       for (let index = 0; index < res.data.lstResult.length; index++) {
         if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
           name.push("null")

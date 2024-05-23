@@ -94,11 +94,11 @@ export default function SalesPartyWise() {
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
-			// console.log('Updationg option')
+
 			setflag(e.target.id)
 		}
 		else {
-			// console.log("NOT UPDATING OPTIOJN")
+
 		}
 
 	}
@@ -120,14 +120,14 @@ export default function SalesPartyWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'a.accountID,c.AccountName', ['SortByLabel']: 'AccountName' }
-		// console.log("branchwise data", inputdata);
+
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let sale = [];
 				var js = {};
 				let name = [];
 				let weight = [];
-				// console.log(res.data.lstResult)
+
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['AccountName'] === null) {
 						name.push("null")
@@ -167,7 +167,7 @@ export default function SalesPartyWise() {
 			})
 	}
 
-	// console.log('sales', sales)
+
 
 	// function gradientdata() {
 	// 	var j = []
@@ -180,12 +180,12 @@ export default function SalesPartyWise() {
 
 
 	function handleonchangeCurrency() {
-		// console.log("innn")
+
 		document.getElementById("myDropdowniconSalesparty").style.display === "block" ? document.getElementById("myDropdowniconSalesparty").style.display = "none" : document.getElementById("myDropdowniconSalesparty").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconSalesparty') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -194,7 +194,7 @@ export default function SalesPartyWise() {
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		// console.log(event.target, "class");
+
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconSalesparty") !== null) {
 				document.getElementById("myDropdowniconSalesparty").style.display = "none"
@@ -222,7 +222,7 @@ export default function SalesPartyWise() {
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
 					setflag(ChartType)
-					// console.log('FIRST TIME API CALLED')
+
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 10, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
 
@@ -255,7 +255,7 @@ export default function SalesPartyWise() {
 	function handleSorting() {
 		document.getElementById("sorticonSalesParty").style.display === "block" ? document.getElementById("sorticonSalesParty").style.display = "none" : document.getElementById("sorticonSalesParty").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
-		// console.log(tag_array);
+
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonSalesParty') {
@@ -272,13 +272,13 @@ export default function SalesPartyWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'AccountName', 'SortBy': flagSort, ['Grouping']: 'a.accountID,c.AccountName' }
-		// console.log(inputForSort);
+
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let sale = [];
 			var js = {};
 			let name = [];
 			let weight = [];
-			// console.log(res.data.lstResult)
+
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				if (res.data.lstResult[index]['AccountName'] === null) {
 					name.push("null")
