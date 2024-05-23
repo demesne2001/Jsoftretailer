@@ -7,11 +7,13 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
         name: 'achievedWt',
         type: 'column',
         data: yAxis[0]
-    }, {
-        name: 'TargetWt',
-        type: 'line',
-        data: yAxis[1]
-    }];
+    }, 
+    // {
+    //     name: 'TargetWt',
+    //     type: 'line',
+    //     data: yAxis[1]
+    // }
+];
 
     const options = {
         chart: {
@@ -27,7 +29,7 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                     else {
                         setTimeout(() => {
                             contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
-                        }, 10);
+                        }, 1);
                     }
                 }
             },
@@ -62,25 +64,25 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                     enabled: true
                 }
             },
-            {
-                seriesName: 'TargetWt',
-                opposite: true,
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#04d8a5'
-                },
-                labels: {
-                    style: {
-                        colors: '#04d8a5',
-                    },
-                },
-                tooltip: {
-                    enabled: true
-                }
-            },
+            // {
+            //     seriesName: 'TargetWt',
+            //     opposite: true,
+            //     axisTicks: {
+            //         show: true,
+            //     },
+            //     axisBorder: {
+            //         show: true,
+            //         color: '#04d8a5'
+            //     },
+            //     labels: {
+            //         style: {
+            //             colors: '#04d8a5',
+            //         },
+            //     },
+            //     tooltip: {
+            //         enabled: true
+            //     }
+            // },
         ],
         tooltip: {
             fixed: {
