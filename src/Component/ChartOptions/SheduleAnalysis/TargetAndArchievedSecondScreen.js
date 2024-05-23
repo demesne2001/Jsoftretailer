@@ -21,16 +21,7 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                         contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
                     }
                     else {
-                        if (chartid === 11) {
-                            if (id[config.dataPointIndex] === null) {
-                                contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
-                            }
-                            else {
-                                contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
-                            }
-                        } else {
-                            contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
-                        }
+                        contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
                     }
                 }
             },
@@ -43,7 +34,7 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                     return val
                 }
             },
-            y:{
+            y: {
                 show: true,
                 formatter: function (val) {
                     return val
