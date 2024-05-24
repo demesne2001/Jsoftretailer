@@ -114,7 +114,7 @@ export default function Tag_Image() {
             var imageData = [];
             if (res.data.lstResult.length !== 0) {
                 for (let i = 0; i < res.data.lstResult.length; i++) {
-                    imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'barcode': res.data.lstResult[i]['barcode'] })
+                    imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
                 }
                 setImageData(imageData);
                 setTotalCount(res.data.lstResult[0]['TotalCount']);
@@ -143,9 +143,10 @@ export default function Tag_Image() {
         setCurrentPage(page)
         await post(inputPageUpdate, API.GetDetailChartImage, {}, "post").then((res) => {
             var imageData = [];
+            console.log(res.data.lstResult);
             if (res.data.lstResult.length !== 0) {
                 for (let i = 0; i < res.data.lstResult.length; i++) {
-                    imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'barcode': res.data.lstResult[i]['barcode'] })
+                    imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
                 }
                 setImageData(imageData);
                 // setTotalCount(res.data.lstResult[0]['TotalCount']);
@@ -195,14 +196,14 @@ export default function Tag_Image() {
                                 <Slider  {...settings} >
                                     {
                                         ImageData.map((e, i) => {
-
+                                            console.log(e,"imagedata");
                                             return <><li class="ag-carousel_item">
                                                 <figure class="ag-carousel_figure">
 
-                                                    <a data-fancybox="gallery" href={e['ImagePath']} data-caption={"NetWeight : " + e['netweight'] + ",  Barcode : " + e['barcode']}><img src={e['ImagePath']} /></a>
+                                                    <a data-fancybox="gallery" href={e['ImagePath']} data-caption={"NetWeight : " + e['netweight'] + ", Tagno : " + e['Tagno']}><img src={e['ImagePath']} /></a>
                                                     {/* <img src={e['ImagePath']} onClick={(e) => { openModal() }} class="hover-shadow cursor" /> */}
                                                     <figcaption class="ag-carousel_figcaption">
-                                                        NetWeight: {e['netweight']}<br></br>{e['barcode']}
+                                                        NetWeight: {e['netweight']}<br></br>{e['Tagno']}
                                                     </figcaption>
                                                 </figure>
                                             </li >
