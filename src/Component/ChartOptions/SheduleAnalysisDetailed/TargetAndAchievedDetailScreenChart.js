@@ -39,16 +39,10 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                 }
             },
         },
-        dataLabels: {
-            enabled: false
-        },
         stroke: {
             width: [4, 4, 0]
         },
-        dataLabels: {
-            enabled: true,
-            enabledOnSeries: [1]
-        },
+
         xaxis: {
             categories: xAxis,
             labels: {
@@ -72,6 +66,9 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                 labels: {
                     style: {
                         colors: '#008FFB',
+                    },
+                    formatter: function (val, config) {
+                        return val.toFixed(0)
                     }
                 },
 
@@ -90,6 +87,9 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                     style: {
                         colors: '#04d8a5',
                     },
+                    formatter: function (val, config) {
+                        return val.toFixed(0)
+                    }
                 },
 
             },
@@ -105,17 +105,17 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                 }
             },
             y: {
-                formatter: function(val,config) {
+                formatter: function (val, config) {
                     if (config['seriesIndex'] === 2) {
                         console.log(val);
                         return (val.toFixed(0)).toString() + "%"
                     } else {
-                        return (val).toString()+ " " + unit
+                        return (val).toString() + " " + unit
                     }
-                    
+
                 }
             }
-        }
+        },
     };
 
 

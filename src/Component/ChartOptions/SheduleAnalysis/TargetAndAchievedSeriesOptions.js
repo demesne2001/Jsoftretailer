@@ -32,10 +32,6 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
         stroke: {
             width: [4, 4, 0]
         },
-        dataLabels: {
-            enabled: true,
-            enabledOnSeries: [1]
-        },
         xaxis: {
             categories: xAxis,
             labels: {
@@ -59,6 +55,9 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                 labels: {
                     style: {
                         colors: '#008FFB',
+                    },
+                    formatter: function (val, config) {
+                        return val.toFixed(0)
                     }
                 },
 
@@ -77,6 +76,9 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                     style: {
                         colors: '#04d8a5',
                     },
+                    formatter: function (val, config) {
+                        return val.toFixed(0)
+                    }
                 },
 
             },
@@ -102,7 +104,8 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                     
                 }
             }
-        }
+        },
+      
     };
     return [options, series]
 }

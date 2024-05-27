@@ -52,7 +52,8 @@ export default function SheduleClientDetailsSeriesOptions(xAxis, yAxis) {
         },
         formatter: function (val, config) {
           console.log(config['dataPointIndex']);
-          return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString()
+          return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString() + "<br/>Prc : " + yAxis[2][config['dataPointIndex']].toString() + "%"
+
         },
         title: {
           formatter: (seriesName) => "",
