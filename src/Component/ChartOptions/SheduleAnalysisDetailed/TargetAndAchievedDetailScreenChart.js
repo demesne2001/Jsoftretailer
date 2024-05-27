@@ -1,25 +1,30 @@
 import { color } from 'echarts';
 import React from 'react'
 
-export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, contextData, id, chartid) {
+export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, contextData, id, chartid, unit) {
 
-    const series = [{
-        name: 'achievedWt',
-        type: 'column',
-        data: yAxis[0]
-    }, 
-    // {
-    //     name: 'TargetWt',
-    //     type: 'line',
-    //     data: yAxis[1]
-    // }
-];
+    const series = [
+        {
+            name: 'TargetWt',
+            type: 'column',
+            data: yAxis[1]
+        },
+        {
+            name: 'achievedWt',
+            type: 'line',
+            data: yAxis[0]
+        },
+        {
+            name: 'Prc',
+            type: '',
+            data: yAxis[2]
+        }
+    ];
 
     const options = {
         chart: {
             height: 350,
             type: 'line',
-            stacked: false,
             events: {
                 dataPointSelection: (event, chartContex, config) => {
 
@@ -38,16 +43,25 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
             enabled: false
         },
         stroke: {
-            width: [1, 4]
+            width: [4, 4, 0]
         },
-
+        dataLabels: {
+            enabled: true,
+            enabledOnSeries: [1]
+        },
         xaxis: {
             categories: xAxis,
+            labels: {
+                formatter: function (val) {
+                    if (typeof (val) === 'string') {
+                        return val.slice(0, 5) + '...';
+                    }
+                }
+            }
         },
         yaxis: [
             {
-                min: 0,
-                seriesName: 'achievedWt',
+                seriesName: 'TargetWt',
                 axisTicks: {
                     show: true,
                 },
@@ -60,41 +74,47 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                         colors: '#008FFB',
                     }
                 },
-                tooltip: {
-                    enabled: true
+
+            },
+            {
+                seriesName: 'achievedWt',
+                opposite: true,
+                axisTicks: {
+                    show: true,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#04d8a5'
+                },
+                labels: {
+                    style: {
+                        colors: '#04d8a5',
+                    },
+                },
+
+            },
+        ],
+        legend: {
+            horizontalAlign: 'center',
+            offsetX: 40
+        },
+        tooltip: {
+            x: {
+                formatter: function (val, config) {
+                    return xAxis[config['dataPointIndex']]
                 }
             },
-            // {
-            //     seriesName: 'TargetWt',
-            //     opposite: true,
-            //     axisTicks: {
-            //         show: true,
-            //     },
-            //     axisBorder: {
-            //         show: true,
-            //         color: '#04d8a5'
-            //     },
-            //     labels: {
-            //         style: {
-            //             colors: '#04d8a5',
-            //         },
-            //     },
-            //     tooltip: {
-            //         enabled: true
-            //     }
-            // },
-        ],
-        tooltip: {
-            fixed: {
-                enabled: true,
-                position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-                offsetY: 30,
-                offsetX: 60
-            },
-        },
-        legend: {
-            horizontalAlign: 'left',
-            offsetX: 40
+            y: {
+                formatter: function(val,config) {
+                    if (config['seriesIndex'] === 2) {
+                        console.log(val);
+                        return (val.toFixed(0)).toString() + "%"
+                    } else {
+                        return (val).toString()+ " " + unit
+                    }
+                    
+                }
+            }
         }
     };
 

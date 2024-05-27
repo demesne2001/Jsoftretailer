@@ -1,61 +1,108 @@
+import { List } from 'echarts';
 import React, { useEffect } from 'react'
+import { useNavigationType } from 'react-router-dom';
 
 export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
-    let unitofTooltip = unit
-    useEffect(()=>{
-
-    },[unitofTooltip]);
-  
-    function formateSeriesData(xAxis, yAxis) {
-        var tempseries = []
-        for (let i = 0; i < xAxis.length; i++) {
-            tempseries.push({ x: xAxis[i], y: yAxis[0][i], goals: [{ name: 'TargetWt', value: yAxis[1][i], strokeHeight: 5, strokeColor: '#775DD0' }] });
+    const series = [
+        {
+            name: 'TargetWt',
+            type: 'column',
+            data: yAxis[1]
+        },
+        {
+            name: 'achievedWt',
+            type: 'line',
+            data: yAxis[0]
+        },
+        {
+            name: 'Prc',
+            type: '',
+            data: yAxis[2]
         }
-        return tempseries
-    }
+    ];
 
-    const option = {
+    const options = {
         chart: {
             height: 350,
-            type: 'bar'
+            type: 'line',
         },
-        tooltip: {
-            x: {
-                show: true,
-                formatter: function (val) {
-                    return val
-                }
-            },
-            y:{
-                show: true,
-                formatter: function (val) {
-                    return val
-                }
-            }
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: '60%'
-            }
-        },
-        colors: ['#00E396'],
         dataLabels: {
             enabled: false
         },
+        stroke: {
+            width: [4, 4, 0]
+        },
+        dataLabels: {
+            enabled: true,
+            enabledOnSeries: [1]
+        },
+        xaxis: {
+            categories: xAxis,
+            labels: {
+                formatter: function (val) {
+                    if (typeof (val) === 'string') {
+                        return val.slice(0, 5) + '...';
+                    }
+                }
+            }
+        },
+        yaxis: [
+            {
+                seriesName: 'TargetWt',
+                axisTicks: {
+                    show: true,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#008FFB'
+                },
+                labels: {
+                    style: {
+                        colors: '#008FFB',
+                    }
+                },
+
+            },
+            {
+                seriesName: 'achievedWt',
+                opposite: true,
+                axisTicks: {
+                    show: true,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#04d8a5'
+                },
+                labels: {
+                    style: {
+                        colors: '#04d8a5',
+                    },
+                },
+
+            },
+        ],
         legend: {
-            show: true,
-            showForSingleSeries: true,
-            customLegendItems: ['Actual', 'Expected'],
-            markers: {
-                fillColors: ['#00E396', '#775DD0']
+            horizontalAlign: 'center',
+            offsetX: 40
+        },
+        tooltip: {
+            x: {
+                formatter: function (val, config) {
+                    return xAxis[config['dataPointIndex']]
+                }
+            },
+            y: {
+                formatter: function(val,config) {
+                    if (config['seriesIndex'] === 2) {
+                        console.log(val);
+                        return (val.toFixed(0)).toString() + "%"
+                    } else {
+                        return (val).toString()+ " " + unit
+                    }
+                    
+                }
             }
         }
-    }
-    const series = [
-        {
-            name: 'achievedWt',
-            data: formateSeriesData(xAxis, yAxis)
-        }
-    ]
-    return [option, series]
+    };
+    return [options, series]
 }

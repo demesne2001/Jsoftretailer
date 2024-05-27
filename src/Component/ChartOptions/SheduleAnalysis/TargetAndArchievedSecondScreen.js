@@ -1,81 +1,118 @@
 import React from 'react'
 
-export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id, chartid) {
-
-
-    function formateSeriesData(xAxis, yAxis) {
-        var tempseries = []
-        for (let i = 0; i < xAxis.length; i++) {
-            tempseries.push({ x: xAxis[i], y: yAxis[0][i], goals: [{ name: 'TargetWt', value: yAxis[1][i], strokeHeight: 5, strokeColor: '#775DD0' }] });
+export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id, chartid, unit) {
+    const series = [
+        {
+            name: 'TargetWt',
+            type: 'column',
+            data: yAxis[1]
+        },
+        {
+            name: 'achievedWt',
+            type: 'line',
+            data: yAxis[0]
+        },
+        {
+            name: 'Prc',
+            type: '',
+            data: yAxis[2]
         }
-        return tempseries
-    }
-    let option = {}
-    option = {
+    ];
+    const options = {
         chart: {
             height: 350,
-            type: 'bar',
+            type: 'line',
             events: {
                 dataPointSelection: (event, chartContex, config) => {
                     if (id[config.dataPointIndex] === null) {
                         contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
                     }
                     else {
-                        contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
+                        setTimeout(() => {
+                            contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
+                        }, [1])
                     }
                 }
             },
         },
-
-        tooltip: {
-            x: {
-                show: true,
-                formatter: function (val) {
-                    return val
-                }
-            },
-            y: {
-                show: true,
-                formatter: function (val) {
-                    return val
-                }
-            }
-        },
-        plotOptions: {
-            bar: {
-                columnWidth: '60%'
-            }
-        },
-        colors: ['#00E396'],
         dataLabels: {
             enabled: false
         },
-
-        legend: {
-            show: true,
-            showForSingleSeries: true,
-            customLegendItems: ['Actual', 'Expected'],
-            markers: {
-                fillColors: ['#00E396', '#775DD0']
-            }
+        stroke: {
+            width: [4, 4, 0]
+        },
+        dataLabels: {
+            enabled: true,
+            enabledOnSeries: [1]
         },
         xaxis: {
+            categories: xAxis,
             labels: {
                 formatter: function (val) {
                     if (typeof (val) === 'string') {
-                        return val.slice(0, 6) + '...'
+                        return val.slice(0, 5) + '...';
                     }
                 }
             }
-        }
-    }
+        },
+        yaxis: [
+            {
+                seriesName: 'TargetWt',
+                axisTicks: {
+                    show: true,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#008FFB'
+                },
+                labels: {
+                    style: {
+                        colors: '#008FFB',
+                    }
+                },
 
+            },
+            {
+                seriesName: 'achievedWt',
+                opposite: true,
+                axisTicks: {
+                    show: true,
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#04d8a5'
+                },
+                labels: {
+                    style: {
+                        colors: '#04d8a5',
+                    },
+                },
 
-    const series = [
-        {
-            name: 'achievedWt',
-            data: formateSeriesData(xAxis, yAxis)
+            },
+        ],
+        legend: {
+            horizontalAlign: 'center',
+            offsetX: 40
+        },
+        tooltip: {
+            x: {
+                formatter: function (val, config) {
+                    return xAxis[config['dataPointIndex']]
+                }
+            },
+            y: {
+                formatter: function (val, config) {
+                    if (config['seriesIndex'] === 2) {
+                        // console.log(val);
+                        return (val.toFixed(0)).toString() + "%"
+                    } else {
+                        return (val).toString() + " " + unit
+                    }
+
+                }
+            }
         }
-    ]
-    return [option, series]
+    };
+
+    return [options, series]
 }

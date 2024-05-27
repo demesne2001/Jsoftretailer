@@ -32,14 +32,14 @@ export default function CommanSheduleChart(props) {
     const [TravelingId, SetTravelingId] = useState([]);
     const [SheduleId, SetSheduleId] = useState([]);
     const chartOptions = {
-        1: { Chartoption: TargetAndAchievedSeriesOptions, ChartType: 'bar' },
+        1: { Chartoption: TargetAndAchievedSeriesOptions, ChartType: 'line' },
         2: { Chartoption: AvarageTimeSpentSeriesOption, ChartType: 'bar' },
         4: { Chartoption: SheduleClientDetailsSeriesOptions, ChartType: 'bar' },
         5: { Chartoption: AvarageTimeSpentSeriesOption, ChartType: 'bar' },
         6: { Chartoption: TotalNoOfBillsSeriesOptions, ChartType: 'treemap' },
     }
     const chartOptionsScreen2 = {
-        1: { Chartoption: TargetAndArchievedSecondScreen, ChartType: 'bar' },
+        1: { Chartoption: TargetAndArchievedSecondScreen, ChartType: 'line' },
         2: { Chartoption: AvarageTimeSpentSecondScreen, ChartType: 'bar' },
         4: { Chartoption: SheduleClientDetailsSecondScreen, ChartType: 'bar' },
         5: { Chartoption: AvarageTimeSpentSecondScreen, ChartType: 'bar' },
@@ -163,9 +163,10 @@ export default function CommanSheduleChart(props) {
                         </div>
                     </div> */}
                 </div>
+                {console.log(yAxis)}
                 {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
                     props.screen !== 3 ?
-                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
+                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
                         window.innerWidth < 1870 && props.id === 13 && props.screen === 3 ? <div class="crancy-progress-card card-contain-graph shedule-thirdscreen">
                             <Table responsive striped bordered hover>
                                 <thead>
@@ -187,7 +188,7 @@ export default function CommanSheduleChart(props) {
                                     }
                                 </tbody>
                             </Table>
-                        </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"><ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
+                        </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"><ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
             </div>
 
         </div>

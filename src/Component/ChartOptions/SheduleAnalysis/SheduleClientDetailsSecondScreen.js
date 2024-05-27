@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextData, id, chartid) {  
+export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextData, id, chartid) {
   let option = {
     chart: {
       type: 'bar',
@@ -68,9 +68,16 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
         }
       },
       y: {
-        formatter: function (val) {
-          return val
-        }
+        marker: {
+          show: true,
+        },
+        formatter: function (val, config) {
+          console.log(config['dataPointIndex']);
+          return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString()
+        },
+        title: {
+          formatter: (seriesName) => "",
+        },
       }
     },
     fill: {

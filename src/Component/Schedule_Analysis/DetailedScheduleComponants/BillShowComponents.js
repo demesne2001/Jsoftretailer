@@ -17,11 +17,16 @@ export default function BillShowComponents(props) {
     }
 
     useEffect(() => {
-        getBillcardData();
+        if (JSON.stringify(inputdata) !== JSON.stringify({
+            "ScheduleID": 0,
+            "Mode": 0
+        })) {
+            getBillcardData();
+        }
 
     }, [inputdata])
 
-   
+
 
     function getBillcardData() {
         inputdata = { ...inputdata, ['Mode']: props.id };
