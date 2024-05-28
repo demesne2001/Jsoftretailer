@@ -27,10 +27,41 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
             type: 'line',
         },
         dataLabels: {
-            enabled: false
+            enabled: true,
+            enabledOnSeries: [1],
+            formatter:function(val) { 
+                let temp = ""
+                for (let i = 0; i  < window.innerWidth/15; i++) {
+                    temp += '-'
+                    
+                }         
+                return temp
+            },
+            style: {
+                fontSize: '2px',
+                fontWeight: 'bold',
+            },
+            background: {
+                enabled: true,
+                foreColor: '#775dd0',
+                padding: 7,
+                borderRadius: 0,
+                borderWidth: 1,
+                borderColor: '#775dd0',
+                opacity: 0.9,
+                dropShadow: {
+                  enabled: false,
+                  top: 1,
+                  left: 1,
+                  blur: 1,
+                  color: '#000',
+                  opacity: 0.45
+                }
+              },
         },
+        colors:['#26e7a6','#775dd0'],
         stroke: {
-            width: [4, 4, 0]
+            width: [4, 0, 0]
         },
         xaxis: {
             categories: xAxis,
@@ -46,46 +77,31 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
             {
                 seriesName: 'TargetWt',
                 axisTicks: {
-                    show: true,
+                    show: false,
                 },
                 axisBorder: {
-                    show: true,
-                    color: '#008FFB'
+                    show: false,
+                    color: '#26e7a6'
                 },
                 labels: {
                     style: {
-                        colors: '#008FFB',
-                    },
-                    formatter: function (val, config) {
+                        colors: '#000',
+                    }, 
+                    formatter:function(val) {
                         return val.toFixed(0)
                     }
+                   
                 },
 
             },
-            {
-                seriesName: 'achievedWt',
-                opposite: true,
-                axisTicks: {
-                    show: true,
-                },
-                axisBorder: {
-                    show: true,
-                    color: '#04d8a5'
-                },
-                labels: {
-                    style: {
-                        colors: '#04d8a5',
-                    },
-                    formatter: function (val, config) {
-                        return val.toFixed(0)
-                    }
-                },
-
-            },
+           
         ],
         legend: {
             horizontalAlign: 'center',
-            offsetX: 40
+            offsetX: 40,
+            markers: {
+                width: [10,10,10], // hides first marker
+              }
         },
         tooltip: {
             x: {
@@ -95,11 +111,13 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
             },
             y: {
                 formatter: function(val,config) {
-                    if (config['seriesIndex'] === 2) {
+                    if (config['seriesIndex'] === 2 && val!== undefined) {
                         console.log(val);
                         return (val.toFixed(0)).toString() + "%"
                     } else {
-                        return (val).toString()+ " " + unit
+                        if (val !== undefined) {
+                            return (val).toString()+ " " + unit
+                        }
                     }
                     
                 }
