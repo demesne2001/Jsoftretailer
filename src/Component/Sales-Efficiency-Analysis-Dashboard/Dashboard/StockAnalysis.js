@@ -65,47 +65,13 @@ export default function StockAnalysis() {
       .then((res) => {
         if (res.data.lstResult.length > 0) {
 
-          settag(res.data.lstResult[1]['NetAmount']);
-          setloose(res.data.lstResult[0]['NetAmount'])
+          settag(res.data.lstResult[1]['NetWt']);
+          setloose(res.data.lstResult[0]['NetWt'])
 
           inputdata = { ...inputdata, ['Grouping']: '' }
         }
       })
 
-  }
-
-  function thousandSeparated(val) {
-    return (Number(parseFloat(val)).toLocaleString('en', {
-      minimumFractionDigits: 2
-    }));
-  }
-
-  function format(val) {
-    if (localStorage.getItem('value') === 'k') {
-      return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
-        minimumFractionDigits: 0
-      }) + " " + "K");
-    } else if (localStorage.getItem('value') === 'l') {
-      return (Number(parseFloat(((((val / 100000).toFixed(1)).toString())))).toLocaleString('en', {
-        minimumFractionDigits: 0
-      }) + " " + "L");
-    } else if (localStorage.getItem('value') === 'm') {
-      return (Number(parseFloat(((((val / 1000000).toFixed(1)).toString())))).toLocaleString('en', {
-        minimumFractionDigits: 0
-      }) + " " + "M");
-    } else if (localStorage.getItem('value') === 'c') {
-      return (Number(parseFloat(((((val / 10000000).toFixed(1)).toString())))).toLocaleString('en', {
-        minimumFractionDigits: 0
-      }) + " " + "CR");
-    } else if (localStorage.getItem('value') === 'b') {
-      return (Number(parseFloat(((((val / 1000000000).toFixed(1)).toString())))).toLocaleString('en', {
-        minimumFractionDigits: 0
-      }) + " " + "B");
-    } else {
-      return (Number(parseFloat(Math.floor(val))).toLocaleString('en', {
-        minimumFractionDigits: 0
-      }));
-    }
   }
 
   return (
@@ -116,7 +82,7 @@ export default function StockAnalysis() {
         </div>
         <div className="crancy-progress-card4 top-contant-top-card">
           <div className="crancy-progress-card__content">
-            <h4 className="crancy-progress-card__title">₹ {format(tag)}</h4>
+            <h4 className="crancy-progress-card__title">{tag.toString() + " KG"}</h4>
             <div className="crancy-progress-card__history">
               <span>(Tag Stock)</span>
             </div>
@@ -128,7 +94,7 @@ export default function StockAnalysis() {
         </div>
         <div className="crancy-progress-card4 top-contant-botton-card">
           <div className="crancy-progress-card__content">
-            <h4 className="crancy-progress-card__title">₹ {format(loose)}</h4>
+            <h4 className="crancy-progress-card__title">{loose.toString() + " KG"}</h4>
             <div className="crancy-progress-card__history">
               <span>(Loose Stock)</span>
             </div>
