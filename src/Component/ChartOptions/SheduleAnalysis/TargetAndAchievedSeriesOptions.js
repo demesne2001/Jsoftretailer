@@ -25,16 +25,27 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
         chart: {
             height: 350,
             type: 'line',
+            toolbar: {
+                tools: {
+                    download: true,
+                    selection: false,
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: false,
+                    reset: false
+                },
+            }
         },
         dataLabels: {
             enabled: true,
             enabledOnSeries: [1],
-            formatter:function(val) { 
+            formatter: function (val) {
                 let temp = ""
-                for (let i = 0; i  < window.innerWidth/15; i++) {
+                for (let i = 0; i < window.innerWidth / 15; i++) {
                     temp += '-'
-                    
-                }         
+
+                }
                 return temp
             },
             style: {
@@ -50,16 +61,16 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                 borderColor: '#775dd0',
                 opacity: 0.9,
                 dropShadow: {
-                  enabled: false,
-                  top: 1,
-                  left: 1,
-                  blur: 1,
-                  color: '#000',
-                  opacity: 0.45
+                    enabled: false,
+                    top: 1,
+                    left: 1,
+                    blur: 1,
+                    color: '#000',
+                    opacity: 0.45
                 }
-              },
+            },
         },
-        colors:['#26e7a6','#775dd0'],
+        colors: ['#26e7a6', '#775dd0'],
         stroke: {
             width: [4, 0, 0]
         },
@@ -86,22 +97,22 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                 labels: {
                     style: {
                         colors: '#000',
-                    }, 
-                    formatter:function(val) {
+                    },
+                    formatter: function (val) {
                         return val.toFixed(0)
                     }
-                   
+
                 },
 
             },
-           
+
         ],
         legend: {
             horizontalAlign: 'center',
             offsetX: 40,
             markers: {
-                width: [10,10,10], // hides first marker
-              }
+                width: [10, 10, 10], // hides first marker
+            }
         },
         tooltip: {
             x: {
@@ -110,20 +121,20 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                 }
             },
             y: {
-                formatter: function(val,config) {
-                    if (config['seriesIndex'] === 2 && val!== undefined) {
+                formatter: function (val, config) {
+                    if (config['seriesIndex'] === 2 && val !== undefined) {
                         console.log(val);
-                        return (val.toFixed(0)).toString() + "%"
+                        return (val).toString() + "%"
                     } else {
                         if (val !== undefined) {
-                            return (val).toString()+ " " + unit
+                            return (val).toString() + " " + unit
                         }
                     }
-                    
+
                 }
             }
         },
-      
+
     };
     return [options, series]
 }

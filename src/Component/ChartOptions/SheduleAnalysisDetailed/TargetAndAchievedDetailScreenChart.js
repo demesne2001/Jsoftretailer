@@ -134,6 +134,17 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                     }
                 }
             },
+            toolbar: {
+                tools: {
+                    download: true,
+                    selection: false,
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: false,
+                    reset: false
+                },
+            }
         },
         dataLabels: {
             enabled: true,
@@ -222,7 +233,7 @@ export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, context
                 formatter: function (val, config) {
                     if (config['seriesIndex'] === 2 && val !== undefined) {
                         console.log(val);
-                        return (val.toFixed(0)).toString() + "%"
+                        return (val).toString() + "%"
                     } else {
                         if (val !== undefined) {
                             return (val).toString() + " " + unit
