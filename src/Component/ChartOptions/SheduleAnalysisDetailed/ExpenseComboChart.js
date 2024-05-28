@@ -119,8 +119,9 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                     },
 
                     formatter: function (val) {
-
-                        return val.toFixed(0)
+                        if (val !== undefined) {
+                            return val.toFixed(0)
+                        }
                     },
                 },
                 title: {
@@ -145,8 +146,9 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                         colors: '#fe645c',
                     },
                     formatter: function (val) {
-
-                        return val.toFixed(0)
+                        if (val !== undefined) {
+                            return val.toFixed(0)
+                        }
                     },
 
                 },
