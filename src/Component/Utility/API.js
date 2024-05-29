@@ -1,8 +1,8 @@
 // const Baseurl="http://192.168.1.208:52202/"
-
+const Baseurl = "http://192.168.1.245:52202/"
 const BaseurlCommon="http://103.131.196.61:42202/"
 
-const Baseurl ="http://103.131.196.61:52202/"
+// const Baseurl ="http://103.131.196.61:52202/"
 
 const Filter = Baseurl + 'Filter/'
 const Chart = Baseurl + 'Chart/'          
