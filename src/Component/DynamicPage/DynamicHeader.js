@@ -2,27 +2,29 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 
 import Modal from "react-bootstrap/Modal";
-import post from "../../Utility/APIHandle";
-import API from "../../Utility/API";
+
+import post from "../Utility/APIHandle";
+import API from "../Utility/API";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import contex from "../../contex/Contex";
-import Commonmodel from "../../CommonModel/CommanModal";
-import currency from "../../Assets/img/svg/currency.svg";
-import "../../Assets/css/Custom.css";
+import contex from "../contex/Contex";
+import Commonmodel from "../CommonModel/CommanModal";
+import currency from "../Assets/img/svg/currency.svg";
+import "../Assets/css/Custom.css";
 import * as htmlToImage from 'html-to-image';
 import reactSelect from "react-select";
 import download from 'downloadjs';
 import { MultiSelect } from "react-multi-select-component";
 import { json } from "react-router-dom";
-import FilterDepObj from "./FilterDepObj";
+import FilterDepObj from "../Sales-Efficiency-Analysis-Dashboard/Header/FilterDepObj";
+
 
 
 
 // import Commonmodel from '../../CommonModel/CommanModal';
 
-export default function Header() {
+export default function DynamicHeader(props) {
   const [fullscreen, setFullScreen] = useState(false);
   const contexData = useContext(contex);
   const unitRef = useRef(null);
@@ -816,7 +818,7 @@ export default function Header() {
                     <div className="geex-content__header__content">
                       <div className="geex-content__header__customizer">
                         <h2 className="geex-content__header__title">
-                          Sales Efficiency Analysis Dashboard
+                          {props.PageName}
                         </h2>
                       </div>
                     </div>

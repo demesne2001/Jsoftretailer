@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import Pie from './Pie'
-import Parliament from './Parliament'
-import Bar from './Bar'
-import Barpol from './Barpol'
-import Map from './Map'
-import RacChart from './RacChart'
+import Pie from './animationchart/Pie'
+import Parliament from './animationchart/Parliament'
+import Bar from './animationchart/Bar'
+import Barpol from './animationchart/Barpol'
+import Map from './animationchart/Map'
+import RacChart from './animationchart/RacChart'
 import img1 from './Jsoft.png'
 import img2 from './jsoft-initial.png'
 import './Login-Custom.css'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, json, useNavigate } from 'react-router-dom';
 import post from '../Utility/APIHandle'
 import API from '../Utility/API'
 import { LineElement } from 'chart.js'
@@ -53,7 +53,7 @@ const Main = () => {
                     if (res.data.UserName === undefined) {
                         alert(res.data.Message)
                     } else {
-                        localStorage.setItem('username', res.data.UserName)
+                        localStorage.setItem('username', res.data.UserName)                        
                         localStorage.setItem('token', res.data.Token)
                         navigate('/Home', { replace: true })
                     }
@@ -62,6 +62,19 @@ const Main = () => {
                 }
             }
         })
+
+        post({ VendorID: 0, PageID: 0 }, API.GetPageData, [], 'post').then((res) => {
+            if (res.data != undefined) {
+                localStorage.setItem('PageData',JSON.stringify([]))
+              if (res.data.lstResult.length > 0) {
+                localStorage.setItem('PageData',JSON.stringify(res.data.lstResult)                )
+              }
+              else
+              {
+                localStorage.setItem('PageData',JSON.stringify([]))
+              }
+            }
+          })
 
 
     }

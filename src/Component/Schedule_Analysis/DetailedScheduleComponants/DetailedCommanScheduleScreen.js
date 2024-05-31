@@ -26,7 +26,7 @@ export default function DetailedCommanScheduleScreen() {
                         <div class="container">
                             <div class="row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-12" >
-                                    {/* <Main_chart state={mainChartProps} /> */}
+                                    
                                     {id === 3 ? <ExpensesDetails screen={2} /> : <CommanSheduleChart id={id} screen={2} />}
                                     <BillShowComponents id={id} />
                                 </div>
@@ -35,9 +35,7 @@ export default function DetailedCommanScheduleScreen() {
                                     <CommanSheduleChart id={id + 10} screen={3} />
                                 </div>
                            
-                                {/* <div class="col-xl-6 col-lg-6 col-md-12 col-12">
-                                 
-                                </div> */}
+                               
                             </div>
 
                         </div>

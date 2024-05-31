@@ -1,11 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import jsoftInitial from '../../Assets/image/logo/jsoft-initial.png'
 import jsoftMini from '../../Assets/image/Jsoft.png'
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
+import post from '../../Utility/APIHandle';
+import API from '../../Utility/API';
 
 export default function Navbar() {
   const navigate = useNavigate()
+  // const [ChartPage, setChartPage] = useState([]);
+  let TotalPage = []
+  // useEffect(() => {
+  //   if (ChartPage.length <= 0) {
+  //     FetchPageData()
+  //   }
+  // }, [])
+  let input = {
+    VendorID: 0,
+    PageID: 0
+  }
+  let ChartPage=[]
+  ChartPage=JSON.parse(localStorage.getItem('PageData'))
+
+  function FetchPageData() {
+    post(input, API.GetPageData, [], 'post').then((res) => {
+      if (res.data != undefined) {
+        if (res.data.lstResult.length > 0) {
+          // setChartPage(res.data.lstResult)
+        }
+      }
+    })
+
+  }
+
   function handleNavbar() {
     // console.log(document.getElementsByClassName("crancy-close")[0],"element");
     if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
@@ -41,15 +68,18 @@ export default function Navbar() {
   }
 
   function HandleLogoClick() {
-    navigate('/Home',{replace:true})
+    navigate('/Home', { replace: true })
   }
 
   function handleSchedualAnalysisClick() {
-    navigate('/schedual_analysis', {replace:true})
+    navigate('/schedual_analysis', { replace: true })
+  }
+  function handleDynamicPageClick(id, name) {
+    navigate('/DynamicPage', { state: { PageID: id, PageName: name }, replace: true })
   }
 
   function handleOnDashboardClick() {
-    navigate('/Home',{replace:true})
+    navigate('/Home', { replace: true })
   }
 
   return (
@@ -72,7 +102,7 @@ export default function Navbar() {
               {/* <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="m9 5 7 7-7 7" />
               </svg> */}
-              
+
 
               {/* <i style={{fontSize:'10px'}} class='fas'>&#xf105;</i> */}
               <i className="fas fa-angle-left" style={{ color: "#ffffff" }}></i>
@@ -100,6 +130,16 @@ export default function Navbar() {
                   <span className="menu-bar__name last-silderbar-title">Schedule
                     Analysis</span></span></a>
                 </li>
+                {ChartPage.length>0? ChartPage.map((key, i) => {
+                  return (
+                    <li><a className="collapsed" onClick={() => handleDynamicPageClick(key.PageID, key.PageName)}><span className="menu-bar__text">
+                      <i className={key.SVGPath != '' && key.SVGPath != undefined ? key.SVGPath: "fas fa-user-clock"}></i>
+                      <span className="menu-bar__name">{key.PageName}</span></span></a>
+                    </li>
+                  )
+                })
+                :null}
+
 
               </ul>
             </div>

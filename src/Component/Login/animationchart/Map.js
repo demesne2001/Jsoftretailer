@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import * as echarts from 'echarts/dist/echarts.js';
-import * as usechart from './USA.json'
+import * as usechart from '../USA.json'
 
 const Map = () => {
     useEffect(()=>{
