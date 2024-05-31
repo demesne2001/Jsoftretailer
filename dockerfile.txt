@@ -7,7 +7,7 @@ COPY package.json .
 RUN npm install
 RUN npm ci — only=production
 COPY . .
-COPY config/webpack.config.js /usr/src/app/webpack.config.js
+
 RUN npm run build
 EXPOSE 7578
 CMD [ "npm", "start" ]
