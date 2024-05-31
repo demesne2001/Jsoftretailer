@@ -6,7 +6,7 @@ COPY . /WebReportJsoft
 COPY package.json .
 RUN npm install
 
-COPY . .
+COPY . /src
 
 RUN npm run build
 EXPOSE 7578
