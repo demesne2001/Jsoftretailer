@@ -48,7 +48,7 @@ export default function TargetAchievedCard() {
         inputdata = { ...inputdata, 'Mode': 1 };
         post(inputdata, API.scheduleGetcommonCard, {}, "post").then((res) => {
             if (res.data !== undefined) {
-                console.log(res, "carddata");
+
                 setChartData(res.data.lstResult);
             } else {
                 alert("Network Error!!!")

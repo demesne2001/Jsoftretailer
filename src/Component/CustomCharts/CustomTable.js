@@ -39,7 +39,7 @@ export default function CustomTable() {
         // setSales({...sales,['color']:gradientArray[index]})
     }
     setSales(j)
-    // console.log('salsses',j)
+
   }
 
 
@@ -55,7 +55,7 @@ export default function CustomTable() {
 
         
             {sales.map((data)=>{
-                // console.log(data);
+
                 return(
                 <tr> 
                     <td style={{backgroundColor:data.color, width:250 ,padding:''}}>{data.product} </td>

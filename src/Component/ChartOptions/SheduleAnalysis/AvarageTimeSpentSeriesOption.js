@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function AvarageTimeSpentSeriesOption(xAxis, yAxis, chartid) {
+export default function AvarageTimeSpentSeriesOption(xAxis, yAxis, contextData,chartid) {
     const option = {
         chart: {
             type: 'bar',
@@ -53,7 +53,7 @@ export default function AvarageTimeSpentSeriesOption(xAxis, yAxis, chartid) {
         }]
     } else {
         series = [{
-            name: 'days',
+            name: 'Avg days',
             data: yAxis[0]
         }]
     }

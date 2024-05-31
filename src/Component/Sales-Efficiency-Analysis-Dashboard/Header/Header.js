@@ -164,20 +164,20 @@ export default function Header() {
   }, [contexData.state['column']])
 
   useEffect(() => {
-    // console.log(contexData.tempstate);
+
     var Findex = contexData.tempstate.FilterIndex
-    // console.log("useEffet1");
-    // console.log('index', Findex)
+
+
     if (Findex !== "undefined" && Findex !== 0) {
       for (let index = Findex + 1; index < 16; index++) {
-        // console.log(index, 'indexno')
+
         if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
           FetchDataDependentAPI(FilterData, index)
         }
       }
       // if (Findex >= 1 && Findex < 9) {
       //   for (let index = Findex + 1; index < 10; index++) {
-      //     console.log(index, 'indexno')
+
       //     if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
       //       FetchDataDependentAPI(FilterData, index)
       //     }
@@ -193,7 +193,7 @@ export default function Header() {
     }
   }, [contexData.tempstate.FilterIndex])
 
-  // console.log('TODAYS DATE',date.getDate() + date.getMonth() + 1 + date.getFullYear())
+
 
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -233,26 +233,26 @@ export default function Header() {
 
 
   function FetchDataDependentAPI(input, FilterIndex) {
-    // console.log("FetchDataDependentAPI", contexData.tempstate[dependentfilter[FilterIndex][4]]);
+
     post(input, dependentfilter[FilterIndex][1], {}, 'post').then((res) => {
-      // console.log("response", res);
-      // console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
+
+
       var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
       var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-      // console.log(res, "res+header");
+
       if (res.data !== undefined) {
-        // console.log("hii", res.data.lstResult);
+
         var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
         // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
-        // console.log('TempDatabefore', TempDataID)
-        // console.log('resultID', resultID)
-        // console.log("contexData.tempstate before", contexData.tempstate);
+
+
+
         var temarrayID = []
         var temparryValue = []
         for (let index = 0; index < TempDataID.length; index++) {
-          // console.log('delete before log', resultID.indexOf(TempDataID[index]), TempDataID[index])
+
           if (resultID.indexOf(TempDataID[index]) >= 0) {
-            // console.log('delete index', TempDataID[index])
+
             // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
             // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
             // delete TempDataID[index]
@@ -263,14 +263,14 @@ export default function Header() {
         }
       }
 
-      // console.log('TempData After', temarrayID)
+
       // contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
       if (temarrayID !== undefined) {
         contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
       } else {
         contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: '', [dependentfilter[FilterIndex][4]]: '', ['FilterIndex']: 0 })
       }
-      // console.log("contexData.tempstate After ", contexData.tempstate);
+
 
     })
   }
@@ -281,12 +281,12 @@ export default function Header() {
   function HandleOnClickComman(IndexNo) {
     let myvalue = contexData.tempstate[dependentfilter[IndexNo][0]];
     let myvalueName = contexData.tempstate[dependentfilter[IndexNo][4]];
-    // console.log("myval", myvalue);
+
     let demoo = [];
     let demooName = [];
     demoo.push(myvalue.split(","));
     demooName.push(myvalueName.split(","));
-    // console.log("DEMOOOOO", demoo[0].length);
+
     let newarr = [];
     let newarrName = [];
 
@@ -295,7 +295,7 @@ export default function Header() {
     ) {
       for (let index = 0; index < demoo[0].length; index++) {
         if (demoo[0].indexOf("") === -1) {
-          // console.log(demoo[0][index]);
+
           newarr.push(parseInt(demoo[0][index]));
           newarrName.push(demooName[0][index]);
         }
@@ -304,7 +304,7 @@ export default function Header() {
 
       for (let index = 0; index < demoo[0].length; index++) {
         if (demoo[0].indexOf("") === -1) {
-          // console.log(demoo[0][index]);
+
           newarr.push(demoo[0][index]);
           newarrName.push(demooName[0][index]);
         }
@@ -312,7 +312,7 @@ export default function Header() {
     }
     setDemo(newarr);
     setDemoName(newarrName);
-    // console.log(newarr);
+
     setProps1({
       api: dependentfilter[IndexNo][1],
       labelname: dependentfilter[IndexNo][0],
@@ -351,7 +351,7 @@ export default function Header() {
   function getdataState() {
     let temp1 = [];
 
-    // console.log('branch postdata' ,postData)
+
 
     post(postData, API.stateFilter, {}, "post").then((res) => {
       for (let index = 0; index < res.data.lstResult.length; index++) {
@@ -368,7 +368,7 @@ export default function Header() {
     let temp1 = [];
 
     post(postData, API.GetMetalType, {}, "post").then((res) => {
-      // console.log(res.data.lstResult, "api");
+
       for (let index = 0; index < res.data.lstResult.length; index++) {
         temp1.push({
           label: res.data.lstResult[index].MetalTypeDesc,
@@ -389,7 +389,7 @@ export default function Header() {
           label: res.data.lstResult[index].Daybook,
         });
       }
-      // console.log(res, "getDaybook");
+
       setDayBook(temp1);
     });
   }
@@ -409,9 +409,9 @@ export default function Header() {
         // contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
         setDefaultMetalType([])
       }
-      // console.log(e, "DATA12");
+
     } else {
-      // console.log(e, "DATA13");
+
       if (e.length !== 0) {
         setDefaultDayBook(e);
         var name = [];
@@ -443,15 +443,15 @@ export default function Header() {
     await htmlToImage.toPng(document.getElementById('rootElementId'))
 
       .then(function (dataUrl) {
-        // console.log(dataUrl);
+
         setCount(count + 1)
 
         var name = count.toString() + "Dashboard";
-        // console.log(API.uploadImage, "name123");
-        // console.log('dataUrl', { "Base64": dataUrl, "Extension": "png", "LoginID": name })
+
+
         // download(dataUrl, "file1.png")
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-          // console.log(res, "respdf");
+
           nameArray.push(res.data.filename);
         })
       });
@@ -460,16 +460,16 @@ export default function Header() {
       .then(function (dataUrl) {
         var name = count.toString() + "filter";
         // download(dataUrl, "file2.png")
-        // console.log('dataUrl1', dataUrl)
+
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-          // console.log(res.data.filename);
+
           nameArray.push(res.data.filename);
-          // console.log({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, "input");
+
           post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, 'http://103.131.196.61:52202/Common/GetPDFUsingImage', {}, "post").then((res) => {
             // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
-            // console.log(res);
+
             // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
-            // console.log(count,"count pdf");
+
             const pdfUrl = API.downloadPdf + count.toString() + "aa.pdf";
             axios.get(pdfUrl, {
               responseType: 'blob',
@@ -479,7 +479,7 @@ export default function Header() {
                 document.getElementById("downloadPdf").disabled = false
               })
               .catch((e) => {
-                // console.log(e)
+
                 document.getElementById("downloadPdf").disabled = false
               })
 
@@ -495,7 +495,7 @@ export default function Header() {
 
   function handleApplyFilter() {
     if (JSON.stringify(contexData.state) !== JSON.stringify(FilterData)) {
-      // console.log('FILTER DATA', FilterData)
+
       contexData.SetState(FilterData);
       handleOnClose();
     }
@@ -612,7 +612,7 @@ export default function Header() {
   }
 
   // window.onclick = function (event) {
-  //   console.log(document.getElementsByClassName("dropdown-content")[0]);
+
   //   if (event.target.className === "dropbtn") {
   //     document.getElementsByClassName("dropdown-content")[0].style.display = "none";
   //   }
@@ -653,7 +653,7 @@ export default function Header() {
 
       const date = new Date(contexData.tempstate[str]);
       var month = date.getMonth() + 1
-      // console.log(date.getFullYear());
+
       if (date.getDate() === 1) {
         if (month === 1) {
           ans = (date.getFullYear() - 1).toString() + "-12" + "-31"
@@ -665,14 +665,14 @@ export default function Header() {
       }
 
       var listarr = ans.split("-")
-      // console.log(listarr);
+
       if (listarr[1].length < 2) {
         listarr[1] = "0" + listarr[1]
       }
       if (listarr[2].length < 2) {
         listarr[2] = "0" + listarr[2]
       }
-      // console.log(listarr);
+
       ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
       // document.getElementById("FromDate").value = ans;
       contexData.SettempState({ ...contexData.tempstate, [str]: ans })
@@ -685,7 +685,7 @@ export default function Header() {
 
       const date = new Date(contexData.tempstate[str]);
       var month = date.getMonth() + 1
-      // console.log(date.getFullYear());
+
       if (date.getDate() === new Date(date.getFullYear(), month, 0).getDate()) {
         if (month === 12) {
           ans = (date.getFullYear() + 1).toString() + "-01" + "-01"
@@ -697,14 +697,14 @@ export default function Header() {
       }
 
       var listarr = ans.split("-")
-      // console.log(listarr);
+
       if (listarr[1].length < 2) {
         listarr[1] = "0" + listarr[1]
       }
       if (listarr[2].length < 2) {
         listarr[2] = "0" + listarr[2]
       }
-      // console.log(listarr);
+
       ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
       // document.getElementById("FromDate").value = ans;
       contexData.SettempState({ ...contexData.tempstate, [str]: ans })
@@ -747,7 +747,7 @@ export default function Header() {
   }
 
   function handlePercentageShow(e) {
-    // console.log(e.target.checked, "gg");
+
     if (e.target.checked) {
       contexData.SettempState({ ...contexData.tempstate, ['column']: 'Prc' })
     } else {
@@ -1082,7 +1082,7 @@ export default function Header() {
                                 Metal Type
                               </label>
 
-                              {/* {console.log(DefaultMetalType)} */}
+
                               <Select
                                 // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"
@@ -1665,7 +1665,7 @@ export default function Header() {
               Apply
             </button>
             <div class="form-check checkbox-filter">
-              {/* {console.log(percentage_check, "cheeck")} */}
+
               <input
                 class="form-check-input"
                 type="checkbox"

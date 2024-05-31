@@ -91,14 +91,14 @@ export default function Header_detailed(props) {
 
             const element2 = document.getElementsByClassName("crancy-adashboard")[0];
             element2.classList.add("crancy-close");
-            console.log("element2", document.getElementsByClassName("crancy-adashboard")[1]);
+
             const element3 = document.getElementsByClassName("crancy-adashboard")[1];
             element3.classList.add("crancy-close");
         }
 
     }
     function handleResetAllContext() {
-        console.log(props);
+
         if (props.screen === 2) {
             contextData.SetdetailedState({
                 "TravellingTeamID": 0,

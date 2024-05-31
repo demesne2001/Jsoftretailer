@@ -13,7 +13,7 @@ export default function CommanSheduleCard(props) {
     getCardData();
   }, [inputdata])
   useEffect(() => {
-    console.log("called currency", currency);
+
     getCardData();
   }, [currency])
 
@@ -21,7 +21,7 @@ export default function CommanSheduleCard(props) {
     inputdata = { ...inputdata, 'Mode': props.id };
     post(inputdata, API.scheduleGetcommonCard, {}, "post").then((res) => {
       if (res.data !== undefined) {
-        console.log(res, "carddata");
+
         setChartData(res.data.lstResult);
       } else {
         alert("Network Error!!!")
@@ -30,7 +30,7 @@ export default function CommanSheduleCard(props) {
 
   }
   function format(val) {
-    console.log("value changes");
+
     if (localStorage.getItem('value') === 'k') {
       return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {
         minimumFractionDigits: 0
@@ -52,7 +52,7 @@ export default function CommanSheduleCard(props) {
         minimumFractionDigits: 0
       }) + " " + "B");
     } else {
-      console.log("default");
+
       return (Number(parseFloat(Math.floor(val))).toLocaleString('en', {
         minimumFractionDigits: 0
       }));
@@ -66,7 +66,11 @@ export default function CommanSheduleCard(props) {
           <div class="crancy-progress-card__content schedule-content">
             <h4 class="crancy-progress-card__title shedule-card-tt">{CommanShedulecardObject[props.id]['firstLabel']}</h4>
             <div class="crancy-progress-card__history shedule-card-bt">
-              {CommanShedulecardObject[props.id]['firstLabel'] === "Per Day Expense" ? <span>₹ {chartData[0] !== undefined ? format(chartData[0][CommanShedulecardObject[props.id]['apiLabel1']]) : 0}</span> : <span>{chartData[0] !== undefined ? chartData[0][CommanShedulecardObject[props.id]['apiLabel1']] : 0}</span>}
+              {CommanShedulecardObject[props.id]['firstLabel'] === "Per Day Expense" 
+              ?<span>₹ {chartData[0] !== undefined ? format(chartData[0][CommanShedulecardObject[props.id]['apiLabel1']]) : 0}</span> 
+              :CommanShedulecardObject[props.id]['firstLabel'] === "Total Sales" 
+              ? <span>{chartData[0] !== undefined ? chartData[0][CommanShedulecardObject[props.id]['apiLabel1']]  + " " + contexData.state['Unit'] : 0}</span>
+              :<span>{chartData[0] !== undefined ? chartData[0][CommanShedulecardObject[props.id]['apiLabel1']] : 0}</span>}
             </div>
           </div>
           <div class="crancy-progress__single">

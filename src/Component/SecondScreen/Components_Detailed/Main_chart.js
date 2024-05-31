@@ -55,7 +55,7 @@ export default function Main_chart(props) {
         }
         fetchData()
 
-        // console.log(props, "useEffect_Main_Chart effect11 effect12");
+
 
     }, [input])
 
@@ -70,15 +70,15 @@ export default function Main_chart(props) {
         //     let id1 = [];
 
         //     if (res.data.lstResult.length !== 0) {
-        //         console.log(res)
+
         //         for (let i = 0; i < res.data.lstResult.length; i++) {
-        //             // console.log(i)
+
         //             name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
         //             weg.push(res.data.lstResult[i]['NetWeight']);
         //             id1.push(res.data.lstResult[i][props.state.columnID]);
         //         }
 
-        //         // console.log(props.state.columnId)
+
         //         setName(name);
         //         setweight(weg);
         //         setId(id1)
@@ -92,18 +92,18 @@ export default function Main_chart(props) {
             let id1 = [];
 
             if (res.data.lstResult.length !== 0) {
-                // console.log(res)
+
                 for (let i = 0; i < res.data.lstResult.length; i++) {
-                    // console.log(i)
+
                     name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
                     weg.push(res.data.lstResult[i]['NetWeight']);
                     id1.push(res.data.lstResult[i][props.state.columnID]);
                 }
 
-                // console.log(props.state.columnId)
+
                 setName(name);
                 setweight(weg);
-                console.log(weg, "weight main chart");
+
                 setId(id1)
                 setdata(res.data.lstResult)
                 setLoader(false)
@@ -111,7 +111,7 @@ export default function Main_chart(props) {
         })
 
     }
-    // console.log(weight);
+
 
     // const series = weight
 
@@ -132,10 +132,10 @@ export default function Main_chart(props) {
 
     function flip() {
         if (document.getElementById("filp").style.transform === "rotateY(360deg)" || document.getElementById("filp").style.transform === "") {
-            // console.log(document.getElementById("filp").style.transform);
+
             document.getElementById("filp").style.transform = "rotateY(180deg)"
         } else {
-            // console.log(document.getElementById("filp").style.transform);
+
             document.getElementById("filp").style.transform = "rotateY(360deg)"
         }
 
@@ -147,7 +147,7 @@ export default function Main_chart(props) {
     // }
 
     function handleChartSelect(e) {
-        // console.log(e.target.id,"log in sls");
+
         if (e.target.id !== "") {
             setFlag(e.target.id)
         }
@@ -181,18 +181,18 @@ export default function Main_chart(props) {
     // }
 
     function handledropdownMenu() {
-        // console.log("call", document.getElementById("myDropdowniconSecondScreen").style.display);
+
         if ( document.getElementById("myDropdowniconSecondScreen").style.display === "block") {
             document.getElementById("myDropdowniconSecondScreen").style.display = "none"
         } else {
-            // console.log("condition trueee");
+
             document.getElementById("myDropdowniconSecondScreen").style.display = "block";
         }
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')
-        console.log(tag_array, "Tage_array_of_secondScreem");
+
         if (tag_array !== undefined) {
             for (let i = 0; i < tag_array.length; i++) {
-                console.log(document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'], "each_element_id");
+
                 if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== 'myDropdowniconSecondScreen') {
                     document.getElementsByClassName('dropdown-contenticon-second-screen')[i].style.display = 'none';
                 }
@@ -203,16 +203,16 @@ export default function Main_chart(props) {
     // window.onclick = function (event) {
     //     if (event.target.id !== 'dropdownbutton') {
     //         if (document.getElementsByClassName("dropdown-contenticon-second-screen")[0] !== undefined) {
-    //             console.log('DROP DOWN STYLE', document.getElementsByClassName("dropdown-contenticon-second-screen")[0])
+
     //             document.getElementsByClassName("dropdown-contenticon-second-screen")[0].style.display = "none";
     //         }
     //     }
     // }
     document.getElementById("root").addEventListener("click", function (event) {
-        console.log(event.target, "class");
+
         if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.id !== 'dropdownbutton') {
             if (document.getElementById("myDropdowniconSecondScreen") !== null) {
-                // console.log("condition True of click");
+
                 document.getElementById("myDropdowniconSecondScreen").style.display = "none"
                 document.getElementById("sorticonsecondScreen").style.display = "none"
             }
@@ -223,10 +223,10 @@ export default function Main_chart(props) {
     function handleSorting() {
         document.getElementById("sorticonsecondScreen").style.display === "block" ? document.getElementById("sorticonsecondScreen").style.display = "none" : document.getElementById("sorticonsecondScreen").style.display = "block";
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')
-        console.log(tag_array, "Tage_array_of_secondScreem");
+
         if (tag_array !== undefined) {
             for (let i = 0; i < tag_array.length; i++) {
-                console.log(document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'], "each_element_id");
+
                 if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== 'sorticonsecondScreen') {
                     document.getElementsByClassName('dropdown-contenticon-second-screen')[i].style.display = 'none';
 
@@ -243,22 +243,22 @@ export default function Main_chart(props) {
 
     async function fetchSortData() {
         var inputForSort = { ...input, 'SortByLabel': props.state.columnName, 'SortBy': flagSort, ['Grouping']: props.state.grouping }
-        console.log(inputForSort, "main_default_sort");
+
         await post(inputForSort, API.GetDetailCommanChart, {}, 'post').then((res) => {
             let name = [];
             let weg = [];
             let id1 = [];
 
             if (res.data.lstResult.length !== 0) {
-                console.log(res)
+
                 for (let i = 0; i < res.data.lstResult.length; i++) {
-                    // console.log(i)
+
                     name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
                     weg.push(res.data.lstResult[i]['NetWeight']);
                     id1.push(res.data.lstResult[i][props.state.columnID]);
                 }
 
-                // console.log(props.state.columnId)
+
                 setName(name);
                 setweight(weg);
                 setId(id1)

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function TotalNoOfBillsSecondScreen(xAxis, Yaxis, contextData, id) {
-  console.log(id, "tree");
+
   function FormatedSeriesData() {
     var tempseries = []
     for (let i = 0; i < xAxis.length; i++) {
@@ -21,12 +21,12 @@ export default function TotalNoOfBillsSecondScreen(xAxis, Yaxis, contextData, id
         type: 'treemap',
         events: {
           dataPointSelection: (event, chartContex, config) => {
-            console.log(id);
+
             if (id[config.dataPointIndex] === null) {
               contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
             }
             else {
-              console.log(id);
+
               contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
             }
           }

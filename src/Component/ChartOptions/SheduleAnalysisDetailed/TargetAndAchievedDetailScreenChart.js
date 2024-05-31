@@ -1,6 +1,8 @@
+import { color } from 'echarts';
 import React from 'react'
 
-export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData, id, chartid, unit) {
+export default function TargetAndAchievedDetailScreenChart(xAxis, yAxis, contextData, id, chartid, unit) {
+
     const series = [
         {
             name: 'TargetWt',
@@ -18,24 +20,25 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
             data: yAxis[2]
         }
     ];
+
     // const options = {
     //     chart: {
     //         height: 350,
     //         type: 'line',
     //         events: {
     //             dataPointSelection: (event, chartContex, config) => {
+
     //                 if (id[config.dataPointIndex] === null) {
-    //                     contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
+    //                     contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
     //                 }
     //                 else {
     //                     setTimeout(() => {
-    //                         contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
-    //                     }, [1])
+    //                         contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
+    //                     }, 1);
     //                 }
     //             }
     //         },
     //     },
-
     //     stroke: {
     //         width: [4, 4, 0]
     //     },
@@ -68,7 +71,6 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
     //                     return val.toFixed(0)
     //                 }
     //             },
-
 
     //         },
     //         {
@@ -105,7 +107,7 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
     //         y: {
     //             formatter: function (val, config) {
     //                 if (config['seriesIndex'] === 2) {
-    //                     // console.log(val);
+    //                     console.log(val);
     //                     return (val.toFixed(0)).toString() + "%"
     //                 } else {
     //                     return (val).toString() + " " + unit
@@ -114,21 +116,21 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
     //             }
     //         }
     //     },
-
     // };
-    let options = {
+    const options = {
         chart: {
-            type: 'line',
             height: 350,
+            type: 'line',
             events: {
                 dataPointSelection: (event, chartContex, config) => {
+
                     if (id[config.dataPointIndex] === null) {
-                        contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
+                        contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
                     }
                     else {
                         setTimeout(() => {
-                            contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
-                        }, [1])
+                            contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
+                        }, 1);
                     }
                 }
             },
@@ -143,14 +145,13 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                     reset: false
                 },
             }
-
         },
         dataLabels: {
             enabled: true,
             enabledOnSeries: [1],
             formatter: function (val) {
                 let temp = ""
-                for (let i = 0; i < window.innerWidth / 28; i++) {
+                for (let i = 0; i < window.innerWidth / 15; i++) {
                     temp += '-'
 
                 }
@@ -219,8 +220,8 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
             horizontalAlign: 'center',
             offsetX: 40,
             markers: {
-                width: [10,10,10], // hides first marker
-              }
+                width: [10, 10, 10], // hides first marker
+            }
         },
         tooltip: {
             x: {
@@ -229,18 +230,21 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                 }
             },
             y: {
-                formatter: function(val,config) {
-                    if (config['seriesIndex'] === 2 && val!== undefined) {
+                formatter: function (val, config) {
+                    if (config['seriesIndex'] === 2 && val !== undefined) {
+                        console.log(val);
                         return (val).toString() + "%"
                     } else {
                         if (val !== undefined) {
-                            return (val).toString()+ " " + unit
+                            return (val).toString() + " " + unit
                         }
                     }
-                    
+
                 }
             }
         },
-    }
+
+    };
+
     return [options, series]
 }

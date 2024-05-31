@@ -15,15 +15,15 @@
 
 //     //   if (document.getElementsByClassName('f-button')[4] !== null && document.getElementsByClassName('f-button')[4] !== undefined) {
 //     //     document.getElementsByClassName('f-button')[4].addEventListener("click", function (event) {
-//     //         console.log("eventcalled!!!!!!!!!!!!!!!!!!!");
+
 //     //         navigate('/graph-detail', { replace: true })
 //     //     })
-//     //     console.log(document.getElementsByClassName('f-button'), "buttoncollected");
+
 //     // }
 //     // NativeFancybox.manageCloseBtn()
 //     NativeFancybox.bind(container, delegate, options)
     
-//     // console.log(NativeFancybox.close(), "contauner_fancy");
+
 //     return () => {
 //       NativeFancybox.unbind(container)
 //       // NativeFancybox.close =  ()  => {

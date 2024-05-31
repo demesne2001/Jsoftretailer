@@ -52,28 +52,28 @@ export default function Default_chart(props) {
 
     useEffect(() => {
         // setflagSort('wt-desc')
-        // console.log(input, "effect12");
+
         fetchData()
     }, [input])
 
 
-    // console.log(props);
+
     async function fetchData() {
-        // console.log(props.graph.group, "props");
+
         if (props.graph.group !== undefined) {
             input = { ...input, ['Grouping']: props.graph.group, ['SortByLabel']: props.graph.column };
-            // console.log(input, "DEFAULT CHART API");
+
             await post(input, API.CommonChart, {}, "post").then((res) => {
-                // console.log(res, "res_default");
-                // console.log('INPUT FOR CLICK', input)
-                // console.log(props.graph.columnID, "columnID");
+
+
+
                 if (res.data.lstResult !== 0) {
                     let name = [];
                     let weg = [];
                     let id1 = [];
                     for (let i = 0; i < res.data.lstResult.length; i++) {
                         if (res.data.lstResult[i][props.graph.column] !== null) {
-                            console.log("IF inside loop")
+
                             name.push(res.data.lstResult[i][props.graph.column]);
                             weg.push(res.data.lstResult[i]['NetWeight']);
                             id1.push(res.data.lstResult[i][props.graph.columnID]);
@@ -84,7 +84,7 @@ export default function Default_chart(props) {
                             id1.push(res.data.lstResult[i][props.graph.columnID])
                         }
                     }
-                    // console.log(name, weg);
+
                     setName(name);
                     setweight(weg);
                     setid(id1);
@@ -96,9 +96,10 @@ export default function Default_chart(props) {
 
 
     }
-    // console.log(weight);
+
     const series = [{
-        data: weight
+        data: weight,
+        name:'weight'
     }]
     const options = {
         chart: {
@@ -107,9 +108,9 @@ export default function Default_chart(props) {
             events: {
                 dataPointSelection: (event, chartContex, config) => {
                     if (id[config.dataPointIndex] !== null && id[config.dataPointIndex] !== undefined) {
-                        console.log(id[config.dataPointIndex], "id456789");
-                        console.log(id, "id123");
-                        console.log(contextData.defaultchart, "123456789");
+
+
+
                         contextData.setchartImage({ ...defaultImageData, [props.graph.filter_key1]: contextData.defaultchart[props.graph.filter_key1], [props.graph.filter_key2]: (id[config.dataPointIndex]).toString() })
                     }
                 }
@@ -182,16 +183,16 @@ export default function Default_chart(props) {
 
     function flip() {
         if (document.getElementById("filp").style.transform === "rotateY(360deg)" || document.getElementById("filp").style.transform === "") {
-            console.log(document.getElementById("filp").style.transform);
+
             document.getElementById("filp").style.transform = "rotateY(180deg)"
         } else {
-            console.log(document.getElementById("filp").style.transform);
+
             document.getElementById("filp").style.transform = "rotateY(360deg)"
         }
 
     }
     document.getElementById("root").addEventListener("click", function (event) {
-        console.log(event.target, "class");
+
         if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.className !== 'fa-solid fa-ellipsis-vertical') {
             if (document.getElementById("myDropdowniconSecondScreen") !== null) {
                 document.getElementById("myDropdowniconSecondScreen").style.display = "none"
@@ -204,10 +205,10 @@ export default function Default_chart(props) {
     function handleSorting() {
         document.getElementById("sorticonsecondScreenDefault").style.display === "block" ? document.getElementById("sorticonsecondScreenDefault").style.display = "none" : document.getElementById("sorticonsecondScreenDefault").style.display = "block";
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')
-        console.log(tag_array, "Tage_array_of_secondScreem");
+
         if (tag_array !== undefined) {
             for (let i = 0; i < tag_array.length; i++) {
-                console.log(document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'], "each_element_id");
+
                 if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== 'sorticonsecondScreenDefault') {
                     document.getElementsByClassName('dropdown-contenticon-second-screen')[i].style.display = 'none';
 
@@ -224,11 +225,11 @@ export default function Default_chart(props) {
 
     async function fetchSortData() {
         var inputForSort = { ...input, 'SortByLabel': props.graph.column, 'SortBy': flagSort, ['Grouping']: props.graph.group }
-        console.log(inputForSort, "main_default_sort");
+
         await post(inputForSort, API.CommonChart, {}, "post").then((res) => {
-            console.log(res, "res_default");
-            console.log('INPUT FOR CLICK', input)
-            console.log(props.graph.columnID, "columnID");
+
+
+
             if (res.data.lstResult !== 0) {
 
 
@@ -239,7 +240,7 @@ export default function Default_chart(props) {
                     if (res.data.lstResult[i][props.graph.column] !== null) {
 
 
-                        console.log("IF inside loop")
+
 
                         name.push(res.data.lstResult[i][props.graph.column]);
                         weg.push(res.data.lstResult[i]['NetWeight']);
@@ -251,7 +252,7 @@ export default function Default_chart(props) {
                         id1.push(res.data.lstResult[i][props.graph.columnID])
                     }
                 }
-                // console.log(name, weg);
+
                 setName(name);
                 setweight(weg);
                 setid(id1);

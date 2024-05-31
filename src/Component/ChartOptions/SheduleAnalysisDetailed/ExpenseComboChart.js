@@ -25,7 +25,7 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
             stacked: false,
             events: {
                 dataPointSelection: (event, chartContex, config) => {
-                    console.log(id, "combo");
+
                     if (id[config.dataPointIndex] === null) {
                         contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
                     }
@@ -78,6 +78,7 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                     }
                 },
 
+
             },
             {
                 min: 0,
@@ -116,6 +117,12 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                     style: {
                         colors: '#FEB019',
                     },
+
+                    formatter: function (val) {
+                        if (val !== undefined) {
+                            return val.toFixed(0)
+                        }
+                    },
                 },
                 title: {
                     text: "kgPerEx",
@@ -137,6 +144,11 @@ export default function ExpenseComboChart(xAxis, yAxis, contextData, id) {
                 labels: {
                     style: {
                         colors: '#fe645c',
+                    },
+                    formatter: function (val) {
+                        if (val !== undefined) {
+                            return val.toFixed(0)
+                        }
                     },
 
                 },

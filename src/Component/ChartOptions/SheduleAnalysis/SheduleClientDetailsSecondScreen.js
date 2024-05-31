@@ -8,7 +8,7 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
       stacked: true,
       events: {
         dataPointSelection: (event, chartContex, config) => {
-          console.log("clicked");
+
           if (id[config.dataPointIndex] === null) {
             contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
           }
@@ -68,9 +68,16 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
         }
       },
       y: {
-        formatter: function (val) {
-          return val
-        }
+        marker: {
+          show: true,
+        },
+        formatter: function (val, config) {
+          
+          return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString() + "<br/>Prc : " + yAxis[2][config['dataPointIndex']].toString() + "%"
+        },
+        title: {
+          formatter: (seriesName) => "",
+        },
       }
     },
     fill: {
@@ -100,8 +107,6 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
   }];
   if (chartid === 14) {
     option = { ...option, plotOptions: { bar: { ['horizontal']: false } } }
-  } else {
-
   }
   return [option, series]
 }

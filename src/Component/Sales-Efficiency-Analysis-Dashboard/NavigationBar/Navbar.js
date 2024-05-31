@@ -69,17 +69,24 @@ export default function Navbar() {
 
   function HandleLogoClick() {
     navigate('/Home', { replace: true })
+    navigate('/Home',{replace:true})
+    var element =   document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
   }
 
   function handleSchedualAnalysisClick() {
-    navigate('/schedual_analysis', { replace: true })
-  }
-  function handleDynamicPageClick(id, name) {
-    navigate('/DynamicPage', { state: { PageID: id, PageName: name }, replace: true })
+    navigate('/schedual_analysis', {replace:true})
+    var element =   document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
   }
 
   function handleOnDashboardClick() {
-    navigate('/Home', { replace: true })
+    navigate('/Home',{replace:true})
+    var element =   document.getElementById("root");  
+    element.scrollIntoView({ block: 'start' })
+  }
+  function handleDynamicPageClick(id, name) {
+    navigate('/DynamicPage', { state: { PageID: id, PageName: name }, replace: true })
   }
 
   return (

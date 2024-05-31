@@ -48,7 +48,7 @@ export function CityWise_Bar(name, column){
         // 	categories: name,
 
         // 	formatter: function (val) {
-        // 		console.log(val);
+
         // 		return val.length
         // 	}
 

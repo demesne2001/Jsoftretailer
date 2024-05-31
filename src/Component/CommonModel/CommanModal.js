@@ -80,9 +80,9 @@ function Commonmodel(props) {
     useEffect(() => {
 
         if (finalAllitem.length !== 0) {
-            // console.log("effect1");
+
             if (ref1.current !== null) {
-                // console.log("hi", updatedList.length, finalAllitem.length);
+
                 if (updatedList.length === finalAllitem.length) {
                     ref1.current.checked = true
                 } else {
@@ -91,7 +91,7 @@ function Commonmodel(props) {
             }
             if (finalAllitem.length !== 0) {
 
-                // console.log('SET HEADER', Object.keys(finalAllitem[0]))
+
                 setHeader(Object.keys(finalAllitem[0]));
 
 
@@ -100,17 +100,17 @@ function Commonmodel(props) {
     }, [finalAllitem])
 
     useEffect(() => {
-        // console.log("effect2");
-        // console.log('MODEL PROPS VALUES ', props);
+
+
         setPage(2)
 
         setSearch(contextSetparam.tempstate)
         fetchItemdata()
         // if (multicheckName.length !== 0) {
-        //     console.log(multicheckName, "name");
+
         //     fetchAllData()
         // }
-        // console.log('HEADER', header)
+
 
     }, [props.modelprops])
     useEffect(() => {
@@ -127,30 +127,30 @@ function Commonmodel(props) {
     useEffect(() => {
 
         if (header.length !== 0) {
-            // console.log("effect4")
+
             AddDefaultColumn()
         }
     }, [header])
 
 
     useEffect(() => {
-        // console.log(search, "effect5_search");
 
-        // console.log((search), "search");
-        // console.log("effect5");
+
+
+
         fetchItemdata()
 
 
     }, [search])
 
     useEffect(() => {
-        // console.log("effect6");
+
         setSearch({ ...search, ['Search']: searchValue })
         fetchAllData()
     }, [searchValue])
 
     function handleDoubleClick() {
-        // console.log("hiii");
+
         if (document.getElementById("columnChooser") !== null) {
             document.getElementById("columnChooser").style.display === "block" ? document.getElementById("columnChooser").style.display = "none" : document.getElementById("columnChooser").style.display = "block";
         }
@@ -172,40 +172,40 @@ function Commonmodel(props) {
     }
 
     function AddDefaultColumn() {
-        // console.log({ "ID": props.modelprops.grid, vendorID: 1, UserID: 1 },"filter123");
+
         post({ "ID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.GetFilterGridByID, {}, "post").then((res) => {
-            // console.log(res, " ");
+
             if (res.data.lstResult.length === 0) {
                 if (props.modelprops.id === 'DesignCatalogID') {
                     post({ "FilterGridID": 0, "FilterGrid": header[2], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                        // console.log('IF IF ', res1);
+
                         // setColumn([props.modelprops.name]);
                     })
                 } else if (props.modelprops.id === 'CityName' && props.modelprops.id === 'Caption') {
                     post({ "FilterGridID": 0, "FilterGrid": header[0], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                        // console.log('IF IF ', res1);
+
                         // setColumn([props.modelprops.name]);
                     })
                 } else {
-                    // console.log("column",{ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 });
+
                     post({ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                        // console.log('IF IF ', res1);
+
                         // setColumn([props.modelprops.name]);
                     })
                 }
-                // console.log('POST OBJECT IF IIf', { "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid })
+
 
                 // } else {
                 //     post({ "FilterGridID": 0, "FilterGrid": props.modelprops.name, "FilterID": props.modelprops.grid,vendorID:1,UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-                //         console.log("RES 1",res1);
+
                 //         // setColumn([props.modelprops.name]);
                 //     })
                 // }
             } else {
-                // console.log("ELESE", res)
+
                 setFilterGridId(res.data.lstResult[0]['FilterGridID']);
                 let arr = res.data.lstResult[0]['FilterGrid'].split(',');
-                // console.log(arr, "arrrr");
+
                 setColumn(arr);
             }
             setLoaderGrid(false)
@@ -225,9 +225,9 @@ function Commonmodel(props) {
         }
 
 
-        // console.log(str, "str");
+
         post({ "FilterGridID": filterGridId, "FilterGrid": str, "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res) => {
-            // console.log(res);
+
         })
         document.getElementById("columnChooser").style.display = 'none';
     }
@@ -235,13 +235,13 @@ function Commonmodel(props) {
     const fetchAllData = () => {
 
         if (totalcount !== 0) {
-            // console.log(multicheckName.toString(), "fetchAllData");
+
             inputForAlldata = { ...inputForAlldata, ['Search']: multicheckName.toString() }
             if (props.modelprops.api !== undefined) {
-                // console.log("search", input)
+
                 post(inputForAlldata, props.modelprops.api, {}, "post")
                     .then((response) => {
-                        // console.log(response.data.lstResult, "result");
+
                         setfinalAllitem(response.data.lstResult)
                     })
                     .catch(error => console.error(error))
@@ -264,7 +264,7 @@ function Commonmodel(props) {
             value = e.target.value
         }
         let name = e.target.name;
-        // console.log(value);
+
         if (finalcheck) {
             setmulticheck([...multicheck, value])
             setmulticheckName([...multicheckName, name])
@@ -288,9 +288,9 @@ function Commonmodel(props) {
     const handlesavefilter = () => {
         var stringConvert = multicheck.toString()
         var stringNameConvert = multicheckName.toString()
-        // console.log(stringConvert, stringNameConvert);
+
         // props.setvalues({ ...props.valuesform, [props.modelprops.labelname]: stringConvert })
-        // console.log(props.modelprops['labelname'], "common");
+
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: stringConvert, [props.modelprops['LabelValue']]: stringNameConvert, ['FilterIndex']: props.modelprops.FilterIndex })
         contextSetparam.setchildFilterShow(false)
         setmulticheck([])
@@ -320,7 +320,7 @@ function Commonmodel(props) {
             let tempvalue = [];
             let tempName = [];
             for (let i = 0; i < finalitem.length; i++) {
-                // console.log(finalitem[i][props.modelprops.name]);
+
                 tempvalue.push(finalitem[i][props.modelprops.id])
                 tempName.push(finalitem[i][props.modelprops.name])
             }
@@ -350,7 +350,7 @@ function Commonmodel(props) {
             const scrollRatio = scrollTop / (scrollHeight - clientHeight);
 
             setScrollTop(scrollRatio);
-            // console.log(scrollRatio);
+
 
             if (scrollRatio > 0.9) {
                 setLoaderScroll(true)
@@ -360,7 +360,7 @@ function Commonmodel(props) {
                     ref1.current.checked = false
                 }
                 var input = { ...search, ['PageNo']: page, ['PageSize']: 50 }
-                // console.log("scroll", input);
+
                 delete input.undefined
                 post( input, props.modelprops.api, {}, 'post')
                     .then(response => {
@@ -376,27 +376,27 @@ function Commonmodel(props) {
 
     const fetchItemdata = () => {
 
-        // console.log("api", props)
-        // console.log("hii");
+
+
         var input = { ...search, ['PageSize']: 80 }
-        // console.log("api", props.modelprops.api)
+
         delete input.undefined
-        // console.log(input, "input");
+
         if (props.modelprops.api !== undefined) {
-            // console.log("search", input)
-            // console.log("api", props)
-            // console.log(input, "input");
-            // console.log("hii");
+
+
+
+
             post(input, props.modelprops.api, {}, "post")
                 .then((response) => {
 
-                    // console.log(props.modelprops.api,"COMMONMODALINUY")
+
                     if (response.data.lstResult !== undefined) {
                         setfinalitem(response.data.lstResult)
                     }
                     setLoader(false)
 
-                    // console.log(response);
+
                 })
                 .catch(error => console.error(error))
         }
@@ -412,7 +412,7 @@ function Commonmodel(props) {
             setPage(2)
         }
         await setSearchValue(event.target.value)
-        // console.log(event.target.value, "search");
+
 
     }
 
@@ -484,7 +484,7 @@ function Commonmodel(props) {
                                             aria-describedby="basic-addon1"
                                             onChange={handleSearch}
                                         />
-                                        {/* {console.log('column', column)} */}
+
                                         <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
                                     </InputGroup><br></br></>}
                                     {/* <InputGroup >
@@ -501,7 +501,7 @@ function Commonmodel(props) {
 
                                     {multicheck.length !== 0 ?
                                         <div className='selected-item style-3'>
-                                            {/* {console.log(finalAllitem)} */}
+
                                             {multicheckName.map((item, index) => {
 
 
@@ -574,7 +574,7 @@ function Commonmodel(props) {
                                                                     onChange={handleSelectAll}
                                                                     ref={ref1}
                                                                 /></th>
-                                                            {/* {console.log("COLUMN VALUE", column)} */}
+
                                                             {column.map((ele) => {
                                                                 return <th id='columnth'
                                                                     onClick={handleDoubleClick}>{ele}</th>

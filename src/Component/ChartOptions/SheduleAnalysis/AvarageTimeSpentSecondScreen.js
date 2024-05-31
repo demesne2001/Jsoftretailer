@@ -2,14 +2,14 @@
 import React from 'react'
 
 export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, id, chartid) {
-  console.log("caledddddd");
+
   const option = {
     chart: {
       type: 'bar',
       height: 350,
       events: {
         dataPointSelection: (event, chartContex, config) => {
-          console.log("clicked");
+
           if (id[config.dataPointIndex] === null) {
             contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
           }
@@ -67,7 +67,7 @@ export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, 
     }]
   } else {
     series = [{
-      name: 'days',
+      name: 'Avg days',
       data: yAxis[0]
     }]
   }

@@ -104,11 +104,11 @@ export default function MonthWise() {
   function handleclick(e) {
 
     if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
-      // console.log('Updationg option')
+
       setflag(e.target.id)
     }
     else {
-      // console.log("NOT UPDATING OPTIOJN")
+
     }
 
   }
@@ -130,10 +130,10 @@ export default function MonthWise() {
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
 
-        // console.log("apiiiiiiiiiiiiiiii", res);
+
         let name = [];
         let weight = [];
-        // console.log(res.data.lstResult)
+
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['MonthName'] === null) {
             name.push("null")
@@ -162,12 +162,12 @@ export default function MonthWise() {
 
 
   function handleonchangeCurrency() {
-    // console.log("innn")
+
     document.getElementById("myDropdowniconmonth").style.display === "block" ? document.getElementById("myDropdowniconmonth").style.display = "none" : document.getElementById("myDropdowniconmonth").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconmonth') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -176,7 +176,7 @@ export default function MonthWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    // console.log(event.target, "class");
+
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconmonth") !== null) {
         document.getElementById("myDropdowniconmonth").style.display = "none"
@@ -192,7 +192,7 @@ export default function MonthWise() {
       .then((res) => {
         if (res.data.lstResult.length === 0) {
           setflag(ChartType)
-          // console.log('FIRST TIME API CALLED')
+
           post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 14, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
             .then((res) => {
 
@@ -225,7 +225,7 @@ export default function MonthWise() {
   function handleSorting() {
     document.getElementById("sorticonMonth").style.display === "block" ? document.getElementById("sorticonMonth").style.display = "none" : document.getElementById("sorticonMonth").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
-    // console.log(tag_array);
+
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonMonth') {
@@ -243,11 +243,11 @@ export default function MonthWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'MonthName', 'SortBy': flagSort, ['Grouping']: 'datename(month,a.voucherDate)' }
-    // console.log(inputForSort);
+
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];
-      // console.log(res.data.lstResult)
+
       for (let index = 0; index < res.data.lstResult.length; index++) {
         if (res.data.lstResult[index]['MonthName'] === null) {
           name.push("null")

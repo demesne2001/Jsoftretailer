@@ -1595,7 +1595,7 @@ button.geex-btn.geex-btn__customizer-close:hover {
 .bill-container {
   /* background-color: #0065ad; */
   text-align: -webkit-center;
-  height: 239px;
+  height: 232px;
   overflow: auto;
 }
 
@@ -1614,4 +1614,5 @@ button.geex-btn.geex-btn__customizer-close:hover {
 
 .Tabel-Card {
   height: fit-content !important;
+  max-height: fit-content !important;
 }

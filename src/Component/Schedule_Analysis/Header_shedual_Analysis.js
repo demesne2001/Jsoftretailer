@@ -69,7 +69,7 @@ export default function Header_shedual_Analysis() {
 
   //useEffect
   useEffect(() => {
-    console.log("header");
+
     getSyncDate()
     setCurrentDate();
     fetchBrandData();
@@ -81,7 +81,7 @@ export default function Header_shedual_Analysis() {
     post(commanfilter, API.BranchFilter, {}, "post").then((res) => {
       if (res.data !== undefined) {
         var tempBranchData = [];
-        console.log(res.data);
+
         for (let i = 0; i < res.data.lstResult.length; i++) {
           tempBranchData.push({ label: res.data.lstResult[i]['BranchName'], value: res.data.lstResult[i]['BranchId'] })
         }
@@ -173,7 +173,7 @@ export default function Header_shedual_Analysis() {
   }
 
   function handleThousand(n) {
-    console.log("value", n);
+
     localStorage.setItem("value", n);
     contextData.setcurrency(n);
   }
@@ -246,7 +246,7 @@ export default function Header_shedual_Analysis() {
   }
 
   function handleOnDateChange(e) {
-    console.log(e.target.name, e.target.value);
+
     contextData.SettempState({ ...contextData.tempstate, [e.target.name]: e.target.value });
   }
 
@@ -567,7 +567,7 @@ export default function Header_shedual_Analysis() {
                           <div class="date-picker-filter">
 
                             <i class="fa-solid fa-chevron-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('FromDate') }} />
-                            {/* {console.log(contextData.tempstate['FromDate'],"datecurrent")} */}
+
                             <input
                               class="form-control  date-spacing "
                               type="date"

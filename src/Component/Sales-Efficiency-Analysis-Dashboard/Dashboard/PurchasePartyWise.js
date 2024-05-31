@@ -144,14 +144,14 @@ export default function PurchasePartyWise() {
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'g.DesigncodeID,g.DesignCode', ['SortByLabel']: 'DesignCode' }
-    // console.log("branchwise data", inputdata);
+
     await post(inputdata, API.CommonChart, {}, 'post')
       .then((res) => {
         let sale = [];
         var js = {};
         let name = [];
         let weight = [];
-        // console.log(res.data.lstResult)
+
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['DesignCode'] === null) {
             name.push("null")
@@ -187,7 +187,7 @@ export default function PurchasePartyWise() {
         } else {
           setLoader(true)
         }
-        // console.log("itemgroup", weight);
+
         inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
@@ -222,12 +222,12 @@ export default function PurchasePartyWise() {
   // }
 
   function handleonchangeCurrency() {
-    // console.log("innn")
+
     document.getElementById("myDropdowniconPurchase").style.display === "block" ? document.getElementById("myDropdowniconPurchase").style.display = "none" : document.getElementById("myDropdowniconPurchase").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
-        // console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconPurchase') {
           document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
         }
@@ -236,7 +236,7 @@ export default function PurchasePartyWise() {
   }
 
   document.getElementById("root").addEventListener("click", function (event) {
-    // console.log(event.target, "class");
+
     if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
       if (document.getElementById("myDropdowniconPurchase") !== null) {
         document.getElementById("myDropdowniconPurchase").style.display = "none"
@@ -252,7 +252,7 @@ export default function PurchasePartyWise() {
       .then((res) => {
         if (res.data.lstResult.length === 0) {
           setflag(ChartType)
-          // console.log('FIRST TIME API CALLED')
+
           post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 9, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
             .then((res) => {
               post({ "ID": 9, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
@@ -284,7 +284,7 @@ export default function PurchasePartyWise() {
   function handleSorting() {
     document.getElementById("sorticonDesign").style.display === "block" ? document.getElementById("sorticonDesign").style.display = "none" : document.getElementById("sorticonDesign").style.display = "block";
     const tag_array = document.getElementsByClassName('dropdown-contenticon')
-    // console.log(tag_array);
+
     if (tag_array !== undefined) {
       for (let i = 0; i < tag_array.length; i++) {
         if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonDesign') {
@@ -302,13 +302,13 @@ export default function PurchasePartyWise() {
 
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'DesignCode', 'SortBy': flagSort, ['Grouping']: 'g.DesigncodeID,g.DesignCode' }
-    // console.log(inputForSort);
+
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let sale = [];
       var js = {};
       let name = [];
       let weight = [];
-      // console.log(res.data.lstResult)
+
       for (let index = 0; index < res.data.lstResult.length; index++) {
         if (res.data.lstResult[index]['DesignCode'] === null) {
           name.push("null")
@@ -344,7 +344,7 @@ export default function PurchasePartyWise() {
       } else {
         setLoader(true)
       }
-      // console.log("itemgroup", weight);
+
       inputdata = { ...inputdata, ['Grouping']: '' }
     })
   }

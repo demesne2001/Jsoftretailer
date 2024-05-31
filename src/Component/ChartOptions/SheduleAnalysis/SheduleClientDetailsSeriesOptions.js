@@ -41,15 +41,23 @@ export default function SheduleClientDetailsSeriesOptions(xAxis, yAxis) {
     },
     tooltip: {
       shared: false,
-      x:{
-        formatter: function(val){
-            return val
-        }
-    },
-      y: {
+      x: {
         formatter: function (val) {
           return val
         }
+      },
+      y: {
+        marker: {
+          show: true,
+        },
+        formatter: function (val, config) {
+          console.log(config['dataPointIndex']);
+          return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString() + "<br/>Prc : " + yAxis[2][config['dataPointIndex']].toString() + "%"
+
+        },
+        title: {
+          formatter: (seriesName) => "",
+        },
       }
     },
     fill: {

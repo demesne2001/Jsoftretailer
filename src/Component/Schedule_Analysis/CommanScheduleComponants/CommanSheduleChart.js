@@ -18,6 +18,7 @@ import SecondSheduleScreenBar1 from '../../ChartOptions/SheduleAnalysisDetailed/
 import SecondSheduleScreenBar2 from '../../ChartOptions/SheduleAnalysisDetailed/SecondSheduleScreenBar2';
 import ExpenseComboChart from '../../ChartOptions/SheduleAnalysisDetailed/ExpenseComboChart';
 import { Table } from 'react-bootstrap';
+import TargetAndAchievedDetailScreenChart from '../../ChartOptions/SheduleAnalysisDetailed/TargetAndAchievedDetailScreenChart';
 
 export default function CommanSheduleChart(props) {
     const contextData = useContext(contex);
@@ -31,19 +32,19 @@ export default function CommanSheduleChart(props) {
     const [TravelingId, SetTravelingId] = useState([]);
     const [SheduleId, SetSheduleId] = useState([]);
     const chartOptions = {
-        1: { Chartoption: TargetAndAchievedSeriesOptions, ChartType: 'bar' },
+        1: { Chartoption: TargetAndAchievedSeriesOptions, ChartType: 'line' },
         2: { Chartoption: AvarageTimeSpentSeriesOption, ChartType: 'bar' },
         4: { Chartoption: SheduleClientDetailsSeriesOptions, ChartType: 'bar' },
         5: { Chartoption: AvarageTimeSpentSeriesOption, ChartType: 'bar' },
         6: { Chartoption: TotalNoOfBillsSeriesOptions, ChartType: 'treemap' },
     }
     const chartOptionsScreen2 = {
-        1: { Chartoption: TargetAndArchievedSecondScreen, ChartType: 'bar' },
+        1: { Chartoption: TargetAndArchievedSecondScreen, ChartType: 'line' },
         2: { Chartoption: AvarageTimeSpentSecondScreen, ChartType: 'bar' },
         4: { Chartoption: SheduleClientDetailsSecondScreen, ChartType: 'bar' },
         5: { Chartoption: AvarageTimeSpentSecondScreen, ChartType: 'bar' },
         6: { Chartoption: TotalNoOfBillsSecondScreen, ChartType: 'treemap' },
-        11: { Chartoption: TargetAndArchievedSecondScreen, ChartType: 'bar' },
+        11: { Chartoption: TargetAndAchievedDetailScreenChart, ChartType: 'line' },
         12: { Chartoption: SecondSheduleScreenBar2, ChartType: 'bar' },
         13: { Chartoption: ExpenseComboChart, ChartType: 'line' },
         14: { Chartoption: SheduleClientDetailsSecondScreen, ChartType: 'bar' },
@@ -52,25 +53,26 @@ export default function CommanSheduleChart(props) {
     }
 
 
-    useEffect(() => {
-        console.log(CommanSheduleObject[props.id], "chartcomman");
-        console.log('effectSjedule', inputdata);
 
+
+    useEffect(() => {
         getChartData()
     }, [inputdata])
 
     useEffect(() => {
-        console.log(CommanSheduleObject[props.id]);
+
         if (props.screen === 3) {
             getChartDetailData()
         }
     }, [inputdataDetail]);
 
+
+
     function getChartData() {
         inputdata = { ...inputdata, 'Mode': props.id }
-        console.log(API.scheduleGetcommonChart);
+
         post(inputdata, API.scheduleGetcommonChart, {}, "post").then((res) => {
-            console.log(res);
+
             if (res.data !== undefined) {
                 var tempYaxis = [];
                 for (let i = 0; i < CommanSheduleObject[props.id]['yAxis'].length; i++) {
@@ -100,9 +102,9 @@ export default function CommanSheduleChart(props) {
 
     function getChartDetailData() {
         inputdataDetail = { ...inputdataDetail, 'Mode': props.id - 10 }
-        console.log(inputdataDetail, "dtailed");
+
         post(inputdataDetail, API.GetChartDetailWise, {}, "post").then((res) => {
-            console.log(res, "detailed");
+
             if (res.data !== undefined) {
                 var tempYaxis = [];
                 for (let i = 0; i < CommanSheduleObject[props.id]['yAxis'].length; i++) {
@@ -144,7 +146,7 @@ export default function CommanSheduleChart(props) {
 
     return (
         <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-            {console.log(chartOptionsScreen2[props.id], props.screen)}
+
             <div className="graph-card">
                 <div className='card-title-graph schedule-graph'>
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>
@@ -161,9 +163,10 @@ export default function CommanSheduleChart(props) {
                         </div>
                     </div> */}
                 </div>
-                {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
+                {console.log(yAxis)}
+                {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
                     props.screen !== 3 ?
-                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
+                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
                         window.innerWidth < 1870 && props.id === 13 && props.screen === 3 ? <div class="crancy-progress-card card-contain-graph shedule-thirdscreen">
                             <Table responsive striped bordered hover>
                                 <thead>
@@ -185,7 +188,7 @@ export default function CommanSheduleChart(props) {
                                     }
                                 </tbody>
                             </Table>
-                        </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id)[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id)[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
+                        </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"><ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
             </div>
 
         </div>

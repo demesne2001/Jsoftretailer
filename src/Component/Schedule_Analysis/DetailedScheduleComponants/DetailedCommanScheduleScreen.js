@@ -13,7 +13,7 @@ export default function DetailedCommanScheduleScreen() {
     const location = useLocation()
     const id = location.state;
     const contextData = useContext(contex);
-    // console.log(contextData.state,"context");
+
     return (
         <ScheduleContextState>
             <Navbar />

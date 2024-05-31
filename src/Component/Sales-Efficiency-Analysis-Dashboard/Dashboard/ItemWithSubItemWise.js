@@ -42,11 +42,11 @@ export default function ItemWithSubItemWise() {
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
-			// console.log('Updationg option')
+
 			setflag(e.target.id)
 		}
 		else {
-			// console.log("NOT UPDATING OPTIOJN")
+
 		}
 
 	}
@@ -74,14 +74,14 @@ export default function ItemWithSubItemWise() {
 	async function getdata() {
 
 		inputdata = { ...inputdata, ['Grouping']: 'f.ItemSubNAme,f.ItemSubID', ['SortByLabel']: 'ItemSubNAme' }
-		// console.log("branchwise data", inputdata);
+
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
 				let name = [];
 				let weight = [];
 				let sale = [];
 				var js = {};
-				// console.log(res.data.lstResult)
+
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['ItemSubNAme'] === null) {
 						name.push("null")
@@ -118,12 +118,12 @@ export default function ItemWithSubItemWise() {
 	}
 
 	function handleonchangeCurrency() {
-		// console.log("innn")
+
 		document.getElementById("myDropdowniconitemsub").style.display === "block" ? document.getElementById("myDropdowniconitemsub").style.display = "none" : document.getElementById("myDropdowniconitemsub").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
-				// console.log(document.getElementsByClassName('dropdown-contenticon'), 'tag');
+
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'myDropdowniconitemsub') {
 					document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
 				}
@@ -141,7 +141,7 @@ export default function ItemWithSubItemWise() {
 			.then((res) => {
 				if (res.data.lstResult.length === 0) {
 					setflag(ChartType)
-					// console.log('FIRST TIME API CALLED')
+
 					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 8, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 						.then((res) => {
 							post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 8, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
@@ -172,7 +172,7 @@ export default function ItemWithSubItemWise() {
 
 
 	document.getElementById("root").addEventListener("click", function (event) {
-		// console.log(event.target, "class");
+
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
 			if (document.getElementById("myDropdowniconitemsub") !== null) {
 				document.getElementById("myDropdowniconitemsub").style.display = "none"
@@ -186,7 +186,7 @@ export default function ItemWithSubItemWise() {
 	function handleSorting() {
 		document.getElementById("sorticonItemSubitem").style.display === "block" ? document.getElementById("sorticonItemSubitem").style.display = "none" : document.getElementById("sorticonItemSubitem").style.display = "block";
 		const tag_array = document.getElementsByClassName('dropdown-contenticon')
-		// console.log(tag_array);
+
 		if (tag_array !== undefined) {
 			for (let i = 0; i < tag_array.length; i++) {
 				if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] !== 'sorticonItemSubitem') {
@@ -204,13 +204,13 @@ export default function ItemWithSubItemWise() {
 
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'ItemSubNAme', 'SortBy': flagSort, ['Grouping']: 'f.ItemSubNAme,f.ItemSubID' }
-		// console.log(inputForSort);
+
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];
 			let sale = [];
 			var js = {};
-			// console.log(res.data.lstResult)
+
 			for (let index = 0; index < res.data.lstResult.length; index++) {
 				if (res.data.lstResult[index]['ItemSubNAme'] === null) {
 					name.push("null")
