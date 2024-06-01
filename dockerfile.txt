@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 RUN npm ci 
-RUN npm run build
 ENV NODE_ENV production
+RUN npm run build
 EXPOSE 7578
 CMD [ "npx", "serve", "build" ]
