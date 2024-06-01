@@ -6,7 +6,7 @@ COPY . /WebReportJsoft
 COPY package.json .
 RUN npm install
 
-COPY . /share
+COPY . /src
 
 RUN npm ci 
 RUN npm run build
