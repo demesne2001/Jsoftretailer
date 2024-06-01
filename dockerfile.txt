@@ -6,8 +6,9 @@ COPY . /WebReportJsoft
 COPY package.json .
 RUN npm install
 
-COPY . /src
+COPY . .
 
+RUN npm ci 
 RUN npm run build
 EXPOSE 7578
-CMD [ "npm", "start" ]
+CMD [ "npx", "serve", "build" ]
