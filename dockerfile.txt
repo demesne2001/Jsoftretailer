@@ -4,13 +4,11 @@ WORKDIR '/WebReportJsoftF'
 
 COPY . /WebReportJsoft
 COPY package.json ./
+RUN npm ci
 RUN npm install
 
 
-COPY . ./
+COPY . .
 
-
-
-ENV NODE_ENV production
 EXPOSE 7578
-CMD [ "npm", "start" ]
+CMD ["npm", "run", "server"]
