@@ -21,7 +21,7 @@ export default function Navbar() {
   }
   let ChartPage=[]
   ChartPage=JSON.parse(localStorage.getItem('PageData'))
-
+  console.log('ChartPage',ChartPage)
   function FetchPageData() {
     post(input, API.GetPageData, [], 'post').then((res) => {
       if (res.data != undefined) {
@@ -137,7 +137,7 @@ export default function Navbar() {
                   <span className="menu-bar__name last-silderbar-title">Schedule
                     Analysis</span></span></a>
                 </li>
-                {ChartPage.length>0? ChartPage.map((key, i) => {
+                {ChartPage !== null && ChartPage.length>0? ChartPage.map((key, i) => {
                   return (
                     <li><a className="collapsed" onClick={() => handleDynamicPageClick(key.PageID, key.PageName)}><span className="menu-bar__text">
                       <i className={key.SVGPath != '' && key.SVGPath != undefined ? key.SVGPath: "fas fa-user-clock"}></i>
