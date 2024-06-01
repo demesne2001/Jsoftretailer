@@ -6,7 +6,6 @@ import Header_detailed from '../SecondScreen/Components_Detailed/Header_detailed
 import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar'
 import CommonchartComp from './CommonchartComp'
 import DetailCommonChartComp from './DetailCommonChartComp'
-import { Markup } from 'interweave'
 import DynmicChartDetailContext from '../contex/DynmicChartDetailContext'
 
 export default function DynamicDetailDashboard() {

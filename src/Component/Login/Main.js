@@ -74,6 +74,7 @@ const Main = () => {
         })
 
         post({ VendorID: 0, PageID: 0 }, API.GetPageData, [], 'post').then((res) => {
+            console.log('login Data',res)
             if (res.data != undefined) {
                 localStorage.setItem('PageData',JSON.stringify([]))
               if (res.data.lstResult.length > 0) {

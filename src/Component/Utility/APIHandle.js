@@ -8,9 +8,7 @@ export default async function post(inputJson, APINAME, defaultRes, methodType) {
         'Content-Type': 'application/json'
     }
 
-    if (methodType === "post") {
-
-       
+    if (methodType === "post") {       
 
         return await axios.post(APINAME, inputJson, { headers: header })
         // return await axios.post(APINAME, inputJson)
