@@ -28,6 +28,10 @@ import './Component/Assets/css/responsive.css'
 import Main from './Component/Login/Main';
 import Schedule_Analysis_MainScreen from './Component/Schedule_Analysis/Schedule_Analysis_MainScreen';
 import DetailedCommanScheduleScreen from './Component/Schedule_Analysis/DetailedScheduleComponants/DetailedCommanScheduleScreen';
+import DynamicDashBoard from './Component/DynamicPage/DynamicDashBoard';
+import DynamicDetailDashboard from './Component/DynamicPage/DynamicDetailDashboard';
+
+
 import Stock_To_Sales_Dashboard from './Component/Stock_To_Sales/Stock_To_Sales_Dashboard';
 import Stock_to_Sales_DetailedDashboard from './Component/Stock_To_Sales/Stock_to_Sales_DetailedDashboard';
 import MinimumStocksDashboard from './Component/MinimumStock/MinimumStocksDashboard';
@@ -60,11 +64,6 @@ function App() {
             <Route exact path='/graph-detail' element={<DetailedScreen />}></Route>
             <Route exact path='/schedual_analysis' element={<Schedule_Analysis_MainScreen />}></Route>
             <Route exact path='/schedual_analysis_detail' element={<DetailedCommanScheduleScreen />}></Route>
-            <Route exact path='/Stock_To_Sales' element={<Stock_To_Sales_Dashboard />}></Route>
-            <Route exact path='/Stock_To_Sales_Detailed' element={<Stock_to_Sales_DetailedDashboard />}></Route>
-            <Route exact path='/minimum_stocks' element={<MinimumStocksDashboard />}></Route>
-            <Route exact path='/minimum_stocks_Detailed' element={<MinimumStockDetailedDashboard />}></Route>
-
             <Route exact path='/' element={<Main />}></Route>
           </Routes>
 

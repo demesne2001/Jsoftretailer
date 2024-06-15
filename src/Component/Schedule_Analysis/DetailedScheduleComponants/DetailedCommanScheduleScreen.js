@@ -38,7 +38,7 @@ export default function DetailedCommanScheduleScreen() {
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-12" >
                                     <CommanSheduleChart id={mainChartProps.id + 10} screen={3} Date={{ FromDate: mainChartProps.FromDate, ToDate: mainChartProps.ToDate }} />
                                 </div>
-
+                           
                                 {/* <div class="col-xl-6 col-lg-6 col-md-12 col-12">
                                  
                                 </div> */}

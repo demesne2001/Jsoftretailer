@@ -1,19 +1,45 @@
 import React, { useEffect, useState } from 'react'
+
 import jsoftInitial from '../../Assets/image/logo/jsoft-initial.png'
 import jsoftMini from '../../Assets/image/Jsoft.png'
-import { useNavigate } from 'react-router-dom';
+import { json, useNavigate } from 'react-router-dom';
 import post from '../../Utility/APIHandle';
 import API from '../../Utility/API';
 
 export default function Navbar() {
   const navigate = useNavigate()
+  // const [ChartPage, setChartPage] = useState([]);
+  let TotalPage = []
+  // useEffect(() => {
+  //   if (ChartPage.length <= 0) {
+  //     FetchPageData()
+  //   }
+  // }, [])
+  let input = {
+    VendorID: 0,
+    PageID: 0
+  }
+  let ChartPage=[]
+  ChartPage=JSON.parse(localStorage.getItem('PageData'))
+  console.log('ChartPage',ChartPage)
+  function FetchPageData() {
+    post(input, API.GetPageData, [], 'post').then((res) => {
+      if (res.data != undefined) {
+        if (res.data.lstResult.length > 0) {
+          // setChartPage(res.data.lstResult)
+        }
+      }
+    })
+
+  }
+
   const [syncDate, setSyncDate] = useState()
   useEffect(() => {
     getSyncDate()
   }, [])
 
   function handleNavbar() {
-
+    // console.log(document.getElementsByClassName("crancy-close")[0],"element");
     if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
       const element = document.getElementsByClassName("crancy-smenu")[0];
       element.classList.remove("crancy-close");
@@ -47,8 +73,8 @@ export default function Navbar() {
   }
 
   function HandleLogoClick() {
-    navigate('/Home', { replace: true })
-    var element = document.getElementById("root");
+    navigate('/Home',{replace:true})
+    var element =   document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }
 
@@ -74,6 +100,9 @@ export default function Navbar() {
     navigate('/minimum_stocks', { replace: true });
     var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
+  }
+  function handleDynamicPageClick(id, name) {
+    navigate('/DynamicPage', { state: { PageID: id, PageName: name }, replace: true })
   }
 
   async function getSyncDate() {
@@ -137,10 +166,16 @@ export default function Navbar() {
                   <span className="menu-bar__name last-silderbar-title">Schedule
                     Analysis</span></span></a>
                 </li>
-                <li><a className="collapsed" onClick={handleMinimumStock}><span className="menu-bar__text">
-                  <i className="fas fa-chart-line"></i>
-                  <span className="menu-bar__name last-silderbar-title">Minimum Stocks</span></span></a>
-                </li>
+                {ChartPage !== null && ChartPage.length>0? ChartPage.map((key, i) => {
+                  return (
+                    <li><a className="collapsed" onClick={() => handleDynamicPageClick(key.PageID, key.PageName)}><span className="menu-bar__text">
+                      <i className={key.SVGPath != '' && key.SVGPath != undefined ? key.SVGPath: "fas fa-user-clock"}></i>
+                      <span className="menu-bar__name">{key.PageName}</span></span></a>
+                    </li>
+                  )
+                })
+                :null}
+
 
               </ul>
               <div className='syncdatediv'>
