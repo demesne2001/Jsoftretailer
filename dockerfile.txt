@@ -3,12 +3,10 @@ RUN mkdir '/WebReportJsoftF'
 WORKDIR '/WebReportJsoftF'
 
 COPY . /WebReportJsoft
-COPY package.json ./
+COPY package.json .
 RUN npm install
-RUN npm ci
-
 
 COPY . .
 
 EXPOSE 7578
-CMD ["npm", "run", "server"]
+CMD ["npm", "start"]
