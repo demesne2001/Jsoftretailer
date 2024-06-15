@@ -4,8 +4,11 @@ export default function TotalNoOfBillsSeriesOptions(xAxis, Yaxis) {
   function FormatedSeriesData() {
     var tempseries = []
     for (let i = 0; i < xAxis.length; i++) {
-      tempseries.push({ x: xAxis[i], y: Yaxis[0][i] });
+      if (Yaxis[0][i] !== undefined) {
+        tempseries.push({ x: xAxis[i], y: Yaxis[0][i] });
+      }
     }
+    console.log(tempseries,"asdsa");
     return tempseries
   }
   const options = {
@@ -38,8 +41,9 @@ export default function TotalNoOfBillsSeriesOptions(xAxis, Yaxis) {
       }
     }
   }
+  console.log(FormatedSeriesData() ,"qwertyuiop");
   const series = [{
-    data: FormatedSeriesData()
+    data: FormatedSeriesData() 
   }]
 
   return [options, series]

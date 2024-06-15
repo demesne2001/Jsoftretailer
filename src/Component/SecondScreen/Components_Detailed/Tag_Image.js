@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 // import src from 'react-select/dist/declarations/src';
 
-export default function Tag_Image() {
+export default function Tag_Image(props) {
     const navigate = useNavigate();
     const contextData = useContext(contex);
     const [pagesize, setPageSize] = useState(5);
@@ -24,6 +24,7 @@ export default function Tag_Image() {
     const [TotalCount, setTotalCount] = useState();
     const [ImageData, setImageData] = useState([]);
     const [show, setShow] = useState(false);
+    const filtername = contextData.TageImageFilterName
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -33,6 +34,7 @@ export default function Tag_Image() {
 
         setCurrentPage(1)
         setPageNo(0)
+        console.log(inputdata,"sdtagimage");
     }, [inputdata])
     useEffect(() => {
         handleShowPhotos()
@@ -110,17 +112,22 @@ export default function Tag_Image() {
     }
 
     async function handleShowPhotos() {
+        inputdata = {...inputdata,'FromDate' : props.Date.FromDate, 'ToDate' : props.Date.ToDate}
         await post(inputdata, API.GetDetailChartImage, {}, "post").then((res) => {
             var imageData = [];
-            if (res.data.lstResult.length !== 0) {
-                for (let i = 0; i < res.data.lstResult.length; i++) {
-                    imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
+            if (res.data !== undefined) {
+                if (res.data.lstResult.length !== 0) {
+                    for (let i = 0; i < res.data.lstResult.length; i++) {
+                        imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
+                    }
+                    setImageData(imageData);
+                    setTotalCount(res.data.lstResult[0]['TotalCount']);
+                } else {
+                    setImageData(imageData);
+                    setTotalCount(0);
                 }
-                setImageData(imageData);
-                setTotalCount(res.data.lstResult[0]['TotalCount']);
             } else {
-                setImageData(imageData);
-                setTotalCount(0);
+                alert(res['Error']);
             }
         })
     }
@@ -143,6 +150,7 @@ export default function Tag_Image() {
         setCurrentPage(page)
         await post(inputPageUpdate, API.GetDetailChartImage, {}, "post").then((res) => {
             var imageData = [];
+            if (res.data !== undefined) {
             console.log(res.data.lstResult);
             if (res.data.lstResult.length !== 0) {
                 for (let i = 0; i < res.data.lstResult.length; i++) {
@@ -151,6 +159,9 @@ export default function Tag_Image() {
                 setImageData(imageData);
                 // setTotalCount(res.data.lstResult[0]['TotalCount']);
             }
+        } else {
+            alert(res['Error']);
+        }
         })
         // for (let i = 0; i < document.getElementsByClassName('pageImageButtom').length; i++) {
 
@@ -179,8 +190,8 @@ export default function Tag_Image() {
         <>
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <div class="title-top-graphdetail">
-                    <h5>Tag Image</h5>
-
+                    <h5><span>Tag Image {filtername !== ""? "( " + filtername + " )": null}</span> <div className='pageNo'>Page No.{currentPage}</div></h5>
+                    
                 </div>
                 <div class="graphdetailcards-silder graphdetail-fourthcard">
 
@@ -196,7 +207,7 @@ export default function Tag_Image() {
                                 <Slider  {...settings} >
                                     {
                                         ImageData.map((e, i) => {
-                                            console.log(e,"imagedata");
+                                            console.log(e, "imagedata");
                                             return <><li class="ag-carousel_item">
                                                 <figure class="ag-carousel_figure">
 
@@ -216,13 +227,12 @@ export default function Tag_Image() {
                             <li class="ag-carousel_item">
                                 <figure class="ag-carousel_figure">
                                     <img src={notFound} alt='hii' />
-
                                 </figure>
-                            </li >
+                            </li>
                         }
                         <div className='padonation'>
                             <div className='pagonationdiv'>
-                                {/* {TotalCount} */}
+                                {/* {TotalCount}  */}
                                 {/* {(TotalCount + (TotalCount % 5) + 1)} */}
                                 <button id='prev' class="fa-solid fa-angles-left pageImageButtom prev-nxt" onClick={handleLeftFivePage}></button>
                                 {(pageNo + 1) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 1)} onClick={() => handlePageNoChange((pageNo + 1))}>{pageNo + 1}</button> : null}
@@ -233,7 +243,7 @@ export default function Tag_Image() {
                                 <button id='nxt' class="fa-solid fa-angles-right pageImageButtom prev-nxt" onClick={handleRightFivePage}></button>
 
                             </div>
-                            <div className='pageNo' align="right" >Page No.{currentPage}</div>
+                           
                         </div>
                     </ul>
 

@@ -1,17 +1,15 @@
 import React, { useContext } from 'react'
-import ReactApexChart from 'react-apexcharts';
 import API from '../../Utility/API';
 import { useEffect, useState } from 'react';
 import post from '../../Utility/APIHandle'
 import Gradient from "javascript-color-gradient";
 import { CityWise_Bar } from '../../ChartOptions/CityWise_Bar';
 import { CityWise_LoliMap } from '../../ChartOptions/CityWise_LoliMap';
-import BlackDots from '../../Assets/image/Dots.png'
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 
 export default function CityWise() {
@@ -23,21 +21,63 @@ export default function CityWise() {
 	let inputdata = contexData.state;
 	const [optionId, setOptionId] = useState()
 	const [flagSort, setflagSort] = useState("")
+	const [data, setdata] = useState([])
 	const options_lolipop = CityWise_LoliMap(name, inputdata['column'])
 	const options_bar = CityWise_Bar(name, inputdata['column']);
-	const series_lolipop = [{
-		name: 'Weight',
-		data: weight
-	}]
-	const series_bar = [{
-		data: weight
-	}]
+	let roundedBarHorizontal = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'round-horizontal-bar',
+		height: '100%',
+		width: '100%',
+		chartId: 'City Wise bar',
+		Xaxis: name,
+		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
+		Yaxis: weight,
+		divname: 'crancy-progress-card card-contain-graph'
+	}
+	let radialdata = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'polar-radialbar',
+		height: '100%',
+		width: '100%',
+		chartId: 'Citywise',
+		radiusAxis: name,
+		seriesdata: weight,
+	}
+	let optionpie = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'simplepie',
+		height: '100%',
+		width: '100%',
+		propdata: data,
+		chartId: 'CitywisePieChartBranchwise',
+
+	}
+	let optradialbar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'semi-donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'CitywiseRadialBarchart',
+		propdata: data,
+		label:  {
+			show: false,
+			position: 'center'
+		  },
+		  emphasis: {
+			label: {
+			  show: true,
+			  fontSize: 20,
+			  fontWeight: 'bold'
+			}
+		}
+	}
 
 	useEffect(() => {
 		fetchOption();
-	
-			getdata()
-	
+
+		getdata()
+
 	}, [inputdata])
 
 	useEffect(() => {
@@ -88,48 +128,46 @@ export default function CityWise() {
 				let weight = [];
 				let sale = [];
 				var js = {};
+				let data = []
 
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['cityname'] })
+						name.push(res.data.lstResult[index]['cityname'])
+						weight.push(res.data.lstResult[index][inputdata['column']])
+						js = { 'product': '', 'thisYearProfit': 0 }
+						if (res.data.lstResult[index]['cityname'] === null) {
+							js['product'] = 'null'
+						} else {
+							js['product'] = res.data.lstResult[index]['cityname']
+						}
+						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					name.push(res.data.lstResult[index]['cityname'])
-					weight.push(res.data.lstResult[index][inputdata['column']])
-					js = { 'product': '', 'thisYearProfit': 0 }
-					if (res.data.lstResult[index]['cityname'] === null) {
-						js['product'] = 'null'
-					} else {
-						js['product'] = res.data.lstResult[index]['cityname']
+						sale.push(js)
 					}
-					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-					sale.push(js)
-				}
-				setName(name)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+					setName(name)
+					setweight(weight)
+					setdata(data);
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
+					} else {
+						setLoader(true)
+					}
+					var j = []
+					for (let index = 0; index < sale.length; index++) {
+						j.push({ ...sale[index], ['color']: gradientArray[index] })
+					}
+					setSales(j)
 				} else {
-					setLoader(true)
+					alert(res['Error']);
 				}
-				var j = []
-				for (let index = 0; index < sale.length; index++) {
-					j.push({ ...sale[index], ['color']: gradientArray[index] })
-				}
-				setSales(j)
 
 
 			})
 	}
 
-	// function handledropdownMenu() {
-	// 	document.getElementById("myDropdownCity").style.display === "block" ? document.getElementById("myDropdownCity").style.display = "none" : document.getElementById("myDropdownCity").style.display = "block";
-	// }
 
-
-
-	// function handleSelectedChart(num) {
-	// 	// setBranchWiseChart(num)
-	// }
 
 
 	function handleonchangeCurrency() {
@@ -159,34 +197,42 @@ export default function CityWise() {
 	});
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity", chartId: 3 }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "c.cityname", columnName: "cityname", columnID: "cityname", componentName: "City Wise", filterKey: "strCity", chartId: 3, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
 	}
 
 	async function fetchOption() {
 		await post({ "ID": 3, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
-				setflag(ChartType)
-				if (res.data.lstResult.length === 0) {
+				if (res.data !== undefined) {
 
 					setflag(ChartType)
-					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 3, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-						.then((res) => {
-							post({ "ID": 3, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-								.then((res) => {
-									setOptionId(res.data.lstResult[0].ChartOptionID)
-								})
+					if (res.data.lstResult.length === 0) {
+
+						setflag(ChartType)
+						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 3, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+							.then((res) => {
+								post({ "ID": 3, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+									.then((res) => {
+										if (res.data !== undefined) {
+											setOptionId(res.data.lstResult[0].ChartOptionID)
+										} else {
+											alert(res['Error']);
+										}
+									})
 
 								Notify()
-						})
+							})
 
+					}
+					else {
+
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+						setflag(res.data.lstResult[0].ChartOption)
+					}
+				} else {
+					alert(res['Error']);
 				}
-				else {
-
-					setOptionId(res.data.lstResult[0].ChartOptionID)
-					setflag(res.data.lstResult[0].ChartOption)
-				}
-
 			})
 	}
 
@@ -228,36 +274,42 @@ export default function CityWise() {
 			let weight = [];
 			let sale = [];
 			var js = {};
+			let data = []
 
+			if (res.data !== undefined) {
+				for (let index = 0; index < res.data.lstResult.length; index++) {
+					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['cityname'] })
+					name.push(res.data.lstResult[index]['cityname'])
+					weight.push(res.data.lstResult[index][inputdata['column']])
+					js = { 'product': '', 'thisYearProfit': 0 }
+					if (res.data.lstResult[index]['cityname'] === null) {
+						js['product'] = 'null'
+					} else {
+						js['product'] = res.data.lstResult[index]['cityname']
+					}
+					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
-			for (let index = 0; index < res.data.lstResult.length; index++) {
-				name.push(res.data.lstResult[index]['cityname'])
-				weight.push(res.data.lstResult[index][inputdata['column']])
-				js = { 'product': '', 'thisYearProfit': 0 }
-				if (res.data.lstResult[index]['cityname'] === null) {
-					js['product'] = 'null'
-				} else {
-					js['product'] = res.data.lstResult[index]['cityname']
+					sale.push(js)
 				}
-				js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+				setName(name)
+				setweight(weight)
+				setdata(data);
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
+				var j = []
+				for (let index = 0; index < sale.length; index++) {
+					j.push({ ...sale[index], ['color']: gradientArray[index] })
+				}
+				setSales(j)
 
-				sale.push(js)
-			}
-			setName(name)
-			setweight(weight)
-			setdataLoader(false)
-			if (weight.length !== 0) {
-				setLoader(false)
+				inputdata = { ...inputdata, ['Grouping']: '' }
 			} else {
-				setLoader(true)
+				alert(res['Error']);
 			}
-			var j = []
-			for (let index = 0; index < sale.length; index++) {
-				j.push({ ...sale[index], ['color']: gradientArray[index] })
-			}
-			setSales(j)
-
-			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}
 
@@ -293,7 +345,9 @@ export default function CityWise() {
 						<div className='btnicons'>
 							<div id="myDropdowniconcity" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' >bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >bar </a><hr className='custom-hr' /></>}
-								{flag === 'heatmap' ? <><a id='heatmap' >Heatmap&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='heatmap' >Heatmap</a><hr className='custom-hr' /></>}
+								{flag === 'radialBar' ? <><a id='radialBar' >Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >Radial Bar </a><hr className='custom-hr' /></>}
+								{flag === 'pie' ? <><a id='pie' >Pie &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' >Pie </a><hr className='custom-hr' /></>}
+								{flag === 'semidonut' ? <><a id='semidonut' >Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' >Semi Donut </a><hr className='custom-hr' /></>}
 								{/* {flag === 'barl' ? <><a id='barl' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='barl' >lollipop chart</a><hr className='custom-hr' /></>} */}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
@@ -301,81 +355,15 @@ export default function CityWise() {
 					</div>
 
 				</div>
-
-
-				{/* {weight.length !== 0 ?
-					<div className="crancy-progress-card card-contain-graph">
-
-						{flag === 'bar' ?
-							<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
-							: null}
-						{flag === 'barl' ?
-							<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
-							: null}
-
-						{flag === 'heatmap' ?
-							<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-								<tr>
-									<th>Citywise</th>
-									<th>FineWt</th>
-								</tr>
-
-
-								{sales.map((data) => {
-									return (
-										<tr >
-											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-											<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-										</tr>
-									)
-								})}
-
-							</table> : null}
-
-					</div> :
-					<div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>
-				} */}
 				{dataloader !== true ?
 					loader !== true ?
 						<div className="crancy-progress-card card-contain-graph">
-
 							{flag === 'bar' ?
-								<ReactApexChart options={options_bar} series={series_bar} type="bar" height={390} />
+								<AlphaDashChart obj={JSON.parse(JSON.stringify(roundedBarHorizontal))} />
 								: null}
-							{flag === 'barl' ?
-								<ReactApexChart options={options_lolipop} series={series_lolipop} type="bar" height={390} />
-								: null}
-
-							{flag === 'heatmap' ?
-								<table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-									<tr>
-										<th>Citywise</th>
-										<th>NetWeight</th>
-									</tr>
-
-
-									{sales.map((data) => {
-										return (
-											<tr >
-												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-												<td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-											</tr>
-										)
-									})}
-
-								</table> : null}
-
+							{flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+							{flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
 							Not Found

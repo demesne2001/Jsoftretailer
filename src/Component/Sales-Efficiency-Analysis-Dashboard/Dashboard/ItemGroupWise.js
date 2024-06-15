@@ -2,19 +2,16 @@ import React, { useContext } from 'react'
 import API from '../../Utility/API';
 import { useEffect, useState } from 'react';
 import post from '../../Utility/APIHandle'
-
-
 import ReactApexChart from 'react-apexcharts';
 import { ItemGroup_RadialBar } from '../../ChartOptions/ItemGroup_RadialBar';
 import { ItemGroup_treemap } from '../../ChartOptions/ItemGroup_treemap';
-
 import BlackDots from '../../Assets/image/Dots.png'
 import contex from '../../contex/Contex';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
-
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 export default function ItemGroupWise() {
   const contexData = useContext(contex);
@@ -28,7 +25,39 @@ export default function ItemGroupWise() {
   const [flag, setflag] = useState()
   const ChartType = "radialBar"
   const [optionId, setOptionId] = useState()
+  let optionbarpolar = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'polar-radialbar',
+    height: '100%',
+    width: '100%',
+    chartId: 'itemGroupWise',
+    radiusAxis: name,
+    seriesdata: weight,
+    maxdegree: 80,
+  }
+  let treemap = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'treemap',
+    height: '100%',
+    width: '100%',
+    seriesdata: [
+      {
+        data: finalarr
+      }
+    ],
+  }
 
+  let roundedBarHorizontal = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'round-horizontal-bar',
+    height: '100%',
+    width: '100%',
+    chartId: 'itemGroupWise',
+    Xaxis: name,
+    color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
+    Yaxis: weight,
+    divname:'crancy-progress-card card-contain-graph'
+  }
   const options_radial = ItemGroup_RadialBar(name)
   const options_treemap = ItemGroup_treemap(name, inputdata['column'])
   const series_treemap = [
@@ -74,7 +103,7 @@ export default function ItemGroupWise() {
 
   useEffect(() => {
     fetchOption()
-     getdata()
+    getdata()
   }, [inputdata])
   useEffect(() => {
     if (flagSort !== '') {
@@ -98,32 +127,35 @@ export default function ItemGroupWise() {
         let weight = [];
         let finalarr = [];
 
-
-        for (let index = 0; index < res.data.lstResult.length; index++) {
-          if (res.data.lstResult[index]['GroupName'] === null) {
-            name.push("null")
-          } else {
-            name.push(res.data.lstResult[index]['GroupName'])
+        if (res.data !== undefined) {
+          for (let index = 0; index < res.data.lstResult.length; index++) {
+            if (res.data.lstResult[index]['GroupName'] === null) {
+              name.push("null")
+            } else {
+              name.push(res.data.lstResult[index]['GroupName'])
+            }
+            finalarr.push({ x: res.data.lstResult[index]['GroupName'], y: res.data.lstResult[index][inputdata['column']] })
+            weight.push(res.data.lstResult[index][inputdata['column']])
           }
-          finalarr.push({ x: res.data.lstResult[index]['GroupName'], y: res.data.lstResult[index][inputdata['column']] })
-          weight.push(res.data.lstResult[index][inputdata['column']])
-        }
-        setdataLoader(false)
-        if (weight.length !== 0) {
-          setLoader(false)
-        } else {
-          setLoader(true)
-        }
-        setName(name)
-        setweight(weight)
-        setarr(finalarr)
+          setdataLoader(false)
+          if (weight.length !== 0) {
+            setLoader(false)
+          } else {
+            setLoader(true)
+          }
+          setName(name)
+          setweight(weight)
+          setarr(finalarr)
 
-        inputdata = { ...inputdata, ['Grouping']: '' }
+          inputdata = { ...inputdata, ['Grouping']: '' }
+        } else {
+          alert(res['Error']);
+        }
       })
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "o.ItemGroupId,o.GroupName", columnName: "GroupName", columnID: "ItemGroupId", componentName: "Item Group Wise", filterKey: "strItemGroup", chartId: 5 }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "o.ItemGroupId,o.GroupName", columnName: "GroupName", columnID: "ItemGroupId", componentName: "Item Group Wise", filterKey: "strItemGroup", chartId: 5, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
   }
 
   function handleonchangeCurrency() {
@@ -154,27 +186,34 @@ export default function ItemGroupWise() {
     await post({ "ID": 5, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
       .then((res) => {
-        if (res.data.lstResult.length === 0) {
+        if (res.data !== undefined) {
+          if (res.data.lstResult.length === 0) {
 
 
-          setflag(ChartType)
-          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 5, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-            .then((res) => {
+            setflag(ChartType)
+            post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 5, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+              .then((res) => {
 
-              post({ "ID": 5, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-                .then((res) => {
-                  setOptionId(res.data.lstResult[0].ChartOptionID)
-                })
+                post({ "ID": 5, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                  .then((res) => {
+                    if (res.data !== undefined) {
+                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                    } else {
+                      alert(res['Error']);
+                    }
+                  })
                 Notify()
-            })
+              })
 
 
+          }
+          else {
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+            setflag(res.data.lstResult[0].ChartOption)
+          }
+        } else {
+          alert(res['Error']);
         }
-        else {
-          setOptionId(res.data.lstResult[0].ChartOptionID)
-          setflag(res.data.lstResult[0].ChartOption)
-        }
-
       })
   }
 
@@ -217,27 +256,30 @@ export default function ItemGroupWise() {
       let weight = [];
       let finalarr = [];
 
-
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        if (res.data.lstResult[index]['GroupName'] === null) {
-          name.push("null")
-        } else {
-          name.push(res.data.lstResult[index]['GroupName'])
+      if (res.data !== undefined) {
+        for (let index = 0; index < res.data.lstResult.length; index++) {
+          if (res.data.lstResult[index]['GroupName'] === null) {
+            name.push("null")
+          } else {
+            name.push(res.data.lstResult[index]['GroupName'])
+          }
+          finalarr.push({ x: res.data.lstResult[index]['GroupName'], y: res.data.lstResult[index][inputdata['column']] })
+          weight.push(res.data.lstResult[index][inputdata['column']])
         }
-        finalarr.push({ x: res.data.lstResult[index]['GroupName'], y: res.data.lstResult[index][inputdata['column']] })
-        weight.push(res.data.lstResult[index][inputdata['column']])
-      }
-      setdataLoader(false)
-      if (weight.length !== 0) {
-        setLoader(false)
-      } else {
-        setLoader(true)
-      }
-      setName(name)
-      setweight(weight)
-      setarr(finalarr)
+        setdataLoader(false)
+        if (weight.length !== 0) {
+          setLoader(false)
+        } else {
+          setLoader(true)
+        }
+        setName(name)
+        setweight(weight)
+        setarr(finalarr)
 
-      inputdata = { ...inputdata, ['Grouping']: '' }
+        inputdata = { ...inputdata, ['Grouping']: '' }
+      } else {
+        alert(res['Error']);;
+      }
     })
   }
 
@@ -271,6 +313,8 @@ export default function ItemGroupWise() {
             <div className='btnicons'>
               <div id="myDropdowniconigroup" className="dropdown-contenticon" onClick={handleclick}>
                 {/* {flag === 'radialBar' ? <><a id='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr' /></>} */}
+                {flag === 'radialBar' ? <><a id='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
+                {flag === 'hbar' ? <><a id='hbar'>Horizantal bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='hbar'>Horizantal bar</a><hr className='custom-hr' /></>}
                 {flag === 'treemap' ? <><a id='treemap'>Treemap&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Treemap</a><hr className='custom-hr' /></>}
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
               </div>
@@ -283,8 +327,9 @@ export default function ItemGroupWise() {
             <div className="crancy-progress-card card-contain-graph">
 
               {/* {flag === 'radialBar' ? <ReactApexChart options={options_radial} series={series_radial} height={390} type={flag} /> : null} */}
-              {flag === 'treemap' ? <ReactApexChart options={options_treemap} series={series_treemap} height={390} type={flag} /> : null}
-
+              {flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbarpolar))} /> : null}
+              {flag === 'hbar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(roundedBarHorizontal))} /> : null}
+              {flag === 'treemap' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(treemap))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
               Not Found

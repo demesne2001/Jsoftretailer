@@ -51,17 +51,19 @@ const Main = () => {
 
     function handleLogin() {
         post(login, API.login, {}, "post").then((res) => {
-
             if (res.data === undefined) {
                 alert(res.Error)
+                document.getElementsByClassName('user')[0].value = "";
+                document.getElementsByClassName('user')[1].value = "";
                 document.getElementsByClassName('user')[0].focus()
-                setLogin({ "LoginID": "", "PassWord": "" })
             } else {
                 if (res.data.HasError === false) {
                     if (res.data.UserName === undefined) {
                         alert(res.data.Message)
+                        document.getElementsByClassName('user')[0].value = "";
+                        document.getElementsByClassName('user')[1].value = "";
                         document.getElementsByClassName('user')[0].focus()
-                        setLogin({ "LoginID": "", "PassWord": "" })
+        
                     } else {
                         localStorage.setItem('username', res.data.UserName)
                         localStorage.setItem('token', res.data.Token)
@@ -69,6 +71,8 @@ const Main = () => {
                     }
                 } else {
                     alert(res.data.Message)
+                    document.getElementsByClassName('user')[0].value = "";
+                    document.getElementsByClassName('user')[1].value = "";
                 }
             }
         })

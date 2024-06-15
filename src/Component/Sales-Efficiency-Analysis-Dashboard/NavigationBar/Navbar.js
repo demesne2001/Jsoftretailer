@@ -1,11 +1,17 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
 import jsoftInitial from '../../Assets/image/logo/jsoft-initial.png'
 import jsoftMini from '../../Assets/image/Jsoft.png'
 import { useNavigate } from 'react-router-dom';
+import post from '../../Utility/APIHandle';
+import API from '../../Utility/API';
 
 export default function Navbar() {
   const navigate = useNavigate()
+  const [syncDate, setSyncDate] = useState()
+  useEffect(() => {
+    getSyncDate()
+  }, [])
+
   function handleNavbar() {
 
     if (document.getElementsByClassName("crancy-close")[0] !== undefined) {
@@ -41,22 +47,47 @@ export default function Navbar() {
   }
 
   function HandleLogoClick() {
-    navigate('/Home',{replace:true})
-    var element =   document.getElementById("root");
+    navigate('/Home', { replace: true })
+    var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }
 
   function handleSchedualAnalysisClick() {
-    navigate('/schedual_analysis', {replace:true})
-    var element =   document.getElementById("root");
+    navigate('/schedual_analysis', { replace: true })
+    var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }
 
   function handleOnDashboardClick() {
-    navigate('/Home',{replace:true})
-    var element =   document.getElementById("root");  
+    navigate('/Home', { replace: true })
+    var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }
+
+  function handleOnStockToSalesClick() {
+    navigate('/Stock_To_Sales', { replace: true });
+    var element = document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
+  }
+
+  function handleMinimumStock() {
+    navigate('/minimum_stocks', { replace: true });
+    var element = document.getElementById("root");
+    element.scrollIntoView({ block: 'start' })
+  }
+
+  async function getSyncDate() {
+    await post({}, API.GetDefaultScreenData, {}, 'post')
+      .then((res) => {
+        if (res.data !== undefined) {
+          setSyncDate(res.data.lstResult[0].SyncDate)
+        } else {
+          alert(res['Error']);
+        }
+      })
+  }
+
+
 
   return (
     <div className="crancy-body-area">
@@ -78,7 +109,7 @@ export default function Navbar() {
               {/* <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5" d="m9 5 7 7-7 7" />
               </svg> */}
-              
+
 
               {/* <i style={{fontSize:'10px'}} class='fas'>&#xf105;</i> */}
               <i className="fas fa-angle-left" style={{ color: "#ffffff" }}></i>
@@ -93,7 +124,7 @@ export default function Navbar() {
                   <i className="fas fa-home"></i>
                   <span className="menu-bar__name" >Dashboard</span></span></a>
                 </li>
-                <li><a className="collapsed"><span className="menu-bar__text">
+                <li><a className="collapsed" onClick={handleOnStockToSalesClick}><span className="menu-bar__text">
                   <i className="fas fa-chart-line"></i>
                   <span className="menu-bar__name">Stock to sales</span></span></a>
                 </li>
@@ -106,12 +137,25 @@ export default function Navbar() {
                   <span className="menu-bar__name last-silderbar-title">Schedule
                     Analysis</span></span></a>
                 </li>
+                <li><a className="collapsed" onClick={handleMinimumStock}><span className="menu-bar__text">
+                  <i className="fas fa-chart-line"></i>
+                  <span className="menu-bar__name last-silderbar-title">Minimum Stocks</span></span></a>
+                </li>
 
               </ul>
+              <div className='syncdatediv'>
+                <h5 className='syncdata'>
+                  Last Sync :{syncDate}
+                  <span className="text-muted">
+                    { }
+                  </span>
+                </h5>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   )
 }

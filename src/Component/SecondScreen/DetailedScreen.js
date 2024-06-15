@@ -52,7 +52,7 @@ export default function DetailedScreen() {
 
     const settings = {
 
-        speed: 500,
+        speed: 100,
         slidesToShow: 5,
         slidesToScroll: 1,
         infinite: true,
@@ -93,20 +93,20 @@ export default function DetailedScreen() {
             navigate('/', { replace: true })
         }
         if (getUrlState.size === 0) {
-            seturlData(location.state, {replace:true})
+            seturlData(location.state, { replace: true })
         }
         getUrlData()
     }, [])
 
-    useEffect(() => { 
+    useEffect(() => {
         if (mainChartProps !== undefined && mainChartProps['chartId'] !== null) {
             setsliderDataByfunction()
             setDefaultGrouping()
             fetchOption()
         } else {
-            getUrlData() 
+            getUrlData()
         }
-    }, [mainChartProps])          
+    }, [mainChartProps])
 
     function getUrlData() {
         let urlData = {
@@ -116,29 +116,31 @@ export default function DetailedScreen() {
             "componentName": getUrlState.get("componentName"),
             "filterKey": getUrlState.get("filterKey"),
             "chartId": getUrlState.get("chartId"),
+            "FromDate":getUrlState.get("FromDate"), 
+            "ToDate":getUrlState.get("ToDate"), 
         }
         setMainChartProps(urlData)
     }
 
     function setsliderDataByfunction() {
         setSliderData([
-            { name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch' },
-            { name: 'State', iconClass: 'fas fa-map-marker-alt icon-m', group: 'k.stateID,k.Statename', column: 'Statename', columnID: 'stateID', componentName: 'State Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strState' },
-            { name: 'City', iconClass: 'fas fa-city icon-m', group: 'c.cityname', column: 'cityname', columnID: 'cityname', componentName: 'City Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strCity' },
-            { name: 'Region', iconClass: 'fas fa-globe icon-m', group: 'l.RegionID,l.RegionName', column: 'RegionName', columnID: 'RegionID', componentName: 'Region Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strRegionID' },
-            { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' },
-            { name: 'Sub-Item', iconClass: 'fas fa-th-list icon-m', group: 'e.subitemID,e.subItemName', column: 'subItemName', columnID: 'subitemID', componentName: 'Sub-Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSubItem' },
-            { name: 'Item Group', iconClass: 'fas fa-chart-area icon-m', group: 'o.ItemGroupId,o.GroupName', column: 'GroupName', columnID: 'ItemGroupId', componentName: 'Item Group Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItemGroup' },
-            { name: 'Item with Sub-item', iconClass: 'fas fa-sitemap icon-m', group: 'f.ItemSubNAme,f.ItemSubID', column: 'ItemSubNAme', columnID: 'ItemSubID', componentName: 'Item with Sub-item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItemSubitem' },
-            { name: 'Design Wise', iconClass: 'fas fa-people-carry icon-m', group: 'g.DesigncodeID,g.DesignCode', column: 'DesignCode', columnID: 'DesigncodeID', componentName: 'Design Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strDesignCodeID' },
-            { name: 'Sales Party', iconClass: 'fas fa-handshake icon-m', group: 'a.accountID,c.AccountName', column: 'AccountName', columnID: 'accountID', componentName: 'Sales Party Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSalesParty' },
-            { name: 'Saleman', iconClass: 'fas fa-users icon-m', group: 'h.SalesmanID,h.SalesmanNAme', column: 'SalesmanNAme', columnID: 'SalesmanID', componentName: 'Saleman Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleman' },
-            { name: 'Product', iconClass: 'fas fa-boxes icon-m', group: 'i.ProductId,i.ProductName', column: 'ProductName', columnID: 'ProductId', componentName: 'Product Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strProduct' },
-            { name: 'Design Catalogue', iconClass: 'fas fa-gem icon-m', group: 'j.designCatalogID,j.DesignNo', column: 'DesignNo', columnID: 'designCatalogID', componentName: 'Design Catalogue Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strDesignCatalogue' },
-            { name: 'Month', iconClass: 'fas fa-calendar-week icon-m', group: 'datename(month,a.voucherDate)', column: 'MonthName', columnID: 'MonthName', componentName: 'Month Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strMonth' },
-            { name: 'Year', iconClass: 'fas  fa-calendar-alt icon-m', group: 'M.FinYearID,m.YearCode', column: 'YearCode', columnID: 'FinYearID', componentName: 'Year Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strFinYear' },
-            { name: 'Sale Aging', iconClass: 'fas fa-chart-line icon-m', group: 'a.[rd.caption]', column: 'rd.caption', columnID: 'rd.caption', componentName: 'Sale Aging Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleAging' },
-            { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise',  columnID: 'ChallanGenerateTypeID', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale' },
+            { name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'State', iconClass: 'fas fa-map-marker-alt icon-m', group: 'k.stateID,k.Statename', column: 'Statename', columnID: 'stateID', componentName: 'State Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strState', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'City', iconClass: 'fas fa-city icon-m', group: 'c.cityname', column: 'cityname', columnID: 'cityname', componentName: 'City Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strCity' , FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate']},
+            { name: 'Region', iconClass: 'fas fa-globe icon-m', group: 'l.RegionID,l.RegionName', column: 'RegionName', columnID: 'RegionID', componentName: 'Region Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strRegionID', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Sub-Item', iconClass: 'fas fa-th-list icon-m', group: 'e.subitemID,e.subItemName', column: 'subItemName', columnID: 'subitemID', componentName: 'Sub-Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSubItem', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Item Group', iconClass: 'fas fa-chart-area icon-m', group: 'o.ItemGroupId,o.GroupName', column: 'GroupName', columnID: 'ItemGroupId', componentName: 'Item Group Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItemGroup', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Item with Sub-item', iconClass: 'fas fa-sitemap icon-m', group: 'f.ItemSubNAme,f.ItemSubID', column: 'ItemSubNAme', columnID: 'ItemSubID', componentName: 'Item with Sub-item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItemSubitem', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Design Wise', iconClass: 'fas fa-people-carry icon-m', group: 'g.DesigncodeID,g.DesignCode', column: 'DesignCode', columnID: 'DesigncodeID', componentName: 'Design Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strDesignCodeID', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Sales Party', iconClass: 'fas fa-handshake icon-m', group: 'a.accountID,c.AccountName', column: 'AccountName', columnID: 'accountID', componentName: 'Sales Party Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSalesParty', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Saleman', iconClass: 'fas fa-users icon-m', group: 'h.SalesmanID,h.SalesmanNAme', column: 'SalesmanNAme', columnID: 'SalesmanID', componentName: 'Saleman Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleman', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Product', iconClass: 'fas fa-boxes icon-m', group: 'i.ProductId,i.ProductName', column: 'ProductName', columnID: 'ProductId', componentName: 'Product Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strProduct', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Design Catalogue', iconClass: 'fas fa-gem icon-m', group: 'j.designCatalogID,j.DesignNo', column: 'DesignNo', columnID: 'designCatalogID', componentName: 'Design Catalogue Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strDesignCatalogue', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Month', iconClass: 'fas fa-calendar-week icon-m', group: 'datename(month,a.voucherDate)', column: 'MonthName', columnID: 'MonthName', componentName: 'Month Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strMonth', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Year', iconClass: 'fas  fa-calendar-alt icon-m', group: 'M.FinYearID,m.YearCode', column: 'YearCode', columnID: 'FinYearID', componentName: 'Year Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strFinYear', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Sale Aging', iconClass: 'fas fa-chart-line icon-m', group: 'a.[rd.caption]', column: 'rd.caption', columnID: 'rd.caption', componentName: 'Sale Aging Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleAging', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+            { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise', columnID: 'ChallanGenerateTypeID', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
             // { name: 'Team & Mode of Sale', iconClass: 'fas fa-stream icon-m', group: '', column: '', componentName: 'Team & Mode of Sale Wise' }
         ])
     }
@@ -147,14 +149,14 @@ export default function DetailedScreen() {
         if (mainChartProps !== null) {
             if (mainChartProps.chartId > 1) {
                 defaultChartGroup = {
-                    name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch'
+                    name: 'Branch', iconClass: 'fas fa-chart-pie icon-m', group: 'a.BranchID,b.BranchName', column: 'BranchName', columnID: 'BranchID', componentName: 'Branch Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strBranch', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate']
                 }
             }
             else {
-                defaultChartGroup = { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' }
+                defaultChartGroup = { name: 'Item', iconClass: 'fas fa-project-diagram icon-m', group: 'd.itemID,d.ItemName', column: 'ItemName', columnID: 'itemID', componentName: 'Item Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strItem' , FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate']}
             }
         }
-    }       
+    }
 
     function SampleNextArrow(props) {
         const { className, style, onClick } = props;
@@ -207,38 +209,42 @@ export default function DetailedScreen() {
 
         post({ "ID": mainChartProps.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
             .then((res) => {
-
-                if (res.data.lstResult.length === 0) {
-
-
-                    post({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": mainChartProps.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
-                        .then((res) => {
-
-                            post({ "ID": mainChartProps.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
-                                .then((res) => {
+                if (res.data !== undefined) {
+                    if (res.data.lstResult.length === 0) {
 
 
-                                    setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
-                                    setChartGroupId(res.data.lstResult[0].ChartGroupID)
-                                    setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
+                        post({ "ChartGroupID": 0, "ChartGroup": JSON.stringify(defaultChartGroup), "ChartID": mainChartProps.chartId, "vendorID": 1, "UserID": 1 }, API.ChartGroupAddEdit, {}, 'post')
+                            .then((res) => {
 
-                                    showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
+                                post({ "ID": mainChartProps.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
+                                    .then((res) => {
+                                        if (res.data !== undefined) {
+                                            setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
+                                            setChartGroupId(res.data.lstResult[0].ChartGroupID)
+                                            setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
 
-                                })
-                        })
-                }
+                                            showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
+                                        } else {
+                                            alert(res['Error']);
+                                        }
+                                    })
+                            })
+                    }
 
-                else {
-
-
-
-                    setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
-                    setChartGroupId(res.data.lstResult[0].ChartGroupID)
-                    setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
-
-                    showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
+                    else {
 
 
+
+                        setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
+                        setChartGroupId(res.data.lstResult[0].ChartGroupID)
+                        setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
+
+                        showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
+
+
+                    }
+                } else {
+                    alert(res['Error']);
                 }
 
             })
@@ -264,38 +270,22 @@ export default function DetailedScreen() {
     }
 
     function showSelectedSlider(selectedId) {
-
-
-
         if (document.getElementById(selectedId) !== null) {
             if (document.querySelector(".active") !== null) { // to deselect a icon
-
-
                 document.querySelector(".active").className = document.querySelector(".active").className.replace('active', '')
             }
-
-            // else {
-
-            //     document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
-            // }
             document.getElementById(selectedId).className = document.getElementById(selectedId).className + ' ' + 'active'
-
         }
-
-
-
     }
- 
-   
 
-    if (mainChartProps !== undefined &&  mainChartProps['chartId'] !== null) {
+    if (mainChartProps !== undefined && mainChartProps['chartId'] !== null) {
         return (
             <ContexState1>
                 <Navbar />
                 <NotificationContainer />
                 <div id="crancy-dark-light">
                     <div class="crancy-body-area">
-                        <Header_detailed />
+                        <Header_detailed Date={{FromDate : mainChartProps.FromDate, ToDate: mainChartProps.ToDate}} />
 
                         <section class="crancy-adashboard crancy-show">
                             <div class="container"></div>
@@ -317,6 +307,7 @@ export default function DetailedScreen() {
                                                             <Slider {...settings} >
                                                                 {
                                                                     sliderData.map((data) => {
+                                                                        console.log(data.group, mainChartProps.grouping,"compare")
                                                                         if (data.group === mainChartProps.grouping) {
 
                                                                         }
@@ -354,7 +345,7 @@ export default function DetailedScreen() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <Default_chart graph={graph} />
+                                        <Default_chart graph={graph} Date={{FromDate : mainChartProps.FromDate, ToDate: mainChartProps.ToDate}}  />
                                     </div>
                                     {/* <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                                     <div class="title-top-graphdetail">
@@ -472,7 +463,7 @@ export default function DetailedScreen() {
                                         </ul>
                                     </div>
                                 </div> */}
-                                    <Tag_Image />
+                                    <Tag_Image   Date={{FromDate : mainChartProps.FromDate, ToDate: mainChartProps.ToDate}}/>
 
                                 </div>
 

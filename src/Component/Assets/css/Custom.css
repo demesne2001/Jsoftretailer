@@ -491,7 +491,6 @@ select {
   background-color: #e3e9ed;
 }
 
-
 /* Position the front and back side */
 .flip-card-front,
 .flip-card-back {
@@ -548,8 +547,6 @@ select {
   margin-right: 20px;
   color: #094876;
   background: none;
-
-  
 }
 /* 
 .tableScroll {
@@ -559,9 +556,8 @@ select {
   overflow-y: scroll;
   
   /* height: 600px; */
-/* } */ */
-
-.table-table-striped-table-bordered{
+/* } */
+*/ .table-table-striped-table-bordered {
   flex: 1;
   overflow-y: scroll;
 }
@@ -836,12 +832,12 @@ button.dropbtn .value_name {
 
 .login-button {
   padding: 10px !important;
-  color: white  !important;
-  border-radius: 3px  !important;
-  line-height: initial  !important;
-  background: rgb(9 72 118)  !important;
-  border: transparent  !important;
-  border-radius: 10px  !important;
+  color: white !important;
+  border-radius: 3px !important;
+  line-height: initial !important;
+  background: rgb(9 72 118) !important;
+  border: transparent !important;
+  border-radius: 10px !important;
   margin-top: 5%;
 }
 
@@ -893,7 +889,7 @@ button.dropbtn .value_name {
   width: -webkit-fill-available;
   min-width: 200px;
   max-width: 600px;
-  filter: drop-shadow(0px 4px 70px rgba(0, 0, 0, 0.10));
+  filter: drop-shadow(0px 4px 70px rgba(0, 0, 0, 0.1));
   position: absolute;
 }
 .label1 {
@@ -923,12 +919,12 @@ button.dropbtn .value_name {
 }
 .button1 {
   padding: 10px !important;
-  color: white  !important;
-  border-radius: 3px  !important;
-  line-height: initial  !important;
-  background: rgb(9 72 118)  !important;
-  border: transparent  !important;
-  border-radius: 10px  !important;
+  color: white !important;
+  border-radius: 3px !important;
+  line-height: initial !important;
+  background: rgb(9 72 118) !important;
+  border: transparent !important;
+  border-radius: 10px !important;
   margin-top: 5%;
   width: 100%;
 }
@@ -936,7 +932,6 @@ button.dropbtn .value_name {
 .button1:hover {
   background-color: rgba(233, 101, 47, 1);
 }
-
 
 ::placeholder {
   color: #d1cfcf;
@@ -970,18 +965,18 @@ button.dropbtn .value_name {
   padding-bottom: 4px;
 }
 
-#downloadPdf{
+#downloadPdf {
   cursor: pointer;
 }
 
-#downloadExcel{
+#downloadExcel {
   cursor: pointer;
 }
 
-.pagonationdiv{
+.pagonationdiv {
   display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .pageImageButtom {
@@ -1008,7 +1003,7 @@ figure.ag-carousel_figure img {
   font-size: 18px;
   right: 60px;
   height: 10px;
-  position: absolute; 
+  position: absolute;
   top: 18px;
 }
 
@@ -1018,26 +1013,26 @@ figure.ag-carousel_figure img {
 
 @media only screen and (max-width: 425px) {
   .modal-filter .modal-body {
-      height: 70vh !important;
-      overflow: scroll;
+    height: 70vh !important;
+    overflow: scroll;
   }
 }
 
 @media only screen and (max-width: 1800px) {
   .modal-filter .modal-body {
-      height: 70vh !important;
-      overflow-y: scroll;
+    height: 70vh !important;
+    overflow-y: scroll;
   }
 }
 
 .modal-filter .modal-body {
   max-height: 70vh !important;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 .dashboard-filter {
   max-height: 70vh !important;
-  overflow-y: auto;  
+  overflow-y: auto;
 }
 
 /* custom modal css */
@@ -1062,7 +1057,7 @@ figure.ag-carousel_figure img {
 }
 
 /* The Modal (background) */
-.modal1{
+.modal1 {
   display: none;
   position: fixed;
   z-index: 9999999;
@@ -1116,7 +1111,6 @@ figure.ag-carousel_figure img {
 .cursor {
   cursor: pointer;
   /* background: white; */
-
 }
 
 /* Next & previous buttons */
@@ -1201,11 +1195,10 @@ img.hover-shadow {
   overflow-y: auto Impo !important;
 }
 
-
-.graph-card:hover .card-title-graph i.sorticon  {
+.graph-card:hover .card-title-graph i.sorticon {
   color: #fff !important;
 }
- 
+
 .graph-card:hover .card-title-graph img {
   -webkit-filter: invert(100%);
   filter: invert(100%);
@@ -1250,7 +1243,7 @@ img.hover-shadow {
   margin-bottom: 10px;
   display: block;
 }
-.modal-body form .card-filter-contain label{
+.modal-body form .card-filter-contain label {
   margin-bottom: 3px;
 }
 
@@ -1271,10 +1264,10 @@ img.hover-shadow {
 .filter-top label.form-label {
   padding-top: 0px;
 }
-.filter-top .basic-multi-select .select__control{
+.filter-top .basic-multi-select .select__control {
   background-color: #ffffff;
   /* height: 46px; */
-  border: none; 
+  border: none;
 }
 
 .fa-solid .fa-check {
@@ -1299,7 +1292,7 @@ img.hover-shadow {
   font-weight: 400;
 }
 
-.filter-top form input[type=date]{
+.filter-top form input[type="date"] {
   padding: 0 5px 0 5px;
 }
 
@@ -1325,7 +1318,7 @@ img.hover-shadow {
 .sales-detail-ti {
   position: absolute;
   right: 0px;
-} 
+}
 .dropbtngraph {
   align-items: center;
   width: 50px;
@@ -1336,17 +1329,17 @@ img.hover-shadow {
 button.geex-btn.geex-btn__customizer-close:hover {
   background: #ee5f23;
 }
-.graph-card .card-title-graph div{
+.graph-card .card-title-graph div {
   transition: none !important;
 }
 
-#dropdownbutton{
+#dropdownbutton {
   position: absolute;
   right: 0px;
 }
- 
+
 @media only screen and (max-width: 480px) {
-  #downloadPdf{
+  #downloadPdf {
     display: none;
   }
   #downloadExcel {
@@ -1354,20 +1347,20 @@ button.geex-btn.geex-btn__customizer-close:hover {
   }
 }
 
-@media only screen and (max-width: 1578px) and (min-width: 1278px)  {
-  .crancy-featured-user__fname{
+@media only screen and (max-width: 1578px) and (min-width: 1278px) {
+  .crancy-featured-user__fname {
     font-size: 12px !important;
   }
 }
 
-@media only screen and (max-width: 1240px) and (min-width: 1024px)  {
-  .crancy-featured-user__fname{
+@media only screen and (max-width: 1240px) and (min-width: 1024px) {
+  .crancy-featured-user__fname {
     font-size: 12px !important;
   }
 }
 
-.notification-success{
-  background-color: rgb(9,72,118) !important;
+.notification-success {
+  background-color: rgb(9, 72, 118) !important;
 }
 
 .notification .title {
@@ -1380,15 +1373,16 @@ button.geex-btn.geex-btn__customizer-close:hover {
 }
 .pageNo {
   /* display: flex; */
+  float: right;
+  font-size: medium;
 }
-
 
 .Dashboard-Div {
   height: 300px;
   /* background-color: #000; */
   height: 900px;
   /* overflow: hidden; */
-  overflow-y:scroll;
+  overflow-y: scroll;
   overflow-x: hidden;
   /* scrollbar-width: 0; */
 }
@@ -1397,7 +1391,7 @@ button.geex-btn.geex-btn__customizer-close:hover {
   display: none;
 }
 
-.shedule-secondscreen{
+.shedule-secondscreen {
   max-height: 450px !important;
   height: fit-content !important;
 }
@@ -1406,8 +1400,6 @@ button.geex-btn.geex-btn__customizer-close:hover {
   max-height: 800px !important;
   height: fit-content !important;
 }
-
-
 
 /* notification of bills */
 #btn-message {
@@ -1425,7 +1417,9 @@ button.geex-btn.geex-btn__customizer-close:hover {
   justify-content: left;
   align-items: center;
   font: 400 var(--font-size) Helvetica Neue, sans-serif;
-  box-shadow: 0 0 2.17382px rgba(0,0,0,.049),0 1.75px 6.01034px rgba(0,0,0,.07),0 3.63px 14.4706px rgba(0,0,0,.091),0 22px 48px rgba(0,0,0,.14);
+  box-shadow: 0 0 2.17382px rgba(0, 0, 0, 0.049),
+    0 1.75px 6.01034px rgba(0, 0, 0, 0.07),
+    0 3.63px 14.4706px rgba(0, 0, 0, 0.091), 0 22px 48px rgba(0, 0, 0, 0.14);
   background-color: var(--bg-color);
   border-radius: 10px;
   cursor: pointer;
@@ -1557,7 +1551,8 @@ button.geex-btn.geex-btn__customizer-close:hover {
   transition: var(--btn-transition);
 }
 
-.lable-message, .username {
+.lable-message,
+.username {
   font-weight: 100;
 }
 
@@ -1585,7 +1580,7 @@ button.geex-btn.geex-btn__customizer-close:hover {
   }
 
   66.33% {
-    background-color: #93e200; 
+    background-color: #93e200;
   }
 
   100% {
@@ -1598,7 +1593,6 @@ button.geex-btn.geex-btn__customizer-close:hover {
   height: 232px;
   overflow: auto;
 }
-
 
 .Shedule-piechart {
   display: block !important;
@@ -1615,4 +1609,101 @@ button.geex-btn.geex-btn__customizer-close:hover {
 .Tabel-Card {
   height: fit-content !important;
   max-height: fit-content !important;
+}
+
+.ChartMonthOption {
+  display: flex;
+  overflow-x: auto;
+  max-width: 100%;
+  /* max-height: 5%; */
+}
+
+.chartupdown {
+  float: bottom;
+  height: fit-content;
+  width: fit-content;
+  text-align: center;
+}
+
+.iconupdown {
+  font-size: 12px;
+  text-align: center;
+}
+
+.mainscreenchartdiv {
+  align-items: baseline;
+  display: flex;
+  place-content: space-between;
+}
+
+/* .select__menu{
+  height: 100px;
+}
+.select__menu div:first{
+  height: 10%;
+}
+.select__menu div{
+  height: 100%;
+} */
+
+/* .defaulchartbutton {
+  margin-top: -33px;
+} */
+
+.chartoptionButton {
+  text-wrap: nowrap;
+}
+
+/* .minimumstockrow {
+  margin: 1%;
+} */
+
+.minimumstockmain {
+  margin-bottom: 1%;
+}
+.rdrCalendarWrapper {
+  color: #000000 !important;
+  font-size: 12px !important;
+  position: absolute;
+  z-index: 9;
+  box-shadow: 10px 10px 5px rgb(119, 119, 119);
+  border-radius: 10px;
+  margin-top: 1%;
+  /* width: fit-content; */
+}
+
+.rdrDateDisplayWrapper {
+  background-color: rgb(255 255 255) !important;
+}
+
+.syncdata {
+  position: fixed;
+  bottom: -1.6%;
+  /* border: 1px solid #0065ad; */
+  padding: 1%;
+  /* font-weight:; */
+  background-color: #094876;
+  color: white;
+  width: 100%;
+  left: 0;
+  text-align: center;
+}
+
+.datesinheader {
+  color: rgb(9, 72, 118);
+  font-weight: 550;
+}
+
+.shedulepagesort {
+  display: none;
+  position: absolute;
+  background-color: #fafafa;
+  min-width: 218px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.56);
+  z-index: 27;
+  margin-top: 10px;
+  margin-left: -178px;
+  border-radius: 20px;
+  color: black;
 }

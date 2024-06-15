@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@visx/visx": "^3.10.2",
+    "alpha-echart-library": "^38.51.11",
     "apexcharts": "^3.47.0",
     "axios": "^1.6.8",
     "buffer": "^6.0.3",
@@ -21,6 +22,7 @@
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-bootstrap": "^2.10.1",
+    "react-date-range": "^2.0.1",
     "react-dom": "^18.2.0",
     "react-multi-select-component": "^4.3.4",
     "react-notifications": "^1.7.4",
@@ -33,7 +35,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=7578 && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

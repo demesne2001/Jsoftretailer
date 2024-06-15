@@ -35,7 +35,8 @@ export default function TargetAndAchievedSeriesOptions(xAxis, yAxis, unit) {
                     pan: false,
                     reset: false
                 },
-            }
+            },
+            
         },
         dataLabels: {
             enabled: true,

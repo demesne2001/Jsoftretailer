@@ -4,16 +4,14 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 
 import BlackDots from '../../Assets/image/Dots.png'
-
-import { StateWise_SemiDonut } from '../../ChartOptions/StateWise_SemiDonut';
 import { StateWise_Treemap } from '../../ChartOptions/StateWise_Treemap';
-
 import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import Notify from '../Notification/Notify';
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 
 export default function StateWise() {
@@ -27,14 +25,74 @@ export default function StateWise() {
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
 	const [optionId, setOptionId] = useState()
-	const [flagSort, setflagSort] = useState('')
-	const options_semidonut = StateWise_SemiDonut(name, state, inputdata['column'])
-	const options_Treemap = StateWise_Treemap(name, inputdata['column'])
+	const [flagSort, setflagSort] = useState('');
+	const [data, setdata] = useState([]);
+	const [Map, setMap] = useState([])
+
+	// const options_semidonut = StateWise_SemiDonut(name, state, inputdata['column'])
+	// const options_Treemap = StateWise_Treemap(name, inputdata['column'])
 	const series_treemap = [
 		{
 			data: state
 		}
 	]
+	let semiDonut = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'semi-donut',
+		height: '380px',
+		width: '100%',
+		chartId: 'StateWise',
+		propdata: data,
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+	}
+	let map = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		propdata: Map,
+		charttype: 'map',
+		height: '100%',
+		width: '100%',
+		chartId: 'StateWise',
+	}
+	let treemap = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'treemap',
+		height: '100%',
+		width: '100%',
+		seriesdata: [
+			{
+				data: state
+			}
+		],
+	}
+	var optionbar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'bar',
+		height: '400%',
+		width: '100%',
+		chartId: 'ItemWise',
+		Xaxis: name,
+		Yaxis: weight,
+	}
+	var barHorizontal = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'round-horizontal-bar',
+		height: '100%',
+		width: '100%',
+		chartId: 'ItemWise',
+		Xaxis: name,
+		Yaxis: weight,
+		divname: 'crancy-progress-card card-contain-graph'
+	}
 	const series_semidonut = weight;
 
 	const ChartType = "treemap"
@@ -77,29 +135,38 @@ export default function StateWise() {
 				let name = []
 				let name1 = [];
 				let weight = [];
+				let data = [];
+				let map = []
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						if (res.data.lstResult[index]['Statename'] != null) {
+							// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
+							name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
+							name1.push(res.data.lstResult[index]['Statename'])
+							data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['Statename'] })
+							map.push({ name: res.data.lstResult[index]['Statename'], value: res.data.lstResult[index]['NetWeight'] })
+						}
+						weight.push(res.data.lstResult[index][inputdata['column']])
 
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					if (res.data.lstResult[index]['Statename'] != null) {
-						// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
-						name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
-						name1.push(res.data.lstResult[index]['Statename'])
 					}
-					weight.push(res.data.lstResult[index][inputdata['column']])
+					// setweight(weight)
+					setdata(data)
+					setState(name)
+					setName(name1)
+					setweight(weight)
+					setMap(map)
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
+					} else {
+						setLoader(true)
+					}
 
-				}
-				// setweight(weight)
-				setState(name)
-				setName(name1)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+
+					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
-					setLoader(true)
+					alert(res['Error']);
 				}
-
-
-				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
 
@@ -148,34 +215,41 @@ export default function StateWise() {
 
 	});
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 , FromDate: inputdata.FromDate, ToDate : inputdata.ToDate}, replace: true })
 	}
 
 	async function fetchOption() {
 		await post({ "ID": 2, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
-				if (res.data.lstResult.length === 0) {
+				if (res.data !== undefined) {
+					if (res.data.lstResult.length === 0) {
 
 
-					setflag(ChartType)
-					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-						.then((res) => {
-							post({ "ID": 2, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-								.then((res) => {
-									setOptionId(res.data.lstResult[0].ChartOptionID)
-								})
+						setflag(ChartType)
+						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 2, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+							.then((res) => {
+								post({ "ID": 2, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+									.then((res) => {
+										if (res.data !== undefined) {
+											setOptionId(res.data.lstResult[0].ChartOptionID)
+										} else {
+											alert(res['Error']);
+										}
+									})
 
-							Notify()
-						})
+								Notify()
+							})
 
+					}
+					else {
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+						setflag(res.data.lstResult[0].ChartOption)
+
+					}
+				} else {
+					alert(res['Error']);
 				}
-				else {
-					setOptionId(res.data.lstResult[0].ChartOptionID)
-					setflag(res.data.lstResult[0].ChartOption)
-
-				}
-
 			})
 	}
 
@@ -215,29 +289,38 @@ export default function StateWise() {
 			let name = []
 			let name1 = [];
 			let weight = [];
+			let data = [];
+			let map = []
+			if (res.data !== undefined) {
+				for (let index = 0; index < res.data.lstResult.length; index++) {
+					if (res.data.lstResult[index]['Statename'] != null) {
+						// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
+						name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
+						name1.push(res.data.lstResult[index]['Statename'])
+						data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['Statename'] })
+						map.push({ name: res.data.lstResult[index]['Statename'], value: res.data.lstResult[index]['NetWeight'] })
+					}
+					weight.push(res.data.lstResult[index][inputdata['column']])
 
-			for (let index = 0; index < res.data.lstResult.length; index++) {
-				if (res.data.lstResult[index]['Statename'] != null) {
-					// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
-					name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
-					name1.push(res.data.lstResult[index]['Statename'])
 				}
-				weight.push(res.data.lstResult[index][inputdata['column']])
+				// setweight(weight)
+				setdata(data)
+				setState(name)
+				setName(name1)
+				setweight(weight)
+				setMap(map)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
+				} else {
+					setLoader(true)
+				}
 
-			}
-			// setweight(weight)
-			setState(name)
-			setName(name1)
-			setweight(weight)
-			setdataLoader(false)
-			if (weight.length !== 0) {
-				setLoader(false)
+
+				inputdata = { ...inputdata, ['Grouping']: '' }
 			} else {
-				setLoader(true)
+				alert(res['Error']);
 			}
-
-
-			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}
 
@@ -273,8 +356,11 @@ export default function StateWise() {
 						<div className='btnicons'>
 
 							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
+								{flag === 'map' ? <><a id='map'>Map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='map'>Map</a><hr className='custom-hr' /></>}
 								{flag === 'treemap' ? <><a id='treemap'>Tree map &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Tree map</a><hr className='custom-hr' /></>}
 								{flag === 'donut' ? <><a id='donut'>Semi donut &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Semi donut </a><hr className='custom-hr' /></>}
+								{flag === 'bar' ? <><a id='bar'>Bar &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar'>Bar</a><hr className='custom-hr' /></>}
+								{flag === 'hbar' ? <><a id='hbar'>Horizantal Bar &nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='hbar'>Horizantal Bar</a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
 						</div>
@@ -329,8 +415,11 @@ export default function StateWise() {
 
 							<div className="crancy-progress-card card-contain-graph">
 
-								{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}
-								{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
+								{flag === 'map' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(map))} /> : null}
+								{flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(semiDonut))} /> : null}
+								{flag === 'treemap' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(treemap))} /> : null}
+								{flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
+								{flag === 'hbar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(barHorizontal))} /> : null}
 							</div>
 							<div id="html-dist"></div></> :
 						<div className="crancy-progress-card card-contain-graph"  >

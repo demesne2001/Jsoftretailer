@@ -21,6 +21,7 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
                 contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
               }
             } else {
+              contextData.setfiltername(xAxis[config.dataPointIndex])
               contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
             }
           }
@@ -72,8 +73,9 @@ export default function SheduleClientDetailsSecondScreen(xAxis, yAxis, contextDa
           show: true,
         },
         formatter: function (val, config) {
-          
-          return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString() + "<br/>Prc : " + yAxis[2][config['dataPointIndex']].toString() + "%"
+          if (yAxis[2][config['dataPointIndex']] !== undefined) {
+            return "TotalParty : " + yAxis[0][config['dataPointIndex']].toString() + "<br/>VistedParty : " + yAxis[1][config['dataPointIndex']].toString() + "<br/>Prc : " + yAxis[2][config['dataPointIndex']].toString() + "%"
+          }
         },
         title: {
           formatter: (seriesName) => "",

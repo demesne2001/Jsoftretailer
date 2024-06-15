@@ -10,7 +10,7 @@ import SheduleClientDetailsSeriesOptions from '../../ChartOptions/SheduleAnalysi
 import TotalNoOfBillsSeriesOptions from '../../ChartOptions/SheduleAnalysis/TotalNoOfBillsSeriesOptions';
 import TargetAndArchievedSecondScreen from '../../ChartOptions/SheduleAnalysis/TargetAndArchievedSecondScreen';
 import '../../Assets/css/Custom.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import AvarageTimeSpentSecondScreen from '../../ChartOptions/SheduleAnalysis/AvarageTimeSpentSecondScreen';
 import SheduleClientDetailsSecondScreen from '../../ChartOptions/SheduleAnalysis/SheduleClientDetailsSecondScreen';
 import TotalNoOfBillsSecondScreen from '../../ChartOptions/SheduleAnalysis/TotalNoOfBillsSecondScreen';
@@ -19,8 +19,10 @@ import SecondSheduleScreenBar2 from '../../ChartOptions/SheduleAnalysisDetailed/
 import ExpenseComboChart from '../../ChartOptions/SheduleAnalysisDetailed/ExpenseComboChart';
 import { Table } from 'react-bootstrap';
 import TargetAndAchievedDetailScreenChart from '../../ChartOptions/SheduleAnalysisDetailed/TargetAndAchievedDetailScreenChart';
-
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 export default function CommanSheduleChart(props) {
+
+    //useState and variables
     const contextData = useContext(contex);
     const navigate = useNavigate();
     let inputdata = contextData.state;
@@ -31,6 +33,8 @@ export default function CommanSheduleChart(props) {
     const [yAxisDetailed, setyAxisDetailed] = useState([]);
     const [TravelingId, SetTravelingId] = useState([]);
     const [SheduleId, SetSheduleId] = useState([]);
+    const [flagSort, setflagSort] = useState(CommanSheduleObject[props.id]['sortingcolumn'] + " desc");
+    const [countforflag, setcountforflag] = useState(0)
     const chartOptions = {
         1: { Chartoption: TargetAndAchievedSeriesOptions, ChartType: 'line' },
         2: { Chartoption: AvarageTimeSpentSeriesOption, ChartType: 'bar' },
@@ -51,11 +55,14 @@ export default function CommanSheduleChart(props) {
         15: { Chartoption: SecondSheduleScreenBar1, ChartType: 'bar' },
         16: { Chartoption: SecondSheduleScreenBar1, ChartType: 'bar' },
     }
+    const [loader, setLoader] = useState(true)
+    const [dataloader, setdataLoader] = useState(true)
 
 
 
-
+    // All UseEffects
     useEffect(() => {
+        console.log("api called");
         getChartData()
     }, [inputdata])
 
@@ -66,10 +73,21 @@ export default function CommanSheduleChart(props) {
         }
     }, [inputdataDetail]);
 
+    useEffect(() => {
+        if (flagSort !== "" && countforflag !== 0) {
+            getSortChartData()
+        }
+    }, [flagSort])
 
 
+    // Functions 
     function getChartData() {
-        inputdata = { ...inputdata, 'Mode': props.id }
+        if (props.screen === 2) {
+            inputdata = { ...inputdata, 'Mode': props.id, 'FromDate': props.Date.FromDate, 'Todate': props.Date.ToDate }
+        } else {
+            inputdata = { ...inputdata, 'Mode': props.id }
+        }
+        console.log(inputdata, "secondmainasdhyuh");
 
         post(inputdata, API.scheduleGetcommonChart, {}, "post").then((res) => {
 
@@ -93,16 +111,21 @@ export default function CommanSheduleChart(props) {
                 }
                 setxAxis(tempXaxis);
                 SetTravelingId(tempTravelingId);
-
+                setdataLoader(false)
+                if (tempXaxis.length !== 0) {
+                    setLoader(false)
+                } else {
+                    setLoader(true)
+                }
             } else {
-                alert("Network Error!!!")
+                alert(res.Error)
             }
         })
     }
 
     function getChartDetailData() {
-        inputdataDetail = { ...inputdataDetail, 'Mode': props.id - 10 }
-
+        inputdataDetail = { ...inputdataDetail, 'Mode': props.id - 10, 'FromDate': props.Date.FromDate, 'Todate': props.Date.ToDate }
+        console.log(inputdataDetail, "sdhqwgteyugqw");
         post(inputdataDetail, API.GetChartDetailWise, {}, "post").then((res) => {
 
             if (res.data !== undefined) {
@@ -125,70 +148,170 @@ export default function CommanSheduleChart(props) {
                 }
                 setxAxisDetailed(tempXaxis);
                 SetSheduleId(tempSheduleId)
-
+                setdataLoader(false)
+                if (tempXaxis.length !== 0) {
+                    setLoader(false)
+                } else {
+                    setLoader(true)
+                }
             } else {
-                alert("Network Error!!!")
+                alert(res.Error)
             }
         })
     }
 
     function handleNavigate() {
         if (props.screen === 1) {
-            navigate('/schedual_analysis_detail', { state: props.id, replace: true })
+            console.log(inputdata.FromDate, inputdata.Todate, "sdasdgausydg");
+            navigate('/schedual_analysis_detail', { state: { id: props.id, FromDate: inputdata.FromDate, ToDate: inputdata.Todate }, replace: true });
+            // contextData.SetState({...contextData.state, [FromDate] : inputdata.FromDate,  })
         }
     }
-    
+
     function handleOnClickRow(id) {
         if (id !== undefined) {
             contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id.toString() })
         }
     }
 
+    function handleclickSort(e) {
+        if (e.target.id !== props.id && e.target.id !== '') {
+            setcountforflag(1)
+            setflagSort(e.target.id)
+        }
+    }
+
+    function handleShowSortDropDown() {
+        document.getElementById(props.id).style.display === "block" ? document.getElementById(props.id).style.display = "none" : document.getElementById(props.id).style.display = "block";
+        const tag_array = document.getElementsByClassName('dropdown-contenticon')
+
+        if (tag_array !== undefined) {
+            for (let i = 0; i < tag_array.length; i++) {
+
+                if (document.getElementsByClassName('dropdown-contenticon')[i]['id'] != props.id) {
+                    document.getElementsByClassName('dropdown-contenticon')[i].style.display = 'none';
+                }
+            }
+        }
+    }
+
+    document.getElementById("root").addEventListener("click", function (event) {
+
+        if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
+            if (document.getElementById(props.id) !== null) {
+                // document.getElementById("myDropdowniconbranch").style.display = "none"
+                document.getElementById(props.id).style.display = "none"
+            }
+        }
+    });
+
+    function getSortChartData() {
+        if (props.screen === 2) {
+            inputdata = { ...inputdata, 'Mode': props.id, 'FromDate': props.Date.FromDate, 'Todate': props.Date.ToDate, 'sort': flagSort }
+        } else {
+            inputdata = { ...inputdata, 'Mode': props.id, 'sort': flagSort }
+        }
+        // console.log(inputdata, "secongfdmainasdhyuh");
+
+        post(inputdata, API.scheduleGetcommonChart, {}, "post").then((res) => {
+
+            if (res.data !== undefined) {
+                var tempYaxis = [];
+                for (let i = 0; i < CommanSheduleObject[props.id]['yAxis'].length; i++) {
+                    var tempYaxis1 = [];
+                    for (let j = 0; j < res.data.lstResult.length; j++) {
+                        tempYaxis1.push(res.data.lstResult[j][CommanSheduleObject[props.id]['yAxis'][i]]);
+                    }
+                    tempYaxis.push(tempYaxis1);
+                }
+                setyAxis(tempYaxis);
+
+
+                var tempXaxis = [];
+                var tempTravelingId = [];
+                for (let j = 0; j < res.data.lstResult.length; j++) {
+                    tempXaxis.push(res.data.lstResult[j][CommanSheduleObject[props.id]['xAxis']]);
+                    tempTravelingId.push(res.data.lstResult[j]['TravellingTeamID'])
+                }
+                setxAxis(tempXaxis);
+                SetTravelingId(tempTravelingId);
+                setdataLoader(false)
+                if (tempXaxis.length !== 0) {
+                    setLoader(false)
+                } else {
+                    setLoader(true)
+                }
+            } else {
+                alert(res.Error)
+            }
+        })
+    }
+
+    // Return   
     return (
         <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-
+            {console.log(props.id, "idfer")}
             <div className="graph-card">
                 <div className='card-title-graph schedule-graph'>
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>
-                        <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']}</p>
+                        <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']} <div style={{ fontSize: '15px' }}> {props.screen === 3 ? contextData.filtername !== "" ? " ( " + contextData.filtername + " )" : null : null}</div></p>
                     </div>
-                    {/* <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
+                    <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
                         <div className='d-flex schedule-card-icon'>
-                            <div className='dropbtngraph'>
-                                {props.screen !== 2 ? <i className="fa-solid fa-arrow-down-short-wide sorticon" /> : null}
-                            </div>
-                            <div className='dropbtngraph'>
+
+                            {/* <div className='dropbtngraph'>
                                 <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' />
+                            </div> */}
+                            <div className='dropbtngraph'>
+                                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleShowSortDropDown} />
                             </div>
                         </div>
-                    </div> */}
+                        <div id={props.id} className="dropdown-contenticon shedulepagesort" onClick={handleclickSort}>
+                            {flagSort === 'TravellingTeamName asc' ? <><a id='TravellingTeamName asc'>Sort by TeamName ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='TravellingTeamName asc'>Sort by TeamName ASC&nbsp;</a><hr className='custom-hr' /></>}
+                            {flagSort === 'TravellingTeamName desc' ? <><a id='TravellingTeamName desc'>Sort by TeamName DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='TravellingTeamName desc'>Sort by TeamName DESC&nbsp;</a><hr className='custom-hr' /></>}
+                            {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " asc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp;</a><hr className='custom-hr' /> </>}
+                            {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " desc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by{CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp;</a><hr className='custom-hr' /> </>}
+                        </div>
+                    </div>
                 </div>
                 {console.log(yAxis)}
-                {props.screen === 1 ? <div class="crancy-progress-card card-contain-graph"><ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /></div> :
-                    props.screen !== 3 ?
-                        <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
-                        window.innerWidth < 1870 && props.id === 13 && props.screen === 3 ? <div class="crancy-progress-card card-contain-graph shedule-thirdscreen">
-                            <Table responsive striped bordered hover>
-                                <thead>
-                                    <th>Trips</th>
-                                    <th>Sales(wt)</th>
-                                    <th>Per kg. Expense</th>
-                                    <th>Per Trip Expense</th>
-                                </thead>
-                                <tbody>
-                                    {
-                                        xAxisDetailed.map((e, i) => {
-                                            return <tr onClick={() => handleOnClickRow(SheduleId[i])}>
-                                                <td>{e}</td>
-                                                <td>{yAxisDetailed[1][i]}</td>
-                                                <td>{yAxisDetailed[2][i]}</td>
-                                                <td>{yAxisDetailed[3][i]}</td>
-                                            </tr>
-                                        })
-                                    }
-                                </tbody>
-                            </Table>
-                        </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"><ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div>}
+                {dataloader !== true ?
+                    loader !== true || props.screen === 3 ? props.screen === 1 ? <div class="crancy-progress-card card-contain-graph">{props.id !== 4 ? <ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /> : <AlphaDashChart obj={JSON.parse(JSON.stringify(chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]))} />}</div> :
+                        props.screen !== 3 ?
+                            <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
+                            window.innerWidth < 1870 && props.id === 13 && props.screen === 3 ? <div class="crancy-progress-card card-contain-graph shedule-thirdscreen">
+                                <Table responsive striped bordered hover>
+                                    <thead>
+                                        <th>Trips</th>
+                                        <th>Sales(wt)</th>
+                                        <th>Per kg. Expense</th>
+                                        <th>Per Trip Expense</th>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            xAxisDetailed.map((e, i) => {
+                                                return <tr onClick={() => handleOnClickRow(SheduleId[i])}>
+                                                    <td>{e}</td>
+                                                    <td>{yAxisDetailed[1][i]}</td>
+                                                    <td>{yAxisDetailed[2][i]}</td>
+                                                    <td>{yAxisDetailed[3][i]}</td>
+                                                </tr>
+                                            })
+                                        }
+                                    </tbody>
+                                </Table>
+                            </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"><ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div> : <div className='crancy-progress-card card-contain-graph'>{props.screen === 3 ? null : "Not Found"}</div> : <div className="crancy-progress-card card-contain-graph">
+                        <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div>
+                        </div>
+                    </div>}
             </div>
 
         </div>

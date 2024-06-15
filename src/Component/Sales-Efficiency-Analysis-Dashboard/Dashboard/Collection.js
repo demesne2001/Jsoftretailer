@@ -56,17 +56,21 @@ export default function Collection() {
     }, [inputdata])
 
     async function getdata() {
-
+        
         inputdata = { ...inputdata, ['Grouping']: 'r' }
 
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
+              if (res.data !== undefined) {
                 if (res.data.lstResult.length > 0) {
                     setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
 
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 }
+              }else {
+                alert(res['Error']);
+              }
             })
     }
     // function format(val) {

@@ -67,6 +67,7 @@ export default function SalesEfficiency() {
 
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
+              if (res.data !== undefined) {
                 if (res.data.lstResult.length > 0) {
                     setweight(res.data.lstResult[0]['NetWeight'])
                     setcostAmount(res.data.lstResult[0]['CostAmount'])
@@ -74,6 +75,9 @@ export default function SalesEfficiency() {
 
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 } 
+              } else {
+                alert(res['Error']);;
+              }
             })
     }
     // function format(val) {
@@ -140,6 +144,7 @@ export default function SalesEfficiency() {
                 <div className="crancy-progress-card1 top-contant-top-card">
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
+                        {/* <h4 className="crancy-progress-card__title">{38.15}</h4> */}
                         <div className="crancy-progress-card__history">
                             <span>{prc}% Sold</span>
                         </div>
@@ -152,6 +157,7 @@ export default function SalesEfficiency() {
                 <div className="crancy-progress-card1 top-contant-botton-card">
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4>
+                        {/* <h4 className="crancy-progress-card__title">₹ 4,212,356</h4> */}
                         <div className="crancy-progress-card__history">
                             <span>{prc}% Sold</span>
                         </div>

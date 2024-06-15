@@ -69,8 +69,6 @@ export default function Header_shedual_Analysis() {
 
   //useEffect
   useEffect(() => {
-
-    getSyncDate()
     setCurrentDate();
     fetchBrandData();
   }, [])
@@ -114,7 +112,7 @@ export default function Header_shedual_Analysis() {
         currentDate = `${year}-0${month}-${day}`;
       }
     }
-    contextData.SettempState({ ...contextData.tempstate, ['ToDate']: currentDate });
+    contextData.SettempState({ ...contextData.tempstate, ['Todate']: currentDate });
   }
 
   function handleNavbar() {
@@ -176,13 +174,6 @@ export default function Header_shedual_Analysis() {
 
     localStorage.setItem("value", n);
     contextData.setcurrency(n);
-  }
-
-  async function getSyncDate() {
-    await post({}, API.GetDefaultScreenData, {}, 'post')
-      .then((res) => {
-        setSyncDate(res.data.lstResult[0].SyncDate)
-      })
   }
 
   function handleArrowLeft(str) {
@@ -355,7 +346,6 @@ export default function Header_shedual_Analysis() {
                         <ul className="geex-content__header__quickaction">
                           <li className="from-date-to-date-header__quickaction">
                             <h5>
-                              Last Sync :{syncDate}
                               <span className="text-muted">
                                 { }
                               </span>
@@ -589,16 +579,16 @@ export default function Header_shedual_Analysis() {
                           </label>
                           <div class="date-picker-filter">
 
-                            <i class="fa-solid fa-chevron-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('ToDate') }} />
+                            <i class="fa-solid fa-chevron-left date-arrow-left" id="arrow-left" onClick={() => { handleArrowLeft('Todate') }} />
                             <input
                               class="form-control"
                               type="date"
-                              name="ToDate"
-                              id="ToDate"
-                              value={contextData.tempstate['ToDate']}
+                              name="Todate"
+                              id="Todate"
+                              value={contextData.tempstate['Todate']}
                               onChange={handleOnDateChange}
                             />
-                            <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('ToDate') }} />
+                            <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('Todate') }} />
                           </div>
                         </div>
                       </div>

@@ -13,10 +13,12 @@ import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import { BranchWise_donut } from '../../ChartOptions/BranchWise_donut';
 import Notify from '../Notification/Notify';
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+
 
 
 export default function RegionWise() {
-
+	const [data, setdata] = useState([])
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
@@ -31,7 +33,100 @@ export default function RegionWise() {
 	const options_lolipop = RegionWise_lolipop(name, inputdata['column'])
 	const options_polar = RegionWise_Polar(name, inputdata['column'])
 	const options_donut = BranchWise_donut(name, inputdata['column'])
-
+	let optionDonut = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'RegionWise',
+		propdata: data,
+		radius: [10, 150],
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+	}
+	let optionPolar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'pie',
+		height: '100%',
+		width: '100%',
+		chartId: 'RegionWise',
+		propdata: data,
+		radius: [10, 110],
+	}
+	let gradientbar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		height: '400px',
+		width: '100%',
+		labelcolor: '#000',
+		chartId: 'RegionWisegradient',
+		charttype: 'gradient-bar',
+		Xaxis: name,
+		Yaxis: weight
+	}
+	let radialdata = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'polar-radialbar',
+		height: '100%',
+		width: '100%',
+		chartId: 'RegionWise',
+		radiusAxis: name,
+		seriesdata: weight,
+	}
+	let optionpie = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'simplepie',
+		height: '100%',
+		width: '100%',
+		propdata: data,
+		chartId: 'PieChartRegionWise',
+		label: {
+			position: 'inside',
+			formatter: '{d}%',
+			color: 'white',
+			fontWeight: 'bold',
+		},
+	}
+	let optradialbar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'semi-donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'RadialBarchartRegionWise',
+		propdata: data,
+		position: 'center',
+		fontsize: 20,
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+	}
+	let roundedBarHorizontal = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'round-horizontal-bar',
+		height: '100%',
+		width: '100%',
+		chartId: 'RegionWise',
+		Xaxis: name,
+		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
+		Yaxis: weight,
+		divname: 'crancy-progress-card card-contain-graph'
+	}
 	const series_lolipop = [{
 		name: 'Weight',
 		data: weight
@@ -55,7 +150,7 @@ export default function RegionWise() {
 	useEffect(() => {
 		fetchOption()
 
-		 getdata()
+		getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -72,27 +167,34 @@ export default function RegionWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
+				let data = [];
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						if (res.data.lstResult[index]['RegionName'] === null) {
+							name.push("null")
+							data.push({ value: res.data.lstResult[index]['NetWeight'], name: 'null' })
+						} else {
+							name.push(res.data.lstResult[index]['RegionName'])
+							data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['RegionName'] })
+						}
 
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					if (res.data.lstResult[index]['RegionName'] === null) {
-						name.push("null")
+						weight.push(res.data.lstResult[index][inputdata['column']])
+					}
+					setdata(data)
+					setName(name)
+					setweight(weight)
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
 					} else {
-						name.push(res.data.lstResult[index]['RegionName'])
+						setLoader(true)
 					}
 
-					weight.push(res.data.lstResult[index][inputdata['column']])
-				}
-				setName(name)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+
+					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
-					setLoader(true)
+					alert(res['Error']);
 				}
-
-
-				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
 	function handleonchangeCurrency() {
@@ -120,34 +222,41 @@ export default function RegionWise() {
 
 	});
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise", filterKey: "strRegionID", chartId: 4 }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise", filterKey: "strRegionID", chartId: 4 , FromDate: inputdata.FromDate, ToDate : inputdata.ToDate}, replace: true })
 	}
 
 	async function fetchOption() {
 		await post({ "ID": 4, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
-				if (res.data.lstResult.length === 0) {
-					setflag(ChartType)
+				if (res.data !== undefined) {
+					if (res.data.lstResult.length === 0) {
+						setflag(ChartType)
 
-					setflag(ChartType)
-					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 4, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-						.then((res) => {
-							post({ "ID": 4, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-								.then((res) => {
-									setOptionId(res.data.lstResult[0].ChartOptionID)
-								})
+						setflag(ChartType)
+						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 4, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+							.then((res) => {
+								post({ "ID": 4, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+									.then((res) => {
+										if (res.data !== undefined) {
+											setOptionId(res.data.lstResult[0].ChartOptionID)
+										} else {
+											alert(res['Error']);
+										}
+									})
 
-							Notify()
-						})
+								Notify()
+							})
 
 
+					}
+					else {
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+						setflag(res.data.lstResult[0].ChartOption)
+					}
+				} else {
+					alert(res['Error']);
 				}
-				else {
-					setOptionId(res.data.lstResult[0].ChartOptionID)
-					setflag(res.data.lstResult[0].ChartOption)
-				}
-
 			})
 	}
 
@@ -186,27 +295,34 @@ export default function RegionWise() {
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];
+			let data = [];
+			if (res.data !== undefined) {
+				for (let index = 0; index < res.data.lstResult.length; index++) {
+					if (res.data.lstResult[index]['RegionName'] === null) {
+						name.push("null")
+						data.push({ value: res.data.lstResult[index]['NetWeight'], name: 'null' })
+					} else {
+						name.push(res.data.lstResult[index]['RegionName'])
+						data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['RegionName'] })
+					}
 
-			for (let index = 0; index < res.data.lstResult.length; index++) {
-				if (res.data.lstResult[index]['RegionName'] === null) {
-					name.push("null")
+					weight.push(res.data.lstResult[index][inputdata['column']])
+				}
+				setdata(data)
+				setName(name)
+				setweight(weight)
+				setdataLoader(false)
+				if (weight.length !== 0) {
+					setLoader(false)
 				} else {
-					name.push(res.data.lstResult[index]['RegionName'])
+					setLoader(true)
 				}
 
-				weight.push(res.data.lstResult[index][inputdata['column']])
-			}
-			setName(name)
-			setweight(weight)
-			setdataLoader(false)
-			if (weight.length !== 0) {
-				setLoader(false)
+
+				inputdata = { ...inputdata, ['Grouping']: '' }
 			} else {
-				setLoader(true)
+				alert(res['Error']);
 			}
-
-
-			inputdata = { ...inputdata, ['Grouping']: '' }
 		})
 	}
 
@@ -237,9 +353,12 @@ export default function RegionWise() {
 						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconregion" className="dropdown-contenticon" onClick={handleclick}>
-								{/* {flag === 'bar' ? <><a id='bar' >lollipop chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >lollipop chart </a><hr className='custom-hr' /></>} */}
-								{flag === 'polarArea' ? <><a id='polarArea' >polar area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >polar area</a><hr className='custom-hr' /></>}
+								{flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
 								{flag === 'donut' ? <><a id='donut' >donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >donut</a><hr className='custom-hr' /></>}
+								{flag === 'radialBar' ? <><a id='radialBar' >Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' >Radial Bar</a><hr className='custom-hr' /></>}
+								{flag === 'pie' ? <><a id='pie' >Pie&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' >Pie</a><hr className='custom-hr' /></>}
+								{flag === 'semidonut' ? <><a id='semidonut' >Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' >Semi Donut</a><hr className='custom-hr' /></>}
+								{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
 						</div>
@@ -252,9 +371,13 @@ export default function RegionWise() {
 				{dataloader !== true ?
 					loader !== true ?
 						<div className="crancy-progress-card card-contain-graph">
-							{flag === 'bar' ? <ReactApexChart options={options_lolipop} type={flag} series={series_lolipop} height={350} /> : null}
-							{flag === 'polarArea' ? <ReactApexChart options={options_polar} type='polarArea' series={series_polar} height={350} /> : null}
-							{flag === 'donut' ? <ReactApexChart options={options_donut} type='donut' series={series_polar} height={350} /> : null}
+							{flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionPolar))} /> : null}
+							{flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionDonut))} /> : null}
+							{flag === 'polarbar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(gradientbar))} /> : null}
+							{flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+							{flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
+							{flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(roundedBarHorizontal))} /> : null}
 
 							{/* <Cylinder/> */}
 						</div> :

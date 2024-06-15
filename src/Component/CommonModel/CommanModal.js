@@ -39,7 +39,7 @@ function Commonmodel(props) {
         strItemSubitem: "",
         strPurchaseParty: "",
         strSalesParty: "",
-        strDesignCodeID:"",
+        strDesignCodeID: "",
         strSaleman: "",
         strProduct: "",
         strDesignCatalogue: "",
@@ -174,41 +174,44 @@ function Commonmodel(props) {
     function AddDefaultColumn() {
 
         post({ "ID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.GetFilterGridByID, {}, "post").then((res) => {
+            if (res.data !== undefined) {
+                if (res.data.lstResult.length === 0) {
+                    if (props.modelprops.id === 'DesignCatalogID') {
+                        post({ "FilterGridID": 0, "FilterGrid": header[2], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
 
-            if (res.data.lstResult.length === 0) {
-                if (props.modelprops.id === 'DesignCatalogID') {
-                    post({ "FilterGridID": 0, "FilterGrid": header[2], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
+                            // setColumn([props.modelprops.name]);
+                        })
+                    } else if (props.modelprops.id === 'CityName' && props.modelprops.id === 'Caption') {
+                        post({ "FilterGridID": 0, "FilterGrid": header[0], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
 
-                        // setColumn([props.modelprops.name]);
-                    })
-                } else if (props.modelprops.id === 'CityName' && props.modelprops.id === 'Caption') {
-                    post({ "FilterGridID": 0, "FilterGrid": header[0], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
+                            // setColumn([props.modelprops.name]);
+                        })
+                    } else {
 
-                        // setColumn([props.modelprops.name]);
-                    })
+                        post({ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
+
+                            // setColumn([props.modelprops.name]);
+                        })
+                    }
+
+
+                    // } else {
+                    //     post({ "FilterGridID": 0, "FilterGrid": props.modelprops.name, "FilterID": props.modelprops.grid,vendorID:1,UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
+
+                    //         // setColumn([props.modelprops.name]);
+                    //     })
+                    // }
                 } else {
 
-                    post({ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
+                    setFilterGridId(res.data.lstResult[0]['FilterGridID']);
+                    let arr = res.data.lstResult[0]['FilterGrid'].split(',');
 
-                        // setColumn([props.modelprops.name]);
-                    })
+                    setColumn(arr);
                 }
-
-
-                // } else {
-                //     post({ "FilterGridID": 0, "FilterGrid": props.modelprops.name, "FilterID": props.modelprops.grid,vendorID:1,UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-
-                //         // setColumn([props.modelprops.name]);
-                //     })
-                // }
+                setLoaderGrid(false)
             } else {
-
-                setFilterGridId(res.data.lstResult[0]['FilterGridID']);
-                let arr = res.data.lstResult[0]['FilterGrid'].split(',');
-
-                setColumn(arr);
+                alert(res['Error']);
             }
-            setLoaderGrid(false)
         })
 
     }
@@ -241,10 +244,12 @@ function Commonmodel(props) {
 
                 post(inputForAlldata, props.modelprops.api, {}, "post")
                     .then((response) => {
-
-                        setfinalAllitem(response.data.lstResult)
+                        if (response.data !== undefined) {
+                            setfinalAllitem(response.data.lstResult)
+                        } else {
+                            alert(response['Error']);
+                        }
                     })
-                    .catch(error => console.error(error))
             }
         }
 
@@ -362,13 +367,17 @@ function Commonmodel(props) {
                 var input = { ...search, ['PageNo']: page, ['PageSize']: 50 }
 
                 delete input.undefined
-                post( input, props.modelprops.api, {}, 'post')
+                post(input, props.modelprops.api, {}, 'post')
                     .then(response => {
-                        setfinalitem([...finalitem, ...response.data.lstResult])
-                        setPage(page + 1);
-                        setLoaderScroll(false)
+                        if (response.data !== undefined) {
+                            setfinalitem([...finalitem, ...response.data.lstResult])
+                            setPage(page + 1);
+                            setLoaderScroll(false)
+                        } else {
+                            alert(response['Error']);
+                        }
                     })
-                    .catch(error => console.error(error))
+
             }
         }
     }
@@ -389,16 +398,18 @@ function Commonmodel(props) {
 
             post(input, props.modelprops.api, {}, "post")
                 .then((response) => {
+                    if (response.data !== undefined) {
 
-
-                    if (response.data.lstResult !== undefined) {
-                        setfinalitem(response.data.lstResult)
+                        if (response.data.lstResult !== undefined) {
+                            setfinalitem(response.data.lstResult)
+                        }
+                        setLoader(false)
+                    } else {
+                        alert(response['Error']);
                     }
-                    setLoader(false)
-
 
                 })
-                .catch(error => console.error(error))
+                
         }
     }
 

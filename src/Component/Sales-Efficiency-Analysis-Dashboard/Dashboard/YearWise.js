@@ -13,190 +13,13 @@ import { YearWise_bar } from '../../ChartOptions/YearWise_bar';
 import { YearWise_semiDonut } from '../../ChartOptions/YearWise_semiDonut';
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 
 
 export default function YearWise() {
-
+	const [data, setdata] = useState([])
 	const navigate = useNavigate()
-
-	// const contexData = useContext(contex)
-
-	// const series = [
-	// 	{
-	// 		name: 'Actual',
-	// 		data: [
-	// 			{
-	// 				x: '2011',
-	// 				y: 1292,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 1400,
-	// 						strokeHeight: 5,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2012',
-	// 				y: 4432,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 5400,
-	// 						strokeHeight: 5,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2013',
-	// 				y: 5423,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 5200,
-	// 						strokeHeight: 5,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2014',
-	// 				y: 6653,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 6500,
-	// 						strokeHeight: 5,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2015',
-	// 				y: 8133,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 6600,
-	// 						strokeHeight: 13,
-	// 						strokeWidth: 0,
-	// 						strokeLineCap: 'round',
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2016',
-	// 				y: 7132,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 7500,
-	// 						strokeHeight: 5,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2017',
-	// 				y: 7332,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 8700,
-	// 						strokeHeight: 5,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			},
-	// 			{
-	// 				x: '2018',
-	// 				y: 6553,
-	// 				goals: [
-	// 					{
-	// 						name: 'Expected',
-	// 						value: 7300,
-	// 						strokeHeight: 2,
-	// 						strokeDashArray: 2,
-	// 						strokeColor: '#775DD0'
-	// 					}
-	// 				]
-	// 			}
-	// 		]
-	// 	}
-	// ]
-	// const option = barMarkerOptions()
-
-	// const [postData, setPostData] = useState({
-	// 	"strBranch": "",
-	// 	"strState": "",
-	// 	"strCity": "",
-	// 	"strItem": "",
-	// 	"strSubItem": "",
-	// 	"strItemGroup": "",
-	// 	"strItemSubitem": "",
-	// 	"strPurchaseParty": "",
-	// 	"strSalesParty": "",
-	// 	"strSaleman": "",
-	// 	"strProduct": "",
-	// 	"strDesignCatalogue": "",
-	// 	"strSaleAging": "",
-	// 	"strModeofSale": "",
-	// 	"strTeamModeofSale": "",
-	// 	"FromDate": "",
-	// 	"ToDate": "",
-	// 	"strMetalType": "",
-	// 	"strDayBook": "",
-	// 	"PageNo": 0,
-	// 	"PageSize": 0,
-	// 	"Search": ""
-	// })
-
-
-	// useEffect(()=>{
-
-	// 	setPostData(contexData.state)
-
-	// },[contexData.state])
-
-	// useEffect(()=>{
-
-	// 	getdata()
-
-	// },[postData])
-
-
-	// function getdata() {
-
-	// 	let temp1 = []
-
-	// 	post(postData, API.GetYearWise, 'post')
-	// 		.then((res) => {
-
-	// 			for (let index = 0; index < res.data.lstResult.length; index++) {
-
-	// 				temp1.push({
-
-	// 				})
-
-	// 			}
-
-	// 		})
-	// }
-
-	// function handledropdownMenu() {
-	// 	document.getElementById("myDropdownYear").style.display === "block" ? document.getElementById("myDropdownYear").style.display = "none" : document.getElementById("myDropdownYear").style.display = "block";
-	// }
-
-
-	// function handleSelectedChart(num) {
-	// 	// setBranchWiseChart(num)
-	// }
-
-
 	const contexData = useContext(contex);
 	const [name, setName] = useState([])
 	const [weight, setweight] = useState([])
@@ -207,6 +30,88 @@ export default function YearWise() {
 	const [flag, setflag] = useState()
 	const ChartType = "kpi"
 	const [flagSort, setflagSort] = useState('')
+	let optionbar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'bar',
+		height: '400%',
+		width: '100%',
+		chartId: 'yearwise',
+		Xaxis: name,
+		Yaxis: weight,
+	}
+	let radialdata = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'polar-radialbar',
+		height: '100%',
+		width: '100%',
+		chartId: 'yearwise1',
+		radiusAxis: name,
+		seriesdata: weight,
+	}
+	let optiondonut = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'yearwise2',
+		propdata: data,
+		radius: [10, 150],
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+
+	}
+
+	let optionpie = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'simplepie',
+		height: '100%',
+		width: '100%',
+		propdata: data,
+		chartId: 'yearwise3',
+		label: {
+			position: 'inside',
+			formatter: '{d}%',
+			color: 'white',
+			fontWeight: 'bold',
+		},
+	}
+	let optradialbar = {
+		charttype: 'semi-donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'yearwise4',
+		propdata: data,
+		position: 'center',
+		fontsize: 20,
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+	}
+	let optionPolar = {
+		charttype: 'pie',
+		height: '100%',
+		width: '100%',
+		chartId: 'yearwise6',
+		propdata: data,
+		radius: [10, 110],
+	}
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
@@ -229,7 +134,7 @@ export default function YearWise() {
 
 	useEffect(() => {
 		fetchOption()
-		 getdata()
+		getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -246,219 +151,32 @@ export default function YearWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
-
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					if (res.data.lstResult[index]['YearCode'] === null) {
-						name.push("null")
-					} else {
-						name.push(res.data.lstResult[index]['YearCode'])
-					}
-					weight.push(res.data.lstResult[index][inputdata['column']])
-				}
-				setName(name)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
-				} else {
-					setLoader(true)
-				}
-				inputdata = { ...inputdata, ['Grouping']: '' }
-			})
-	}
-
-
-
-
-
-
-	if (flag === 'bar') {
-		var series = [{
-			data: weight
-		}]
-
-		var options = {
-			chart: {
-				height: 350,
-				type: 'bar'
-			},
-			plotOptions: {
-				bar: {
-					columnWidth: '60%'
-				}
-			},
-			xaxis: {
-				categories: name,
-			},
-			colors: ['#00E396'],
-			dataLabels: {
-				enabled: false
-			},
-			legend: {
-				show: false
-			}
-		}
-	}
-
-	else if (flag === 'donut') {
-		var series = weight
-
-		var options = {
-			dataLabels: {
-				enabled: false,
-			},
-			chart: {
-				type: 'donut',
-				animations: {
-					enabled: true,
-					easing: 'easeinout',
-					speed: 1000,
-					animateGradually: {
-						enabled: true,
-						delay: 150
-					},
-					dynamicAnimation: {
-						enabled: true,
-						speed: 1000
-					}
-				},
-			},
-			plotOptions: {
-				pie: {
-					startAngle: -90,
-					endAngle: 90,
-					offsetY: 80,
-					dataLabels: {
-						format: 'scale'
-					}
-				}
-			},
-			colors: ['#58a3b2'],
-
-			legend: {
-				show: false,
-				floating: true,
-				fontSize: '13px',
-				position: 'left',
-				offsetX: 140,
-				offsetY: 3,
-				labels: {
-					useSeriesColors: true,
-				},
-				markers: {
-					width: 0,
-					height: 0
-				},
-
-			},
-
-			labels: name,
-			// tooltip: {
-			// 	theme: 'dark',
-			// 	x: {
-			// 		show: true
-			// 	},
-			// 	y: {
-			// 		show: true
-			// 	}
-			// },
-			// responsive: [{
-			//   breakpoint: 480,
-			//   options: {
-			// 	chart: {
-			// 	  width: 200
-			// 	},
-			// 	legend: {
-			// 	  position: 'bottom'
-
-			// 	}
-			//   }
-			// }]
-		}
-	}
-
-	else if (flag === 'kpi') {
-		var series = weight
-
-		var options = {
-			dataLabels: {
-				enabled: true,
-			},
-			tooltip: {
-				enabled: true,
-				followCursor: true,
-			},
-			colors: ['#51bde4'],
-
-			chart: {
-				animations: {
-					enabled: true,
-					easing: 'easeinout',
-					speed: 1000,
-					animateGradually: {
-						enabled: true,
-						delay: 150
-					},
-					dynamicAnimation: {
-						enabled: true,
-						speed: 1000
-					}
-				},
-				toolbar: {
-					show: true,
-					offsetX: 0,
-					offsetY: 0,
-					tools: {
-						download: true,
-					},
-
-				},
-				type: 'donut',
-			},
-			legend: {
-				show: true,
-				floating: false,
-				fontSize: '13px',
-				position: 'bottom',
-				offsetX: 0,
-				offsetY: 0,
-				labels: {
-					useSeriesColors: true,
-				},
-				markers: {
-					width: 12,
-					height: 12
-				}
-			},
-
-			labels: name,
-
-			plotOptions: {
-				pie: {
-					startAngle: 0,
-					endAngle: 360,
-					customScale: 0.9,
-					offsetY: 20,
-					donut: {
-						labels: {
-							offsetY: 0,
-							startAngle: 0,
-							endAngle: 360,
-							hollow: {
-								size: '10%',
-							},
-							show: true,
-							name: {
-
-							},
-							value: {
-
-							}
+				let data = [];
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						if (res.data.lstResult[index]['YearCode'] === null) {
+							name.push("null")
+							data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
+						} else {
+							name.push(res.data.lstResult[index]['YearCode'])
+							data.push({ name: res.data.lstResult[index]['YearCode'], value: res.data.lstResult[index][inputdata['column']] })
 						}
+						weight.push(res.data.lstResult[index][inputdata['column']])
 					}
+					setdata(data)
+					setName(name)
+					setweight(weight)
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
+					} else {
+						setLoader(true)
+					}
+					inputdata = { ...inputdata, ['Grouping']: '' }
+				} else {
+					alert(res['Error']);
 				}
-			}
-		}
+			})
 	}
 
 
@@ -477,7 +195,7 @@ export default function YearWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 , FromDate: inputdata.FromDate, ToDate : inputdata.ToDate}, replace: true })
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
@@ -494,25 +212,32 @@ export default function YearWise() {
 		await post({ "ID": 15, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
-				if (res.data.lstResult.length === 0) {
-					setflag(ChartType)
+				if (res.data !== undefined) {
+					if (res.data.lstResult.length === 0) {
+						setflag(ChartType)
 
-					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 15, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-						.then((res) => {
+						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 15, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+							.then((res) => {
 
-							post({ "ID": 15, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-								.then((res) => {
-									setOptionId(res.data.lstResult[0].ChartOptionID)
-								})
+								post({ "ID": 15, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+									.then((res) => {
+										if (res.data !== undefined) {
+											setOptionId(res.data.lstResult[0].ChartOptionID)
+										} else {
+											alert(res['Error']);
+										}
+									})
 								Notify()
-						})
+							})
 
+					}
+					else {
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+						setflag(res.data.lstResult[0].ChartOption)
+					}
+				} else {
+					alert(res['Error']);
 				}
-				else {
-					setOptionId(res.data.lstResult[0].ChartOptionID)
-					setflag(res.data.lstResult[0].ChartOption)
-				}
-
 			})
 	}
 
@@ -548,28 +273,36 @@ export default function YearWise() {
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': 'YearCode', 'SortBy': flagSort, ['Grouping']: 'M.FinYearID,m.YearCode' }
 
-		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
-			let name = [];
-			let weight = [];
-
-			for (let index = 0; index < res.data.lstResult.length; index++) {
-				if (res.data.lstResult[index]['YearCode'] === null) {
-					name.push("null")
+		await post(inputForSort, API.CommonChart, {}, 'post')
+			.then((res) => {
+				let name = [];
+				let weight = [];
+				let data = [];
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						if (res.data.lstResult[index]['YearCode'] === null) {
+							name.push("null")
+							data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
+						} else {
+							name.push(res.data.lstResult[index]['YearCode'])
+							data.push({ name: res.data.lstResult[index]['YearCode'], value: res.data.lstResult[index][inputdata['column']] })
+						}
+						weight.push(res.data.lstResult[index][inputdata['column']])
+					}
+					setdata(data)
+					setName(name)
+					setweight(weight)
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
+					} else {
+						setLoader(true)
+					}
+					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
-					name.push(res.data.lstResult[index]['YearCode'])
+					alert(res['Error']);
 				}
-				weight.push(res.data.lstResult[index][inputdata['column']])
-			}
-			setName(name)
-			setweight(weight)
-			setdataLoader(false)
-			if (weight.length !== 0) {
-				setLoader(false)
-			} else {
-				setLoader(true)
-			}
-			inputdata = { ...inputdata, ['Grouping']: '' }
-		})
+			})
 	}
 
 
@@ -601,48 +334,30 @@ export default function YearWise() {
 						<div className='btnicons'>
 							<div id="myDropdowniconyear" className="dropdown-contenticon" onClick={handleclick}>
 
-								{flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
+								{flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
 								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
-								{flag === 'semiDonut' ? <><a id='semiDonut' className='semiDonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semiDonut' className='semiDonut'>Semi Donut</a><hr className='custom-hr' /></>}
+								{flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
+								{flag === 'radialBar' ? <><a id='radialBar' className='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' className='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
+								{flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
+								{flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
 							</div>
 						</div>
 					</div>
-					{/* <i className="fas fa-external-link-alt"></i> */}
-					{/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-						<img src={BlackDots} className='dropbtn' />
-					</p>
-					<div id="myDropdownYear" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-						<a id='option1' onClick={() => handleSelectedChart(1)}>Radial Bar</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
-					</div> */}
+
 				</div>
-				{/* {weight.length !== 0 ?
-					<div className="crancy-progress-card card-contain-graph">
-						{flag === 'donut' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
-						{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
-						{flag === 'semiDonut' ? <ReactApexChart options={options_semidonut} series={series2} type='donut' height={350} /> : null}
-					</div> :
-					<div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>} */}
+
 				{dataloader !== true ?
 					loader !== true ?
 						<div className="crancy-progress-card card-contain-graph">
-							{flag === 'donut' ? <ReactApexChart options={options_donut} series={series2} type='donut' height={350} /> : null}
-							{flag === 'bar' ? <ReactApexChart options={options_bar} series={series1} type={flag} height={350} /> : null}
-							{flag === 'semiDonut' ? <ReactApexChart options={options_semidonut} series={series2} type='donut' height={350} /> : null}
+							{flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionPolar))} /> : null}
+							{flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
+							{flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondonut))} /> : null}
+							{flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+							{flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
 							Not Found

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import contex from '../../contex/Contex';
-
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 import API from '../../Utility/API'
 import post from '../../Utility/APIHandle'
 import ReactApexChart from 'react-apexcharts';
@@ -25,152 +25,99 @@ export default function Piegraph1() {
 
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {
-        
-        
 
-        if (res.data.lstResult.length > 0) {
 
-          setweight(res.data.lstResult[0]['NetWeight'])
-          setname(res.data.lstResult[0]['SalesType'])
-          setweight1(res.data.lstResult[1] ? res.data.lstResult[1]['NetWeight'] : 0 )
-          setname1(res.data.lstResult[1] ? res.data.lstResult[1]['SalesType'] : "Return" )
+        if (res.data !== undefined) {
 
-          inputdata = { ...inputdata, ['Grouping']: '' }
+
+          if (res.data.lstResult.length > 0) {
+
+            setweight(res.data.lstResult[0]['NetWeight'])
+            setname(res.data.lstResult[0]['SalesType'])
+            setweight1(res.data.lstResult[1] ? res.data.lstResult[1]['NetWeight'] : 0)
+            setname1(res.data.lstResult[1] ? res.data.lstResult[1]['SalesType'] : "Return")
+
+            inputdata = { ...inputdata, ['Grouping']: '' }
+          }
+        } else {
+          alert(res['Error']);
         }
       })
   }
 
   const series = [weight, weight1]
-
-  const options = {
-    
-    chart: {
-      type: 'donut',
-      height: '100%'
-  },
-  legend:{
-    show:true,
-    position:'bottom',
-    
-  },
-    dataLabels: {
-      enabled: false
+  let donut = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'donut',
+    height: '100%',
+    width: '100%',
+    legend: {
+      type: 'scroll',
+      orient: 'vertical',
+      left: '0',
+      bottom: '0',
+      pageTextStyle: {
+        fontStyle: 'oblique'
+      }
     },
-    tooltip: {
-      enabled: false
-    },
-    colors: ['#8458b0', '#da3e00'],
-    labels: [name, name1],
-    plotOptions: {
-      pie: {
-        donut: {
-          labels: {
-            show: true,
-
-            name: {
-
-            },
-            value: {
-              offsetY: -5,
-              fontSize: '12px',
-              fontFamily: 'Helvetica, Arial, sans-serif',
-              fontWeight: 600,
-            },
-            total: {
-              show: true,
-              label: 'Total',
-              formatter: function (w) {
-                return w.globals.seriesTotals.reduce((a, b) => {
-
-                  var ans = parseFloat(a)+parseFloat(b);
-                  return (parseFloat(ans).toFixed(2))
-                }, 0)
-              }
-            }
-          }
+    label:true,
+    color: ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#ffee65", "#beb9db", "#fdcce5", "#8bd3c7"],
+    chartId: 'SaleReturn',
+    propdata: [{ value: weight, name: name },
+    { value: weight1, name: name1 }
+    ],
+    label: {
+      show: true,
+      position: 'outside',
+      fontStyle: 'bold',
+      formatter: '{b|{b}：}{per|{c}}',
+      fontsize: 100,
+      color: 'black',
+      fontWeight: 'bold',
+      rich: {
+        b: {
+          color: '#4C5058',
+          fontSize: 12,
+          fontWeight: 'bold',
+          lineHeight: 33
+        },
+        per: {
+          color: '#fff',
+          backgroundColor: '#4C5058',
+          padding: [3, 4],
+          borderRadius: 2
         }
       }
     },
-    responsive: [
-      {
-        
-          breakpoint: 850,
-          options: {
-            chart: {
-              type: 'donut',
-              height: '150'
-           },
-           legend:{
-            show:true,
-            position:'right',
-          }
-
-          }
-      }
-  ],
-  //   responsive: [{
-  //     breakpoint: 480,
-  //     options: {
-  //         chart: {
-  //             type: 'donut',
-  //             animations: {
-  //                 enabled: true,
-  //                 easing: 'easeinout',
-  //                 speed: 800,
-  //                 animateGradually: {
-  //                     enabled: true,
-  //                     delay: 150
-  //                 },
-  //                 dynamicAnimation: {
-  //                     enabled: true,
-  //                     speed: 700
-  //                 }
-  //             },
-  //             width: 300
-  //         },
-  //         legend: {
-  //             position: 'bottom'
-  //         },
-  //         plotOptions: {
-  //             pie: {
-  //                 startAngle: -90,
-  //                 endAngle: 90,
-  //                 offsetY: 0,
-  //                 dataLabels: {
-  //                     format: 'scale'
-  //                 }
-                  
-  //             }
-              
-  //         }
-  //     }
-  // }]
+    labelLine: {
+      show: true
+    },
   }
   return (
 
 
     <div className="col-xl-2 col-lg-4 col-md-4 col-12">
       <div className="graph-card">
-      {weight.length !== 0 ?
-        <div className="crancy-progress-card top-graph-card">
-          {/* <div className="text-center"> */}
+        {weight.length !== 0 ?
+          <div className="crancy-progress-card top-graph-card">
+            {/* <div className="text-center"> */}
 
-          {/* <ReactApexChart options={options} series={series} type="donut" /> */}
-          <ReactApexChart options={options} series={series} type='donut' height={200} />
-          {/* </div> */}
-        </div>:
-        <div className="crancy-progress-card top-graph-card">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-					<div class="dot-spinner__dot" style={{top:"7px"}}></div>
-				</div>
-			</div>}
+            {/* <ReactApexChart options={options} series={series} type="donut" /> */}
+            <AlphaDashChart obj={JSON.parse(JSON.stringify(donut))} />
+            {/* </div> */}
+          </div> :
+          <div className="crancy-progress-card top-graph-card">
+            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
+            </div>
+          </div>}
 
       </div>
     </div>

@@ -14,7 +14,6 @@ export default function Header_detailed(props) {
     const contextData = useContext(contex)
 
     useEffect(() => {
-        getSyncDate()
         const element = document.getElementsByClassName("crancy-smenu")[0];
         element.classList.remove("crancy-close");
 
@@ -41,14 +40,6 @@ export default function Header_detailed(props) {
         }
     }
 
-    async function getSyncDate() {
-        await post({}, API.GetDefaultScreenData, {}, 'post')
-            .then((res) => {
-                setSyncDate(res.data.lstResult[0].SyncDate)
-            })
-    }
-
-
 
     const navigate = useNavigate()
 
@@ -58,11 +49,15 @@ export default function Header_detailed(props) {
 
         const element1 = document.getElementsByClassName("crancy-header")[0];
         element1.classList.remove("crancy-close");
-
         const element2 = document.getElementsByClassName("crancy-adashboard")[0];
         element2.classList.remove("crancy-close");
+
         if (props.screen === 2) {
             navigate('/schedual_analysis', { replace: true })
+        } else if (props.screen === 3) {
+            navigate('/Stock_TO_Sales', { replace: true })
+        } else if (props.screen === 4) {
+            navigate('/minimum_stocks', { replace: true })
         } else {
             navigate('/Home', { replace: true })
         }
@@ -80,8 +75,7 @@ export default function Header_detailed(props) {
             const element2 = document.getElementsByClassName("crancy-adashboard")[0];
             element2.classList.remove("crancy-close");
 
-            const element3 = document.getElementsByClassName("crancy-adashboard")[1];
-            element3.classList.remove("crancy-close");
+
         } else {
             const element = document.getElementsByClassName("crancy-smenu")[0];
             element.classList.add("crancy-close");
@@ -92,8 +86,6 @@ export default function Header_detailed(props) {
             const element2 = document.getElementsByClassName("crancy-adashboard")[0];
             element2.classList.add("crancy-close");
 
-            const element3 = document.getElementsByClassName("crancy-adashboard")[1];
-            element3.classList.add("crancy-close");
         }
 
     }
@@ -107,6 +99,21 @@ export default function Header_detailed(props) {
             contextData.setbillState({
                 "ScheduleID": 0,
                 "Mode": 0
+            });
+            contextData.setfiltername("");
+        } else if (props.screen === 3 || props.screen === 4) {
+            contextData.SetDetailsecondState({
+                "FromDate": "2024-04-01",
+                "ToDate": "2024-06-07",
+                "StrBranchID": "",
+                "StrCompanyID": "",
+                "StrItemID": "",
+                "StrSubItemID": "",
+                "MetalType": "",
+                "ItemGroupID": "",
+                "MonthType": "Q",
+                "Unit": "",
+                "Mode": 5
             })
         } else {
             contextData.setDefaultChart({
@@ -128,8 +135,8 @@ export default function Header_detailed(props) {
                 "strSaleAging": "",
                 "strModeofSale": "",
                 "strTeamModeofSale": "",
-                "FromDate": "",
-                "ToDate": "",
+                "FromDate": props.Date.FromDate,
+                "ToDate": props.Date.FromDate,
                 "strMetalType": "",
                 "strDayBook": "",
                 "PageNo": 1,
@@ -159,7 +166,17 @@ export default function Header_detailed(props) {
                 "PageNo": 1,
                 "PageSize": 5
             })
+            contextData.settagImageFilterName("")
+            contextData.setdefaultchartFilterName("")
         }
+    }
+    function FormateDate(date) {
+        if (date !== undefined && date !== null) {
+            let listdate = date.split("-");
+            let formateDateString = listdate[2] + "-" + listdate[1] + "-" + listdate[0]
+            return formateDateString
+        }
+
     }
     return (
         <header class="crancy-header">
@@ -193,7 +210,7 @@ export default function Header_detailed(props) {
                                         <div class="geex-content__header__content">
                                             <div class="geex-content__header__customizer">
                                                 <h2 class="geex-content__header__title">
-                                                    {props.screen === 2 ? "Schedule Analysis" : "Sales Efficiency Analysis Dashboard"}
+                                                    {props.screen === 2 ? "Schedule Analysis" : props.screen === 3 ? "Stock To Sales" : props.screen === 4 ? "Minimum Stocks" : "Sales Efficiency Analysis Dashboard"}
                                                 </h2>
                                             </div>
                                         </div>
@@ -202,13 +219,21 @@ export default function Header_detailed(props) {
                                     <div class="geex-content__header__action">
                                         <div class="geex-content__header__action__wrap">
                                             <ul class="geex-content__header__quickaction">
-                                                <li class="from-date-to-date-header__quickaction">
-                                                    <h5>
-                                                        Last Sync :
-                                                        <span class="text-muted"
-                                                        >{syncDate}</span
-                                                        >
-                                                    </h5>
+                                                <li class="geex-content__header__quickaction__item">
+
+
+                                                    {props.Date !== undefined ?
+                                                        <div className='datesinheader'>
+                                                            {props.Date.FromDate !== "" ? "From: " + FormateDate(props.Date.FromDate) + " " : null}
+                                                            {props.Date.ToDate !== "" ? "To: " + FormateDate(props.Date.ToDate) : null}
+                                                        </div>
+                                                        : null
+                                                    }
+
+                                                </li>
+                                                <li class="geex-content__header__quickaction__item">
+
+
                                                 </li>
                                                 <li class="geex-content__header__quickaction__item">
                                                     <div

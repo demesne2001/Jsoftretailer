@@ -16,7 +16,7 @@ import strip from '../../Assets/image/strips.jpg'
 import Gradient from "javascript-color-gradient";
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
-
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 export default function DesignCatalogueWise() {
   const [sales, setSales] = useState([])
@@ -35,11 +35,89 @@ export default function DesignCatalogueWise() {
   const options_donut = DesignCatalogueWise_donut(name, inputdata['column']);
   const options_pie = DesignCatalogueWise_pie(name, inputdata['column']);
   const series1 = weight;
+  const [data, setData] = useState()
   const [flagSort, setflagSort] = useState('')
   const series2 = [{
     name: 'weight',
     data: weight
   }]
+
+  let optionbar = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'bar',
+    height: '400%',
+    width: '100%',
+    chartId: 'DesigncatlogWise',
+    Xaxis: name,
+    Yaxis: weight,
+  }
+
+  let radialdata = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'polar-radialbar',
+    height: '100%',
+    width: '100%',
+    chartId: 'DesigncatlogWise radialdata',
+    radiusAxis: name,
+    seriesdata: weight,
+  }
+  let optiondonut = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'donut',
+    height: '100%',
+    width: '100%',
+    chartId: 'DesigncatlogWise optiondonut',
+    propdata: data,
+    radius: [10, 150],
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    }
+
+  }
+
+  let optionpie = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'simplepie',
+    height: '100%',
+    width: '100%',
+    propdata: data,
+    chartId: 'DesigncatlogWise optionpie',
+    label: {
+      position: 'inside',
+      formatter: '{d}%',
+      color: 'white',
+      fontWeight: 'bold',
+    },
+  }
+  let optradialbar = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'semi-donut',
+    height: '100%',
+    width: '100%',
+    chartId: 'DesigncatlogWise optradialbar',
+    propdata: data,
+    position: 'center',
+    fontsize: 20,
+    label:  {
+			show: false,
+			position: 'center'
+		  },
+		  emphasis: {
+			label: {
+			  show: true,
+			  fontSize: 20,
+			  fontWeight: 'bold'
+			}
+		}
+  }
 
 
   function handleclick(e) {
@@ -57,7 +135,7 @@ export default function DesignCatalogueWise() {
   useEffect(() => {
 
     fetchOption()
-     getdata()
+    getdata()
   }, [inputdata])
 
   useEffect(() => {
@@ -75,42 +153,51 @@ export default function DesignCatalogueWise() {
         let weight = [];
         let sale = [];
         var js = {};
+        let data = [];
+        if (res.data !== undefined) {
 
 
-        for (let index = 0; index < res.data.lstResult.length; index++) {
-          js = { 'product': '', 'thisYearProfit': 0 }
-          if (res.data.lstResult[index]['DesignNo'] === null) {
-            name.push("null")
-          } else {
-            name.push(res.data.lstResult[index]['DesignNo'])
+          for (let index = 0; index < res.data.lstResult.length; index++) {
+            js = { 'product': '', 'thisYearProfit': 0 }
+            if (res.data.lstResult[index]['DesignNo'] === null) {
+              name.push("null")
+              data.push({ name: 'null', value: res.data.lstResult[index][inputdata['column']] })
+
+            } else {
+              name.push(res.data.lstResult[index]['DesignNo'])
+              data.push({ name: res.data.lstResult[index]['DesignNo'], value: res.data.lstResult[index][inputdata['column']] })
+            }
+            weight.push(res.data.lstResult[index][inputdata['column']])
+
+            if (res.data.lstResult[index]['DesignNo'] === null) {
+              js['product'] = 'null'
+            } else {
+              js['product'] = res.data.lstResult[index]['DesignNo']
+            }
+            js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+            sale.push(js)
+
           }
-          weight.push(res.data.lstResult[index][inputdata['column']])
-
-          if (res.data.lstResult[index]['DesignNo'] === null) {
-            js['product'] = 'null'
+          setData(data)
+          setName(name)
+          setweight(weight)
+          setdataLoader(false)
+          if (weight.length !== 0) {
+            setLoader(false)
           } else {
-            js['product'] = res.data.lstResult[index]['DesignNo']
+            setLoader(true)
           }
-          js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+          var j = []
+          for (let index = 0; index < sale.length; index++) {
+            j.push({ ...sale[index], ['color']: gradientArray[index] })
+          }
+          setSales(j)
 
-          sale.push(js)
-
-        }
-        setName(name)
-        setweight(weight)
-        setdataLoader(false)
-        if (weight.length !== 0) {
-          setLoader(false)
+          inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
-          setLoader(true)
+          alert(res['Error']);
         }
-        var j = []
-        for (let index = 0; index < sale.length; index++) {
-          j.push({ ...sale[index], ['color']: gradientArray[index] })
-        }
-        setSales(j)
-
-        inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
 
@@ -126,7 +213,7 @@ export default function DesignCatalogueWise() {
 
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise", filterKey: "strDesignCatalogue", chartId: 13 }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise", filterKey: "strDesignCatalogue", chartId: 13, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
   }
 
 
@@ -159,23 +246,34 @@ export default function DesignCatalogueWise() {
     await post({ "ID": 13, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
       .then((res) => {
-        if (res.data.lstResult.length === 0) {
-          setflag(ChartType)
+        if (res.data !== undefined) {
 
-          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 13, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-            .then((res) => {
 
-              post({ "ID": 13, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-                .then((res) => {
-                  setOptionId(res.data.lstResult[0].ChartOptionID)
-                })
+
+          if (res.data.lstResult.length === 0) {
+            setflag(ChartType)
+
+            post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 13, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+              .then((res) => {
+
+                post({ "ID": 13, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                  .then((res) => {
+                    if (res.data !== undefined) {
+                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                    } else {
+                      alert(res['Error']);
+                    }
+                  })
                 Notify()
-            })
+              })
 
-        }
-        else {
-          setOptionId(res.data.lstResult[0].ChartOptionID)
-          setflag(res.data.lstResult[0].ChartOption)
+          }
+          else {
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+            setflag(res.data.lstResult[0].ChartOption)
+          }
+        } else {
+          alert(res['Error']);
         }
 
       })
@@ -213,49 +311,58 @@ export default function DesignCatalogueWise() {
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'DesignNo', 'SortBy': flagSort, ['Grouping']: 'j.designCatalogID,j.DesignNo' }
 
-    await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
-      let name = [];
-      let weight = [];
-      let sale = [];
-      var js = {};
+    await post(inputForSort, API.CommonChart, {}, 'post')
+      .then((res) => {
+        let name = [];
+        let weight = [];
+        let sale = [];
+        var js = {};
+        let data = [];
+        if (res.data !== undefined) {
 
 
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        js = { 'product': '', 'thisYearProfit': 0 }
-        if (res.data.lstResult[index]['DesignNo'] === null) {
-          name.push("null")
+          for (let index = 0; index < res.data.lstResult.length; index++) {
+            js = { 'product': '', 'thisYearProfit': 0 }
+            if (res.data.lstResult[index]['DesignNo'] === null) {
+              name.push("null")
+              data.push({ name: 'null', value: res.data.lstResult[index][inputdata['column']] })
+
+            } else {
+              name.push(res.data.lstResult[index]['DesignNo'])
+              data.push({ name: res.data.lstResult[index]['DesignNo'], value: res.data.lstResult[index][inputdata['column']] })
+            }
+            weight.push(res.data.lstResult[index][inputdata['column']])
+
+            if (res.data.lstResult[index]['DesignNo'] === null) {
+              js['product'] = 'null'
+            } else {
+              js['product'] = res.data.lstResult[index]['DesignNo']
+            }
+            js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
+
+            sale.push(js)
+
+          }
+          setData(data)
+          setName(name)
+          setweight(weight)
+          setdataLoader(false)
+          if (weight.length !== 0) {
+            setLoader(false)
+          } else {
+            setLoader(true)
+          }
+          var j = []
+          for (let index = 0; index < sale.length; index++) {
+            j.push({ ...sale[index], ['color']: gradientArray[index] })
+          }
+          setSales(j)
+
+          inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
-          name.push(res.data.lstResult[index]['DesignNo'])
+          alert(res['Error']);;
         }
-        weight.push(res.data.lstResult[index][inputdata['column']])
-
-        if (res.data.lstResult[index]['DesignNo'] === null) {
-          js['product'] = 'null'
-        } else {
-          js['product'] = res.data.lstResult[index]['DesignNo']
-        }
-        js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-        sale.push(js)
-
-      }
-      setName(name)
-      setweight(weight)
-      setdataLoader(false)
-      if (weight.length !== 0) {
-        setLoader(false)
-      } else {
-        setLoader(true)
-      }
-      var j = []
-      for (let index = 0; index < sale.length; index++) {
-        j.push({ ...sale[index], ['color']: gradientArray[index] })
-      }
-      setSales(j)
-
-      inputdata = { ...inputdata, ['Grouping']: '' }
-
-    })
+      })
   }
 
 
@@ -288,90 +395,27 @@ export default function DesignCatalogueWise() {
 
               <div id="myDropdownicondesigncat" className="dropdown-contenticon" onClick={handleclick}>
 
-                {flag === 'donut' ? <> <a id='donut' >Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <> <a id='donut' >Donut</a><hr className='custom-hr' /></>}
-                {flag === 'heatmap' ? <> <a id='heatmap' >Heatmap&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <> <a id='heatmap' >Heatmap</a><hr className='custom-hr' /></>}
                 {flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
-                {flag === 'pie' ? <><a id='pie' >Pie chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' >Pie chart </a><hr className='custom-hr' /></>}
+                {flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
+                {flag === 'radialBar' ? <><a id='radialBar' className='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' className='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
+                {flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
+                {flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
               </div>
             </div>
           </div>
-          {/* <i className="fas fa-external-link-alt"></i> */}
-          {/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-            <img src={BlackDots} className='dropbtn' />
-          </p>
-          <div id="myDropdownDesign" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-            <a id='option1' onClick={() => handleSelectedChart(1)}>Radial Bar</a><hr class="custom-hr" />
-            <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
-          </div> */}
+
         </div>
-        {/* {weight.length !== 0 ?
-        <div className="crancy-progress-card card-contain-graph">
-          {flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} /> : null}
-          {flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} /> : null}
-          {flag === 'donut' ? <ReactApexChart options={options_donut} type={flag} series={series1} height={350} /> : null}
 
-          {flag === 'heatmap' ?
-
-            <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-              <tr>
-                <th>DesignNo</th>
-                <th>FineWt</th>
-              </tr>
-
-
-              {sales.map((data) => {
-                return (
-                  <tr >
-                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-                    <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-                  </tr>
-                )
-              })}
-
-            </table> : null
-          }
-        </div>:
-        <div className="crancy-progress-card card-contain-graph">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-				</div>
-			</div>} */}
         {dataloader !== true ?
           loader !== true ?
             <div className="crancy-progress-card card-contain-graph">
-              {flag === 'bar' ? <ReactApexChart options={options_bar} type={flag} series={series2} height={350} /> : null}
-              {flag === 'pie' ? <ReactApexChart options={options_pie} type={flag} series={series1} height={350} /> : null}
-              {flag === 'donut' ? <ReactApexChart options={options_donut} type={flag} series={series1} height={350} /> : null}
-
-              {flag === 'heatmap' ?
-
-                <table align='center' rules='rows' border='white' style={{ border: 'white', marginTop: setMargin() }}>
-                  <tr>
-                    <th>DesignNo</th>
-                    <th>NetWeight</th>
-                  </tr>
-
-
-                  {sales.map((data) => {
-                    return (
-                      <tr >
-                        <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.product} </td>
-                        <td style={{ backgroundColor: data.color, width: 250, color: 'white' }}>{data.thisYearProfit}</td>
-                      </tr>
-                    )
-                  })}
-
-                </table> : null
-              }
+              {flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
+              {flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondonut))} /> : null}
+              {flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+              {flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+              {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
               Not Found

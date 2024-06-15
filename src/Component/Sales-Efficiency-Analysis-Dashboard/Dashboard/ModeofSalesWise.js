@@ -11,11 +11,12 @@ import { useNavigate } from 'react-router-dom';
 import ModeofSales_donut from '../../ChartOptions/ModeOfSales_donut';
 import { ModeofSales_semiDonut } from '../../ChartOptions/ModeOfSales_semiDonut';
 import Notify from '../Notification/Notify';
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 
 export default function ModeofSalesWise() {
 
-
+  const [data, setdata] = useState([])
   const contexData = useContext(contex);
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
@@ -28,11 +29,93 @@ export default function ModeofSalesWise() {
   const [loader, setLoader] = useState(true)
   const [dataloader, setdataLoader] = useState(true)
   const navigate = useNavigate()
+  let optionbar = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'bar',
+    height: '400%',
+    width: '100%',
+    chartId: 'modeofsales2',
+    Xaxis: name,
+    Yaxis: weight,
+  }
+  let radialdata = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'polar-radialbar',
+    height: '100%',
+    width: '100%',
+    chartId: 'modeofsales3',
+    radiusAxis: name,
+    seriesdata: weight,
+  }
+  let optiondonut = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'donut',
+    height: '100%',
+    width: '100%',
+    chartId: 'modeofsales4',
+    propdata: data,
+    radius: [10, 150],
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    }
 
+  }
+
+  let optionpie = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'simplepie',
+    height: '100%',
+    width: '100%',
+    propdata: data,
+    chartId: 'modeofsales1',
+    label: {
+      position: 'inside',
+      formatter: '{d}%',
+      color: 'white',
+      fontWeight: 'bold',
+    },
+  }
+  let optradialbar = {
+    charttype: 'semi-donut',
+    height: '100%',
+    width: '100%',
+    chartId: 'modeofsales5123456',
+    propdata: data,
+    position: 'center',
+    fontsize: 20,
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    }
+  }
+  let optionPolar = {
+    charttype: 'pie',
+    height: '100%',
+    width: '100%',
+    chartId: 'modeofsales16',
+    propdata: data,
+    radius: [10, 110],
+  }
 
   useEffect(() => {
     fetchOption()
-     getdata()
+    getdata()
+    console.log(inputdata.column, "sdsdsss");
   }, [inputdata])
 
   useEffect(() => {
@@ -45,26 +128,33 @@ export default function ModeofSalesWise() {
     await post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
       .then((res) => {
-        if (res.data.lstResult.length === 0) {
-          setflag(ChartType)
+        if (res.data !== undefined) {
+          if (res.data.lstResult.length === 0) {
+            setflag(ChartType)
 
-          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-            .then((res) => {
-              post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-                .then((res) => {
-                  setOptionId(res.data.lstResult[0].ChartOptionID)
-                })
+            post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 17, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+              .then((res) => {
+                post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                  .then((res) => {
+                    if (res.data !== undefined) {
+                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                    } else {
+                      alert(res['Error']);
+                    }
+                  })
 
-              Notify()
-            })
+                Notify()
+              })
 
+          }
+          else {
+
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+            setflag(res.data.lstResult[0].ChartOption)
+          }
+        } else {
+          alert(res['Error']);
         }
-        else {
-
-          setOptionId(res.data.lstResult[0].ChartOptionID)
-          setflag(res.data.lstResult[0].ChartOption)
-        }
-
       })
   }
 
@@ -127,33 +217,38 @@ export default function ModeofSalesWise() {
         let name = [];
         let weight = [];
         let prce = [];
-
-
-        for (let index = 0; index < res.data.lstResult.length; index++) {
-          if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
-            name.push("null")
-          } else {
-            name.push(res.data.lstResult[index]['ChallanGenerateType'])
+        let data = [];
+        if (res.data !== undefined) {
+          for (let index = 0; index < res.data.lstResult.length; index++) {
+            if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
+              name.push("null")
+              data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
+            } else {
+              name.push(res.data.lstResult[index]['ChallanGenerateType'])
+              data.push({ name: res.data.lstResult[index]['ChallanGenerateType'], value: res.data.lstResult[index][inputdata['column']] })
+            }
+            weight.push(res.data.lstResult[index][inputdata['column']])
+            prce.push(res.data.lstResult[index]['Prc'])
           }
-          weight.push(res.data.lstResult[index][inputdata['column']])
-          prce.push(res.data.lstResult[index]['Prc'])
-        }
-
-        setName(name)
-        setweight(weight)
-        setprc(prce)
-        setdataLoader(false)
-        if (weight.length !== 0) {
-          setLoader(false)
+          setdata(data);
+          setName(name)
+          setweight(weight)
+          setprc(prce)
+          setdataLoader(false)
+          if (weight.length !== 0) {
+            setLoader(false)
+          } else {
+            setLoader(true)
+          }
+          inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
-          setLoader(true)
+          alert(res['Error']);
         }
-        inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise", chartId: 17 }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise", chartId: 17, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
   }
 
   const series = weight
@@ -162,56 +257,7 @@ export default function ModeofSalesWise() {
   const options_donut = ModeofSales_donut(name, inputdata['column'])
 
 
-  // const options = {
-  //   chart: {
-  //     toolbar: {
-  //       show: true,
-  //       offsetX: 0,
-  //       offsetY: 0,
-  //       tools: {
-  //         download: true,
-  //       },
 
-  //     },
-  //     type: 'donut',
-  //   },
-  //   colors: ['#51bde4', '#265cb9', '#00e396'],
-  //   legend: {
-  //     position: 'bottom'
-  //   },
-  //   responsive: [{
-  //     breakpoint: 480,
-  //     options: {
-  //       chart: {
-  //         width: 300
-  //       },
-  //     }
-  //   }],
-  //   plotOptions: {
-  //     pie: {
-  //       startAngle: -90,
-  //       endAngle: 90,
-  //       offsetY: 10,
-  //       donut: {
-  //         labels: {
-  //           show: true,
-
-  //           name: {
-  //             fontSize: '20px',
-  //             // color:"black"
-  //           },
-  //           value: {
-  //             offsetY: 6,
-  //             fontSize: '12px',
-  //             fontFamily: 'Helvetica, Arial, sans-serif',
-  //             fontWeight: 600,
-  //           }
-  //         }
-  //       }
-  //     }
-  //   },
-  //   labels: name
-  // }
 
   function handleSorting() {
     document.getElementById("sorticonModeOfScale").style.display === "block" ? document.getElementById("sorticonModeOfScale").style.display = "none" : document.getElementById("sorticonModeOfScale").style.display = "block";
@@ -235,28 +281,39 @@ export default function ModeofSalesWise() {
   async function fetchSortData() {
     var inputForSort = { ...inputdata, 'SortByLabel': 'ChallanGenerateType', 'SortBy': flagSort, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType' }
 
-    await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
-      let name = [];
-      let weight = [];
-
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
-          name.push("null")
+    await post(inputForSort, API.CommonChart, {}, 'post')
+      .then((res) => {
+        let name = [];
+        let weight = [];
+        let prce = [];
+        let data = [];
+        if (res.data !== undefined) {
+          for (let index = 0; index < res.data.lstResult.length; index++) {
+            if (res.data.lstResult[index]['ChallanGenerateType'] === null) {
+              name.push("null")
+              data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
+            } else {
+              name.push(res.data.lstResult[index]['ChallanGenerateType'])
+              data.push({ name: res.data.lstResult[index]['ChallanGenerateType'], value: res.data.lstResult[index][inputdata['column']] })
+            }
+            weight.push(res.data.lstResult[index][inputdata['column']])
+            prce.push(res.data.lstResult[index]['Prc'])
+          }
+          setdata(data);
+          setName(name)
+          setweight(weight)
+          setprc(prce)
+          setdataLoader(false)
+          if (weight.length !== 0) {
+            setLoader(false)
+          } else {
+            setLoader(true)
+          }
+          inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
-          name.push(res.data.lstResult[index]['ChallanGenerateType'])
+          alert(res['Error']);
         }
-        weight.push(res.data.lstResult[index][inputdata['column']])
-      }
-      setName(name)
-      setweight(weight)
-      setdataLoader(false)
-      if (weight.length !== 0) {
-        setLoader(false)
-      } else {
-        setLoader(true)
-      }
-      inputdata = { ...inputdata, ['Grouping']: '' }
-    })
+      })
   }
 
   return (
@@ -293,9 +350,12 @@ export default function ModeofSalesWise() {
 
 
               <div id="myDropdowniconModeOfSales" className="dropdown-contenticon" onClick={handleclick}>
-
-                {flag === 'semiDonut' ? <><a id='semiDonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semiDonut' >Semi Donut</a><hr className='custom-hr' /></>}
-                {flag === 'donut' ? <><a id='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' >Donut</a><hr className='custom-hr' /></>}
+                {flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
+                {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+                {flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
+                {flag === 'radialBar' ? <><a id='radialBar' className='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' className='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
+                {flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
+                {flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 
@@ -305,32 +365,17 @@ export default function ModeofSalesWise() {
 
           </div>
         </div>
-        {/* {weight.length !== 0 ?
-          <div className="crancy-progress-card card-contain-graph">
 
-            {flag === 'semiDonut' ? <ReactApexChart options={option_semiDonut} series={series} type="donut" height={390} /> : null }
-            {flag === 'donut' ? <ReactApexChart options={options_donut} series={series} type="donut" height={390} /> : null }
-
-          </div> :
-          <div className="crancy-progress-card card-contain-graph">
-            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-              <div class="dot-spinner__dot"></div>
-            </div>
-          </div>} */}
         {dataloader !== true ?
           loader !== true ?
             <div className="crancy-progress-card card-contain-graph">
 
-              {flag === 'semiDonut' ? <ReactApexChart options={option_semiDonut} series={series} type="donut" height={390} /> : null}
-              {flag === 'donut' ? <ReactApexChart options={options_donut} series={series} type="donut" height={390} /> : null}
-
+              {flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionPolar))} /> : null}
+              {flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
+              {flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondonut))} /> : null}
+              {flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+              {flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+              {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
               Not Found

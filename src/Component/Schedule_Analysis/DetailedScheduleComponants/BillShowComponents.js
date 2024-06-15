@@ -17,25 +17,19 @@ export default function BillShowComponents(props) {
     }
 
     useEffect(() => {
-        if (JSON.stringify(inputdata) !== JSON.stringify({
-            "ScheduleID": 0,
-            "Mode": 0
-        })) {
-            getBillcardData();
-        }
-
+        getBillcardData();
     }, [inputdata])
 
 
 
     function getBillcardData() {
-        inputdata = { ...inputdata, ['Mode']: props.id };
+        inputdata = { ...inputdata, ['Mode']: props.id , 'FromDate': props.Date.FromDate, 'Todate': props.Date.ToDate  };
 
         post(inputdata, API.GetChartPartyDetails, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 setBillData(res.data.lstResult);
             } else {
-                alert("Network Error!!!");
+                alert(res.Error);
             }
         })
     }

@@ -16,10 +16,15 @@ import CommanSheduleChart from './CommanScheduleComponants/CommanSheduleChart'
 import ExpensesDetails from './CommanScheduleComponants/ExpensesDetails'
 import CommanSheduleCard from './CommanScheduleComponants/CommanSheduleCard'
 import TargetAchievedCard from './CommanScheduleComponants/TargetAchievedCard'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function Schedule_Analysis_MainScreen() {
+  const navigate = useNavigate();
   useEffect(() => {
+    if (localStorage.getItem('username') === null || localStorage.getItem('token') === null) {
+      navigate('/', { replace: true })
+    }
     var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }, [])
@@ -28,7 +33,7 @@ export default function Schedule_Analysis_MainScreen() {
     <div>
       <ScheduleContextState>
         <Navbar />
-        <Header_shedual_Analysis />
+        <Header_shedual_Analysis  />
         <section class="crancy-adashboard crancy-show">
           <div class="container">
             <div class="crancy-body">

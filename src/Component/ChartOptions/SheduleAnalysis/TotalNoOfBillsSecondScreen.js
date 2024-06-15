@@ -5,7 +5,9 @@ export default function TotalNoOfBillsSecondScreen(xAxis, Yaxis, contextData, id
   function FormatedSeriesData() {
     var tempseries = []
     for (let i = 0; i < xAxis.length; i++) {
-      tempseries.push({ x: xAxis[i], y: Yaxis[0][i] });
+      if (Yaxis[0][i] !== undefined) {
+        tempseries.push({ x: xAxis[i], y: Yaxis[0][i] });
+      }
     }
     return tempseries
   }
@@ -26,7 +28,7 @@ export default function TotalNoOfBillsSecondScreen(xAxis, Yaxis, contextData, id
               contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: '-' })
             }
             else {
-
+              contextData.setfiltername(xAxis[config.dataPointIndex])
               contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
             }
           }

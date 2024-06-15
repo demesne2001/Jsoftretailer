@@ -10,8 +10,9 @@ import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
-
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 export default function SalesAgingWise() {
+	const [data, setdata] = useState([])
 	const [loader, setLoader] = useState(true)
 	const [dataloader, setdataLoader] = useState(true)
 	const contexData = useContext(contex);
@@ -23,6 +24,108 @@ export default function SalesAgingWise() {
 	const [flagSort, setflagSort] = useState('')
 	const [flag, setflag] = useState("line")
 	const ChartType = "line"
+	let optionline = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'line',
+		height: '400px',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		Xaxis: name,
+		Yaxis: weight,
+	}
+
+	let optionarea = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'area',
+		height: '400px',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		Xaxis: name,
+		Yaxis: weight
+	}
+
+	let optionbar = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'bar',
+		height: '400%',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		Xaxis: name,
+		Yaxis: weight,
+	}
+	let radialdata = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'polar-radialbar',
+		height: '100%',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		radiusAxis: name,
+		seriesdata: weight,
+	}
+	let optiondonut = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		propdata: data,
+		radius: [10, 150],
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+
+	}
+
+	let optionpie = {
+		themeId: localStorage.getItem("ThemeIndex"),
+		charttype: 'simplepie',
+		height: '100%',
+		width: '100%',
+		propdata: data,
+		chartId: 'salesAgingWise',
+		label: {
+			position: 'inside',
+			formatter: '{d}%',
+			color: 'white',
+			fontWeight: 'bold',
+		},
+	}
+	let optradialbar = {
+		charttype: 'semi-donut',
+		height: '100%',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		propdata: data,
+		position: 'center',
+		fontsize: 20,
+		label: {
+			show: false,
+			position: 'center'
+		},
+		emphasis: {
+			label: {
+				show: true,
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		}
+	}
+	let optionPolar = {
+		charttype: 'pie',
+		height: '100%',
+		width: '100%',
+		chartId: 'salesAgingWise',
+		propdata: data,
+		radius: [10, 110],
+	}
 
 	function handleclick(e) {
 
@@ -39,7 +142,7 @@ export default function SalesAgingWise() {
 
 	useEffect(() => {
 		fetchOption()
-		 getdata()
+		getdata()
 	}, [inputdata])
 
 	useEffect(() => {
@@ -56,350 +159,36 @@ export default function SalesAgingWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
-
-				for (let index = 0; index < res.data.lstResult.length; index++) {
-					if (res.data.lstResult[index]['rd.caption'] === null) {
-						name.push("null")
-					} else {
-						name.push(res.data.lstResult[index]['rd.caption'])
+				let data = [];
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						if (res.data.lstResult[index]['rd.caption'] === null) {
+							name.push("null")
+							data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
+						} else {
+							name.push(res.data.lstResult[index]['rd.caption'])
+							data.push({ name: res.data.lstResult[index]['rd.caption'], value: res.data.lstResult[index][inputdata['column']] })
+						}
+						weight.push(res.data.lstResult[index][inputdata['column']])
 					}
-					weight.push(res.data.lstResult[index][inputdata['column']])
-				}
-				setName(name)
-				setweight(weight)
-				setdataLoader(false)
-				if (weight.length !== 0) {
-					setLoader(false)
+					setdata(data)
+					setName(name)
+					setweight(weight)
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
+					} else {
+						setLoader(true)
+					}
+					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
-					setLoader(true)
+					alert(res['Error']);;
 				}
-				inputdata = { ...inputdata, ['Grouping']: '' }
 			})
 	}
 
-
-
-
-	if (flag === 'line') {
-		var series = [{
-			type: 'line',
-			data: weight,
-			name: 'weight'
-		}]
-
-		var options = {
-			chart: {
-				toolbar: {
-					show: true,
-					offsetX: 0,
-					offsetY: 0,
-					tools: {
-						download: true,
-					},
-
-				},
-				height: 350,
-				type: 'line',
-
-				dropShadow: {
-					enabled: true,
-					color: '#000',
-					top: 18,
-					left: 7,
-					blur: 10,
-					opacity: 0.2
-				}
-			},
-			// colors: ['#77B6EA', '#545454'],
-			dataLabels: {
-				enabled: false,
-			},
-			stroke: {
-				show: true,
-				colors: '#008ae6',
-				curve: 'straight',
-				width: 6
-			},
-			fill: {
-				opacity: 1,
-				type: 'solid',
-				gradient: {
-					show: false,
-					shade: 'dark',
-					//   type: "vertical",
-					shadeIntensity: 0.2,
-					// gradientToColors: undefined,
-					inverseColors: true,
-					opacityFrom: 2,
-					opacityTo: 2,
-					// stops: [0, 50, 100],
-					// colorStops: []
-				},
-			},
-			title: {
-				text: '',
-				align: 'left'
-			},
-			grid: {
-				borderColor: '#e7e7e7',
-				row: {
-					colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-					opacity: 0.5
-				},
-			},
-			markers: {
-				size: 1
-			},
-			xaxis: {
-				categories: name,
-				title: {
-					text: 'Month'
-				}
-			},
-			yaxis: {
-				title: {
-					text: ''
-				},
-
-			},
-			legend: {
-				position: 'top',
-				horizontalAlign: 'right',
-				floating: true,
-				offsetY: -25,
-				offsetX: -5
-			},
-			tooltip: {
-
-				y: {
-					show: true,
-					formatter: function (val) {
-						if (inputdata['column'] === 'Prc') {
-							return val.toString() + "%"
-						} else {
-							return val
-						}
-					}
-				},
-			},
-			responsive: [{
-				breakpoint: 593,
-				options: {
-
-					xaxis: {
-						labels: {
-							// formatter: function (val) {
-							// 	if (val !== undefined) {
-							// 		if (val.length > 3) {
-							// 			return val.slice(0, 3) + "..."
-							// 		} else {
-							// 			return val
-							// 		}
-							// 	}
-
-							// }
-
-						}
-					},
-					yaxis: {
-						labels: {
-							show: true,
-							formatter: function (val) {
-
-								return ((val / 1000).toFixed(0)).toString() + "KG"
-
-							}
-
-
-						}
-					}
-				},
-			}]
-		}
-	}
-
-
-	else if (flag === 'area') {
-		var series = [{
-			type: 'area',
-			data: weight,
-			name: 'weight'
-		}]
-
-
-		var options = {
-			chart: {
-				type: 'area',
-				height: 350,
-				zoom: {
-					enabled: true
-				}
-			},
-			dataLabels: {
-				enabled: false
-			},
-			plotOptions: {
-				area: {
-					fillTo: 'end',
-				},
-			},
-			stroke: {
-				curve: 'smooth',
-				show: true,
-				width: 2,
-				colors: ['#008ae6']
-			},
-			tooltip: {
-
-				y: {
-					show: true,
-					formatter: function (val) {
-						if (inputdata['column'] === 'Prc') {
-							return val.toString() + "%"
-						} else {
-							return val
-						}
-					}
-				},
-			},
-			fill: {
-				opacity: 0.1,
-				type: 'gradient',
-				gradient: {
-					shade: 'dark',
-					type: "vertical",
-					shadeIntensity: 0.2,
-					// gradientToColors: undefined,
-					inverseColors: true,
-					opacityFrom: 1.5,
-					opacityTo: 0.6,
-					// stops: [0, 50, 100],
-					// colorStops: []
-				},
-			},
-
-			labels: name,
-
-			grid: {
-				yaxis: {
-					lines: {
-						offsetX: -30
-					}
-				},
-				padding: {
-					left: 20
-				}
-			},
-
-			yaxis: {
-				tickAmount: 4,
-				floating: false,
-
-				labels: {
-					style: {
-						colors: '#8e8da4',
-					},
-					offsetY: -7,
-					offsetX: 0,
-				},
-
-				// axisBorder: {
-				//   show: false,
-				// },
-				// axisTicks: {
-				//   show: false
-				// }
-			},
-			// colors: ['#008ae6'],
-
-			legend: {
-				show: false,
-				horizontalAlign: 'left'
-			},
-			// tooltip: {
-			//   x: {
-			//     format: "yyyy",
-			//   },
-			//   fixed: {
-			//     enabled: false,
-			//     position: 'topRight'
-			//   }
-			// },
-		}
-	}
-
-
-	else if (flag === 'linebar') {
-		var series = [{
-			type: 'column',
-			data: weight,
-			name: 'weight'
-		}]
-
-		var options = {
-			tooltip: {
-				y: [{
-					show: true,
-					formatter: function (val) {
-						if (inputdata['column'] === 'Prc') {
-							return val.toString() + "%"
-						} else {
-							return val
-						}
-					}
-				}]
-			},
-			chart: {
-				height: 350,
-				type: 'line',
-				dropShadow: {
-					enabled: true,
-					color: '#fff',
-					top: 0,
-					left: 0,
-					blur: 3,
-					opacity: 0.1
-				}
-			},
-			fill: {
-				opacity: 2,
-				type: 'solid',
-			},
-			dataLabels: {
-				enabled: false,
-			},
-			stroke: {
-				curve: 'smooth',
-				show: true,
-				width: 4,
-				colors: [0, '#4dff4d']
-			},
-
-			grid: {
-				yaxis: {
-					lines: {
-						offsetX: -30
-					}
-				},
-				padding: {
-					left: 20
-				}
-			},
-			labels: name,
-			xaxis: {
-				type: ''
-			},
-			yaxis: [{
-				title: {
-					text: '',
-				},
-			}]
-		}
-	}
-
-
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging", chartId: 16 }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging", chartId: 16, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
 	}
 
 
@@ -432,23 +221,31 @@ export default function SalesAgingWise() {
 		await post({ "ID": 16, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
-				if (res.data.lstResult.length === 0) {
-					setflag(ChartType)
+				if (res.data !== undefined) {
+					if (res.data.lstResult.length === 0) {
+						setflag(ChartType)
 
-					post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-						.then((res) => {
+						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+							.then((res) => {
 
-							post({ "ID": 16, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-								.then((res) => {
-									setOptionId(res.data.lstResult[0].ChartOptionID)
-								})
+								post({ "ID": 16, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+									.then((res) => {
+										if (res.data !== undefined) {
+											setOptionId(res.data.lstResult[0].ChartOptionID)
+										} else {
+											alert(res['Error']);
+										}
+									})
 								Notify()
-						})
+							})
 
-				}
-				else {
-					setOptionId(res.data.lstResult[0].ChartOptionID)
-					setflag(res.data.lstResult[0].ChartOption)
+					}
+					else {
+						setOptionId(res.data.lstResult[0].ChartOptionID)
+						setflag(res.data.lstResult[0].ChartOption)
+					}
+				} else {
+					alert(res['Error']);
 				}
 
 			})
@@ -486,28 +283,36 @@ export default function SalesAgingWise() {
 	async function fetchSortData() {
 		var inputForSort = { ...inputdata, 'SortByLabel': '[rd.caption]', 'SortBy': flagSort, ['Grouping']: 'a.[rd.caption]' }
 
-		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
-			let name = [];
-			let weight = [];
-
-			for (let index = 0; index < res.data.lstResult.length; index++) {
-				if (res.data.lstResult[index]['rd.caption'] === null) {
-					name.push("null")
+		await post(inputForSort, API.CommonChart, {}, 'post')
+			.then((res) => {
+				let name = [];
+				let weight = [];
+				let data = [];
+				if (res.data !== undefined) {
+					for (let index = 0; index < res.data.lstResult.length; index++) {
+						if (res.data.lstResult[index]['rd.caption'] === null) {
+							name.push("null")
+							data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
+						} else {
+							name.push(res.data.lstResult[index]['rd.caption'])
+							data.push({ name: res.data.lstResult[index]['rd.caption'], value: res.data.lstResult[index][inputdata['column']] })
+						}
+						weight.push(res.data.lstResult[index][inputdata['column']])
+					}
+					setdata(data)
+					setName(name)
+					setweight(weight)
+					setdataLoader(false)
+					if (weight.length !== 0) {
+						setLoader(false)
+					} else {
+						setLoader(true)
+					}
+					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
-					name.push(res.data.lstResult[index]['rd.caption'])
+					alert(res['Error']);
 				}
-				weight.push(res.data.lstResult[index][inputdata['column']])
-			}
-			setName(name)
-			setweight(weight)
-			setdataLoader(false)
-			if (weight.length !== 0) {
-				setLoader(false)
-			} else {
-				setLoader(true)
-			}
-			inputdata = { ...inputdata, ['Grouping']: '' }
-		})
+			})
 	}
 
 
@@ -543,43 +348,32 @@ export default function SalesAgingWise() {
 
 								{flag === 'line' ? <><a id='line' className='line' >line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='line' className='line' >line </a><hr className='custom-hr' /></>}
 								{flag === 'area' ? <><a id='area' className='area'>area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>area chart</a><hr className='custom-hr' /></>}
-								{flag === 'linebar' ? <><a id='linebar' className='line'>Combo chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='linebar' className='line'>Combo chart</a><hr className='custom-hr' /></>}
+								{flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
+								{flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
+								{flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
+								{flag === 'radialBar' ? <><a id='radialBar' className='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' className='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
+								{flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
+								{flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
 							</div>
 						</div>
 					</div>
 
-					{/* <i class="fas fa-external-link-alt"></i> */}
 
-					{/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-            <img src={BlackDots} className='dropbtn' />
-          </p>
-          <div id="myDropdownSalesaging" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-            <a id='option1' onClick={() => handleSelectedChart(1)}>Radial Bar</a><hr class="custom-hr" />
-            <a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
-          </div> */}
 				</div>
-				{/* {weight.length !== 0 ?
-					<div class="crancy-progress-card card-contain-graph">
 
-						<ReactApexChart options={options} series={series} height={390} />
-					</div> : <div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>} */}
 				{dataloader !== true ?
 					loader !== true ?
 						<div class="crancy-progress-card card-contain-graph">
 
-							<ReactApexChart options={options} series={series} height={390} />
+							{flag === 'line' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionline))} /> : null}
+							{flag === 'area' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionarea))} /> : null}
+							{flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionPolar))} /> : null}
+							{flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
+							{flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondonut))} /> : null}
+							{flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+							{flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
 							Not Found

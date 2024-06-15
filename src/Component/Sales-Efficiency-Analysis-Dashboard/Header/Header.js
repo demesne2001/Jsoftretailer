@@ -1,21 +1,15 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
-
 import Modal from "react-bootstrap/Modal";
 import post from "../../Utility/APIHandle";
 import API from "../../Utility/API";
-
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import contex from "../../contex/Contex";
 import Commonmodel from "../../CommonModel/CommanModal";
-import currency from "../../Assets/img/svg/currency.svg";
 import "../../Assets/css/Custom.css";
 import * as htmlToImage from 'html-to-image';
-import reactSelect from "react-select";
 import download from 'downloadjs';
-import { MultiSelect } from "react-multi-select-component";
-import { json } from "react-router-dom";
 
 
 
@@ -342,7 +336,11 @@ export default function Header() {
   async function getSyncDate() {
     await post({}, API.GetDefaultScreenData, {}, 'post')
       .then((res) => {
-        setSyncDate(res.data.lstResult[0].SyncDate)
+        if (res.data !== undefined) {
+          setSyncDate(res.data.lstResult[0].SyncDate)
+        } else {
+          alert(res['Error']);
+        }
       })
   }
 
@@ -351,42 +349,44 @@ export default function Header() {
 
     post(input, dependentfilter[FilterIndex][1], {}, 'post').then((res) => {
 
-
-      var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
-      var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-
       if (res.data !== undefined) {
+        var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
+        var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
 
-        var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
-        // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
+        if (res.data !== undefined) {
+
+          var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
+          // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
 
 
 
-        var temarrayID = []
-        var temparryValue = []
-        for (let index = 0; index < TempDataID.length; index++) {
+          var temarrayID = []
+          var temparryValue = []
+          for (let index = 0; index < TempDataID.length; index++) {
 
-          if (resultID.indexOf(TempDataID[index]) >= 0) {
+            if (resultID.indexOf(TempDataID[index]) >= 0) {
 
-            // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
-            // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
-            // delete TempDataID[index]
-            // delete TempDataValue[index]
-            temparryValue.push(TempDataValue[index])
-            temarrayID.push(TempDataID[index])
+              // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
+              // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
+              // delete TempDataID[index]
+              // delete TempDataValue[index]
+              temparryValue.push(TempDataValue[index])
+              temarrayID.push(TempDataID[index])
+            }
           }
         }
-      }
 
 
-      // contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
-      if (temarrayID !== undefined) {
-        contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+        // contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+        if (temarrayID !== undefined) {
+          contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
+        } else {
+          contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: '', [dependentfilter[FilterIndex][4]]: '', ['FilterIndex']: 0 })
+        }
+
       } else {
-        contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: '', [dependentfilter[FilterIndex][4]]: '', ['FilterIndex']: 0 })
+        alert(res['Error']);
       }
-
-
     })
   }
 
@@ -448,7 +448,7 @@ export default function Header() {
 
   function handleOnClose() {
     setFIlterFlag(false);
-    var element =   document.getElementById("root");
+    var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }
 
@@ -469,13 +469,17 @@ export default function Header() {
 
 
     post(postData, API.stateFilter, {}, "post").then((res) => {
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        temp1.push({
-          value: res.data.lstResult[index].StateID,
-          label: res.data.lstResult[index].StateName,
-        });
+      if (res.data !== undefined) {
+        for (let index = 0; index < res.data.lstResult.length; index++) {
+          temp1.push({
+            value: res.data.lstResult[index].StateID,
+            label: res.data.lstResult[index].StateName,
+          });
+        }
+        setState(temp1);
+      } else {
+        alert(res['Error']);
       }
-      setState(temp1);
     });
   }
 
@@ -483,14 +487,17 @@ export default function Header() {
     let temp1 = [];
 
     post(postData, API.GetMetalType, {}, "post").then((res) => {
-
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        temp1.push({
-          label: res.data.lstResult[index].MetalTypeDesc,
-          value: res.data.lstResult[index].MetalType,
-        });
+      if (res.data !== undefined) {
+        for (let index = 0; index < res.data.lstResult.length; index++) {
+          temp1.push({
+            label: res.data.lstResult[index].MetalTypeDesc,
+            value: res.data.lstResult[index].MetalType,
+          });
+        }
+        setMetalType(temp1);
+      } else {
+        alert(res['Error']);
       }
-      setMetalType(temp1);
     });
   }
 
@@ -498,14 +505,18 @@ export default function Header() {
     let temp1 = [];
 
     post(postData, API.GetDayBook, {}, "post").then((res) => {
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        temp1.push({
-          value: (res.data.lstResult[index].DayBookID).toString(),
-          label: res.data.lstResult[index].Daybook,
-        });
-      }
+      if (res.data !== undefined) {
+        for (let index = 0; index < res.data.lstResult.length; index++) {
+          temp1.push({
+            value: (res.data.lstResult[index].DayBookID).toString(),
+            label: res.data.lstResult[index].Daybook,
+          });
+        }
 
-      setDayBook(temp1);
+        setDayBook(temp1);
+      } else {
+        alert(res['Error']);
+      }
     });
   }
   function handleselect(e, selectData) {
@@ -566,8 +577,13 @@ export default function Header() {
 
         // download(dataUrl, "file1.png")
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
+          console.log(res,"dsd");
+          if (res.data !== undefined) {
+            nameArray.push(res.data.filename);
 
-          nameArray.push(res.data.filename);
+          } else {
+            alert(res['Error']);
+          }
         })
       });
 
@@ -580,11 +596,8 @@ export default function Header() {
 
           nameArray.push(res.data.filename);
 
-          post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, 'http://103.131.196.61:52202/Common/GetPDFUsingImage', {}, "post").then((res) => {
-            // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
-
-            // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
-
+          post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, API.GetPDFUsingImage, {}, "post").then((res) => {
+          
             const pdfUrl = API.downloadPdf + count.toString() + "aa.pdf";
             axios.get(pdfUrl, {
               responseType: 'blob',
@@ -617,7 +630,7 @@ export default function Header() {
     else {
       handleOnClose();
     }
-    var element =   document.getElementById("root");
+    var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
     localStorage.setItem('load', '0')
     // contexData.SetState(FilterData);
@@ -938,9 +951,8 @@ export default function Header() {
                     <div className="geex-content__header__action">
                       <div className="geex-content__header__action__wrap">
                         <ul className="geex-content__header__quickaction">
-                          <li className="from-date-to-date-header__quickaction">
+                        <li className="from-date-to-date-header__quickaction">
                             <h5>
-                              Last Sync :{syncDate}
                               <span className="text-muted">
                                 { }
                               </span>
@@ -1216,7 +1228,8 @@ export default function Header() {
                                     ...provided,
                                     // height: '45px',
                                     // overflow:'auto',
-                                    borderRadius: '10px'
+                                    borderRadius: '10px',
+
                                   }),
                                 }}
                               />

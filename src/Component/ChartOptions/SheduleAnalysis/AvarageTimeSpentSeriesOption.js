@@ -4,7 +4,7 @@ export default function AvarageTimeSpentSeriesOption(xAxis, yAxis, contextData,c
     const option = {
         chart: {
             type: 'bar',
-            height: 350
+            height: 350,
         },
         plotOptions: {
             bar: {

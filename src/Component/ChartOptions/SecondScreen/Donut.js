@@ -1,5 +1,7 @@
-export function secondScreen_donut(name, contexData , id , filterKey){
-
+export function secondScreen_donut(name, contexData, id, filterKey) {
+    function getMonthNumberFromName(monthName) {
+        return new Date(`${monthName} 1, 2022`).getMonth() + 1;
+    }
     const options = {
         stroke: {
             width: 0,
@@ -11,44 +13,38 @@ export function secondScreen_donut(name, contexData , id , filterKey){
                 enabled: true,
                 easing: 'easein',
             },
-            events:{
-                dataPointSelection:(event,chartContex,config)=>{
-                   
-                    
-                    
-                    
-                    // contexData.setDefaultChart({...contexData.defaultchart,["strBranch"] : config.w.config.xaxis.categories[config.dataPointIndex] })
+            events: {
+                dataPointSelection: (event, chartContex, config) => {
+                    if (filterKey === 'strMonth') {
+                        if (id[config.dataPointIndex] === null) {
+                            // console.log(id[config.dataPointIndex], "idselect");
 
-                  
-                    if(id[config.dataPointIndex] === null){
+                            contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '-' })
+                        }else if (id[config.dataPointIndex].toString() === contexData.defaultchart[filterKey]) {
+                            contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '' })
 
-                        contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : '-' })
-                      }
-                    else if(id[config.dataPointIndex].toString() === contexData.defaultchart[filterKey]){
-                        contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : '' })
+                        }
+                        else {
+                            console.log();
+                            contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: getMonthNumberFromName(id[config.dataPointIndex]).toString() })
+                            contexData.setdefaultchartFilterName(name[config.dataPointIndex]);
+                        }
+                    } else {
+                        if (id[config.dataPointIndex] === null) {
+                            // console.log(id[config.dataPointIndex], "idselect");
+
+                            contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '-' })
+                        }else if (id[config.dataPointIndex].toString() === contexData.defaultchart[filterKey]) {
+                            contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: '' })
+                        }
+                        else {
+                            console.log();
+                            contexData.setdefaultchartFilterName(name[config.dataPointIndex]);
+                            contexData.setDefaultChart({ ...contexData.defaultchart, [filterKey]: id[config.dataPointIndex].toString() })
+                        }
                     }
-                      else{
-                        contexData.setDefaultChart({...contexData.defaultchart,[filterKey] : id[config.dataPointIndex].toString() })
-                      }
-                   
-                   
-                    
-
-                    
-
-
-    
                 }
-              }
-            // toolbar: {
-            // 	show: true,
-            // 	offsetX: 0,
-            // 	offsetY: 0,
-            // 	tools: {
-            // 		download: true,
-            // 	},
-
-            // },
+            }
         },
 
         dataLabels: {

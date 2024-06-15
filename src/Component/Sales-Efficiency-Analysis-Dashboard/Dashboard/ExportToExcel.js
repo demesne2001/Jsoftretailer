@@ -153,21 +153,24 @@ const ExportToExcel = ({ tableTitles }) => {
 
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-
-                setdata1(response.data.lstResult);
-
-                array1.push({ "index": 1, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata1(response.data.lstResult);
+                    array1.push({ "index": 1, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData2() {
         inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata2(response.data.lstResult);
-
-                array1.push({ "index": 2, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata2(response.data.lstResult);
+                    array1.push({ "index": 2, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
 
@@ -175,20 +178,24 @@ const ExportToExcel = ({ tableTitles }) => {
         inputdata = { ...inputdata, ['Grouping']: 'c.cityname' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata3(response.data.lstResult);
-
-                array1.push({ "index": 3, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata3(response.data.lstResult);
+                    array1.push({ "index": 3, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData4() {
         inputdata = { ...inputdata, ['Grouping']: 'l.RegionID,l.RegionName' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata4(response.data.lstResult);
-
-                array1.push({ "index": 4, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata4(response.data.lstResult);
+                    array1.push({ "index": 4, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
 
             })
     }
@@ -196,10 +203,12 @@ const ExportToExcel = ({ tableTitles }) => {
         inputdata = { ...inputdata, ['Grouping']: 'o.ItemGroupId,o.GroupName' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata5(response.data.lstResult);
-
-                array1.push({ "index": 5, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata5(response.data.lstResult);
+                    array1.push({ "index": 5, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
 
             })
     }
@@ -207,24 +216,25 @@ const ExportToExcel = ({ tableTitles }) => {
         inputdata = { ...inputdata, ['Grouping']: 'e.subitemID,e.subItemName' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata6(response.data.lstResult);
-
-                array1.push({ "index": 6, "length": response.data.lstResult.length })
-
-
+                if (response.data !== undefined) {
+                    setdata6(response.data.lstResult);
+                    array1.push({ "index": 6, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData7() {
         inputdata = { ...inputdata, ['Grouping']: 'd.itemID,d.ItemName' }
-
         post(inputdata, API.CommonChart, {}, "post")
-
             .then((response) => {
                 // if (response.data.lstResult[0]["Total"] !== null) {
-                setdata7(response.data.lstResult);
-
-                array1.push({ "index": 7, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata7(response.data.lstResult);
+                    array1.push({ "index": 7, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
 
                 // }
             })
@@ -233,109 +243,120 @@ const ExportToExcel = ({ tableTitles }) => {
         inputdata = { ...inputdata, ['Grouping']: 'f.ItemSubNAme,f.ItemSubID' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata8(response.data.lstResult);
-
-                array1.push({ "index": 8, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata8(response.data.lstResult);
+                    array1.push({ "index": 8, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData9() {
         inputdata = { ...inputdata, ['Grouping']: 'g.DesigncodeID,g.DesignCode' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata9(response.data.lstResult);
-
-                array1.push({ "index": 9, "length": response.data.lstResult.length })
-
-
+                if (response.data !== undefined) {
+                    setdata9(response.data.lstResult);
+                    array1.push({ "index": 9, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData10() {
         inputdata = { ...inputdata, ['Grouping']: 'a.accountID,c.AccountName' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata10(response.data.lstResult);
-
-                array1.push({ "index": 10, "length": response.data.lstResult.length })
-
-                // setarray([ ...array , ...array1])
-
+                if (response.data !== undefined) {
+                    setdata10(response.data.lstResult);
+                    array1.push({ "index": 10, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData11() {
         inputdata = { ...inputdata, ['Grouping']: 'h.SalesmanID,h.SalesmanNAme' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata11(response.data.lstResult);
-
-                array1.push({ "index": 11, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata11(response.data.lstResult);
+                    array1.push({ "index": 11, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData12() {
         inputdata = { ...inputdata, ['Grouping']: 'i.ProductId,i.ProductName' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata12(response.data.lstResult);
-
-                array1.push({ "index": 12, "length": response.data.lstResult.length })
-
-
+                if (response.data !== undefined) {
+                    setdata12(response.data.lstResult);
+                    array1.push({ "index": 12, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData13() {
         inputdata = { ...inputdata, ['Grouping']: 'j.designCatalogID,j.DesignNo' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata13(response.data.lstResult);
-
-
-                array1.push({ "index": 13, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata13(response.data.lstResult);
+                    array1.push({ "index": 13, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData14() {
         inputdata = { ...inputdata, ['Grouping']: 'datename(month,a.voucherDate)' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata14(response.data.lstResult);
-
-
-                array1.push({ "index": 14, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata14(response.data.lstResult);
+                    array1.push({ "index": 14, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData15() {
         inputdata = { ...inputdata, ['Grouping']: 'M.FinYearID,m.YearCode' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata15(response.data.lstResult);
-
-                array1.push({ "index": 15, "length": response.data.lstResult.length })
-
-
+                if (response.data !== undefined) {
+                    setdata15(response.data.lstResult);
+                    array1.push({ "index": 15, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData16a() {
         inputdata = { ...inputdata, ['Grouping']: 'a.[rd.caption]' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata16a(response.data.lstResult);
-
-
-                array1.push({ "index": 16, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata16a(response.data.lstResult);
+                    array1.push({ "index": 16, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData17b() {
         inputdata = { ...inputdata, ['Grouping']: 'a.ChallanGenerateTypeID,N.ChallanGenerateType' }
         post(inputdata, API.CommonChart, {}, "post")
             .then((response) => {
-                setdata17b(response.data.lstResult);
-
-
-                array1.push({ "index": 17, "length": response.data.lstResult.length })
-
+                if (response.data !== undefined) {
+                    setdata17b(response.data.lstResult);
+                    array1.push({ "index": 17, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData18() {
@@ -343,44 +364,49 @@ const ExportToExcel = ({ tableTitles }) => {
 
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
-
-                setdata18(response.data.lstResult);
-
-
-                array1.push({ "index": 18, "length": response.data.lstResult.length })
+                if (response.data !== undefined) {
+                    setdata18(response.data.lstResult);
+                    array1.push({ "index": 18, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData19() {
         inputdata = { ...inputdata, ['Grouping']: 'sr' }
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
-                setdata19(response.data.lstResult);
-
-                array1.push({ "index": 19, "length": response.data.lstResult.length })
-
-
+                if (response.data !== undefined) {
+                    setdata19(response.data.lstResult);
+                    array1.push({ "index": 19, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData20() {
         inputdata = { ...inputdata, ['Grouping']: 'r' }
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
-                setdata20(response.data.lstResult);
-
-                array1.push({ "index": 20, "length": response.data.lstResult.length })
-
-
+                if (response.data !== undefined) {
+                    setdata20(response.data.lstResult);
+                    array1.push({ "index": 20, "length": response.data.lstResult.length })
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
     function getData21() {
         inputdata = { ...inputdata, ['Grouping']: 'stock' }
         post(inputdata, API.CommonCard, {}, "post")
             .then((response) => {
-                setdata21(response.data.lstResult);
-
-                setarray(array1)
-                setobj(obj)
-
+                if (response.data !== undefined) {
+                    setdata21(response.data.lstResult);
+                    setarray(array1)
+                    setobj(obj)
+                } else {
+                    alert(response['Error']);;
+                }
             })
     }
 
@@ -597,45 +623,46 @@ const ExportToExcel = ({ tableTitles }) => {
 
 
 
-        const response = await fetch(`http://103.131.196.61:52202/image/${(data16).toString() + ".png"}`);
+        const response = await fetch(API.baseurl + `image/${(data16).toString() + ".png"}`).catch((e) => alert(e));
 
 
+        if (response !== undefined) {
+            const image = await response.arrayBuffer();
 
-        const image = await response.arrayBuffer();
-
-        const base64Image = Buffer.from(image).toString('base64');
+            const base64Image = Buffer.from(image).toString('base64');
 
 
-        const ws2 = workbook.addWorksheet('DashBoard');
+            const ws2 = workbook.addWorksheet('DashBoard');
 
-        const imageId = workbook.addImage({
-            base64: base64Image,
-            extension: 'png',
-        });
-        if (window.innerWidth <= 768) {
-            ws2.addImage(imageId, {
-                tl: { col: 1, row: 1 },
-                ext: { width: 250, height: 2000 },
+            const imageId = workbook.addImage({
+                base64: base64Image,
+                extension: 'png',
             });
+            if (window.innerWidth <= 768) {
+                ws2.addImage(imageId, {
+                    tl: { col: 1, row: 1 },
+                    ext: { width: 250, height: 2000 },
+                });
 
-        } else if (window.innerWidth <= 1000) {
-            ws2.addImage(imageId, {
-                tl: { col: 1, row: 1 },
-                ext: { width: 800, height: 2000 },
-            });
+            } else if (window.innerWidth <= 1000) {
+                ws2.addImage(imageId, {
+                    tl: { col: 1, row: 1 },
+                    ext: { width: 800, height: 2000 },
+                });
 
-        } else {
-            ws2.addImage(imageId, {
-                tl: { col: 1, row: 1 },
-                ext: { width: 1500, height: 2000 },
-            });
+            } else {
+                ws2.addImage(imageId, {
+                    tl: { col: 1, row: 1 },
+                    ext: { width: 1500, height: 2000 },
+                });
 
+            }
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer]);
+            saveAs(blob, `${fileName}.xlsx`);
+            obj1 = []
         }
-
-        const buffer = await workbook.xlsx.writeBuffer();
-        const blob = new Blob([buffer]);
-        saveAs(blob, `${fileName}.xlsx`);
-        obj1 = []
     };
 
     return (

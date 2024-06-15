@@ -1,6 +1,7 @@
-// const Baseurl="http://192.168.1.208:52202/"
+const Baseurl="http://192.168.1.208:52202/"
 // const Baseurl = "http://192.168.1.245:52202/"
-const Baseurl = "http://103.250.147.184:52202/"
+// const Baseurl = "http://jsoftwhreport.alphaebarcode.com:52202/"
+// const Baseurl = "http://103.250.147.184:52202/"
 const BaseurlCommon="http://103.131.196.61:42202/"
 
 // const Baseurl ="http://103.131.196.61:52202/"
@@ -12,6 +13,8 @@ const Login = Baseurl + 'Login/'
 
 const Common = Baseurl + 'Common/'
 const Schedule = Baseurl + 'Schedule/'
+const StocktoSales = Baseurl + 'StocktoSales/'
+const MinStock = Baseurl + 'MinStock/'
 
 const API = {
     BranchFilter: Filter+'GetBranch',
@@ -90,6 +93,10 @@ const API = {
     scheduleGetcommonCard : Schedule + "GetcommonCard",
     GetChartDetailWise: Schedule + "GetChartDetailWise",
     GetChartPartyDetails : Schedule + "GetChartPartyDetails",
+    GetStockToSalesChart : StocktoSales + "GetStockToSalesChart",
+    GetMinStockChart : MinStock + "GetMinStockChart",
+    GetMinStockChartDeatil : MinStock + "GetMinStockChartDeatil",
+    baseurl : Baseurl,
 }
 export default API
 

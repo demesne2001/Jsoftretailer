@@ -91,11 +91,13 @@ const ContexState1 = (props) => {
         "PageSize": 5
     });
 
+    const [defaultchartFilterName,  setdefaultchartFilterName] = useState("");
+    const [TageImageFilterName,  settagImageFilterName] = useState("");
 
 
     return (
 
-        <contex.Provider value={{ state: state, SetState: SetState, defaultchart, setDefaultChart, chartImage, setchartImage }}>
+        <contex.Provider value={{setdefaultchartFilterName, defaultchartFilterName, TageImageFilterName , settagImageFilterName , state: state, SetState: SetState, defaultchart, setDefaultChart, chartImage, setchartImage }}>
 
             {props.children}
 

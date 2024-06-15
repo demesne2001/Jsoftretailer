@@ -11,78 +11,12 @@ import { MonthWise_Bar } from '../../ChartOptions/MonthWise_Bar';
 import { MonthWise_area } from '../../ChartOptions/MonthWise_area';
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
-
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 
 export default function MonthWise() {
-
+  const [data, setdata] = useState([])
   const navigate = useNavigate()
-  // const series = [{
-  // 	name: 'Net Profit',
-  // 	data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-  // }]
-
-  // const labels = ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
-
-  // const options = GroupBarOptions(labels)
-
-  // const [postData, setPostData] = useState({
-  //     "strBranch": "",
-  //     "strState": "",
-  //     "strCity": "",
-  //     "strItem": "",
-  //     "strSubItem": "",
-  //     "strItemGroup": "",
-  //     "strItemSubitem": "",
-  //     "strPurchaseParty": "",
-  //     "strSalesParty": "",
-  //     "strSaleman": "",
-  //     "strProduct": "",
-  //     "strDesignCatalogue": "",
-  //     "strSaleAging": "",
-  //     "strModeofSale": "",
-  //     "strTeamModeofSale": "",
-  //     "FromDate": "",
-  //     "ToDate": "",
-  //     "strMetalType": "",
-  //     "strDayBook": "",
-  //     "PageNo": 0,
-  //     "PageSize": 0,
-  //     "Search": ""
-  // })
-
-
-  // useEffect(()=>{
-  //     getdata()
-  // },[])
-
-  // function getdata() {
-
-  // 	let temp1 = []
-
-  //     post(postData,API.GetMonthWise,'post')
-  //     .then((res)=>{
-
-  // 		for (let index = 0; index < res.data.lstResult.length; index++) {
-
-  // 			temp1.push({
-
-  // 			})
-
-  // 		}
-
-  //     })
-  // }
-
-  // function handledropdownMenu() {
-  // 	document.getElementById("myDropdownMonth").style.display === "block" ? document.getElementById("myDropdownMonth").style.display = "none" : document.getElementById("myDropdownMonth").style.display = "block";
-  // }
-
-
-  // function handleSelectedChart(num) {
-  // 	// setBranchWiseChart(num)
-  // }
-
   const contexData = useContext(contex);
   const [name, setName] = useState([])
   const [weight, setweight] = useState([])
@@ -96,6 +30,99 @@ export default function MonthWise() {
   const [demo, setdemo] = useState("bar")
   const options_bar = MonthWise_Bar(name, inputdata['column'])
   const options_area = MonthWise_area(name, inputdata['column'])
+  let optionbar = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'bar',
+    height: '400%',
+    width: '100%',
+    chartId: 'MonthWise',
+    Xaxis: name,
+    color: ['#00FFD7', '#FFD700', '#D700FF'],
+    Yaxis: weight,
+  }
+
+  let optionarea = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'area',
+    height: '100%',
+    width: '100%',
+    chartId: 'MonthWise',
+    Xaxis: name,
+    Yaxis: weight,
+  }
+  let radialdata = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'polar-radialbar',
+    height: '100%',
+    width: '100%',
+    chartId: 'MonthWise Wise',
+    radiusAxis: name,
+    seriesdata: weight,
+  }
+  let optiondonut = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'donut',
+    height: '100%',
+    width: '100%',
+    chartId: 'MonthWise Wise',
+    propdata: data,
+    radius: [10, 150],
+    label:  {
+			show: false,
+			position: 'center'
+		  },
+		  emphasis: {
+			label: {
+			  show: true,
+			  fontSize: 20,
+			  fontWeight: 'bold'
+			}
+		}
+
+  }
+
+  let optionpie = {
+    themeId: localStorage.getItem("ThemeIndex"),
+    charttype: 'simplepie',
+    height: '100%',
+    width: '100%',
+    propdata: data,
+    chartId: 'MonthWise',
+    label: {
+      position: 'inside',
+      formatter: '{d}%',
+      color: 'white',
+      fontWeight: 'bold',
+    },
+  }
+  let optradialbar = {
+    charttype: 'semi-donut',
+    height: '100%',
+    width: '100%',
+    chartId: 'MonthWise',
+    propdata: data,
+    position: 'center',
+    fontsize: 20,
+    label:  {
+			show: false,
+			position: 'center'
+		  },
+		  emphasis: {
+			label: {
+			  show: true,
+			  fontSize: 20,
+			  fontWeight: 'bold'
+			}
+		}
+  }
+  let optionPolar = {
+    charttype: 'pie',
+    height: '100%',
+    width: '100%',
+    chartId: 'MonthWise',
+    propdata: data,
+    radius: [10, 110],
+  }
   var series = [{
     name: 'weight',
     data: weight
@@ -115,7 +142,7 @@ export default function MonthWise() {
 
   useEffect(() => {
     fetchOption()
-     getdata()
+    getdata()
   }, [inputdata])
 
   useEffect(() => {
@@ -133,30 +160,36 @@ export default function MonthWise() {
 
         let name = [];
         let weight = [];
-
-        for (let index = 0; index < res.data.lstResult.length; index++) {
-          if (res.data.lstResult[index]['MonthName'] === null) {
-            name.push("null")
-          } else {
-            name.push(res.data.lstResult[index]['MonthName'])
+        let data = [];
+        if (res.data !== undefined) {
+          for (let index = 0; index < res.data.lstResult.length; index++) {
+            data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['MonthName'] })
+            if (res.data.lstResult[index]['MonthName'] === null) {
+              name.push("null")
+            } else {
+              name.push(res.data.lstResult[index]['MonthName'])
+            }
+            weight.push(res.data.lstResult[index][inputdata['column']])
           }
-          weight.push(res.data.lstResult[index][inputdata['column']])
-        }
-        setName(name)
-        setweight(weight)
-        setdataLoader(false)
-        if (weight.length !== 0) {
-          setLoader(false)
+          setName(name)
+          setweight(weight)
+          setdataLoader(false)
+          setdata(data);
+          if (weight.length !== 0) {
+            setLoader(false)
+          } else {
+            setLoader(true)
+          }
+          inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
-          setLoader(true)
+          alert(res['Error']);;
         }
-        inputdata = { ...inputdata, ['Grouping']: '' }
       })
   }
 
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "datename(month,voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise", filterKey: "strItemSubitem", chartId: 14 }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "datename(month,a.voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise", filterKey: "strMonth", chartId: 14, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
   }
 
 
@@ -190,23 +223,31 @@ export default function MonthWise() {
     await post({ "ID": 14, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
       .then((res) => {
-        if (res.data.lstResult.length === 0) {
-          setflag(ChartType)
+        if (res.data !== undefined) {
+          if (res.data.lstResult.length === 0) {
+            setflag(ChartType)
 
-          post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 14, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
-            .then((res) => {
+            post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 14, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
+              .then((res) => {
 
-              post({ "ID": 14, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
-                .then((res) => {
-                  setOptionId(res.data.lstResult[0].ChartOptionID)
-                })
+                post({ "ID": 14, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
+                  .then((res) => {
+                    if (res.data !== undefined) {
+                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                    } else {
+                      alert(res['Error']);
+                    }
+                  })
                 Notify()
-            })
+              })
 
-        }
-        else {
-          setOptionId(res.data.lstResult[0].ChartOptionID)
-          setflag(res.data.lstResult[0].ChartOption)
+          }
+          else {
+            setOptionId(res.data.lstResult[0].ChartOptionID)
+            setflag(res.data.lstResult[0].ChartOption)
+          }
+        } else {
+          alert(res['Error']);
         }
 
       })
@@ -247,24 +288,30 @@ export default function MonthWise() {
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];
-
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        if (res.data.lstResult[index]['MonthName'] === null) {
-          name.push("null")
-        } else {
-          name.push(res.data.lstResult[index]['MonthName'])
+      let data = [];
+      if (res.data !== undefined) {
+        for (let index = 0; index < res.data.lstResult.length; index++) {
+          data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['MonthName'] })
+          if (res.data.lstResult[index]['MonthName'] === null) {
+            name.push("null")
+          } else {
+            name.push(res.data.lstResult[index]['MonthName'])
+          }
+          weight.push(res.data.lstResult[index][inputdata['column']])
         }
-        weight.push(res.data.lstResult[index][inputdata['column']])
-      }
-      setName(name)
-      setweight(weight)
-      setdataLoader(false)
-      if (weight.length !== 0) {
-        setLoader(false)
+        setName(name)
+        setweight(weight)
+        setdataLoader(false)
+        setdata(data);
+        if (weight.length !== 0) {
+          setLoader(false)
+        } else {
+          setLoader(true)
+        }
+        inputdata = { ...inputdata, ['Grouping']: '' }
       } else {
-        setLoader(true)
+        alert(res['Error']);;
       }
-      inputdata = { ...inputdata, ['Grouping']: '' }
     })
   }
 
@@ -298,6 +345,10 @@ export default function MonthWise() {
               <div id="myDropdowniconmonth" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
                 {flag === 'area' ? <><a id='area' className='area'>Area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>Area chart</a><hr className='custom-hr' /></>}
+                {flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}                {flag === 'donut' ? <><a id='donut' className='donut'>Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut' className='donut'>Donut</a><hr className='custom-hr' /></>}
+                {flag === 'radialBar' ? <><a id='radialBar' className='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar' className='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
+                {flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
+                {flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
                 {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
@@ -305,53 +356,18 @@ export default function MonthWise() {
             </div>
           </div>
 
-
-          {/* <i className="fas fa-external-link-alt"></i> */}
-          {/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-						<img src={BlackDots} className='dropbtn' />
-					</p>
-					<div id="myDropdownMonth" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-						<a id='option1' onClick={() => handleSelectedChart(1)}>Radial Bar</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(2)}>Pie</a><hr class="custom-hr" />
-					</div> */}
-
         </div>
-        {/* {weight.length !== 0 ?
-        <div className="crancy-progress-card card-contain-graph">
 
-          {flag === 'bar'
-            ?
-            <ReactApexChart options={options_bar} series={series} type={demo} height={390} />
-            : null}
-          {flag === 'area'
-            ?
-            <ReactApexChart options={options_area} series={series} type={demo} height={390} />
-            : null}
-        </div>:
-        <div className="crancy-progress-card card-contain-graph">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-				</div>
-			</div>} */}
         {dataloader !== true ?
           loader !== true ?
             <div className="crancy-progress-card card-contain-graph">
-
-              {flag === 'bar'
-                ?
-                <ReactApexChart options={options_bar} series={series} type={demo} height={390} />
-                : null}
-              {flag === 'area'
-                ?
-                <ReactApexChart options={options_area} series={series} type={demo} height={390} />
-                : null}
+              {flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
+              {flag === 'area' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionarea))} /> : null}
+              {flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondonut))} /> : null}
+              {flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
+              {flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
+              {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
+              {flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionPolar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
               Not Found
