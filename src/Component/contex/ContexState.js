@@ -112,11 +112,13 @@ const ContexState = (props) => {
 	const [flag, setflag] = useState(0);
 	const [flagExcel, setflagExcel] = useState(0);
 	const [LazyLoading, setLazyLoading] = useState(0);
+	let Index = localStorage.getItem("ThemeIndex")
+	const [ThemeIndex, setThemeIndex] = useState(Index)
 	// const [column, setColumn] = useState('FineWt')
 
 	return (
 
-		<contex.Provider value={{setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
+		<contex.Provider value={{ThemeIndex, setThemeIndex,setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
 
 			{props.children}
 

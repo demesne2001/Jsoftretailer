@@ -19,9 +19,9 @@ export default function Navbar() {
     VendorID: 0,
     PageID: 0
   }
-  let ChartPage=[]
-  ChartPage=JSON.parse(localStorage.getItem('PageData'))
-  console.log('ChartPage',ChartPage)
+  let ChartPage = []
+  ChartPage = JSON.parse(localStorage.getItem('PageData'))
+  console.log('ChartPage', ChartPage)
   function FetchPageData() {
     post(input, API.GetPageData, [], 'post').then((res) => {
       if (res.data != undefined) {
@@ -73,8 +73,8 @@ export default function Navbar() {
   }
 
   function HandleLogoClick() {
-    navigate('/Home',{replace:true})
-    var element =   document.getElementById("root");
+    navigate('/Home', { replace: true })
+    var element = document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
   }
 
@@ -166,15 +166,19 @@ export default function Navbar() {
                   <span className="menu-bar__name last-silderbar-title">Schedule
                     Analysis</span></span></a>
                 </li>
-                {ChartPage !== null && ChartPage.length>0? ChartPage.map((key, i) => {
+                <li><a className="collapsed" onClick={handleMinimumStock}><span className="menu-bar__text">
+                  <i className="fas fa-chart-line"></i>
+                  <span className="menu-bar__name">Minimum Stocks</span></span></a>
+                </li>
+                {ChartPage !== null && ChartPage.length > 0 ? ChartPage.map((key, i) => {
                   return (
                     <li><a className="collapsed" onClick={() => handleDynamicPageClick(key.PageID, key.PageName)}><span className="menu-bar__text">
-                      <i className={key.SVGPath != '' && key.SVGPath != undefined ? key.SVGPath: "fas fa-user-clock"}></i>
+                      <i className={key.SVGPath != '' && key.SVGPath != undefined ? key.SVGPath : "fas fa-user-clock"}></i>
                       <span className="menu-bar__name">{key.PageName}</span></span></a>
                     </li>
                   )
                 })
-                :null}
+                  : null}
 
 
               </ul>

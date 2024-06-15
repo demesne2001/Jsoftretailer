@@ -62,7 +62,29 @@ const Main = () => {
           } else {
             localStorage.setItem("username", res.data.UserName);
             localStorage.setItem("token", res.data.Token);
-            navigate("/Home", { replace: true });
+            post({ VendorID: 0, PageID: 0 }, API.GetPageData, [], "post").then(
+              (res) => {
+                console.log("login Data", res);
+                if (res.data != undefined) {
+                  localStorage.setItem("PageData", JSON.stringify([]));
+                  if (res.data.lstResult.length > 0) {
+                    console.log("true cond");
+                    localStorage.setItem(
+                      "PageData",
+                      JSON.stringify(res.data.lstResult)
+                    );
+
+                  } else {
+                    console.log("false cond");
+
+                    localStorage.setItem("PageData", JSON.stringify([]));
+                  }
+                  navigate("/Home", { replace: true });
+                }
+              }
+            );
+
+
           }
         } else {
           alert(res.data.Message);
@@ -70,55 +92,39 @@ const Main = () => {
       }
     });
 
-   
-      post({ VendorID: 0, PageID: 0 }, API.GetPageData, [], "post").then(
-        (res) => {
-          console.log("login Data", res);
-          if (res.data != undefined) {
-            localStorage.setItem("PageData", JSON.stringify([]));
-            if (res.data.lstResult.length > 0) {
-              localStorage.setItem(
-                "PageData",
-                JSON.stringify(res.data.lstResult)
-              );
-            } else {
-              localStorage.setItem("PageData", JSON.stringify([]));
-            }
-          }
-        }
-      );
-    
+
+
   }
-    function handleLogin() {
-        post(login, API.login, {}, "post").then((res) => {
-            if (res.data === undefined) {
-                alert(res.Error)
-                document.getElementsByClassName('user')[0].value = "";
-                document.getElementsByClassName('user')[1].value = "";
-                document.getElementsByClassName('user')[0].focus()
-            } else {
-                if (res.data.HasError === false) {
-                    if (res.data.UserName === undefined) {
-                        alert(res.data.Message)
-                        document.getElementsByClassName('user')[0].value = "";
-                        document.getElementsByClassName('user')[1].value = "";
-                        document.getElementsByClassName('user')[0].focus()
-        
-                    } else {
-                        localStorage.setItem('username', res.data.UserName)
-                        localStorage.setItem('token', res.data.Token)
-                        navigate('/Home', { replace: true })
-                    }
-                } else {
-                    alert(res.data.Message)
-                    document.getElementsByClassName('user')[0].value = "";
-                    document.getElementsByClassName('user')[1].value = "";
-                }
-            }
-        })
+  function handleLogin() {
+    post(login, API.login, {}, "post").then((res) => {
+      if (res.data === undefined) {
+        alert(res.Error)
+        document.getElementsByClassName('user')[0].value = "";
+        document.getElementsByClassName('user')[1].value = "";
+        document.getElementsByClassName('user')[0].focus()
+      } else {
+        if (res.data.HasError === false) {
+          if (res.data.UserName === undefined) {
+            alert(res.data.Message)
+            document.getElementsByClassName('user')[0].value = "";
+            document.getElementsByClassName('user')[1].value = "";
+            document.getElementsByClassName('user')[0].focus()
+
+          } else {
+            localStorage.setItem('username', res.data.UserName)
+            localStorage.setItem('token', res.data.Token)
+            navigate('/Home', { replace: true })
+          }
+        } else {
+          alert(res.data.Message)
+          document.getElementsByClassName('user')[0].value = "";
+          document.getElementsByClassName('user')[1].value = "";
+        }
+      }
+    })
 
 
-    }
+  }
 
   function handleoninputChange(e) {
     setLogin({ ...login, [e.target.name]: e.target.value });
