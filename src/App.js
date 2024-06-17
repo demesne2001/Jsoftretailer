@@ -68,6 +68,9 @@ function App() {
             <Route exact path='/Stock_TO_Sales_Detailed' element={<Stock_to_Sales_DetailedDashboard />}></Route>
             <Route exact path='/minimum_stocks' element={<MinimumStocksDashboard />}></Route>
             <Route exact path='/minimum_stocks_Detailed' element={<MinimumStockDetailedDashboard />}></Route>
+            <Route exact path='/DynamicPage' element={<DynamicDashBoard />}></Route>
+            <Route exact path='/DynamicDetailPage' element={<DynamicDetailDashboard />}></Route>
+
             <Route exact path='/' element={<Main />}></Route>
           </Routes>
 

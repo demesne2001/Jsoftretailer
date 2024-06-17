@@ -27,7 +27,7 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
                         }
                     },
                     tooltip: {
-                        enabled: true
+                        enabled: false
                     }
                 }
             )
