@@ -57,7 +57,7 @@ export default function Main_chart(props) {
 
     async function fetchData() {
 
-        input = { ...input, ['Grouping']: props.state.grouping, ['FromDate'] : props.state.FromDate, ['ToDate'] : props.state.ToDate };
+        input = { ...input, ['Grouping']: props.state.grouping, ['FromDate']: props.state.FromDate, ['ToDate']: props.state.ToDate };
         // await axios.post(API.GetDetailCommanChart, input).then((res) => {
         //     let name = [];
         //     let weg = [];
@@ -257,7 +257,18 @@ export default function Main_chart(props) {
         chartId: 'Main_chart_secondScreen',
         propdata: data,
         idkey: props.state.filterKey,
-        idlst: id
+        idlst: id,
+        label: {
+            show: false,
+            position: 'center'
+        },
+        emphasis: {
+            label: {
+                show: true,
+                fontSize: 20,
+                fontWeight: 'bold'
+            }
+        }
     }
     let updatedstate = {}
 
