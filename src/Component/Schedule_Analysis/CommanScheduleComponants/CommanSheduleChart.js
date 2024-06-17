@@ -256,6 +256,7 @@ export default function CommanSheduleChart(props) {
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>
                         <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']} <div style={{ fontSize: '15px' }}> {props.screen === 3 ? contextData.filtername !== "" ? " ( " + contextData.filtername + " )" : null : null}</div></p>
                     </div>
+                    {props.screen !== 3?
                     <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
                         <div className='d-flex schedule-card-icon'>
 
@@ -272,7 +273,7 @@ export default function CommanSheduleChart(props) {
                             {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " asc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp;</a><hr className='custom-hr' /> </>}
                             {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " desc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by{CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp;</a><hr className='custom-hr' /> </>}
                         </div>
-                    </div>
+                    </div>:null}
                 </div>
                 {console.log(yAxis)}
                 {dataloader !== true ?
