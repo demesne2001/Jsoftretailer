@@ -80,6 +80,7 @@ export default function SalesManWise() {
     },
   }
   let optradialbar = {
+    themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'semi-donut',
     height: '100%',
     width: '100%',
@@ -100,6 +101,7 @@ export default function SalesManWise() {
     }
   }      
   let optionPolar = {
+    themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'pie',
     height: '100%',
     width: '100%',
