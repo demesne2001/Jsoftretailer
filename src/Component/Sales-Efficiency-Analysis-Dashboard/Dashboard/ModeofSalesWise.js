@@ -84,6 +84,7 @@ export default function ModeofSalesWise() {
     },
   }
   let optradialbar = {
+    themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'semi-donut',
     height: '100%',
     width: '100%',
@@ -104,6 +105,7 @@ export default function ModeofSalesWise() {
     }
   }
   let optionPolar = {
+    themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'pie',
     height: '100%',
     width: '100%',
