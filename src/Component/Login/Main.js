@@ -47,54 +47,35 @@ const Main = () => {
     }
   }, [count]);
 
-  function handleLogin() {
-    post(login, API.login, {}, "post").then((res) => {
-      if (res.data === undefined) {
-        alert(res.Error);
-        document.getElementsByClassName("user")[0].focus();
-        setLogin({ LoginID: "", PassWord: "" });
-      } else {
-        if (res.data.HasError === false) {
-          if (res.data.UserName === undefined) {
-            alert(res.data.Message);
-            document.getElementsByClassName("user")[0].focus();
-            setLogin({ LoginID: "", PassWord: "" });
-          } else {
-            localStorage.setItem("username", res.data.UserName);
-            localStorage.setItem("token", res.data.Token);
-            post({ VendorID: 0, PageID: 0 }, API.GetPageData, [], "post").then(
-              (res) => {
-                console.log("login Data", res);
-                if (res.data != undefined) {
-                  localStorage.setItem("PageData", JSON.stringify([]));
-                  if (res.data.lstResult.length > 0) {
-                    console.log("true cond");
-                    localStorage.setItem(
-                      "PageData",
-                      JSON.stringify(res.data.lstResult)
-                    );
-
-                  } else {
-                    console.log("false cond");
-
-                    localStorage.setItem("PageData", JSON.stringify([]));
-                  }
-                  navigate("/Home", { replace: true });
-                }
-              }
-            );
+  // function handleLogin() {
+  //   post(login, API.login, {}, "post").then((res) => {
+  //     if (res.data === undefined) {
+  //       alert(res.Error);
+  //       document.getElementsByClassName("user")[0].focus();
+  //       setLogin({ LoginID: "", PassWord: "" });
+  //     } else {
+  //       if (res.data.HasError === false) {
+  //         if (res.data.UserName === undefined) {
+  //           alert(res.data.Message);
+  //           document.getElementsByClassName("user")[0].focus();
+  //           setLogin({ LoginID: "", PassWord: "" });
+  //         } else {
+  //           localStorage.setItem("username", res.data.UserName);
+  //           localStorage.setItem("token", res.data.Token);
 
 
-          }
-        } else {
-          alert(res.data.Message);
-        }
-      }
-    });
+  //         }
+  //       } else {
+  //         alert(res.data.Message);
+  //       }
+  //     }
+  //   });
 
 
 
-  }
+
+
+  // }
   function handleLogin() {
     post(login, API.login, {}, "post").then((res) => {
       if (res.data === undefined) {
@@ -113,7 +94,29 @@ const Main = () => {
           } else {
             localStorage.setItem('username', res.data.UserName)
             localStorage.setItem('token', res.data.Token)
-            navigate('/Home', { replace: true })
+            post({ VendorID: 0, PageID: 0 }, API.GetPageData, [], "post").then(
+              (res) => {
+                console.log("login Data", res);
+                if (res.data != undefined) {
+                  localStorage.setItem("PageData", JSON.stringify([]));
+                  if (res.data.lstResult.length > 0) {
+                    console.log("true cond");
+                    localStorage.setItem(
+                      "PageData",
+                      JSON.stringify(res.data.lstResult)
+                    );
+
+                  } else {
+                    console.log("false cond");
+
+                    localStorage.setItem("PageData", JSON.stringify([]));
+                  }
+                  console.log('before call')
+                  navigate("/Home", { replace: true });
+                }
+              }
+            );
+            // navigate('/Home', { replace: true })
           }
         } else {
           alert(res.data.Message)

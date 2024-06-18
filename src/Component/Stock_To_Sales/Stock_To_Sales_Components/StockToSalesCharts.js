@@ -49,7 +49,7 @@ export default function StockToSalesCharts(props) {
 
     function getChartData() {
         inputdata = { ...inputdata, 'Mode': props.id }
-        console.log("aegrhagb",inputdata);
+        console.log("aegrhagb", inputdata);
         console.log(pageSize, "ds");
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
@@ -90,7 +90,7 @@ export default function StockToSalesCharts(props) {
 
     function fetchPaginatedData(data1) {
         if (data1 !== undefined && data1.indexOf(undefined) === -1) {
-            console.log(data1,"sds");
+            console.log(data1, "sds");
             if (data.length > 0 && data1.length > 0) {
                 console.log(data, "rtrtrtr");
 
@@ -133,29 +133,118 @@ export default function StockToSalesCharts(props) {
     function handleMonthOptionClick(label) {
         contextData.SetState({ ...contextData.state, ['MonthType']: label })
     }
+    // let max1: any = Math.max(...props.barprops.Yaxis[0])
+    function findMinMax() {
+        let ansmin = [];
+        let ansmax = [];
+        for (let i = 0; i < yAxis.length; i++) {
 
-    if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
-        if (props.id === 1) {
-            option = {
-                height: 320,
-                width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth,
-                charttype: 'antv-singlebar-multivalue',
-                series: dataformate(),
-                widthlst: [40, 60],
-                color: [StockToSalesChartObject[props.id]['color'][0], StockToSalesChartObject[props.id]['color'][1], '#0085ff']
-            }
-        } else {
-            option = {
-                height: 350,
-                width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth,
-                charttype: 'antv-singlebar-multivalue',
-                series: dataformate(),
-                widthlst: [40, 60],
-                color: [StockToSalesChartObject[props.id]['color'][0], StockToSalesChartObject[props.id]['color'][1], '#1c7ee6']
-            }
+            ansmax.push(Math.max(...yAxis[i]))
+            ansmin.push(Math.min(...yAxis[i]))
         }
+        let lenthdigit = (parseInt(Math.max(...ansmax).toFixed(0))).toString().length - 1
+        if (parseInt(Math.min(...ansmin).toFixed(0)) >= 0) {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), 0]
+        } else {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+        }
+    }
+    if (inputdata.Unit !== 'P' || inputdata.Unit === '') {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(2, 1);
+        if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined && xAxis.length > 0 && yAxis.length > 0) {
+            if (props.id === 1) {
+                option = {
+                    themeId: 11,
+                    chartId: 'inside-Baryudsd' + props.id,
+                    charttype: 'inside-Bar',
+                    height: '320%',
+                    width: '100%',
+                    legend: ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt'],
+                    color: StockToSalesChartObject[props.id].color,
+                    widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35],
+                    Xaxis: xAxis,
+                    Yaxis: tempYAxis,
+                    bargap: '-80%',
+                    alignment: 'v',
+                    maxval: findMinMax()[0],
+                    minval: findMinMax()[1],
+                    barnum: 2,
+                    divname: 'crancy-progress-card card-contain-graph',
+                    tooltipid: 0
+                }
+            } else {
+                option = {
+                    themeId: 11,
+                    chartId: 'inside-Baryuiaw' + props.id,
+                    charttype: 'inside-Bar',
+                    height: '350%',
+                    width: '100%',
+                    legend: ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt'],
+                    color: StockToSalesChartObject[props.id].color,
+                    widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 45],
+                    Xaxis: xAxis,
+                    Yaxis: tempYAxis,
+                    bargap: '-80%',
+                    alignment: 'v',
+                    maxval: findMinMax()[0],
+                    minval: findMinMax()[1],
+                    barnum: 2,
+                    divname: 'crancy-progress-card card-contain-graph',
+                    tooltipid: 0
+                }
+            }
+            console.log("options", option);
 
+        }
+    } else {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(1, 1);
+        if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined && xAxis.length > 0 && yAxis.length > 0) {
+            if (props.id === 1) {
+                option = {
+                    themeId: 11,
+                    chartId: 'inside-Baryudsd' + props.id,
+                    charttype: 'inside-Bar',
+                    height: '320%',
+                    width: '100%',
+                    legend: ['AvgStock', 'Sales-Pieces', 'AvgStockCycleNtWt'],
+                    color: StockToSalesChartObject[props.id].color,
+                    widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35],
+                    Xaxis: xAxis,
+                    Yaxis: tempYAxis,
+                    bargap: '-80%',
+                    alignment: 'v',
+                    maxval: findMinMax()[0],
+                    minval: findMinMax()[1],
+                    barnum: 2,
+                    divname: 'crancy-progress-card card-contain-graph',
+                    tooltipid: 0
+                }
+            } else {
+                option = {
+                    themeId: 11,
+                    chartId: 'inside-Baryuiaw' + props.id,
+                    charttype: 'inside-Bar',
+                    height: '350%',
+                    width: '100%',
+                    legend: ['AvgStock', 'Sales-Pieces', 'AvgStockCycleNtWt'],
+                    color: StockToSalesChartObject[props.id].color,
+                    widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 45],
+                    Xaxis: xAxis,
+                    Yaxis: tempYAxis,
+                    bargap: '-80%',
+                    alignment: 'v',
+                    maxval: findMinMax()[0],
+                    minval: findMinMax()[1],
+                    barnum: 2,
+                    divname: 'crancy-progress-card card-contain-graph',
+                    tooltipid: 0
+                }
+            }
+            console.log("options", option);
 
+        }
     }
 
     function handleRightClick() {
@@ -172,6 +261,7 @@ export default function StockToSalesCharts(props) {
         }
     }
 
+    console.log("chart", <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} />)
 
     return (
         <div class="col-xl-12 col-lg-12 col-md-12 col-12">
@@ -193,8 +283,8 @@ export default function StockToSalesCharts(props) {
                                     <button className='chartoptionButton' onClick={() => { handleMonthOptionClick("Y") }}>Year Wise</button>
                                 </div>
                                 : null}
-                            <div style={props.id === 1 ? { height: '310px' } : { height: '350px' }}>
-                                {option.series !== undefined ? option.series.length > 0 ? <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} /> : null : null}
+                            <div className='' style={props.id === 1 ? { height: '310px' } : { height: '350px' }}>
+                                {option.Xaxis !== undefined ? option.Xaxis.length > 0 ? <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} /> : null : null}
                                 <div className='mainscreenchartdiv'>
                                     <button onClick={handleLeftClick} className='chartupdown left'><i class="fa-solid fa-left-long iconupdown"></i></button>
 

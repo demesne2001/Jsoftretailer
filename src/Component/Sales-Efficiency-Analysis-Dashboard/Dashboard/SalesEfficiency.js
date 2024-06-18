@@ -63,7 +63,7 @@ export default function SalesEfficiency() {
 
     async function getdata() {
 
-        inputdata = { ...inputdata, ['Grouping']: 's' }
+        inputdata = { ...inputdata, ['Grouping']: 'T' }
 
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {

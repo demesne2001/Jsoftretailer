@@ -68,7 +68,7 @@ export default function MinimumStockHeader() {
         ["column"]: contexData.tempstate["column"]
     };
     const unitRef = useRef(null);
-    const [unit, setUnit] = useState([{ value: 'P', label: 'PEICES' }, { value: 'W', label: 'NET WEIGHT' }]);
+    const [unit, setUnit] = useState([{ value: 'P', label: 'PIECE' }, { value: 'W', label: 'NET WEIGHT' }]);
     const [Defaultunit, setDefaultUnit] = useState({ value: 'W', label: 'NET WEIGHT' });
     const [percentage_check, setpercentage_check] = useState(false);
 

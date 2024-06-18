@@ -8,6 +8,7 @@ import ReactApexChart from 'react-apexcharts';
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import 'react-date-range/dist/styles.css'; // main css file
 import { DateRange } from 'react-date-range';
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 export default function StockToSalesMainChart(props) {
     const contextData = useContext(contex);
@@ -137,6 +138,78 @@ export default function StockToSalesMainChart(props) {
         console.log(e, "fffddd");
     }
 
+    function findMinMax() {
+        let ansmin = [];
+        let ansmax = [];
+        for (let i = 0; i < yAxis.length; i++) {
+
+            ansmax.push(Math.max(...yAxis[i]))
+            ansmin.push(Math.min(...yAxis[i]))
+        }
+        let lenthdigit = (parseInt(Math.max(...ansmax).toFixed(0))).toString().length - 1
+        if (parseInt(Math.min(...ansmin).toFixed(0)) >= 0) {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), 0]
+        } else {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+        }
+    }
+    if (document.getElementsByClassName('detailstocktosales')[0] !== undefined && xAxis.length > 0 && yAxis.length > 0) {
+        console.log(xAxis, yAxis, "qawe");
+        let tempYAxis = yAxis;
+        tempYAxis.splice(2, 1);
+        if (props.id === 1) {
+            option = {
+                themeId: 11,
+                chartId: 'inside-Baryudsd' + props.ChartMode,
+                charttype: 'inside-Bar',
+                height: '300%',
+                width: '100%',
+                legend: ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt'],
+                color: StockToSalesChartObject[props.state.ChartMode].color,
+                widthlst: [document.getElementsByClassName('detailstocktosales')[0].clientWidth / 20, document.getElementsByClassName('detailstocktosales')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                idkey: props.state.filterkey,
+                idlst: id,
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
+                tooltipid:0
+            }
+        } else {
+            option = {
+                themeId: 11,
+                chartId: 'inside-Baryuiaw' + props.ChartMode,
+                charttype: 'inside-Bar',
+                height: '632%',
+                width: '100%',
+                legend: ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt'],
+                color: StockToSalesChartObject[props.state.ChartMode].color,
+                widthlst: [document.getElementsByClassName('detailstocktosales')[0].clientWidth / 20, document.getElementsByClassName('detailstocktosales')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                idkey: props.state.filterkey,
+                idlst: id,
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
+                tooltipid:0
+            }
+        }
+        console.log("options", option);
+
+    }
+    let updatecontext = (<AlphaDashChart obj={JSON.parse(JSON.stringify(option))} state={contextData.detailsecondstate} />).props.state;
+    function DivOnClick() {
+        console.log(updatecontext, "asdhtutdf");
+        contextData.SetDetailsecondState({ ...contextData.detailsecondstate, [props.state.filterkey]: updatecontext[props.state.filterkey] })
+    }
+
+
     return (
         <div class="col-xl-6 col-lg-6 col-md-12 col-12">
 
@@ -154,7 +227,7 @@ export default function StockToSalesMainChart(props) {
                         <div class="flip-card">
                             <div class="flip-card-inner" id='filp'>
                                 <div class="flip-card-back">
-                                    <div className="detailstocktosales" style={{ height: '720px' }} >
+                                    <div className="detailstocktosales" onClick={DivOnClick} style={{ height: '720px' }} >
                                         {props.state.ChartMode === '1' ?
                                             <div className='ChartMonthOption'>
                                                 <button className='chartoptionButton' onClick={() => { handleMonthOptionClick("M") }}>Month Wise</button>
@@ -164,7 +237,7 @@ export default function StockToSalesMainChart(props) {
                                             </div>
                                             : null}
                                         {console.log(StockToSalesOption(xAxis, yAxis, id, contextData)[1], "ssss")}
-                                        <ReactApexChart options={StockToSalesOption(xAxis, yAxis, id, contextData, props.state.filterkey)[0]} series={StockToSalesOption(xAxis, yAxis, id, contextData, props.state.filterkey)[1]} type='line' height={props.state.ChartMode === '1' ? 620 : 650} />
+                                        {option.Xaxis !== undefined ? option.Xaxis.length > 0 ? <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} state={contextData.detailsecondstate} /> : null : null}
                                         <div className='mainscreenchartdiv'>
                                             <button onClick={handleLeftClick} className='chartupdown left'><i class="fa-solid fa-left-long iconupdown"></i></button>
 

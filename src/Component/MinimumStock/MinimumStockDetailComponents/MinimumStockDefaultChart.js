@@ -41,9 +41,9 @@ export default function MinimumStockDefaultChart(props) {
     }, [data])
 
     function getChartData() {
-        inputdata = { ...inputdata, 'Mode': props.state.ChartMode, 'FromDate' : props.state.FromDate, 'ToDate' : props.state.ToDate }
-        console.log(inputdata,'sed123');
-        
+        inputdata = { ...inputdata, 'Mode': props.state.ChartMode, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate }
+        console.log(inputdata, 'sed123');
+
         post(inputdata, API.GetMinStockChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 let templength = res.data.lstResult.length
@@ -126,13 +126,88 @@ export default function MinimumStockDefaultChart(props) {
         }
     }
 
+    function findMinMax() {
+        let ansmin = [];
+        let ansmax = [];
+        for (let i = 0; i < yAxis.length; i++) {
+
+            ansmax.push(Math.max(...yAxis[i]))
+            ansmin.push(Math.min(...yAxis[i]))
+        }
+        let lenthdigit = (parseInt(Math.max(...ansmax).toFixed(0))).toString().length - 1
+        if (parseInt(Math.min(...ansmin).toFixed(0)) >= 0) {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), 0]
+        } else {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+        }
+    }
+
+    if (document.getElementsByClassName('detailstocktosales')[0] !== undefined) {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(2, 1);
+        if (props.state.dropdown === "1") {
+            option = {
+                themeId: 11,
+                chartId: 'inside-Baryuwsedsd' + props.state.ChartMode,
+                charttype: 'inside-Bar',
+                height: '350%',
+                width: '100%',
+                legend: ['AvgStock', 'AvgMinStockRequired', 'AvgStockCycleNtWt'],
+                color: MinimumStockChartObject[props.state.ChartMode].color,
+                widthlst: [document.getElementsByClassName('detailstocktosales')[0].clientWidth / 20, document.getElementsByClassName('detailstocktosales')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                idkey: props.state.filterkey,
+                idlst: id,
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
+                divname: 'detailstocktosales',
+                tooltipid: 2
+            }
+        } else {
+            option = {
+                themeId: 11,
+                chartId: 'inside-Baryuwsedsd' + props.state.ChartMode,
+                charttype: 'inside-Bar',
+                height: '310%',
+                width: '100%',
+                legend: ['AvgStock', 'AvgMinStockRequired', 'AvgStockCycleNtWt'],
+                color: MinimumStockChartObject[props.state.ChartMode].color,
+                widthlst: [document.getElementsByClassName('detailstocktosales')[0].clientWidth / 20, document.getElementsByClassName('detailstocktosales')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                idkey: props.state.filterkey,
+                idlst: id,
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
+                divname: 'detailstocktosales',
+                tooltipid: 2
+            }
+        }
+
+        console.log(option, "sdfshgfd");
+    }
+
+    let updatecontext = (<AlphaDashChart obj={JSON.parse(JSON.stringify(option))} state={contextData.detailTirdstate} />).props.state;
+    function DivOnClick() {
+        console.log(updatecontext, "asdhtutdf");
+        contextData.SetDetailThirdState({ ...contextData.detailTirdstate, [props.state.filterkey]: updatecontext[props.state.filterkey] })
+    }
+
+
 
     return (
         <div class="col-xl-6 col-lg-6 col-md-12 col-12">
             <div>
                 <div class="title-top-graphdetail">
                     <h5>
-                        {props.state !== null ? props.state.componentName : null} <span style={{fontSize:'15px'}}> {contextData.filtername !== ""? "( " + contextData.filtername + " )": null}</span>
+                        {props.state !== null ? props.state.componentName : null} <span style={{ fontSize: '15px' }}> {contextData.filtername !== "" ? "( " + contextData.filtername + " )" : null}</span>
                     </h5>
                 </div>
                 {dataloader !== true ?
@@ -140,10 +215,10 @@ export default function MinimumStockDefaultChart(props) {
                         <div class="flip-card">
                             <div class="flip-card-inner" id='filp'>
                                 <div class="flip-card-back">
-                                    <div className="detailstocktosales" style={props.state.dropdown === '1' ?{ height: '395px' }:{height: '350px'}} >
+                                    <div className="detailstocktosales" onClick={DivOnClick} style={props.state.dropdown === '1' ? { height: '395px' } : { height: '350px' }} >
 
                                         {console.log(props.state, "ssss")}
-                                        <ReactApexChart options={StockToSalesOption(xAxis, yAxis, id, contextData, props.state.filterkey, 2)[0]} series={StockToSalesOption(xAxis, yAxis, id, contextData, props.state.filterkey, 2)[1]} type='line' height={props.state.dropdown === '1' ?340:300} />
+                                        <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} state={contextData.detailTirdstate} />
                                         <div className='mainscreenchartdiv'>
                                             <button onClick={handleLeftClick} className='chartupdown left'><i class="fa-solid fa-left-long iconupdown"></i></button>
 
@@ -157,7 +232,7 @@ export default function MinimumStockDefaultChart(props) {
                         <div class="flip-card">
                             <div class="flip-card-inner" id='filp'>
                                 <div class="flip-card-back">
-                                    <div class="" style={props.state.dropdown === '1' ?{ height: '395px', color: 'black' }:{ height: '350px', color: 'black' }}>
+                                    <div class="" style={props.state.dropdown === '1' ? { height: '395px', color: 'black' } : { height: '350px', color: 'black' }}>
 
                                         Not Found
                                     </div>
@@ -167,7 +242,7 @@ export default function MinimumStockDefaultChart(props) {
                     <div class="flip-card">
                         <div class="flip-card-inner" id='filp'>
                             <div class="flip-card-back">
-                                <div class="" style={props.state.dropdown === '1' ?{ height: '395px' }:{height: '350px'}}>
+                                <div class="" style={props.state.dropdown === '1' ? { height: '395px' } : { height: '350px' }}>
                                     <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                                         <div class="dot-spinner__dot"></div>
                                         <div class="dot-spinner__dot"></div>

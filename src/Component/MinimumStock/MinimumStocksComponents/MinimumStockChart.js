@@ -79,25 +79,74 @@ export default function MinimumStockChart(props) {
         return templs;
     }
 
-    if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
-        option = {
-            height: 350,
-            width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth,
-            charttype: 'antv-singlebar-multivalue',
-            series: dataformate(),
-            widthlst: [40, 60],
-            color: MinimumStockChartObject[props.id].color
+    function findMinMax() {
+        let ansmin = [];
+        let ansmax = [];
+        for (let i = 0; i < yAxis.length; i++) {
+
+            ansmax.push(Math.max(...yAxis[i]))
+            ansmin.push(Math.min(...yAxis[i]))
         }
+        let lenthdigit = (parseInt(Math.max(...ansmax).toFixed(0))).toString().length - 1
+        if (parseInt(Math.min(...ansmin).toFixed(0)) >= 0) {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), 0]
+        } else {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+        }
+    }
+    if (inputdata.Unit !== 'P' || inputdata.Unit === '' ) {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(2, 1);
+        if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
+            option = {
+                themeId: 11,
+                chartId: 'inside-Bardfyuwsedsd' + props.id,
+                charttype: 'inside-Bar',
+                height: '400%',
+                width: '100%',
+                legend: ["AvgStock", "AvgMinStockRequired", "AvgStockCycle"],
+                color: MinimumStockChartObject[props.id].color,
+                widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
+                divname: 'crancy-progress-card card-contain-graph',
+                tooltipid: 2
+            }
 
+        }
+    } else {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(1, 1);
+        console.log(tempYAxis,"dshgjhusdgkfg");
+        if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
+            option = {
+                themeId: 11,
+                chartId: 'inside-Bardfyuwsedsd' + props.id,
+                charttype: 'inside-Bar',
+                height: '400%',
+                width: '100%',
+                legend: ["AvgStock","AvgMinStockRequiredPcs", "AvgStockCycle"],
+                color: MinimumStockChartObject[props.id].color,
+                widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
+                divname: 'crancy-progress-card card-contain-graph',
+                tooltipid: 2
+            }
+
+        }
     }
 
-    function handleRightClick() {
-
-    }
-
-    function handleLeftClick() {
-
-    }
 
 
     return (

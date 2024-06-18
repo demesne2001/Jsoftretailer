@@ -1710,16 +1710,16 @@ button.geex-btn.geex-btn__customizer-close:hover {
 
 #theme-builder a {
   cursor: pointer;
-  color: #293c55
+  color: #293c55;
 }
 
 #theme-builder .btn {
-  transition: 0.5s
+  transition: 0.5s;
 }
 
 #theme-builder .btn-default {
   border-color: #eee;
-  color: #293c55
+  color: #293c55;
 }
 
 #theme-builder .btn-default:hover,
@@ -1728,13 +1728,13 @@ button.geex-btn.geex-btn__customizer-close:hover {
 #theme-builder .btn-default.active {
   border-color: #ddd;
   background-color: #eee;
-  color: #293c55
+  color: #293c55;
 }
 
 #theme-builder .btn-primary {
   color: #fff;
   border-color: #314866;
-  background-color: #3a5477
+  background-color: #3a5477;
 }
 
 #theme-builder .btn-primary:hover,
@@ -1742,7 +1742,7 @@ button.geex-btn.geex-btn__customizer-close:hover {
 #theme-builder .btn-primary:focus,
 #theme-builder .btn-primary.active {
   border-color: #3a5477;
-  background-color: #4a6d9a
+  background-color: #4a6d9a;
 }
 
 #theme-builder .scroll-parent {
@@ -1753,29 +1753,29 @@ button.geex-btn.geex-btn__customizer-close:hover {
   right: 15px;
 }
 
-#theme-builder .scroll-parent>div {
+#theme-builder .scroll-parent > div {
   /* height: 100%; */
 }
 
 #theme-builder .chart-container {
   margin-bottom: 20px;
   padding: 15px;
-  padding-top: 0
+  padding-top: 0;
 }
 
 #theme-builder .chart-container h3 {
   margin-top: 20px;
-  font-size: 1.5em
+  font-size: 1.5em;
 }
 
 #theme-builder .ec-container {
-  padding: 0 15px 30px 15px
+  padding: 0 15px 30px 15px;
 }
 
 #theme-builder .ec-panel {
   width: 100%;
   /* height: 300px; */
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 button.btn.btn-outline-success {
@@ -1784,11 +1784,11 @@ button.btn.btn-outline-success {
 }
 
 #theme-builder .icon {
-  color: #293c55
+  color: #293c55;
 }
 
 #theme-builder .port-row {
-  margin-bottom: -12px
+  margin-bottom: -12px;
 }
 
 .ButtonExtra {
@@ -1803,23 +1803,22 @@ button.btn.btn-outline-success {
 
 #theme-builder .port-row .btn i {
   /* margin-top: 3px; */
-  font-size: 0.9em
+  font-size: 0.9em;
 }
 
 #theme-builder .theme-config {
   padding: 0;
   border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd
+  border-bottom: 1px solid #ddd;
 }
 
 #theme-builder .theme-config h5 {
-  margin: 10px
+  margin: 10px;
 }
 
 .form-group .col-sm-3 {
   width: 126px;
 }
-
 
 @media (max-width: 768px) {
   .form-group .col-sm-3 {
@@ -1828,58 +1827,58 @@ button.btn.btn-outline-success {
 }
 
 .form-group .col-sm-3 label {
-  margin-top: 10
+  margin-top: 10;
 }
 
-#theme-builder .theme-config h5~h5,
+#theme-builder .theme-config h5 ~ h5,
 #theme-builder .theme-config .axis-group h5 {
   border-top: 1px solid #eee;
-  padding-top: 20px
+  padding-top: 20px;
 }
 
-#theme-builder .theme-config form+form {
-  margin-top: 10px
+#theme-builder .theme-config form + form {
+  margin-top: 10px;
 }
 
 #theme-builder .theme-config label {
-  padding-right: 0
+  padding-right: 0;
 }
 
 #theme-builder .theme-config .input-group {
-  width: 100%
+  width: 100%;
 }
 
 #theme-builder .theme-config .form-control,
 #theme-builder .theme-config .input-group-addon {
   border-color: #eee;
   box-shadow: none;
-  border-radius: 0
+  border-radius: 0;
 }
 
 #theme-builder .theme-config .form-control:hover,
 #theme-builder .theme-config .input-group-addon:hover {
-  border-color: #ddd
+  border-color: #ddd;
 }
 
 #theme-builder .theme-config .colorpicker-element {
   margin-bottom: 5px;
-  border-radius: 0
+  border-radius: 0;
 }
 
 #theme-builder .theme-config .input-group-addon {
-  background-color: #fff
+  background-color: #fff;
 }
 
 #theme-builder .theme-config .input-group-addon i {
-  border: 1px solid #eee
+  border: 1px solid #eee;
 }
 
 #theme-builder .theme-config .panel-group {
-  margin-bottom: 0
+  margin-bottom: 0;
 }
 
 #theme-builder .theme-config .panel {
-  border: none
+  border: none;
 }
 
 #theme-builder .theme-config .panel-heading {
@@ -1888,31 +1887,29 @@ button.btn.btn-outline-success {
   border-radius: 0;
   color: #293c55;
   padding: 0;
-  transition: 0.5s
+  transition: 0.5s;
 }
 
 #theme-builder .theme-config .panel-heading:hover {
-  background-color: #eee
+  background-color: #eee;
 }
 
 #theme-builder .theme-config .panel-title a {
   display: block;
   padding: 10px 16px;
-  text-decoration: none !important
+  text-decoration: none !important;
 }
 
-
-
 #theme-builder .space-row {
-  margin-left: -4px
+  margin-left: -4px;
 }
 
 #theme-builder .theme-plan-row .col-xs-6:nth-child(even) {
-  padding-left: 5px
+  padding-left: 5px;
 }
 
 #theme-builder .theme-plan-row .col-xs-6:nth-child(odd) {
-  padding-right: 5px
+  padding-right: 5px;
 }
 
 #theme-builder .theme-plan-group {
@@ -1925,7 +1922,7 @@ button.btn.btn-outline-success {
   border: 1px solid #eee;
   padding: 5px;
   border-radius: 4px;
-  margin-bottom: 8px
+  margin-bottom: 8px;
 }
 
 #theme-builder .theme-plan-color {
@@ -1935,19 +1932,19 @@ button.btn.btn-outline-success {
   margin-left: 2px;
   margin-right: 2px;
   display: inline-block;
-  border-radius: 3px
+  border-radius: 3px;
 }
 
 #theme-builder .colorpicker {
-  padding: 10px
+  padding: 10px;
 }
 
 #theme-builder .theme-color-control {
-  padding-top: 5px
+  padding-top: 5px;
 }
 
 #theme-builder .theme-color-control a {
-  margin: 0px 0 5px 5px
+  margin: 0px 0 5px 5px;
 }
 
 #theme-builder #download-js-modal pre {
@@ -1955,34 +1952,34 @@ button.btn.btn-outline-success {
   border-radius: 0 4px 4px 4px;
   background-color: #f9f9f9;
   border-color: #eee;
-  transition: 0.5s
+  transition: 0.5s;
 }
 
 #theme-builder #download-js-modal pre:hover {
-  box-shadow: inset 0 0 10px #ccc
+  box-shadow: inset 0 0 10px #ccc;
 }
 
 #theme-builder #download-js-modal pre code {
   position: relative;
   top: -20px;
-  background: transparent
+  background: transparent;
 }
 
-#theme-builder #download-js-modal h4~h4 {
-  margin-top: 20px
+#theme-builder #download-js-modal h4 ~ h4 {
+  margin-top: 20px;
 }
 
 #theme-builder #download-js-modal .tab-content {
-  margin-top: 10px
+  margin-top: 10px;
 }
 
 #theme-builder .code-btn .btn {
   border-radius: 4px 0 0 0;
-  border-bottom: 0
+  border-bottom: 0;
 }
 
-#theme-builder .code-btn .btn~.btn {
-  border-radius: 0 4px 0 0
+#theme-builder .code-btn .btn ~ .btn {
+  border-radius: 0 4px 0 0;
 }
 
 #theme-builder .code-btn label {
@@ -1990,25 +1987,26 @@ button.btn.btn-outline-success {
   margin-left: 10px;
   display: none;
   background-color: #ffa;
-  padding: 1px 5px
+  padding: 1px 5px;
 }
 
 #theme-builder .nav-tabs {
-  margin-top: 10px
+  margin-top: 10px;
 }
 
 #theme-builder .modal-dialog {
-  margin-top: 100px
+  margin-top: 100px;
 }
 
 @media (min-width: 960px) {
   #theme-builder .modal-dialog {
-    width: 900px
+    width: 900px;
   }
 }
 
-
 .modal-window-open {
+  max-height: 500px;
+  /* overflow: auto; */
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
@@ -2020,11 +2018,23 @@ button.btn.btn-outline-success {
   padding: 1em;
   background: white;
   border-radius: 40px;
-    /* margin-left: 100%; */
+  /* margin-left: 100%; */
   border-width: thin;
   transition: all 0s;
-  
-  
+  /* -ms-overflow-style: none; 
+  scrollbar-width: none;   */
+}
+
+.form-horizontal {
+  overflow: auto;
+  max-height: 318px;
+  margin-top: 11%;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;   
+}
+
+.form-horizontal::-webkit-scrollbar {
+  display: none;
 }
 
 .modal-window {
@@ -2076,4 +2086,8 @@ button.btn.btn-outline-success {
   .header-right22 {
     float: none;
   }
+}
+
+.ec-panel div:nth-child(2) {
+  text-align: left;
 }

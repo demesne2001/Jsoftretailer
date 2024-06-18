@@ -21,7 +21,7 @@ export default function Piegraph1() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 's,sr' }
+    inputdata = { ...inputdata, ['Grouping']: 'T,sr' }
 
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {

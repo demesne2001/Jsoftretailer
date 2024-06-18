@@ -113,6 +113,7 @@ export default function ModeofSalesWise() {
     propdata: data,
     radius: [10, 110],
   }
+console.log(optionPolar, 'aaa')
 
   useEffect(() => {
     fetchOption()
@@ -227,11 +228,12 @@ export default function ModeofSalesWise() {
               data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
             } else {
               name.push(res.data.lstResult[index]['ChallanGenerateType'])
-              data.push({ name: res.data.lstResult[index]['ChallanGenerateType'], value: res.data.lstResult[index][inputdata['column']] })
+              data.push({value: res.data.lstResult[index][inputdata['column']],  name: res.data.lstResult[index]['ChallanGenerateType']})
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
             prce.push(res.data.lstResult[index]['Prc'])
           }
+      
           setdata(data);
           setName(name)
           setweight(weight)
@@ -296,7 +298,7 @@ export default function ModeofSalesWise() {
               data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
             } else {
               name.push(res.data.lstResult[index]['ChallanGenerateType'])
-              data.push({ name: res.data.lstResult[index]['ChallanGenerateType'], value: res.data.lstResult[index][inputdata['column']] })
+              data.push({value: res.data.lstResult[index][inputdata['column']],  name: res.data.lstResult[index]['ChallanGenerateType']})
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
             prce.push(res.data.lstResult[index]['Prc'])

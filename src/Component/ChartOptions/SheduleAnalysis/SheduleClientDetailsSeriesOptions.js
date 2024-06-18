@@ -86,27 +86,61 @@ export default function SheduleClientDetailsSeriesOptions(xAxis, yAxis) {
   //   name: 'VisitedParty',
   //   data: yAxis[1]
   // }]
-  function dataformate() {
-    let tempjs = {};
-    let templs = [];
-    for (let index = 0; index < xAxis.length; index++) {
-      tempjs = {};
-      tempjs['Team'] = xAxis[index];
-      tempjs['TargetParty'] = yAxis[0][index];
-      tempjs['VisitedParty'] = yAxis[1][index];
-      tempjs['Prc'] = yAxis[2][index];
-      templs.push(tempjs);
+  // function dataformate() {
+  //   let tempjs = {};
+  //   let templs = [];
+  //   for (let index = 0; index < xAxis.length; index++) {
+  //     tempjs = {};
+  //     tempjs['Team'] = xAxis[index];
+  //     tempjs['TargetParty'] = yAxis[0][index];
+  //     tempjs['VisitedParty'] = yAxis[1][index];
+  //     tempjs['Prc'] = yAxis[2][index];
+  //     templs.push(tempjs);
+  //   }
+  //   return templs;
+  // }
+  // const option = {
+  //   height: 350,
+  //   width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth,
+  //   charttype: 'antv-singlebar-multivalue',
+  //   series: dataformate(),
+  //   widthlst: [40, 60],
+  //   color:['#4a61a7','#f3898c',"#1c7ee6"]
+  // }
+  function findMinMax() {
+    let ansmin = [];
+    let ansmax = [];
+    for (let i = 0; i < yAxis.length - 1; i++) {
+      ansmax.push(Math.max(...yAxis[i]))
+      ansmin.push(Math.min(...yAxis[i]))
     }
-    return templs;
+
+    if (parseInt(Math.min(...ansmin).toFixed(0)) >= 0) {
+      return [parseInt(Math.max(...ansmax).toFixed(0)) + 1, 0]
+    } else {
+      return [parseInt(Math.max(...ansmax).toFixed(0)) + 1, parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+    }
   }
-  console.log(document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth, "height div");
-  const option = {
-    height: 350,
-    width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth,
-    charttype: 'antv-singlebar-multivalue',
-    series: dataformate(),
-    widthlst: [40, 60],
-    color:['#4a61a7','#f3898c',"#1c7ee6"]
+  let option = {
+    themeId: 11,
+    chartId: 'inside-Barfcgfdg',
+    charttype: 'inside-Bar',
+    height: '400%',
+    width: '100%',
+    legend: ['TargetParty', 'VisitedParty', 'SeenParty', 'SoldParty', 'Prc'],
+    color: ['#46a5dd','#2c4b6a', '#c3d5ff','#1563e6','#c8d6f7'],
+    widthlst: [35, 25, 15, 10],
+    Xaxis: xAxis,
+    Yaxis: yAxis,
+    // idkey: 'strmonth',
+    // idlst: [2, 1, 24, 31, 23, 31, 44],
+    bargap: '-85%',
+    alignment: 'h',
+    maxval: findMinMax()[0],
+    minval: findMinMax()[1],
+    barnum: 4,
+    divname: 'crancy-progress-card card-contain-graph',
+    tooltipid: 4
   }
   return [option]
 }

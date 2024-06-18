@@ -93,24 +93,59 @@ export default function StockToSalesDefaultChart(props) {
         }
         return templs;
     }
+    function findMinMax() {
+        let ansmin = [];
+        let ansmax = [];
+        for (let i = 0; i < yAxis.length; i++) {
+            
+            ansmax.push(Math.max(...yAxis[i]))
+            ansmin.push(Math.min(...yAxis[i]))
+        }
+        let lenthdigit = (parseInt(Math.max(...ansmax).toFixed(0))).toString().length - 1
+        if (parseInt(Math.min(...ansmin).toFixed(0))  >= 0) {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1)/Math.pow(10,lenthdigit))+1))*(Math.pow(10,lenthdigit)), 0]
+        } else {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1)/Math.pow(10,lenthdigit))+1))*(Math.pow(10,lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+        }
+    }
     if (document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0] !== undefined) {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(2, 1);
         if (props.state.ChartMode === '1') {
             option = {
-                height: 490,
-                width: document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth - 10,
-                charttype: 'antv-singlebar-multivalue',
-                series: dataformate(),
-                widthlst: [40, 60],
-                color: ['#4a61a7', '#f3898c', "#1c7ee6"]
+                themeId: 11,
+                chartId: 'inside-Barydwudsd' + props.state.ChartMode,
+                charttype: 'inside-Bar',
+                height: '250%',
+                width: '100%',
+                legend: ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt'],
+                color: StockToSalesChartObject[props.state.ChartMode].color,
+                widthlst: [document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth / 20, document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
             }
         } else {
             option = {
-                height: 530,
-                width: document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth - 10,
-                charttype: 'antv-singlebar-multivalue',
-                series: dataformate(),
-                widthlst: [40, 60],
-                color: ['#4a61a7', '#f3898c', "#1c7ee6"]
+                themeId: 11,
+                chartId: 'inside-Barsdwayudsd' + props.state.ChartMode,
+                charttype: 'inside-Bar',
+                height: '540%',
+                width: '100%',
+                legend: ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt'],
+                color: StockToSalesChartObject[props.state.ChartMode].color,
+                widthlst: [document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth / 20, document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth / 35],
+                Xaxis: xAxis,
+                Yaxis: tempYAxis,
+                bargap: '-80%',
+                alignment: 'v',
+                maxval: findMinMax()[0],
+                minval: findMinMax()[1],
+                barnum: 2,
             }
         }
     }
@@ -161,18 +196,18 @@ export default function StockToSalesDefaultChart(props) {
     return (
         <div>
             <div class="title-top-graphdetail-withoutcolor">
-                <h5>{props.state.componentName} <span style={{fontSize:'15px'}}> {contextData.filtername !== ""? "( " + contextData.filtername + " )": null}</span></h5>
+                <h5>{props.state.componentName} <span style={{ fontSize: '15px' }}> {contextData.filtername !== "" ? "( " + contextData.filtername + " )" : null}</span></h5>
                 {/* <i className="fa-solid fa-arrow-down-short-wide sort-icon-second-screen" ></i> */}
             </div>
             <div class="graphdetailcards graphdetail-secondcard">
                 <div class="topimg-gd" style={{ height: '580px' }}>
-                    
+
                     {
                         dataloader !== true ?
                             loader !== true ?
 
 
-                                option.series !== undefined ? option.series.length > 0 ?
+                                option.Xaxis !== undefined ? option.Xaxis.length > 0 ?
                                     <div>
                                         {props.state.ChartMode === '1' ?
                                             <div className='ChartMonthOption'>

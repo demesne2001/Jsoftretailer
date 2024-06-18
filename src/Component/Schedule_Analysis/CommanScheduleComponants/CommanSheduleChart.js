@@ -17,6 +17,7 @@ import TotalNoOfBillsSecondScreen from '../../ChartOptions/SheduleAnalysis/Total
 import SecondSheduleScreenBar1 from '../../ChartOptions/SheduleAnalysisDetailed/SecondSheduleScreenBar1';
 import SecondSheduleScreenBar2 from '../../ChartOptions/SheduleAnalysisDetailed/SecondSheduleScreenBar2';
 import ExpenseComboChart from '../../ChartOptions/SheduleAnalysisDetailed/ExpenseComboChart';
+import SheduleClientDetailThirdScreen from '../../ChartOptions/SheduleAnalysisDetailed/SheduleClientDetailThirdScreen';
 import { Table } from 'react-bootstrap';
 import TargetAndAchievedDetailScreenChart from '../../ChartOptions/SheduleAnalysisDetailed/TargetAndAchievedDetailScreenChart';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
@@ -35,6 +36,7 @@ export default function CommanSheduleChart(props) {
     const [SheduleId, SetSheduleId] = useState([]);
     const [flagSort, setflagSort] = useState(CommanSheduleObject[props.id]['sortingcolumn'] + " desc");
     const [countforflag, setcountforflag] = useState(0)
+    let updatecontext = {}
     const chartOptions = {
         1: { Chartoption: TargetAndAchievedSeriesOptions, ChartType: 'line' },
         2: { Chartoption: AvarageTimeSpentSeriesOption, ChartType: 'bar' },
@@ -51,7 +53,7 @@ export default function CommanSheduleChart(props) {
         11: { Chartoption: TargetAndAchievedDetailScreenChart, ChartType: 'line' },
         12: { Chartoption: SecondSheduleScreenBar2, ChartType: 'bar' },
         13: { Chartoption: ExpenseComboChart, ChartType: 'line' },
-        14: { Chartoption: SheduleClientDetailsSecondScreen, ChartType: 'bar' },
+        14: { Chartoption: SheduleClientDetailThirdScreen, ChartType: 'bar' },
         15: { Chartoption: SecondSheduleScreenBar1, ChartType: 'bar' },
         16: { Chartoption: SecondSheduleScreenBar1, ChartType: 'bar' },
     }
@@ -205,6 +207,21 @@ export default function CommanSheduleChart(props) {
         }
     });
 
+    if (props.screen === 2) {
+        updatecontext = (<AlphaDashChart obj={JSON.parse(JSON.stringify(chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]))} state={contextData.detailedstate} />).props.state;
+    } else {
+        updatecontext = (<AlphaDashChart obj={JSON.parse(JSON.stringify(chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]))} state={contextData.billstate} />).props.state;
+
+    }
+    function DivOnClick() {
+        console.log(updatecontext, "asdhafd");
+        if (props.screen === 2) {
+            contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: updatecontext.TravellingTeamID })
+        } else {
+            contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: updatecontext.ScheduleID })
+        }
+    }
+
     function getSortChartData() {
         if (props.screen === 2) {
             inputdata = { ...inputdata, 'Mode': props.id, 'FromDate': props.Date.FromDate, 'Todate': props.Date.ToDate, 'sort': flagSort }
@@ -256,30 +273,30 @@ export default function CommanSheduleChart(props) {
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>
                         <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']} <div style={{ fontSize: '15px' }}> {props.screen === 3 ? contextData.filtername !== "" ? " ( " + contextData.filtername + " )" : null : null}</div></p>
                     </div>
-                    {props.screen !== 3?
-                    <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
-                        <div className='d-flex schedule-card-icon'>
+                    {props.screen !== 3 ?
+                        <div className="col-xs-1 col-sm-1 col-md-1 col-1" >
+                            <div className='d-flex schedule-card-icon'>
 
-                            {/* <div className='dropbtngraph'>
+                                {/* <div className='dropbtngraph'>
                                 <i class="fa-solid fa-ellipsis-vertical" id='icon_drop' />
                             </div> */}
-                            <div className='dropbtngraph'>
-                                <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleShowSortDropDown} />
+                                <div className='dropbtngraph'>
+                                    <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleShowSortDropDown} />
+                                </div>
                             </div>
-                        </div>
-                        <div id={props.id} className="dropdown-contenticon shedulepagesort" onClick={handleclickSort}>
-                            {flagSort === 'TravellingTeamName asc' ? <><a id='TravellingTeamName asc'>Sort by TeamName ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='TravellingTeamName asc'>Sort by TeamName ASC&nbsp;</a><hr className='custom-hr' /></>}
-                            {flagSort === 'TravellingTeamName desc' ? <><a id='TravellingTeamName desc'>Sort by TeamName DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='TravellingTeamName desc'>Sort by TeamName DESC&nbsp;</a><hr className='custom-hr' /></>}
-                            {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " asc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp;</a><hr className='custom-hr' /> </>}
-                            {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " desc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by{CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp;</a><hr className='custom-hr' /> </>}
-                        </div>
-                    </div>:null}
+                            <div id={props.id} className="dropdown-contenticon shedulepagesort" onClick={handleclickSort}>
+                                {flagSort === 'TravellingTeamName asc' ? <><a id='TravellingTeamName asc'>Sort by TeamName ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='TravellingTeamName asc'>Sort by TeamName ASC&nbsp;</a><hr className='custom-hr' /></>}
+                                {flagSort === 'TravellingTeamName desc' ? <><a id='TravellingTeamName desc'>Sort by TeamName DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='TravellingTeamName desc'>Sort by TeamName DESC&nbsp;</a><hr className='custom-hr' /></>}
+                                {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " asc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " asc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} ASC&nbsp;</a><hr className='custom-hr' /> </>}
+                                {flagSort === CommanSheduleObject[props.id]['sortingcolumn'] + " desc" ? <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by{CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id={CommanSheduleObject[props.id]['sortingcolumn'] + " desc"}>Sort by {CommanSheduleObject[props.id]['sortingcolumn']} DESC&nbsp;</a><hr className='custom-hr' /> </>}
+                            </div>
+                        </div> : null}
                 </div>
                 {console.log(yAxis)}
                 {dataloader !== true ?
                     loader !== true || props.screen === 3 ? props.screen === 1 ? <div class="crancy-progress-card card-contain-graph">{props.id !== 4 ? <ReactApexChart options={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]} series={chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[1]} type={chartOptions[props.id]['ChartType']} height={350} /> : <AlphaDashChart obj={JSON.parse(JSON.stringify(chartOptions[props.id]['Chartoption'](xAxis, yAxis, contextData.state['Unit'], props.id)[0]))} />}</div> :
                         props.screen !== 3 ?
-                            <div class="crancy-progress-card card-contain-graph shedule-secondscreen"> <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> </div> :
+                            <div class="crancy-progress-card card-contain-graph shedule-secondscreen" onClick={DivOnClick}> {props.id !== 4 ? <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={400} /> :<AlphaDashChart obj={JSON.parse(JSON.stringify(chartOptionsScreen2[props.id]['Chartoption'](xAxis, yAxis, contextData, TravelingId, props.id, contextData.state['Unit'])[0]))} state={contextData.detailedstate} />} </div> :
                             window.innerWidth < 1870 && props.id === 13 && props.screen === 3 ? <div class="crancy-progress-card card-contain-graph shedule-thirdscreen">
                                 <Table responsive striped bordered hover>
                                     <thead>
@@ -301,7 +318,7 @@ export default function CommanSheduleChart(props) {
                                         }
                                     </tbody>
                                 </Table>
-                            </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen"><ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> </div> : <div className='crancy-progress-card card-contain-graph'>{props.screen === 3 ? null : "Not Found"}</div> : <div className="crancy-progress-card card-contain-graph">
+                            </div> : <div class="crancy-progress-card card-contain-graph shedule-thirdscreen" onClick={DivOnClick}>{props.id !== 14 ? <ReactApexChart options={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]} series={chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[1]} type={chartOptionsScreen2[props.id]['ChartType']} height={650} /> :<div style={{height:650}}> <AlphaDashChart obj={JSON.parse(JSON.stringify(chartOptionsScreen2[props.id]['Chartoption'](xAxisDetailed, yAxisDetailed, contextData, SheduleId, props.id, contextData.state['Unit'])[0]))}  state={contextData.billstate} /></div>}</div> : <div className='crancy-progress-card card-contain-graph'>{props.screen === 3 ? null : "Not Found"}</div> : <div className="crancy-progress-card card-contain-graph">
                         <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                             <div class="dot-spinner__dot"></div>
                             <div class="dot-spinner__dot"></div>

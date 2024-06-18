@@ -33,12 +33,12 @@ export default function MinimumStockThirdChart(props) {
 
     function getChartData() {
         console.log(props);
-        inputdata = {...inputdata, 'FromDate' : props.state.FromDate, 'ToDate' : props.state.ToDate}
-        console.log(inputdata,"thirdsubitem");
+        inputdata = { ...inputdata, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate }
+        console.log(inputdata, "thirdsubitem");
         if (inputdata.SubItemID !== "") {
             post(inputdata, API.GetMinStockChartDeatil, {}, "post").then((res) => {
                 if (res.data !== undefined) {
-                    console.log(res,"output third");
+                    console.log(res, "output third");
                     var tempYaxis = [];
                     for (let i = 0; i < MinimumStockChartObject[props.state.ChartMode]['yAxis'].length; i++) {
                         var tempYaxis1 = [];
@@ -87,16 +87,44 @@ export default function MinimumStockThirdChart(props) {
         }
         return templs;
     }
-    if (document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0] !== undefined) {
-
-        option = {
-            height: 250,
-            width: document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth - 10,
-            charttype: 'antv-singlebar-multivalue',
-            series: dataformate(),
-            widthlst: [40, 60],
-            color:['#4a61a7','#f3898c',"#1c7ee6"]
+    function findMinMax() {
+        let ansmin = [];
+        let ansmax = [];
+        for (let i = 0; i < yAxis.length - 1; i++) {
+            
+            ansmax.push(Math.max(...yAxis[i]))
+            ansmin.push(Math.min(...yAxis[i]))
         }
+        let lenthdigit = (parseInt(Math.max(...ansmax).toFixed(0))).toString().length - 1
+        if (parseInt(Math.min(...ansmin).toFixed(0))  >= 0) {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1)/Math.pow(10,lenthdigit))+1))*(Math.pow(10,lenthdigit)), 0]
+        } else {
+            return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1)/Math.pow(10,lenthdigit))+1))*(Math.pow(10,lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
+        }
+    }
+    if (document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0] !== undefined) {
+        let tempYAxis = yAxis;
+        tempYAxis.splice(2, 1);
+        option = {
+            themeId: 11,
+            chartId: 'inside-Barydsfuwsesddsd' + props.state.ChartMode,
+            charttype: 'inside-Bar',
+            height: '340%',
+            width: '100%',
+            legend: ['AvgStockPcs', 'AvgMinStockRequired', 'AvgStockCycle'],
+            color: MinimumStockChartObject[props.state.ChartMode].color,
+            widthlst: [document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth / 20, document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth / 35],
+            Xaxis: xAxis,
+            Yaxis: tempYAxis,
+            bargap: '-80%',
+            alignment: 'v',
+            maxval: findMinMax()[0],
+            minval: findMinMax()[1],
+            barnum: 2,
+            divname: 'graphdetailcards graphdetail-secondcard',
+            tooltipid: 2
+        }
+        console.log(option, "ashdgtuaystdgf");
     }
 
 
@@ -104,7 +132,7 @@ export default function MinimumStockThirdChart(props) {
     return (
         <div>
             <div class="title-top-graphdetail-withoutcolor">
-                <h5>{props.state.componentName} <span style={{fontSize:'15px'}}> {contextData.filternamesubitemrange !== ""? "( " + contextData.filternamesubitemrange + " )": null}</span></h5>
+                <h5>{props.state.componentName} <span style={{ fontSize: '15px' }}> {contextData.filternamesubitemrange !== "" ? "( " + contextData.filternamesubitemrange + " )" : null}</span></h5>
                 {/* <i className="fa-solid fa-arrow-down-short-wide sort-icon-second-screen" ></i> */}
             </div>
             <div class="graphdetailcards graphdetail-secondcard">
@@ -113,7 +141,7 @@ export default function MinimumStockThirdChart(props) {
                     {
                         dataloader !== true ?
                             loader !== true ?
-                                option.series !== undefined ? option.series.length > 0 ?
+                                option.Xaxis !== undefined ? option.Xaxis.length > 0 ?
                                     <div>
                                         <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} />
                                     </div>
