@@ -30,6 +30,7 @@ export default function MonthWise() {
   const [demo, setdemo] = useState("bar")
   const options_bar = MonthWise_Bar(name, inputdata['column'])
   const options_area = MonthWise_area(name, inputdata['column'])
+  const [prc, setprc] = useState([]);
   let optionbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'bar',
@@ -39,6 +40,7 @@ export default function MonthWise() {
     Xaxis: name,
     color: ['#00FFD7', '#FFD700', '#D700FF'],
     Yaxis: weight,
+    prclst:prc
   }
 
   let optionarea = {
@@ -163,6 +165,7 @@ export default function MonthWise() {
         let name = [];
         let weight = [];
         let data = [];
+        let tempprc = [];
         if (res.data !== undefined) {
           for (let index = 0; index < res.data.lstResult.length; index++) {
             data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['MonthName'] })
@@ -172,7 +175,9 @@ export default function MonthWise() {
               name.push(res.data.lstResult[index]['MonthName'])
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
+            tempprc.push(res.data.lstResult[index]['Prc']);
           }
+          setprc(tempprc);
           setName(name)
           setweight(weight)
           setdataLoader(false)
@@ -291,6 +296,7 @@ export default function MonthWise() {
       let name = [];
       let weight = [];
       let data = [];
+      let tempprc = [];
       if (res.data !== undefined) {
         for (let index = 0; index < res.data.lstResult.length; index++) {
           data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['MonthName'] })
@@ -300,7 +306,9 @@ export default function MonthWise() {
             name.push(res.data.lstResult[index]['MonthName'])
           }
           weight.push(res.data.lstResult[index][inputdata['column']])
+          tempprc.push(res.data.lstResult[index]['Prc']);
         }
+        setprc(tempprc);
         setName(name)
         setweight(weight)
         setdataLoader(false)

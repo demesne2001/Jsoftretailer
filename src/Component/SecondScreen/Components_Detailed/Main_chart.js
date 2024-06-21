@@ -22,6 +22,7 @@ export default function Main_chart(props) {
     const [data, setdata] = useState([])
     const [flag, setFlag] = useState('bar');
     const [flagSort, setflagSort] = useState('');
+    const [prc, setprc] = useState([]);
     const [flagShowId, setFlagShowId] = useState(true)
     // const [tableFlag, setTableFlag] = useState(false)
     const [componentName, setComponentName] = useState('')
@@ -87,6 +88,7 @@ export default function Main_chart(props) {
             let weg = [];
             let id1 = [];
             let tempdata = [];
+            let tempprc = [];
             if (res.data !== undefined) {
                 console.log(res.data.lstResult.length, "sdffe");
                 setLoader(false)
@@ -100,7 +102,9 @@ export default function Main_chart(props) {
                         name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
                         weg.push(res.data.lstResult[i]['NetWeight']);
                         id1.push(res.data.lstResult[i][props.state.columnID]);
+                        tempprc.push(res.data.lstResult[i]['Prc']);
                     }
+                    setprc(tempprc);
                     setName(name);
                     setweight(weg);
                     setId(id1)
@@ -234,7 +238,12 @@ export default function Main_chart(props) {
             }
         })
     }
-
+    let sliderbol
+    if (name.length < 8) {
+        sliderbol = false
+    } else {
+        sliderbol = true
+    }
     let barHorizontal = {
         themeId: contextData.ThemeIndex,
         charttype: 'round-horizontal-bar',
@@ -246,7 +255,11 @@ export default function Main_chart(props) {
         // idobj: contextData.defaultchart,
         idkey: props.state.filterKey,
         idlst: id,
-        divname: 'flip-card-back'
+        divname: 'flip-card-back',
+        sliderflag: sliderbol,
+        datazoomlst: [0, 100, 0, 50],
+        prclst:prc
+
     }
     console.log(props.state.filterKey, "key");
     let donutoption = {

@@ -25,7 +25,8 @@ export default function ProductWise() {
 	const navigate = useNavigate()
 	const [flagSort, setflagSort] = useState('')
 	let inputdata = contexData.state;
-	const [data, setdata] = useState([])
+	const [data, setdata] = useState([]);
+	const [prc, setprc] = useState([]);
 	let optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'bar',
@@ -34,6 +35,7 @@ export default function ProductWise() {
 		chartId: 'ProductWise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 
 	let radialdata = {
@@ -140,6 +142,7 @@ export default function ProductWise() {
 				let sale = [];
 				var js = {};
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ProductName'] })
@@ -158,8 +161,10 @@ export default function ProductWise() {
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 						sale.push(js)
+						tempprc.push(res.data.lstResult[index]['Prc']);
 
 					}
+					setprc(tempprc);
 					setName(name)
 					setdata(data);
 					setweight(weight)
@@ -303,6 +308,7 @@ export default function ProductWise() {
 				let sale = [];
 				var js = {};
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ProductName'] })
@@ -319,10 +325,11 @@ export default function ProductWise() {
 							js['product'] = res.data.lstResult[index]['ProductName']
 						}
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 						sale.push(js)
 
 					}
+					setprc(tempprc);
 					setName(name)
 					setdata(data);
 					setweight(weight)

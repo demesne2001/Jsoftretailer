@@ -27,7 +27,8 @@ export default function StateWise() {
 	const [optionId, setOptionId] = useState()
 	const [flagSort, setflagSort] = useState('');
 	const [data, setdata] = useState([]);
-	const [Map, setMap] = useState([])
+	const [Map, setMap] = useState([]);
+	const [prc, setprc] = useState([]);
 
 	// const options_semidonut = StateWise_SemiDonut(name, state, inputdata['column'])
 	// const options_Treemap = StateWise_Treemap(name, inputdata['column'])
@@ -82,6 +83,7 @@ export default function StateWise() {
 		chartId: 'ItemWise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 	var barHorizontal = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -91,7 +93,8 @@ export default function StateWise() {
 		chartId: 'ItemWise',
 		Xaxis: name,
 		Yaxis: weight,
-		divname: 'crancy-progress-card card-contain-graph'
+		divname: 'crancy-progress-card card-contain-graph',
+		prclst:prc
 	}
 	const series_semidonut = weight;
 
@@ -136,7 +139,8 @@ export default function StateWise() {
 				let name1 = [];
 				let weight = [];
 				let data = [];
-				let map = []
+				let map = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['Statename'] != null) {
@@ -147,13 +151,14 @@ export default function StateWise() {
 							map.push({ name: res.data.lstResult[index]['Statename'], value: res.data.lstResult[index]['NetWeight'] })
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
 					// setweight(weight)
 					setdata(data)
 					setState(name)
 					setName(name1)
 					setweight(weight)
+					setprc(tempprc);
 					setMap(map)
 					setdataLoader(false)
 					if (weight.length !== 0) {
@@ -290,7 +295,8 @@ export default function StateWise() {
 			let name1 = [];
 			let weight = [];
 			let data = [];
-			let map = []
+			let map = [];
+			let tempprc = [];
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['Statename'] != null) {
@@ -301,13 +307,14 @@ export default function StateWise() {
 						map.push({ name: res.data.lstResult[index]['Statename'], value: res.data.lstResult[index]['NetWeight'] })
 					}
 					weight.push(res.data.lstResult[index][inputdata['column']])
-
+					tempprc.push(res.data.lstResult[index]['Prc']);
 				}
 				// setweight(weight)
 				setdata(data)
 				setState(name)
 				setName(name1)
 				setweight(weight)
+				setprc(tempprc);
 				setMap(map)
 				setdataLoader(false)
 				if (weight.length !== 0) {

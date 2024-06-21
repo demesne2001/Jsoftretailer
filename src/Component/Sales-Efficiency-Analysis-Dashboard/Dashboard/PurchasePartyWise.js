@@ -33,6 +33,7 @@ export default function PurchasePartyWise() {
   const [weight, setweight] = useState([])
   const [data, setdata] = useState([])
   let inputdata = contexData.state;
+  const [prc, setprc] = useState([]);
   let roundbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'roundbar',
@@ -40,7 +41,9 @@ export default function PurchasePartyWise() {
     chartId: 'designwise',
     width: '100%',
     Xaxis: name,
-    Yaxis: weight
+    Yaxis: weight,
+    divname: "crancy-progress-card card-contain-graph",
+    prclst: prc
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -124,7 +127,7 @@ export default function PurchasePartyWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "g.DesigncodeID,g.DesignCode", columnName: "DesignCode", columnID: "DesigncodeID", componentName: "Design Wise", filterKey: "strPurchaseParty", chartId: 9, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
   }
 
 
@@ -214,6 +217,7 @@ export default function PurchasePartyWise() {
         let name = [];
         let weight = [];
         let data = [];
+        let tempprc = [];
         if (res.data !== undefined) {
           for (let index = 0; index < res.data.lstResult.length; index++) {
             data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['DesignCode'] })
@@ -234,13 +238,14 @@ export default function PurchasePartyWise() {
             js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
             sale.push(js)
-
+            tempprc.push(res.data.lstResult[index]['Prc']);
 
           }
           var j = []
           for (let index = 0; index < sale.length; index++) {
             j.push({ ...sale[index], ['color']: gradientArray[index] })
           }
+          setprc(tempprc);
 
           setdata(data)
           setName(name)
@@ -385,7 +390,8 @@ export default function PurchasePartyWise() {
         var js = {};
         let name = [];
         let weight = [];
-        let data = []
+        let data = [];
+        let tempprc = [];
         if (res.data !== undefined) {
           for (let index = 0; index < res.data.lstResult.length; index++) {
             data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['DesignCode'] })
@@ -404,15 +410,14 @@ export default function PurchasePartyWise() {
               js['product'] = res.data.lstResult[index]['DesignCode']
             }
             js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+            tempprc.push(res.data.lstResult[index]['Prc']);
             sale.push(js)
-
-
           }
           var j = []
           for (let index = 0; index < sale.length; index++) {
             j.push({ ...sale[index], ['color']: gradientArray[index] })
           }
+          setprc(tempprc);
 
           setdata(data)
           setName(name)

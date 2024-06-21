@@ -5,6 +5,7 @@ import contex from '../../contex/Contex';
 import post from '../../Utility/APIHandle';
 import API from '../../Utility/API';
 import CommanSheduleObject from './CommanSheduleObject';
+import { AlphaDashChart, DataFormat } from 'alpha-echart-library/dist/cjs'
 
 export default function ExpensesDetails() {
     const contexData = useContext(contex);
@@ -15,6 +16,24 @@ export default function ExpensesDetails() {
     const [dataloader, setdataLoader] = useState(true)
     const [flagSort, setflagSort] = useState("salesWT desc");
     const [countforflag, setcountforflag] = useState(0)
+    const [pageSize, setPageSize] = useState(0);
+    const [page, setPage] = useState(1);
+    let option = {}
+    useEffect(() => {
+        if (window.innerWidth > 1040) {
+            setPageSize(6)
+        } else if (window.innerWidth <= 1040 && window.innerWidth > 900) {
+            setPageSize(5)
+        } else if (window.innerWidth <= 900 && window.innerWidth > 798) {
+            setPageSize(4)
+        } else if (window.innerWidth <= 798 && window.innerWidth > 567) {
+            setPageSize(3)
+        } else if (window.innerWidth <= 567 && window.innerWidth > 400) {
+            setPageSize(2)
+        } else if (window.innerWidth <= 400) {
+            setPageSize(1)
+        }
+    }, [])
 
     useEffect(() => {
         getChartData();
@@ -57,6 +76,7 @@ export default function ExpensesDetails() {
     function handleonClickRow(id, name) {
 
         contexData.SetdetailedState({ ...contexData.detailedstate, ['TravellingTeamID']: id.toString() })
+        contexData.setfiltername(name)
         contexData.setfiltername(name)
     }
     function handleShowSortDropDown() {
@@ -110,10 +130,63 @@ export default function ExpensesDetails() {
         });
     }
 
+    // let option = {
+    //     resultdata: chartData,
+    //     XLabel: 'ScheduleName',
+    //     YLabelName: 'Expense,Sales,Per kg. expense, Trips, Trips Avg. exp',
+    //     TypeName: 'multiple-pie',
+    //     XLabelID: 'ScheduleID',
+    //     SrNo: 1,
+    //     ContextObj: undefined,
+    //     PageNo: 1,
+    //     PageSize:4,
+    //     divSize: 6,
+    //     ClickedIdLabel: 'ScheduleID'
+    // }
+
+    option = DataFormat({
+        resultdata: chartData,
+        XLabel: 'TravellingTeamName',
+        YLabelName: 'ExpenseAmount,SalesWt,KgExp, noTrip,TripAvgEx',
+        TypeName: 'multiple-pie',
+        XLabelID: 'TravellingTeamID',
+        SrNo: 1,
+        ContextObj: undefined,
+        PageNo: page,
+        PageSize: pageSize,
+        divSize: 6,
+        // ClickedIdLabel: 'ScheduleID'
+    })
+    console.log({
+        resultdata: chartData,
+        XLabel: 'TravellingTeamName',
+        YLabelName: 'ExpenseAmount,SalesWt,KgExp, noTrip,TripAvgEx',
+        TypeName: 'multiple-pie',
+        XLabelID: 'TravellingTeamID',
+        SrNo: 1,
+        ContextObj: undefined,
+        PageNo: page,
+        PageSize: pageSize,
+        divSize: 12,
+        // ClickedIdLabel: 'ScheduleID'
+    },"sdfhujshufd");
+
     function handleclickSort(e) {
         if (e.target.id !== 3 && e.target.id !== '') {
             setcountforflag(1)
             setflagSort(e.target.id)
+        }
+    }
+
+    function handleRightClick() {
+        if (Math.floor(chartData.length/ pageSize) > page + 1) {
+            setPage(page + 1);
+        }
+    }
+
+    function handleLeftClick() {
+        if (0 < page) {
+            setPage(page - 1);
         }
     }
     return (
@@ -187,6 +260,12 @@ export default function ExpensesDetails() {
                                     }
                                 </tbody>
                             </Table>
+                                {/* <AlphaDashChart obj={JSON.parse(JSON.stringify(option))} />
+                                <div className='mainscreenchartdiv'>
+                                    <button onClick={handleLeftClick} className='chartupdown left'><i class="fa-solid fa-left-long iconupdown"></i></button>
+
+                                    <button onClick={handleRightClick} className='chartupdown right'><i class="fa-solid fa-right-long iconupdown"></i></button>
+                                </div> */}
                         </div> : <div class="crancy-progress-card card-contain-graph Tabel-Card">Not Found</div> : <div class="crancy-progress-card card-contain-graph Tabel-Card"><div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                             <div class="dot-spinner__dot"></div>
                             <div class="dot-spinner__dot"></div>

@@ -15,8 +15,7 @@ import Notify from '../Notification/Notify';
 
 export default function SalesPartyWise() {
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
-
-
+	const [prc, setprc] = useState([]);
 	const contexData = useContext(contex);
 	const [sales, setSales] = useState([])
 	let inputdata = contexData.state;
@@ -30,6 +29,7 @@ export default function SalesPartyWise() {
 	const [demo, setdemo] = useState("bar")
 	const [optionId, setOptionId] = useState()
 	const [flagSort, setflagSort] = useState('')
+	
 	const navigate = useNavigate()
 	let optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -39,6 +39,7 @@ export default function SalesPartyWise() {
 		chartId: 'Sales Party Wise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -158,7 +159,8 @@ export default function SalesPartyWise() {
 				var js = {};
 				let name = [];
 				let weight = [];
-				let data = []
+				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['AccountName'] })
@@ -178,10 +180,11 @@ export default function SalesPartyWise() {
 							js['product'] = res.data.lstResult[index]['AccountName']
 						}
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 						sale.push(js)
 
 					}
+					setprc(tempprc);
 					// setSales(sale)
 					var j = []
 					for (let index = 0; index < sale.length; index++) {
@@ -323,6 +326,7 @@ export default function SalesPartyWise() {
 				var js = {};
 				let name = [];
 				let weight = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['AccountName'] === null) {
@@ -342,8 +346,9 @@ export default function SalesPartyWise() {
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 						sale.push(js)
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
+					setprc(tempprc);
 					// setSales(sale)
 					var j = []
 					for (let index = 0; index < sale.length; index++) {

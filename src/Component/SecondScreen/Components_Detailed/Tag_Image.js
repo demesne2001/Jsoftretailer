@@ -34,7 +34,7 @@ export default function Tag_Image(props) {
 
         setCurrentPage(1)
         setPageNo(0)
-        console.log(inputdata,"sdtagimage");
+        console.log(inputdata, "sdtagimage");
     }, [inputdata])
     useEffect(() => {
         handleShowPhotos()
@@ -112,7 +112,7 @@ export default function Tag_Image(props) {
     }
 
     async function handleShowPhotos() {
-        inputdata = {...inputdata,'FromDate' : props.Date.FromDate, 'ToDate' : props.Date.ToDate}
+        inputdata = { ...inputdata, 'FromDate': props.Date.FromDate, 'ToDate': props.Date.ToDate }
         await post(inputdata, API.GetDetailChartImage, {}, "post").then((res) => {
             var imageData = [];
             if (res.data !== undefined) {
@@ -151,17 +151,17 @@ export default function Tag_Image(props) {
         await post(inputPageUpdate, API.GetDetailChartImage, {}, "post").then((res) => {
             var imageData = [];
             if (res.data !== undefined) {
-            console.log(res.data.lstResult);
-            if (res.data.lstResult.length !== 0) {
-                for (let i = 0; i < res.data.lstResult.length; i++) {
-                    imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
+                console.log(res.data.lstResult);
+                if (res.data.lstResult.length !== 0) {
+                    for (let i = 0; i < res.data.lstResult.length; i++) {
+                        imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
+                    }
+                    setImageData(imageData);
+                    // setTotalCount(res.data.lstResult[0]['TotalCount']);
                 }
-                setImageData(imageData);
-                // setTotalCount(res.data.lstResult[0]['TotalCount']);
+            } else {
+                alert(res['Error']);
             }
-        } else {
-            alert(res['Error']);
-        }
         })
         // for (let i = 0; i < document.getElementsByClassName('pageImageButtom').length; i++) {
 
@@ -190,8 +190,8 @@ export default function Tag_Image(props) {
         <>
             <div class="col-xl-12 col-lg-12 col-md-12 col-12">
                 <div class="title-top-graphdetail">
-                    <h5><span>Tag Image {filtername !== ""? "( " + filtername + " )": null}</span> <div className='pageNo'>Page No.{currentPage}</div></h5>
-                    
+                    <h5><span>Tag Image {filtername !== "" ? "( " + filtername + " )" : null}</span> <div className='pageNo'>Page No.{currentPage}</div></h5>
+
                 </div>
                 <div class="graphdetailcards-silder graphdetail-fourthcard">
 
@@ -211,10 +211,10 @@ export default function Tag_Image(props) {
                                             return <><li class="ag-carousel_item">
                                                 <figure class="ag-carousel_figure">
 
-                                                    <a data-fancybox="gallery" href={e['ImagePath']} data-caption={"NetWeight : " + e['netweight'] + ", Tagno : " + e['Tagno']}><img src={e['ImagePath']} /></a>
+                                                    <a data-fancybox="gallery" href={e['ImagePath']} data-caption={" Net Wt : " + e['netweight'].toFixed(3) + ", Tagno : " + e['Tagno']}><img src={e['ImagePath']} /></a>
                                                     {/* <img src={e['ImagePath']} onClick={(e) => { openModal() }} class="hover-shadow cursor" /> */}
                                                     <figcaption class="ag-carousel_figcaption">
-                                                        NetWeight: {e['netweight']}<br></br>{e['Tagno']}
+                                                        Net Wt: {e['netweight'].toFixed(3)}<br></br>Tag No: {e['Tagno']}
                                                     </figcaption>
                                                 </figure>
                                             </li >
@@ -243,7 +243,7 @@ export default function Tag_Image(props) {
                                 <button id='nxt' class="fa-solid fa-angles-right pageImageButtom prev-nxt" onClick={handleRightFivePage}></button>
 
                             </div>
-                           
+
                         </div>
                     </ul>
 

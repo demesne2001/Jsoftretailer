@@ -18,6 +18,7 @@ export default function Default_chart(props) {
     const [loader, setLoader] = useState(true);
     let filtername = contextData.defaultchartFilterName;
     let input = contextData.defaultchart;
+    const [prc, setprc] = useState([]);
     const [flagSort, setflagSort] = useState('');
     const defaultImageData = {
         "strBranch": "",
@@ -77,6 +78,7 @@ export default function Default_chart(props) {
                         let name = [];
                         let weg = [];
                         let id1 = [];
+                        let tempprc = [];
                         for (let i = 0; i < res.data.lstResult.length; i++) {
                             if (res.data.lstResult[i][props.graph.column] !== null) {
 
@@ -89,8 +91,9 @@ export default function Default_chart(props) {
                                 weg.push(res.data.lstResult[i]['NetWeight']);
                                 id1.push(res.data.lstResult[i][props.graph.columnID])
                             }
+                            tempprc.push(res.data.lstResult[i]['Prc']);
                         }
-
+                        setprc(tempprc);
                         setName(name);
                         setweight(weg);
                         setid(id1);
@@ -161,7 +164,7 @@ export default function Default_chart(props) {
                     let name = [];
                     let weg = [];
                     let id1 = [];
-
+                    let tempprc = [];
                     for (let i = 0; i < res.data.lstResult.length; i++) {
                         if (res.data.lstResult[i][props.graph.column] !== null) {
                             name.push(res.data.lstResult[i][props.graph.column]);
@@ -173,8 +176,9 @@ export default function Default_chart(props) {
                             weg.push(res.data.lstResult[i]['NetWeight']);
                             id1.push(res.data.lstResult[i][props.graph.columnID])
                         }
+                        tempprc.push(res.data.lstResult[i]['Prc']);
                     }
-
+                    setprc(tempprc);
                     setName(name);
                     setweight(weg);
                     setid(id1);
@@ -185,6 +189,12 @@ export default function Default_chart(props) {
                 alert(res['Error']);
             }
         })
+    }
+    let sliderbol
+    if (name.length < 8) {
+        sliderbol = false
+    } else {
+        sliderbol = true
     }
     let barHorizontal = {
         themeId: contextData.ThemeIndex,
@@ -197,7 +207,10 @@ export default function Default_chart(props) {
         // idobj: contextData.defaultchart,
         idkey: props.graph.filter_key2,
         idlst: id,
-        divname: 'topimg-gd'
+        divname: 'topimg-gd',
+        sliderflag: sliderbol,
+        datazoomlst: [0, 100, 0, 50],
+        prclst:prc
     }
     let updatedstate = (<AlphaDashChart obj={JSON.parse(JSON.stringify(barHorizontal))} state={contextData.chartImage} />).props.state
     console.log(props.graph.filter_key1, props.graph.filter_key2);

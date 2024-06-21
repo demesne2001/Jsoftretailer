@@ -18,7 +18,7 @@ export default function SecondSheduleScreenBar2(xAxis, yAxis, contextData, id) {
                     contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: '-' })
                   }
                   else {
-        
+                    
                     contextData.setbillState({ ...contextData.billstate, ['ScheduleID']: id[config.dataPointIndex].toString() })
                   }
                 }

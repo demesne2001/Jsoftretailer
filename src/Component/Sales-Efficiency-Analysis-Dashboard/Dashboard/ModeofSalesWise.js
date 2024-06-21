@@ -37,6 +37,7 @@ export default function ModeofSalesWise() {
     chartId: 'modeofsales2',
     Xaxis: name,
     Yaxis: weight,
+    prclst:prc
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),

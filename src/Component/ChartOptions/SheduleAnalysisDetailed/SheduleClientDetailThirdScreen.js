@@ -121,7 +121,7 @@ export default function SheduleClientDetailThirdScreen(xAxis, yAxis, contextData
         } else {
             return [parseInt(Math.max(...ansmax).toFixed(0)) + 1, parseInt(Math.min(...ansmin).toFixed(0)) + 1]
         }
-    }console.log(yAxis,"sdyrt67asygt");
+    } console.log(yAxis, "sdyrt67asygt");
     let option = {}
     if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
         option = {
@@ -130,9 +130,9 @@ export default function SheduleClientDetailThirdScreen(xAxis, yAxis, contextData
             charttype: 'inside-Bar',
             height: '650%',
             width: '100%',
-            legend: ['TargetParty', 'VisitedParty', 'Prc'],
-            color: ['#46a5dd','#8dcaf6','#2c4b6a', '#ebeef5','#55799d'],
-            widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35],
+            legend: ['TargetParty', 'VisitedParty', 'SeenParty', 'SoldParty', 'Prc'],
+            color: ['#46a5dd', '#2c4b6a', '#c3d5ff', '#1563e6', '#c8d6f7'],
+            widthlst: [document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 20, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 35, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 60, document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth / 95],
             Xaxis: xAxis,
             Yaxis: yAxis,
             idkey: 'ScheduleID',
@@ -141,9 +141,9 @@ export default function SheduleClientDetailThirdScreen(xAxis, yAxis, contextData
             alignment: 'v',
             maxval: findMinMax()[0],
             minval: findMinMax()[1],
-            barnum: 2,
+            barnum: 4,
             divname: 'crancy-progress-card card-contain-graph',
-            tooltipid: 2
+            tooltipid: 4
         }
     }
 

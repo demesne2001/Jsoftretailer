@@ -1142,8 +1142,6 @@ export default function Header() {
                                                 </div>
                                               </div>
                                               <form class="form-horizontal">
-                                                <hr />
-
                                                 <div >
                                                   {preDefinedThemes.map((group, index) => {
                                                     return (

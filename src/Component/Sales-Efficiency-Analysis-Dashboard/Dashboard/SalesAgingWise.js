@@ -24,6 +24,7 @@ export default function SalesAgingWise() {
 	const [flagSort, setflagSort] = useState('')
 	const [flag, setflag] = useState("line")
 	const ChartType = "line"
+	const [prc, setprc] = useState([]);
 	let optionline = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'line',
@@ -52,6 +53,7 @@ export default function SalesAgingWise() {
 		chartId: 'salesAgingWise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -162,6 +164,7 @@ export default function SalesAgingWise() {
 				let name = [];
 				let weight = [];
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['rd.caption'] === null) {
@@ -172,7 +175,9 @@ export default function SalesAgingWise() {
 							data.push({ name: res.data.lstResult[index]['rd.caption'], value: res.data.lstResult[index][inputdata['column']] })
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
+					setprc(tempprc);
 					setdata(data)
 					setName(name)
 					setweight(weight)
@@ -290,6 +295,7 @@ export default function SalesAgingWise() {
 				let name = [];
 				let weight = [];
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['rd.caption'] === null) {
@@ -300,7 +306,9 @@ export default function SalesAgingWise() {
 							data.push({ name: res.data.lstResult[index]['rd.caption'], value: res.data.lstResult[index][inputdata['column']] })
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
+					setprc(tempprc);
 					setdata(data)
 					setName(name)
 					setweight(weight)

@@ -8,7 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@visx/visx": "^3.10.2",
-    "alpha-echart-library": "^39.2.10",
+    "alpha-echart-library": "^39.4.45",
     "apexcharts": "^3.47.0",
     "axios": "^1.6.8",
     "buffer": "^6.0.3",

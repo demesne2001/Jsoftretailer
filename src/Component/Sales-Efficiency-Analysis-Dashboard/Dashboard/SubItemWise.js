@@ -31,6 +31,7 @@ export default function SubItemWise() {
   const options_Polar = SubItem_Polar(name, inputdata['column'])
   const options_bar = SubItemWise_bar(name, inputdata['column'])
   const [data, setdata] = useState([])
+  const [prc, setprc] = useState([]);
 
   const series_bar = [{
     name: 'Weight',
@@ -74,7 +75,9 @@ export default function SubItemWise() {
     width: '100%',
     chartId: 'subItemWise',
     Xaxis: name,
-    Yaxis: weight
+    Yaxis: weight,
+    divname: "crancy-progress-card card-contain-graph",
+    prclst:prc
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -127,6 +130,7 @@ export default function SubItemWise() {
   }
 
 
+
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'e.subitemID,e.subItemName', ['SortByLabel']: 'subItemName' }
@@ -138,6 +142,7 @@ export default function SubItemWise() {
         let sale = [];
         var js = {};
         let tempdata = [];
+        let tempprc = [];
         if (res.data !== undefined) {
 
           for (let index = 0; index < res.data.lstResult.length; index++) {
@@ -160,7 +165,9 @@ export default function SubItemWise() {
             js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
             sale.push(js)
+            tempprc.push(res.data.lstResult[index]['Prc']);
           }
+          setprc(tempprc);
           setdata(tempdata)
           setName(name)
           setweight(weight)
@@ -285,7 +292,7 @@ export default function SubItemWise() {
       let sale = [];
       var js = {};
       let tempdata = [];
-
+      let tempprc = [];
       if (res.data !== undefined) {
         for (let index = 0; index < res.data.lstResult.length; index++) {
           js = { 'product': '', 'thisYearProfit': 0 }
@@ -305,9 +312,10 @@ export default function SubItemWise() {
             js['product'] = res.data.lstResult[index]['subItemName']
           }
           js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+          tempprc.push(res.data.lstResult[index]['Prc']);
           sale.push(js)
         }
+        setprc(tempprc);
         setdata(tempdata)
         setName(name)
         setweight(weight)

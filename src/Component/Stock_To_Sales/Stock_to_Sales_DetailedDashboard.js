@@ -17,7 +17,7 @@ export default function Stock_to_Sales_DetailedDashboard() {
     const settings = {
 
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: 4,
         slidesToScroll: 1,
         infinite: true,
         autoplay: true,
@@ -98,6 +98,7 @@ export default function Stock_to_Sales_DetailedDashboard() {
             "filterkey": getUrlState.get("filterkey"),
             "FromDate": getUrlState.get("FromDate"),
             "ToDate": getUrlState.get("ToDate"),
+            "filterdata": JSON.parse(getUrlState.get("filterdata")),
         }
         setMainChartProps(urlData)
     }

@@ -37,6 +37,7 @@ export default function DesignCatalogueWise() {
   const series1 = weight;
   const [data, setData] = useState()
   const [flagSort, setflagSort] = useState('')
+  const [prc, setprc] = useState([]);
   const series2 = [{
     name: 'weight',
     data: weight
@@ -50,6 +51,7 @@ export default function DesignCatalogueWise() {
     chartId: 'DesigncatlogWise',
     Xaxis: name,
     Yaxis: weight,
+    prclst:prc
   }
 
   let radialdata = {
@@ -154,6 +156,7 @@ export default function DesignCatalogueWise() {
         let sale = [];
         var js = {};
         let data = [];
+        let tempprc = [];
         if (res.data !== undefined) {
 
 
@@ -175,10 +178,11 @@ export default function DesignCatalogueWise() {
               js['product'] = res.data.lstResult[index]['DesignNo']
             }
             js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+            tempprc.push(res.data.lstResult[index]['Prc']);
             sale.push(js)
 
           }
+          setprc(tempprc);
           setData(data)
           setName(name)
           setweight(weight)
@@ -318,6 +322,7 @@ export default function DesignCatalogueWise() {
         let sale = [];
         var js = {};
         let data = [];
+        let tempprc = [];
         if (res.data !== undefined) {
 
 
@@ -341,12 +346,14 @@ export default function DesignCatalogueWise() {
             js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
             sale.push(js)
-
+            tempprc.push(res.data.lstResult[index]['Prc']);
           }
+          setprc(tempprc);
           setData(data)
           setName(name)
           setweight(weight)
           setdataLoader(false)
+
           if (weight.length !== 0) {
             setLoader(false)
           } else {

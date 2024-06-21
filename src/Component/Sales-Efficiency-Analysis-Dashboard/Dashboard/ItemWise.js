@@ -31,6 +31,7 @@ export default function ItemWise() {
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 	const [demo, setdemo] = useState('bar')
 	const [data, setdata] = useState([])
+	const [prc, setprc] = useState([]);
 	var optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'bar',
@@ -39,6 +40,7 @@ export default function ItemWise() {
 		chartId: 'ItemWise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 	var barHorizontal = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -48,7 +50,8 @@ export default function ItemWise() {
 		chartId: 'ItemWise 123',
 		Xaxis: name,
 		Yaxis: weight,
-		divname: 'crancy-progress-card card-contain-graph'
+		divname: 'crancy-progress-card card-contain-graph',
+		prclst:prc
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -165,7 +168,7 @@ export default function ItemWise() {
 				let sale = [];
 				var js = {};
 				let data = []
-
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ItemName'] })
@@ -184,9 +187,10 @@ export default function ItemWise() {
 							js['product'] = res.data.lstResult[index]['ItemName']
 						}
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 						sale.push(js)
 					}
+					setprc(tempprc);
 					setdataLoader(false)
 					if (weight.length !== 0) {
 						setLoader(false)
@@ -236,7 +240,7 @@ export default function ItemWise() {
 	});
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "d.itemID,d.ItemName", columnName: "ItemName", columnID: "itemID", componentName: "Item Group Wise", filterKey: "strItem", chartId: 7, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "d.itemID,d.ItemName", columnName: "ItemName", columnID: "itemID", componentName: "Item	 Wise", filterKey: "strItem", chartId: 7, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -310,7 +314,7 @@ export default function ItemWise() {
 			let sale = [];
 			var js = {};
 			let data = []
-
+			let tempprc = [];
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ItemName'] })
@@ -329,9 +333,10 @@ export default function ItemWise() {
 						js['product'] = res.data.lstResult[index]['ItemName']
 					}
 					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+					tempprc.push(res.data.lstResult[index]['Prc']);
 					sale.push(js)
 				}
+				setprc(tempprc);
 				setdataLoader(false)
 				if (weight.length !== 0) {
 					setLoader(false)

@@ -1,6 +1,10 @@
 import axios from "axios"
 import API from "./API"
-
+import { useNavigate } from "react-router-dom"
+function NavigateToLogin() {
+    const navigate = useNavigate();
+    navigate('/', { replace: true });
+}
 export default async function post(inputJson, APINAME, defaultRes, methodType) {
     let header = {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -8,14 +12,13 @@ export default async function post(inputJson, APINAME, defaultRes, methodType) {
         'Content-Type': 'application/json'
     }
 
-    if (methodType === "post") {       
+    if (methodType === "post") {
 
         return await axios.post(APINAME, inputJson, { headers: header })
-        // return await axios.post(APINAME, inputJson)
+            // return await axios.post(APINAME, inputJson)
             .then((res) => {
                 console.log("api handle res", res);
-                if (res.data.HasError === true) 
-                {
+                if (res.data.HasError === true) {
                     defaultRes['statusText'] = res.data.Message[0]
                     defaultRes['status'] = 200
                     throw defaultRes
@@ -30,24 +33,27 @@ export default async function post(inputJson, APINAME, defaultRes, methodType) {
 
                     defaultRes['Error'] = E.statusText
                     // alert(E)
-                    console.log("errors",E);
+                    console.log("errors", E);
 
                     return defaultRes
                     // throw defaultRes
                 }
                 else {
-
-                    // alert(E)
-                    defaultRes['Error'] = E
-                    console.log("errors",E);
-                    return defaultRes
-                    // throw defaultRes
+                    if (E.status === 403) {
+                        NavigateToLogin()
+                    } else {
+                        // alert(E)
+                        defaultRes['Error'] = E
+                        console.log("errors", E);
+                        return defaultRes
+                        // throw defaultRes
+                    }
                 }
             })
 
     }
     else if (methodType === 'get') {
-        return await axios.post(APINAME,{},{ headers: header })
+        return await axios.post(APINAME, {}, { headers: header })
             .then((res) => {
                 // console.log("api handle res", res);
                 if (res.data.HasError === true) {
@@ -76,5 +82,5 @@ export default async function post(inputJson, APINAME, defaultRes, methodType) {
                     // throw defaultRes
                 }
             })
-    }    
+    }
 }

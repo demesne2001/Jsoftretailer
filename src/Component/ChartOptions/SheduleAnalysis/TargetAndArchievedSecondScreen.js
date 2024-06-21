@@ -129,6 +129,7 @@ export default function TargetAndArchievedSecondScreen(xAxis, yAxis, contextData
                         setTimeout(() => {
                             contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
                             contextData.setfiltername(xAxis[config.dataPointIndex])
+                            contextData.setfilterValue(yAxis[0][config.dataPointIndex])
                         }, [1])
                     }
                 }

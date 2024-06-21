@@ -25,6 +25,7 @@ export default function ItemGroupWise() {
   const [flag, setflag] = useState()
   const ChartType = "radialBar"
   const [optionId, setOptionId] = useState()
+  const [prc, setprc] = useState([]);
   let optionbarpolar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'polar-radialbar',
@@ -56,7 +57,8 @@ export default function ItemGroupWise() {
     Xaxis: name,
     color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
     Yaxis: weight,
-    divname:'crancy-progress-card card-contain-graph'
+    divname:'crancy-progress-card card-contain-graph',
+    prclst:prc
   }
   const options_radial = ItemGroup_RadialBar(name)
   const options_treemap = ItemGroup_treemap(name, inputdata['column'])
@@ -126,7 +128,7 @@ export default function ItemGroupWise() {
         let name = [];
         let weight = [];
         let finalarr = [];
-
+        let tempprc = [];
         if (res.data !== undefined) {
           for (let index = 0; index < res.data.lstResult.length; index++) {
             if (res.data.lstResult[index]['GroupName'] === null) {
@@ -136,7 +138,9 @@ export default function ItemGroupWise() {
             }
             finalarr.push({ x: res.data.lstResult[index]['GroupName'], y: res.data.lstResult[index][inputdata['column']] })
             weight.push(res.data.lstResult[index][inputdata['column']])
+            tempprc.push(res.data.lstResult[index]['Prc']);
           }
+          setprc(tempprc);
           setdataLoader(false)
           if (weight.length !== 0) {
             setLoader(false)
@@ -255,7 +259,7 @@ export default function ItemGroupWise() {
       let name = [];
       let weight = [];
       let finalarr = [];
-
+      let tempprc = [];
       if (res.data !== undefined) {
         for (let index = 0; index < res.data.lstResult.length; index++) {
           if (res.data.lstResult[index]['GroupName'] === null) {
@@ -265,7 +269,9 @@ export default function ItemGroupWise() {
           }
           finalarr.push({ x: res.data.lstResult[index]['GroupName'], y: res.data.lstResult[index][inputdata['column']] })
           weight.push(res.data.lstResult[index][inputdata['column']])
+          tempprc.push(res.data.lstResult[index]['Prc']);
         }
+        setprc(tempprc);
         setdataLoader(false)
         if (weight.length !== 0) {
           setLoader(false)

@@ -33,6 +33,7 @@ export default function RegionWise() {
 	const options_lolipop = RegionWise_lolipop(name, inputdata['column'])
 	const options_polar = RegionWise_Polar(name, inputdata['column'])
 	const options_donut = BranchWise_donut(name, inputdata['column'])
+	const [prc, setprc] = useState([]);
 	let optionDonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'donut',
@@ -125,7 +126,8 @@ export default function RegionWise() {
 		Xaxis: name,
 		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
 		Yaxis: weight,
-		divname: 'crancy-progress-card card-contain-graph'
+		divname: 'crancy-progress-card card-contain-graph',
+		prclst:prc
 	}
 	const series_lolipop = [{
 		name: 'Weight',
@@ -168,6 +170,7 @@ export default function RegionWise() {
 				let name = [];
 				let weight = [];
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['RegionName'] === null) {
@@ -177,9 +180,10 @@ export default function RegionWise() {
 							name.push(res.data.lstResult[index]['RegionName'])
 							data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['RegionName'] })
 						}
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 						weight.push(res.data.lstResult[index][inputdata['column']])
 					}
+					setprc(tempprc);
 					setdata(data)
 					setName(name)
 					setweight(weight)
@@ -296,6 +300,7 @@ export default function RegionWise() {
 			let name = [];
 			let weight = [];
 			let data = [];
+			let tempprc = [];
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['RegionName'] === null) {
@@ -305,9 +310,10 @@ export default function RegionWise() {
 						name.push(res.data.lstResult[index]['RegionName'])
 						data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['RegionName'] })
 					}
-
+					tempprc.push(res.data.lstResult[index]['Prc']);
 					weight.push(res.data.lstResult[index][inputdata['column']])
 				}
+				setprc(tempprc);
 				setdata(data)
 				setName(name)
 				setweight(weight)

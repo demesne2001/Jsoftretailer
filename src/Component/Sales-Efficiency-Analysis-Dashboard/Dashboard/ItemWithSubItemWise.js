@@ -25,7 +25,8 @@ export default function ItemWithSubItemWise() {
 	const [optionId, setOptionId] = useState()
 	const [flagSort, setflagSort] = useState('')
 	const [sales, setSales] = useState([])
-	const [data, setdata] = useState([])
+	const [data, setdata] = useState([]);
+	const [prc, setprc] = useState([]);
 	let optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'bar',
@@ -34,6 +35,7 @@ export default function ItemWithSubItemWise() {
 		chartId: 'itemWithSubItemWise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 
 	let barHorizontal = {
@@ -44,7 +46,8 @@ export default function ItemWithSubItemWise() {
 		chartId: 'itemWithSubItemWise',
 		Xaxis: name,
 		Yaxis: weight,
-		divname: 'crancy-progress-card card-contain-graph'
+		divname: 'crancy-progress-card card-contain-graph',
+		prclst:prc
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -165,6 +168,7 @@ export default function ItemWithSubItemWise() {
 				let sale = [];
 				var js = {};
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ItemSubNAme'] })
@@ -184,8 +188,9 @@ export default function ItemWithSubItemWise() {
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 						sale.push(js)
-
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
+					setprc(tempprc);
 					setdataLoader(false)
 					if (weight.length !== 0) {
 						setLoader(false)
@@ -308,14 +313,15 @@ export default function ItemWithSubItemWise() {
 			let sale = [];
 			var js = {};
 			let data = [];
+			let tempprc = [];
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
-					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ItemSubNAme'] })
+					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ItemSubNAme'].toLowerCase() })
 
 					if (res.data.lstResult[index]['ItemSubNAme'] === null) {
 						name.push("null")
 					} else {
-						name.push(res.data.lstResult[index]['ItemSubNAme'])
+						name.push(res.data.lstResult[index]['ItemSubNAme'].toLowerCase())
 					}
 					weight.push(res.data.lstResult[index][inputdata['column']])
 					js = { 'product': '', 'thisYearProfit': 0 }
@@ -325,10 +331,11 @@ export default function ItemWithSubItemWise() {
 						js['product'] = res.data.lstResult[index]['ItemSubNAme']
 					}
 					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
+					tempprc.push(res.data.lstResult[index]['Prc']);
 					sale.push(js)
 
 				}
+				setprc(tempprc);
 				setdataLoader(false)
 				if (weight.length !== 0) {
 					setLoader(false)

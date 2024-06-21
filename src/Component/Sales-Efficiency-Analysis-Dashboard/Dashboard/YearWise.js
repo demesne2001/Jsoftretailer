@@ -29,7 +29,8 @@ export default function YearWise() {
 	const [optionId, setOptionId] = useState()
 	const [flag, setflag] = useState()
 	const ChartType = "kpi"
-	const [flagSort, setflagSort] = useState('')
+	const [flagSort, setflagSort] = useState('');
+	const [prc, setprc] = useState([]);
 	let optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'bar',
@@ -38,6 +39,7 @@ export default function YearWise() {
 		chartId: 'yearwise',
 		Xaxis: name,
 		Yaxis: weight,
+		prclst:prc
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -154,6 +156,7 @@ export default function YearWise() {
 				let name = [];
 				let weight = [];
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['YearCode'] === null) {
@@ -164,7 +167,9 @@ export default function YearWise() {
 							data.push({ name: res.data.lstResult[index]['YearCode'], value: res.data.lstResult[index][inputdata['column']] })
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
+					setprc(tempprc);
 					setdata(data)
 					setName(name)
 					setweight(weight)
@@ -280,6 +285,7 @@ export default function YearWise() {
 				let name = [];
 				let weight = [];
 				let data = [];
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['YearCode'] === null) {
@@ -290,9 +296,11 @@ export default function YearWise() {
 							data.push({ name: res.data.lstResult[index]['YearCode'], value: res.data.lstResult[index][inputdata['column']] })
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
 					setdata(data)
 					setName(name)
+					setprc(tempprc);
 					setweight(weight)
 					setdataLoader(false)
 					if (weight.length !== 0) {

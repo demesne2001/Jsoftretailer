@@ -32,12 +32,13 @@ const ContexState1 = (props) => {
 
     const [currency, setcurrency] = useState(localStorage.value);
     const [filtername, setfiltername] = useState("");
+    const [filterValue, setfilterValue] = useState();
 
 
 
     return (
 
-        <contex.Provider value={{filtername, setfiltername, tempstate, SettempState,  state: state, SetState: SetState, currency, setcurrency, detailedstate, SetdetailedState, billstate, setbillState }}>
+        <contex.Provider value={{setfilterValue,filterValue, filtername, setfiltername, tempstate, SettempState,  state: state, SetState: SetState, currency, setcurrency, detailedstate, SetdetailedState, billstate, setbillState }}>
 
             {props.children}
 

@@ -16,6 +16,7 @@ export default function AvarageTimeSpentSecondScreen(xAxis, yAxis, contextData, 
           else {
             contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
             contextData.setfiltername(xAxis[config.dataPointIndex])
+            contextData.setfilterValue(yAxis[0][config.dataPointIndex])
           }
         }
       },

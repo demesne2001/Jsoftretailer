@@ -272,6 +272,7 @@ select {
 } */
 
 .dropdown-contenticon {
+  right: 0;
   display: none;
   position: absolute;
   background-color: #fafafa;
@@ -279,8 +280,8 @@ select {
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.56);
   z-index: 27;
-  margin-top: 10px;
-  margin-left: -100px;
+  margin-top: 31%;
+  margin-left: -138%;
   border-radius: 20px;
   color: black;
 }
@@ -298,6 +299,7 @@ select {
 }
 
 .dropdown-contenticon-second-screen {
+  right: 0;
   display: none;
   position: absolute;
   background-color: #fafafa;
@@ -305,7 +307,7 @@ select {
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.56);
   z-index: 27;
-  margin-top: 10px;
+  margin-top: 0%;
   margin-left: 65%;
   border-radius: 20px;
   color: black;
@@ -2029,8 +2031,8 @@ button.btn.btn-outline-success {
   overflow: auto;
   max-height: 318px;
   margin-top: 11%;
-  -ms-overflow-style: none; 
-  scrollbar-width: none;   
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .form-horizontal::-webkit-scrollbar {
@@ -2090,4 +2092,56 @@ button.btn.btn-outline-success {
 
 .ec-panel div:nth-child(2) {
   text-align: left;
+}
+
+.title-top-graphdetail {
+  padding: 10px;
+  color: #fff !important;
+  font-weight: 300;
+  text-align: left;
+  background: #094876;
+  border-radius: 10px 10px 0px 0px;
+  margin-bottom: 0px;
+}
+
+.MinimumstockIcons {
+  display: flex !important;
+  position: absolute;
+  right: 0%;
+  bottom: 30%;
+}
+
+.minimumstocktosaleschartoption {
+  color: white !important;
+}
+
+.MinimumStocksDropdown {
+  margin-left: 80%;
+}
+.ec-panel {
+  text-transform: capitalize;
+}
+
+.subitemrangedropdown {
+  margin-top: 34px;
+  margin-left: -157px;
+}
+
+.minimumstockdropdown {
+  margin-top: 45px;
+  margin-left: -145px;
+}
+
+.minimumstockdropdownchartdata {
+  margin-top: 35px;
+  margin-left: -125px;
+}
+
+.stocktosalesdashboarddropdown {
+  margin-top: 35px;
+  margin-left: -125px;
+}
+
+.StocktoSalesmainChartDrop {
+
 }

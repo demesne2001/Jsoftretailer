@@ -24,6 +24,7 @@ export default function CityWise() {
 	const [data, setdata] = useState([])
 	const options_lolipop = CityWise_LoliMap(name, inputdata['column'])
 	const options_bar = CityWise_Bar(name, inputdata['column']);
+	const [prc, setprc] = useState([]);
 	let roundedBarHorizontal = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'round-horizontal-bar',
@@ -33,7 +34,8 @@ export default function CityWise() {
 		Xaxis: name,
 		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
 		Yaxis: weight,
-		divname: 'crancy-progress-card card-contain-graph'
+		divname: 'crancy-progress-card card-contain-graph',
+		prclst:prc
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -129,7 +131,7 @@ export default function CityWise() {
 				let sale = [];
 				var js = {};
 				let data = []
-
+				let tempprc = [];
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['cityname'] })
@@ -144,7 +146,9 @@ export default function CityWise() {
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 						sale.push(js)
+						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
+					setprc(tempprc);
 					setName(name)
 					setweight(weight)
 					setdata(data);
@@ -275,7 +279,7 @@ export default function CityWise() {
 			let sale = [];
 			var js = {};
 			let data = []
-
+			let tempprc = [];
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['cityname'] })
@@ -289,8 +293,10 @@ export default function CityWise() {
 					}
 					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
-					sale.push(js)
+					sale.push(js);
+					tempprc.push(res.data.lstResult[index]['Prc']);
 				}
+				setprc(tempprc);
 				setName(name)
 				setweight(weight)
 				setdata(data);

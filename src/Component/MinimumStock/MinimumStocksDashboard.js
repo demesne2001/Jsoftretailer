@@ -38,6 +38,7 @@ export default function MinimumStocksDashboard() {
                         <div class="row">
                             <MinimumStockChart id={3} />
                             <MinimumStockChart id={4} />
+                            <MinimumStockChart id={5} />
                         </div>
                     </div>
                 </section>

@@ -29,6 +29,7 @@ export default function TotalNoOfBillsSecondScreen(xAxis, Yaxis, contextData, id
             }
             else {
               contextData.setfiltername(xAxis[config.dataPointIndex])
+              contextData.setfilterValue(Yaxis[0][config.dataPointIndex])
               contextData.SetdetailedState({ ...contextData.detailedstate, ['TravellingTeamID']: id[config.dataPointIndex].toString() })
             }
           }

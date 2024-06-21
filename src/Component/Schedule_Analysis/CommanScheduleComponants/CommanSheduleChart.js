@@ -271,7 +271,7 @@ export default function CommanSheduleChart(props) {
             <div className="graph-card">
                 <div className='card-title-graph schedule-graph'>
                     <div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigate}>
-                        <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']} <div style={{ fontSize: '15px' }}> {props.screen === 3 ? contextData.filtername !== "" ? " ( " + contextData.filtername + " )" : null : null}</div></p>
+                        <p><i class={CommanSheduleObject[props.id]['iconclassName']}></i>{CommanSheduleObject[props.id]['heading']} <div style={{ fontSize: '15px' }}> {props.screen === 3 ? contextData.filtername !== "" && contextData.filterValue !== undefined ? " ( " + contextData.filtername + " ) " + CommanSheduleObject[props.id]['yAxis'][0]+" : " + contextData.filterValue : null : null}</div></p>
                     </div>
                     {props.screen !== 3 ?
                         <div className="col-xs-1 col-sm-1 col-md-1 col-1" >

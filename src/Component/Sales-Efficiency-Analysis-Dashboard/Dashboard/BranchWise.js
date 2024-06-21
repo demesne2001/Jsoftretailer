@@ -24,6 +24,7 @@ export default function BranchWise() {
 	const [sales, setSales] = useState([])
 	const ChartType = "donut"
 	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
+	const [prc, setprc] = useState([]);
 
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -99,7 +100,8 @@ export default function BranchWise() {
 		Xaxis: name,
 		Yaxis: weight,
 		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
-		divname: 'crancy-progress-card card-contain-graph'
+		divname: 'crancy-progress-card card-contain-graph',
+		prclst:prc
 	}
 
 	useEffect(() => {
@@ -137,6 +139,7 @@ export default function BranchWise() {
 				let weight1 = [];
 				let sale = [];
 				var js = {};
+				let tempprc = [];
 				var data = [];
 				if (res.data !== undefined) {
 
@@ -155,12 +158,14 @@ export default function BranchWise() {
 						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 						sale.push(js)
+						tempprc.push(res.data.lstResult[index]['Prc'])
 					}
 					console.log("weight", weight1)
 					setName(name1)
 					setweight(weight1)
 					setdata(data);
-					setdataLoader(false)
+					setdataLoader(false);
+					setprc(tempprc)
 					if (weight1.length !== 0) {
 						setLoader(false)
 					} else {
@@ -282,6 +287,7 @@ export default function BranchWise() {
 			let sale = [];
 			var js = {};
 			var data = [];
+			let tempprc = [];
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['BranchName'] })
@@ -297,8 +303,10 @@ export default function BranchWise() {
 					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 
 					sale.push(js)
+					tempprc.push(res.data.lstResult[index]['Prc']);
 				}
-				setName(name2)
+				setName(name2);
+				setprc(tempprc);
 				setweight(weight2)
 				setdata(data);
 				setdataLoader(false)
@@ -312,8 +320,6 @@ export default function BranchWise() {
 					j.push({ ...sale[index], ['color']: gradientArray[index] })
 				}
 				setSales(j)
-
-
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			} else {
 				alert(res['Error']);

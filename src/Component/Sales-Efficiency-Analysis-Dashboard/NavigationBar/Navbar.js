@@ -151,7 +151,7 @@ export default function Navbar() {
               <ul id="CrancyMenu" className="menu-bar__one crancy-dashboard-menu">
                 <li><a className="collapsed" onClick={handleOnDashboardClick}><span className="menu-bar__text">
                   <i className="fas fa-home"></i>
-                  <span className="menu-bar__name" >Dashboard</span></span></a>
+                  <span className="menu-bar__name" >Sales Efficiency</span></span></a>
                 </li>
                 <li><a className="collapsed" onClick={handleOnStockToSalesClick}><span className="menu-bar__text">
                   <i className="fas fa-chart-line"></i>

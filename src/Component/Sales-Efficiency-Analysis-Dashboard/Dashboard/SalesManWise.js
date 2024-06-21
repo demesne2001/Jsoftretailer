@@ -24,7 +24,8 @@ export default function SalesManWise() {
   const [optionId, setOptionId] = useState()
   let inputdata = contexData.state;
   const navigate = useNavigate()
-  const [flagSort, setflagSort] = useState('')
+  const [flagSort, setflagSort] = useState('');
+  const [prc, setprc] = useState([]);
   let optionbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'bar',
@@ -33,6 +34,7 @@ export default function SalesManWise() {
     chartId: 'SalesManWise',
     Xaxis: name,
     Yaxis: weight,
+    prclst:prc
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -139,6 +141,7 @@ export default function SalesManWise() {
         let name = [];
         let weight = [];
         let data = [];
+        let tempprc = [];
         if (res.data !== undefined) {
           for (let index = 0; index < res.data.lstResult.length; index++) {
             data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['SalesmanNAme'] })
@@ -148,7 +151,9 @@ export default function SalesManWise() {
               name.push(res.data.lstResult[index]['SalesmanNAme'])
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
+            tempprc.push(res.data.lstResult[index]['Prc']);
           }
+          setprc(tempprc);
           setdata(data);
           setName(name)
           setweight(weight)
@@ -419,6 +424,7 @@ export default function SalesManWise() {
       let name = [];
       let weight = [];
       let data = [];
+      let tempprc = [];
       if (res.data !== undefined) {
         for (let index = 0; index < res.data.lstResult.length; index++) {
           data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['SalesmanNAme'] })
@@ -428,7 +434,9 @@ export default function SalesManWise() {
             name.push(res.data.lstResult[index]['SalesmanNAme'])
           }
           weight.push(res.data.lstResult[index][inputdata['column']])
+          tempprc.push(res.data.lstResult[index]['Prc']);
         }
+        setprc(tempprc);
         setdata(data);
         setName(name)
         setweight(weight)

@@ -75,7 +75,7 @@ const StockToSalesContext = (props) => {
         "Mode": 5,
         "period": ""
     })
-
+    const [Monthtype, setMonthtype] = useState("Q")
     const [childFilterShow, setchildFilterShow] = useState(false);
     const [currency, setcurrency] = useState(localStorage.value);
     const [flag, setflag] = useState(0);
@@ -84,7 +84,7 @@ const StockToSalesContext = (props) => {
     const [filtername, setfiltername] = useState("");
     return (
 
-        <contex.Provider value={{filtername, setfiltername, SetDetailsecondState, detailsecondstate, detailstate, SetDetailState, setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
+        <contex.Provider value={{setMonthtype, Monthtype, filtername, setfiltername, SetDetailsecondState, detailsecondstate, detailstate, SetDetailState, setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
 
             {props.children}
 
