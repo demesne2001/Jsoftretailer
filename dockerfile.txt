@@ -1,12 +1,12 @@
 From node:18.12.1
-RUN mkdir '/WebReportJsoftF'
-WORKDIR '/WebReportJsoftF'
+RUN mkdir '/WebRetailReportJsoftF'
+WORKDIR '/WebRetailReportJsoftF'
 
-COPY . /WebReportJsoft
+COPY . /WebRetailReportJsoftF
 COPY package.json ./
 RUN npm install
 
 COPY . .
 
-EXPOSE 7578
+EXPOSE 8588
 CMD ["npm", "start"]

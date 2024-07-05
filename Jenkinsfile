@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'demesne2001', url: 'https://github.com/demesne2001/JSoftWeb.git']])
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'demesne2001', url: 'https://github.com/demesne2001/Jsoftretailer.git']])
                 echo 'checkout done'
             }
         }
@@ -15,12 +15,12 @@ pipeline {
                 
                 script{
                     def a=0
-                    bat 'docker build . -f dockerfile.txt -t  jsoftfront'
+                    bat 'docker build . -f dockerfile.txt -t  jsoftrfront'
                     a=1
                     if(a>0)
                     {
-                         bat 'docker stop jsoftfront'
-                         bat 'docker rm jsoftfront'
+                         bat 'docker stop jsoftrfront'
+                         bat 'docker rm jsoftrfront'
                     }
                 }
                 echo 'Docker Image done'
@@ -29,7 +29,7 @@ pipeline {
         stage('Docker Run') {
             steps {
                 script{
-                    bat 'docker run -p 7578:7578 -d --name jsoftfront jsoftfront'
+                    bat 'docker run -p 8588:8588 -d --name jsoftrfront jsoftrfront'
                 }
                 echo 'Docker Running'
             }
