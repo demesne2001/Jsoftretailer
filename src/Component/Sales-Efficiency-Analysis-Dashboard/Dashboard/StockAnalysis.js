@@ -2,50 +2,11 @@ import React, { useEffect, useState, useContext } from 'react'
 import contex from '../../contex/Contex'
 import API from '../../Utility/API'
 import post from '../../Utility/APIHandle'
-
 import StockAnalysis2 from '../../Assets/img/svgs bold/stock analysis 2.svg'
 import Vector2 from '../../Assets/img/svgs bold/Vector (2).svg'
 
 export default function StockAnalysis() {
 
-  // const [postData, setPostData] = useState({
-  //       "strBranch": "",
-  //       "strState": "",
-  //       "strCity": "",
-  //       "strItem": "",
-  //       "strSubItem": "",
-  //       "strItemGroup": "",
-  //       "strItemSubitem": "",
-  //       "strPurchaseParty": "",
-  //       "strSalesParty": "",
-  //       "strSaleman": "",
-  //       "strProduct": "",
-  //       "strDesignCatalogue": "",
-  //       "strSaleAging": "",
-  //       "strModeofSale": "",
-  //       "strTeamModeofSale": "",
-  //       "FromDate": "",
-  //       "ToDate": "",
-  //       "strMetalType": "",
-  //       "strDayBook": "",
-  //       "PageNo": 0,
-  //       "PageSize": 0,
-  //       "Search": ""
-  //   })
-
-
-  //   useEffect(()=>{
-  //       getdata()
-  //   },[])
-
-
-  //   function getdata() {
-
-  //       post(postData,API.GetStockAnalysisCard,'post')
-  //       .then((res)=>{
-
-  //       })
-  //   }
   const contexData = useContext(contex);
   const [tag, settag] = useState(0)
   const [loose, setloose] = useState(0)
@@ -63,11 +24,17 @@ export default function StockAnalysis() {
 
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {
+        console.log(res)
         if (res.data !== undefined) {
           if (res.data.lstResult.length > 0) {
-
-            settag(res.data.lstResult[1]['NetWt']);
-            setloose(res.data.lstResult[0]['NetWt'])
+            if (res.data.lstResult.length === 1) {
+              settag(res.data.lstResult[0]['NetWt']);
+              setloose(0)
+            }else{
+              settag(res.data.lstResult[1]['NetWt']);
+              setloose(res.data.lstResult[0]['NetWt'])
+            }
+          
 
             inputdata = { ...inputdata, ['Grouping']: '' }
           }

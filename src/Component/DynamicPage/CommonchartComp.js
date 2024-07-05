@@ -47,11 +47,9 @@ export default function CommonchartComp(props) {
     useEffect(() => {
         setResultdat([])
         FetchData()
-        console.log(' propssss',prop,'Check   ', DataResult)
     }, [prop])   
     function handleNavigation() {
         if (prop.DetailScreen === true) {
-            console.log('Navvvvvvvvvvv',prop)
             navigate('/DynamicDetailPage', { state: { DyChart: prop }, replace: true })
 
         }
@@ -63,7 +61,7 @@ export default function CommonchartComp(props) {
             if (res.data != undefined) {
                 if (res.data.lstResult.length > 0) {
                     setResultdat(res.data.lstResult)
-                    console.log(' propssss',prop,'Check   222', res.data.lstResult)
+                 
                 }
             }
 

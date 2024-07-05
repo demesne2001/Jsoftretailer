@@ -1,8 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import post from '../../Utility/APIHandle';
-import API from '../../Utility/API';
 import contex from '../../contex/Contex';
 
 
@@ -10,7 +8,6 @@ import contex from '../../contex/Contex';
 export default function Header_detailed(props) {
 
     const [fullscreen, setFullScreen] = useState(false);
-    const [syncDate, setSyncDate] = useState();
     const contextData = useContext(contex)
 
     useEffect(() => {
@@ -136,7 +133,7 @@ export default function Header_detailed(props) {
                 "strModeofSale": "",
                 "strTeamModeofSale": "",
                 "FromDate": props.Date.FromDate,
-                "ToDate": props.Date.FromDate,
+                "ToDate": props.Date.ToDate ,
                 "strMetalType": "",
                 "strDayBook": "",
                 "PageNo": 1,

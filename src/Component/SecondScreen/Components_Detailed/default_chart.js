@@ -1,11 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import { useState, useEffect, useContext } from 'react';
 import contex from '../../contex/Contex';
-import ReactApexChart from 'react-apexcharts';
 import './../../Assets/css/Custom.css';
-import axios from 'axios';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 
 export default function Default_chart(props) {
@@ -13,7 +11,6 @@ export default function Default_chart(props) {
     const [name, setName] = useState([]);
     const [id, setid] = useState([]);
     const [weight, setweight] = useState([])
-    const checkref = useRef(null)
     const [data, setdata] = useState([])
     const [loader, setLoader] = useState(true);
     let filtername = contextData.defaultchartFilterName;
@@ -43,9 +40,7 @@ export default function Default_chart(props) {
 
     useEffect(() => {
         if (props.graph !== '' && props.graph.group !== undefined) {
-            // setflagSort('wt-desc')
             fetchData()
-            console.log(props, "changed");
 
         }
     }, [props])
@@ -56,8 +51,6 @@ export default function Default_chart(props) {
     }, [flagSort])
 
     useEffect(() => {
-        // setflagSort('wt-desc')
-        console.log(input, "changed");
         fetchData()
     }, [input])
 
@@ -67,9 +60,6 @@ export default function Default_chart(props) {
 
         if (props.graph.group !== undefined) {
             input = { ...input, ['Grouping']: props.graph.group, ['SortByLabel']: props.graph.column, ['FromDate']: props.Date.FromDate, ['ToDate']: props.Date.ToDate };
-
-
-            console.log(input, "ggg");
             await post(input, API.CommonChart, {}, "post").then((res) => {
 
 
@@ -109,16 +99,6 @@ export default function Default_chart(props) {
 
     }
 
-    function flip() {
-        if (document.getElementById("filp").style.transform === "rotateY(360deg)" || document.getElementById("filp").style.transform === "") {
-
-            document.getElementById("filp").style.transform = "rotateY(180deg)"
-        } else {
-
-            document.getElementById("filp").style.transform = "rotateY(360deg)"
-        }
-
-    }
     document.getElementById("root").addEventListener("click", function (event) {
 
         if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.className !== 'fa-solid fa-ellipsis-vertical') {
@@ -153,7 +133,6 @@ export default function Default_chart(props) {
 
     async function fetchSortData() {
         var inputForSort = { ...input, 'SortByLabel': props.graph.column, 'SortBy': flagSort, ['Grouping']: props.graph.group }
-        console.log(inputForSort, "dfdf");
         await post(inputForSort, API.CommonChart, {}, "post").then((res) => {
 
 
@@ -200,7 +179,7 @@ export default function Default_chart(props) {
         themeId: contextData.ThemeIndex,
         charttype: 'round-horizontal-bar',
         height: '450%',
-        chartId: 'Main_chart_secondScreen123',
+        chartId: 'MainChart2',
         width: '100%',
         Xaxis: name,
         Yaxis: weight,
@@ -210,13 +189,15 @@ export default function Default_chart(props) {
         divname: 'topimg-gd',
         sliderflag: sliderbol,
         datazoomlst: [0, 100, 0, 50],
-        prclst:prc
+        prclst:prc,
+        tooltip: {
+            formatter: '{b}<br> NetWeight - {c}',
+            confine: true
+        }
     }
     let updatedstate = (<AlphaDashChart obj={JSON.parse(JSON.stringify(barHorizontal))} state={contextData.chartImage} />).props.state
-    console.log(props.graph.filter_key1, props.graph.filter_key2);
     function divonclick() {
         if (updatedstate.filtername !== undefined) {
-            console.log(updatedstate.filtername, "wesdsd");
             let filtername = updatedstate.filtername
             contextData.settagImageFilterName(filtername);
         }

@@ -7,7 +7,8 @@ const FilterDepObj={
           "BranchId",
           "BranchName",
           "strBranchValue",
-          1
+          1,
+          "BranchWise"
         ],
         2: [
           "strRegionID",
@@ -15,10 +16,11 @@ const FilterDepObj={
           "RegionID",
           "RegionName",
           "strRegionValue",
-          2
+          2,
+          "RegionWise"
         ],
-        3: ["strState", API.GetState, "StateID", "StateName", "strStateValue", 3],
-        4: ["strCity", API.GetCity, "CityName", "CityName", "strCity", 4],
+        3: ["strState", API.GetState, "StateID", "StateName", "strStateValue", 3,"StateWise"],
+        4: ["strCity", API.GetCity, "CityName", "CityName", "strCity", 4, "CityWise"],
         5: [
           "strItemGroup",
           API.itemGroupFilter,
@@ -26,6 +28,7 @@ const FilterDepObj={
           "ItemGroupName",
           "strItemGroupValue",
           5,
+          "ItemGroupWise"
         ],
         6: [
           "strProduct",
@@ -34,8 +37,9 @@ const FilterDepObj={
           "ProductName",
           "strProductValue",
           6,
+          "ProductWise"
         ],
-        7: ["strItem", API.itemFilter, "ItemId", "ItemName", "strItemValue", 7],
+        7: ["strItem", API.itemFilter, "ItemId", "ItemName", "strItemValue", 7, "ItemWise"],
         8: [
           "strSubItem",
           API.GetSubItem,
@@ -43,6 +47,7 @@ const FilterDepObj={
           "SubItemName",
           "strSubItemValue",
           8,
+          "SubItemWise"
         ],
         9: [
           "strItemSubitem",
@@ -51,6 +56,7 @@ const FilterDepObj={
           "SubItemWithStyleName",
           "strItemSubitemValue",
           9,
+          "ItemWithSubItemWise"
         ],
         10: [
           "strDesignCatalogue",
@@ -59,6 +65,7 @@ const FilterDepObj={
           "DesignNo",
           "strDesignCatalogueValue",
           10,
+          "DesignCatalogueWise"
         ],
         11: [
           "strSaleman",
@@ -67,6 +74,7 @@ const FilterDepObj={
           "SalesmanName",
           "strSalemanValue",
           11,
+          "SalesmanWise"
         ],
         12: [
           "strModeofSale",
@@ -75,6 +83,7 @@ const FilterDepObj={
           "ChallanGenerateType",
           "strModeofSaleValue",
           12,
+          "ModeofSaleWise"
         ],
         13: [
           "strTeamModeofSale",
@@ -83,6 +92,7 @@ const FilterDepObj={
           "TeamModeofSaleName",
           "strTeamModeofSaleValue",
           13,
+          "TeamModeofSaleWise"
         ],
         14: [
           "strSaleAging",
@@ -91,6 +101,7 @@ const FilterDepObj={
           "Caption",
           "strSaleAging",
           14,
+          "SaleAgingWise"
         ],
         15: [
           "strDesignCodeID",
@@ -99,6 +110,7 @@ const FilterDepObj={
           "DesignName",
           "strDesignCodeValue",
           15,
+          "DesignCodeWise"
         ],
         16: [
           "strSalesParty",
@@ -107,6 +119,7 @@ const FilterDepObj={
           "AccountName",
           "strSalesPartyValue",
           16,
+          "SalesPartyWise"
         ],
         17: [
           "strMonth",
@@ -114,7 +127,8 @@ const FilterDepObj={
           "MonthID",
           "MonthName",
           "strMonthValue",
-          17
+          17,
+          "MonthWise"
         ]
       }
 

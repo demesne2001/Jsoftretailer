@@ -1,28 +1,17 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
-
 import Modal from "react-bootstrap/Modal";
-
 import post from "../Utility/APIHandle";
 import API from "../Utility/API";
-
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import contex from "../contex/Contex";
 import Commonmodel from "../CommonModel/CommanModal";
-import currency from "../Assets/img/svg/currency.svg";
 import "../Assets/css/Custom.css";
 import * as htmlToImage from 'html-to-image';
-import reactSelect from "react-select";
 import download from 'downloadjs';
-import { MultiSelect } from "react-multi-select-component";
-import { json } from "react-router-dom";
 import FilterDepObj from "../Sales-Efficiency-Analysis-Dashboard/Header/FilterDepObj";
 
-
-
-
-// import Commonmodel from '../../CommonModel/CommanModal';
 
 export default function DynamicHeader(props) {
   const [fullscreen, setFullScreen] = useState(false);
@@ -55,17 +44,9 @@ export default function DynamicHeader(props) {
   };
 
   const animatedComponents = makeAnimated();
-
-
   const [filterFlag, setFIlterFlag] = useState(false);
-
-
-  const [file, setfile] = useState('');
-  let res
-
   const [count, setCount] = useState(uuidv4())
   const [percentage_check, setpercentage_check] = useState(false);
-  const conponentPDF = useRef(null);
 
   const postData = {
     strBranch: "",
@@ -124,22 +105,10 @@ export default function DynamicHeader(props) {
   const [demo, setDemo] = useState([]);
   const [demoName, setDemoName] = useState([]);
   const [state, setState] = useState({});
-  const [branch, setBranch] = useState({});
-  const [region, setRegion] = useState({});
-  const [city, setCity] = useState({});
-  const [itemGroup, setItemGroup] = useState({});
-  const [product, setProduct] = useState({});
-  const [item, setItem] = useState({});
-  const [subItem, setSubItem] = useState({});
-  const [itemSubitem, setItemSubItem] = useState({});
-  const [design, Setdesign] = useState({});
-  const [salesman, setSalesMan] = useState({});
   const [Daybook, setDayBook] = useState({});
   const [DefaultDaybook, setDefaultDayBook] = useState();
   const [MetalType, setMetalType] = useState({});
   const [DefaultMetalType, setDefaultMetalType] = useState();
-  const [purchaseParty, setPurcharseParty] = useState({});
-  const [salesParty, setSalesParty] = useState({});
   const [unit, setUnit] = useState([{ value: 'KG', label: 'KG' }, { value: 'G', label: 'Gram' }]);
   const [Defaultunit, setDefaultUnit] = useState({ value: 'G', label: 'Gram' });
   const [props1, setProps1] = useState();
@@ -166,36 +135,16 @@ export default function DynamicHeader(props) {
   }, [contexData.state['column']])
 
   useEffect(() => {
-    // console.log(contexData.tempstate);
     var Findex = contexData.tempstate.FilterIndex
-    // console.log("useEffet1");
-    // console.log('index', Findex)
     if (Findex !== "undefined" && Findex !== 0) {
       for (let index = Findex + 1; index < 16; index++) {
-        // console.log(index, 'indexno')
         if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
           FetchDataDependentAPI(FilterData, index)
         }
       }
-      // if (Findex >= 1 && Findex < 9) {
-      //   for (let index = Findex + 1; index < 10; index++) {
-      //     console.log(index, 'indexno')
-      //     if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
-      //       FetchDataDependentAPI(FilterData, index)
-      //     }
-      //   }
-      // }
-      // else if (Findex > 9 && Findex < 13) {
-      //   for (let index = Findex; index < 16; ++index) {
-      //     if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
-      //       FetchDataDependentAPI(FilterData, index)
-      //     }
-      //   }
-      // }
     }
   }, [contexData.tempstate.FilterIndex])
 
-  // console.log('TODAYS DATE',date.getDate() + date.getMonth() + 1 + date.getFullYear())
 
   let day = date.getDate();
   let month = date.getMonth() + 1;
@@ -229,51 +178,41 @@ export default function DynamicHeader(props) {
   async function getSyncDate() {
     await post({}, API.GetDefaultScreenData, {}, 'post')
       .then((res) => {
-        setSyncDate(res.data.lstResult[0].SyncDate)
+        if (res.data !== undefined) {
+          if(res.data.lstResult.length !== 0){
+            setSyncDate(res.data.lstResult[0].SyncDate)
+          }
+        }else{
+            alert(res['Error'])
+        }
+       
       })
   }
 
 
   function FetchDataDependentAPI(input, FilterIndex) {
-    // console.log("FetchDataDependentAPI", contexData.tempstate[dependentfilter[FilterIndex][4]]);
     post(input, dependentfilter[FilterIndex][1], {}, 'post').then((res) => {
-      // console.log("response", res);
-      // console.log("index", contexData.tempstate[dependentfilter[FilterIndex][4]])
       var TempDataID = contexData.tempstate[dependentfilter[FilterIndex][0]].split(',')
       var TempDataValue = contexData.tempstate[dependentfilter[FilterIndex][4]].split(',')
-      // console.log(res, "res+header");
       if (res.data !== undefined) {
-        // console.log("hii", res.data.lstResult);
+    
         var resultID = res.data.lstResult.map(Item => Item[dependentfilter[FilterIndex][2]].toString())
-        // var resultValue=res.lstResult.map(Item=>Item[dependentfilter[FilterIndex][4]])
-        // console.log('TempDatabefore', TempDataID)
-        // console.log('resultID', resultID)
-        // console.log("contexData.tempstate before", contexData.tempstate);
         var temarrayID = []
         var temparryValue = []
         for (let index = 0; index < TempDataID.length; index++) {
-          // console.log('delete before log', resultID.indexOf(TempDataID[index]), TempDataID[index])
           if (resultID.indexOf(TempDataID[index]) >= 0) {
-            // console.log('delete index', TempDataID[index])
-            // TempDataID.splice(TempDataID.indexOf(TempDataID[index]),1)
-            // TempDataValue.splice(TempDataValue.indexOf(TempDataValue[index]),1)
-            // delete TempDataID[index]
-            // delete TempDataValue[index]
             temparryValue.push(TempDataValue[index])
             temarrayID.push(TempDataID[index])
           }
         }
       }
 
-      // console.log('TempData After', temarrayID)
-      // contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
-      if (temarrayID !== undefined) {
+        if (temarrayID !== undefined) {
         contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: temarrayID.toString(), [dependentfilter[FilterIndex][4]]: temparryValue.toString(), ['FilterIndex']: 0 })
       } else {
         contexData.SettempState({ ...contexData.tempstate, [dependentfilter[FilterIndex][0]]: '', [dependentfilter[FilterIndex][4]]: '', ['FilterIndex']: 0 })
       }
-      // console.log("contexData.tempstate After ", contexData.tempstate);
-
+  
     })
   }
 
@@ -283,12 +222,10 @@ export default function DynamicHeader(props) {
   function HandleOnClickComman(IndexNo) {
     let myvalue = contexData.tempstate[dependentfilter[IndexNo][0]];
     let myvalueName = contexData.tempstate[dependentfilter[IndexNo][4]];
-    // console.log("myval", myvalue);
     let demoo = [];
     let demooName = [];
     demoo.push(myvalue.split(","));
     demooName.push(myvalueName.split(","));
-    // console.log("DEMOOOOO", demoo[0].length);
     let newarr = [];
     let newarrName = [];
 
@@ -297,7 +234,6 @@ export default function DynamicHeader(props) {
     ) {
       for (let index = 0; index < demoo[0].length; index++) {
         if (demoo[0].indexOf("") === -1) {
-          // console.log(demoo[0][index]);
           newarr.push(parseInt(demoo[0][index]));
           newarrName.push(demooName[0][index]);
         }
@@ -306,7 +242,6 @@ export default function DynamicHeader(props) {
 
       for (let index = 0; index < demoo[0].length; index++) {
         if (demoo[0].indexOf("") === -1) {
-          // console.log(demoo[0][index]);
           newarr.push(demoo[0][index]);
           newarrName.push(demooName[0][index]);
         }
@@ -314,7 +249,7 @@ export default function DynamicHeader(props) {
     }
     setDemo(newarr);
     setDemoName(newarrName);
-    // console.log(newarr);
+
     setProps1({
       api: dependentfilter[IndexNo][1],
       labelname: dependentfilter[IndexNo][0],
@@ -350,27 +285,10 @@ export default function DynamicHeader(props) {
     }
   }
 
-  function getdataState() {
-    let temp1 = [];
-
-    // console.log('branch postdata' ,postData)
-
-    post(postData, API.stateFilter, {}, "post").then((res) => {
-      for (let index = 0; index < res.data.lstResult.length; index++) {
-        temp1.push({
-          value: res.data.lstResult[index].StateID,
-          label: res.data.lstResult[index].StateName,
-        });
-      }
-      setState(temp1);
-    });
-  }
-
   function handleMetaltype() {
     let temp1 = [];
 
     post(postData, API.GetMetalType, {}, "post").then((res) => {
-      // console.log(res.data.lstResult, "api");
       for (let index = 0; index < res.data.lstResult.length; index++) {
         temp1.push({
           label: res.data.lstResult[index].MetalTypeDesc,
@@ -391,7 +309,6 @@ export default function DynamicHeader(props) {
           label: res.data.lstResult[index].Daybook,
         });
       }
-      // console.log(res, "getDaybook");
       setDayBook(temp1);
     });
   }
@@ -408,13 +325,10 @@ export default function DynamicHeader(props) {
         }
         contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: val.toString(), ['strMetalTypeValue']: name.toString() });
       } else {
-        // contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
-        setDefaultMetalType([])
+         setDefaultMetalType([])
       }
-      // console.log(e, "DATA12");
-    } else {
-      // console.log(e, "DATA13");
-      if (e.length !== 0) {
+     } else {
+       if (e.length !== 0) {
         setDefaultDayBook(e);
         var name = [];
         var val = [];
@@ -424,7 +338,6 @@ export default function DynamicHeader(props) {
         }
         contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: val.toString(), ['strDayBookValue']: name.toString() });
       } else {
-        // contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: '', ['strDayBookValue']: '' });
         setDefaultDayBook([])
       }
     }
@@ -445,15 +358,10 @@ export default function DynamicHeader(props) {
     await htmlToImage.toPng(document.getElementById('rootElementId'))
 
       .then(function (dataUrl) {
-        // console.log(dataUrl);
-        setCount(count + 1)
+          setCount(count + 1)
 
         var name = count.toString() + "Dashboard";
-        // console.log(API.uploadImage, "name123");
-        // console.log('dataUrl', { "Base64": dataUrl, "Extension": "png", "LoginID": name })
-        // download(dataUrl, "file1.png")
-        post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-          // console.log(res, "respdf");
+         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
           nameArray.push(res.data.filename);
         })
       });
@@ -461,17 +369,9 @@ export default function DynamicHeader(props) {
     await htmlToImage.toPng(document.getElementById('pdf-div'))
       .then(function (dataUrl) {
         var name = count.toString() + "filter";
-        // download(dataUrl, "file2.png")
-        // console.log('dataUrl1', dataUrl)
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-          // console.log(res.data.filename);
           nameArray.push(res.data.filename);
-          // console.log({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, "input");
           post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, 'http://103.131.196.61:52202/Common/GetPDFUsingImage', {}, "post").then((res) => {
-            // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
-            // console.log(res);
-            // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
-            // console.log(count,"count pdf");
             const pdfUrl = API.downloadPdf + count.toString() + "aa.pdf";
             axios.get(pdfUrl, {
               responseType: 'blob',
@@ -481,7 +381,6 @@ export default function DynamicHeader(props) {
                 document.getElementById("downloadPdf").disabled = false
               })
               .catch((e) => {
-                // console.log(e)
                 document.getElementById("downloadPdf").disabled = false
               })
 
@@ -497,7 +396,6 @@ export default function DynamicHeader(props) {
 
   function handleApplyFilter() {
     if (JSON.stringify(contexData.state) !== JSON.stringify(FilterData)) {
-      // console.log('FILTER DATA', FilterData)
       contexData.SetState(FilterData);
       handleOnClose();
     }
@@ -507,100 +405,6 @@ export default function DynamicHeader(props) {
     var element =   document.getElementById("root");
     element.scrollIntoView({ block: 'start' })
     localStorage.setItem('load', '0')
-    // contexData.SetState(FilterData);
-    // handleOnClose();
-  }
-
-  function handleDesignCommanModal() {
-    let myvalue = contexData.tempstate["strItemSubitem"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.GetItemWithSubitem,
-      labelname: "strItemSubitem",
-      id: "ItemSubID",
-      name: "SubItemWithStyleName",
-    });
-    contexData.setchildFilterShow(true);
-  }
-
-  function handlePurchaseCommanModal() {
-    let myvalue = contexData.tempstate["strDesignCodeID"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.Getdesigncode,
-      labelname: "strDesignCodeID",
-      id: "DesignCatalogID",
-      name: "DesignNo",
-    });
-    contexData.setchildFilterShow(true);
-  }
-
-  function handleSalesCommanModal() {
-    let myvalue = contexData.tempstate["strSalesParty"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.GetSalesParty,
-      labelname: "strSalesParty",
-      id: "AccountId",
-      name: "AccountName",
-    });
-    contexData.setchildFilterShow(true);
-  }
-
-  function handleDesignCatalogueCommanModal() {
-    let myvalue = contexData.tempstate["strDesignCatalogue"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.GetDesignCatalogue,
-      labelname: "strDesignCatalogue",
-      id: "DesignCatalogID",
-      name: "DesignNo",
-    });
-    contexData.setchildFilterShow(true);
   }
 
   function handleThousand(n) {
@@ -613,12 +417,6 @@ export default function DynamicHeader(props) {
       : (document.getElementById("myDropdown").style.display = "block");
   }
 
-  // window.onclick = function (event) {
-  //   console.log(document.getElementsByClassName("dropdown-content")[0]);
-  //   if (event.target.className === "dropbtn") {
-  //     document.getElementsByClassName("dropdown-content")[0].style.display = "none";
-  //   }
-  // };
 
   function formatedValue(str) {
     if (str !== undefined) {
@@ -655,7 +453,6 @@ export default function DynamicHeader(props) {
 
       const date = new Date(contexData.tempstate[str]);
       var month = date.getMonth() + 1
-      // console.log(date.getFullYear());
       if (date.getDate() === 1) {
         if (month === 1) {
           ans = (date.getFullYear() - 1).toString() + "-12" + "-31"
@@ -667,16 +464,13 @@ export default function DynamicHeader(props) {
       }
 
       var listarr = ans.split("-")
-      // console.log(listarr);
       if (listarr[1].length < 2) {
         listarr[1] = "0" + listarr[1]
       }
       if (listarr[2].length < 2) {
         listarr[2] = "0" + listarr[2]
       }
-      // console.log(listarr);
       ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
-      // document.getElementById("FromDate").value = ans;
       contexData.SettempState({ ...contexData.tempstate, [str]: ans })
     }
 
@@ -684,10 +478,8 @@ export default function DynamicHeader(props) {
   function handleArrowRight(str) {
     if (contexData.tempstate[str] !== "") {
       var ans = ""
-
       const date = new Date(contexData.tempstate[str]);
       var month = date.getMonth() + 1
-      // console.log(date.getFullYear());
       if (date.getDate() === new Date(date.getFullYear(), month, 0).getDate()) {
         if (month === 12) {
           ans = (date.getFullYear() + 1).toString() + "-01" + "-01"
@@ -699,16 +491,13 @@ export default function DynamicHeader(props) {
       }
 
       var listarr = ans.split("-")
-      // console.log(listarr);
       if (listarr[1].length < 2) {
         listarr[1] = "0" + listarr[1]
       }
       if (listarr[2].length < 2) {
         listarr[2] = "0" + listarr[2]
       }
-      // console.log(listarr);
       ans = listarr[0] + "-" + listarr[1] + "-" + listarr[2];
-      // document.getElementById("FromDate").value = ans;
       contexData.SettempState({ ...contexData.tempstate, [str]: ans })
     }
   }
@@ -749,7 +538,6 @@ export default function DynamicHeader(props) {
   }
 
   function handlePercentageShow(e) {
-    // console.log(e.target.checked, "gg");
     if (e.target.checked) {
       contexData.SettempState({ ...contexData.tempstate, ['column']: 'Prc' })
     } else {
@@ -842,21 +630,13 @@ export default function DynamicHeader(props) {
                                 {localStorage.getItem("value") === "" ||
                                   localStorage.getItem("value") === null ? (
                                   <>
-
-                                    {/* <img
-                                      src={currency}
-                                      className="dropbtn"
-                                      onClick={handleonchangeCurrency}
-                                    ></img>
-                                     */}
                                     <button
                                       class="dropbtn"
                                       onClick={handleonchangeCurrency}>
                                       <i class='fas fa-rupee-sign'></i>
                                       <p class='value_name'> Default</p>
                                     </button>
-                                    {/* <button class="fa fa-inr" aria-hidden="true" src={currency} className="dropbtn" onClick={handleonchangeCurrency} > </button> */}
-                                  </>
+                                   </>
                                 ) : null}
                                 {localStorage.getItem("value") === "k" ? (
                                   <button
@@ -1050,8 +830,7 @@ export default function DynamicHeader(props) {
                                 id="FromDate"
                                 value={contexData.tempstate["FromDate"]}
                               />
-                              {/* <i class="fa-solid fa-chevron-right"></i>fa-solid fa-caret-right date-arrow-right */}
-                              <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('FromDate') }} />
+                               <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('FromDate') }} />
                             </div>
 
                           </div>
@@ -1083,10 +862,7 @@ export default function DynamicHeader(props) {
                               <label for="sel1" class="form-label">
                                 Metal Type
                               </label>
-
-                              {/* {console.log(DefaultMetalType)} */}
                               <Select
-                                // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 name="MetalTypeSelect"
                                 closeMenuOnSelect={false}
                                 isMulti
@@ -1101,8 +877,6 @@ export default function DynamicHeader(props) {
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
-                                    // height: '45px',
-                                    // overflow:'auto',
                                     borderRadius: '10px'
                                   }),
                                 }}
@@ -1117,7 +891,6 @@ export default function DynamicHeader(props) {
                                 Day Book Selection
                               </label>
                               <Select
-                                // defaultValue={[colourOptions[2], colourOptions[3]]}
                                 closeMenuOnSelect={false}
                                 name="DayBookSelect"
                                 options={Daybook}
@@ -1131,7 +904,6 @@ export default function DynamicHeader(props) {
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
-                                    // height: '45px',
                                     borderRadius: '10px'
                                   }),
                                 }}
@@ -1154,20 +926,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Branch
                       </label>
-                      {/* <Select
-
-														isMulti
-														name="branchSelect"
-
-														options={branch}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" id='123' value={formatedValue(contexData.tempstate["strBranchValue"])}
                         onClick={() => {
@@ -1183,17 +941,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Region{" "}
                       </label>
-                      {/* <Select
-                          // defaultValue={[colourOptions[2], colourOptions[3]]}
-                          isMulti
-                          name="regionSelect"
-                          options={region}
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          onChange={handleselect}
-                          components={animatedComponents}
-                          closeMenuOnSelect={false}
-                        /> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strRegionValue"])}
                         onClick={() => {
@@ -1209,21 +956,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;State
                       </label>
-
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="stateSelect"
-
-														options={state}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strStateValue"])}
                         onClick={() => {
@@ -1239,20 +971,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;City
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="citySelect"
-
-														options={city}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strCity"])}
                         onClick={() => {
@@ -1268,20 +986,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Item Group
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="itemGroupSelect"
-
-														options={itemGroup}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strItemGroupValue"])}
                         onClick={() => {
@@ -1297,20 +1001,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Product
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="productSelect"
-
-														options={product}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strProductValue"])}
                         onClick={() => {
@@ -1326,20 +1016,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Item
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="itemSelect"
-
-														options={item}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strItemValue"])}
                         onClick={() => {
@@ -1355,20 +1031,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Sub-Item
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="subItemSelect"
-
-														options={subItem}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strSubItemValue"])}
                         onClick={() => {
@@ -1384,20 +1046,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Item with Sub-item
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="itemSubItemSelect"
-
-												options={itemSubitem}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strItemSubitemValue"])}
                         onClick={() => HandleOnClickComman(9)}
@@ -1411,20 +1059,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Design Catalogue
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="designSelect"
-
-												options={design}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strDesignCatalogueValue"])}
                         onClick={() => HandleOnClickComman(10)}
@@ -1438,20 +1072,6 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Saleman
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="salesmanSelect"
-
-														options={salesman}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														// onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strSalemanValue"])}
                         onClick={() => HandleOnClickComman(11)}
@@ -1465,44 +1085,13 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Mode of Sale
                       </label>
-                      {/* <div class="dropdown">
-														<select class="selectpicker" multiple aria-label="Default select example"
-															data-live-search="true">
-															<option value="one">One</option>
-															<option value="two">Two</option>
-															<option value="three">Three</option>
-															<option value="four">Four</option>
-														</select>
-													</div> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strModeofSaleValue"])}
                         onClick={() => HandleOnClickComman(12)}
                       />
                     </div>
                   </div>
-                  {/* 
-                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-                    <div class="card-filter-contain">
-                      <i class="fas fa-stream"></i>
-                      <label for="sel1" class="form-label">
-                      &nbsp;Team & Mode of Sale
-                      </label>
-                      {/* <div class="dropdown">
-														<select class="selectpicker" multiple aria-label="Default select example"
-															data-live-search="true">
-															<option value="one">One</option>
-															<option value="two">Two</option>
-															<option value="three">Three</option>
-															<option value="four">Four</option>
-														</select>
-													</div> */}
-                  {/* <input
-                        className="filter-input" value={formatedValue(contexData.tempstate["strTeamModeofSaleValue"])}
-                        onClick={() => HandleOnClickComman(13)}
-                      />
-                    </div>
-                  </div>  */}
-
+                 
                   <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                     <div class="card-filter-contain">
                       <i class="fas fa-chart-line"></i>
@@ -1522,20 +1111,7 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Design
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="purchasePartySelect"
-
-												options={salesman}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
+                  
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strDesignCodeValue"])}
                         onClick={() => HandleOnClickComman(15)}
@@ -1549,20 +1125,7 @@ export default function DynamicHeader(props) {
                       <label for="sel1" class="form-label">
                         &nbsp;Sales Party
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="salesPartySelect"
-
-												options={salesParty}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												// onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
+                     
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
                         onClick={() => HandleOnClickComman(16)}
@@ -1591,8 +1154,7 @@ export default function DynamicHeader(props) {
                       </label>
 
                       <Select
-                        // defaultValue={[colourOptions[2], colourOptions[3]]}
-                        name="unit"
+                         name="unit"
                         ref={unitRef}
                         options={unit}
                         className="basic-multi-select"
@@ -1611,38 +1173,6 @@ export default function DynamicHeader(props) {
                       />
                     </div>
                   </div>
-
-                  {/* <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-									<div class="card-filter-contain">
-										<i class="fas fa-calendar-week"></i>
-										<label for="sel1" class="form-label">Month</label>
-										&nbsp;<div class="dropdown">
-											<select class="selectpicker" multiple aria-label="Default select example"
-												data-live-search="true">
-												<option value="one">One</option>
-												<option value="two">Two</option>
-												<option value="three">Three</option>
-												<option value="four">Four</option>
-											</select>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-									<div class="card-filter-contain">
-										<i class="fas  fa-calendar-alt"></i>
-										<label for="sel1" class="form-label">Year</label>
-										<div class="dropdown">
-											<select class="selectpicker" multiple aria-label="Default select example"
-												data-live-search="true">
-												<option value="one">One</option>
-												<option value="two">Two</option>
-												<option value="three">Three</option>
-												<option value="four">Four</option>
-											</select>
-										</div>
-									</div>
-								</div> */}
                 </div>
               </form>
             </div>
@@ -1667,7 +1197,6 @@ export default function DynamicHeader(props) {
               Apply
             </button>
             <div class="form-check checkbox-filter">
-              {/* {console.log(percentage_check, "cheeck")} */}
               <input
                 class="form-check-input"
                 type="checkbox"

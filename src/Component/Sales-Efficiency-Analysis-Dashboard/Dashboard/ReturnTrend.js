@@ -1,53 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import contex from '../../contex/Contex';
-
 import API from '../../Utility/API'
 import post from '../../Utility/APIHandle'
-
 import return1 from '../../Assets/img/svgs bold/return 1.svg'
 import return2 from '../../Assets/img/svgs bold/return 2.svg'
 
 
 export default function ReturnTrend() {
 
-  // const [postData, setPostData] = useState({
-  //     "strBranch": "",
-  //     "strState": "",
-  //     "strCity": "",
-  //     "strItem": "",
-  //     "strSubItem": "",
-  //     "strItemGroup": "",
-  //     "strItemSubitem": "",
-  //     "strPurchaseParty": "",
-  //     "strSalesParty": "",
-  //     "strSaleman": "",
-  //     "strProduct": "",
-  //     "strDesignCatalogue": "",
-  //     "strSaleAging": "",
-  //     "strModeofSale": "",
-  //     "strTeamModeofSale": "",
-  //     "FromDate": "",
-  //     "ToDate": "",
-  //     "strMetalType": "",
-  //     "strDayBook": "",
-  //     "PageNo": 0,
-  //     "PageSize": 0,
-  //     "Search": ""
-  // })
-
-
-  // useEffect(()=>{
-  //     getdata()
-  // },[])
-
-
-  // function getdata() {
-
-  //     post(postData,API.GetReturnTrendCard,'post')
-  //     .then((res)=>{
-
-  //     })
-  // }
   const contexData = useContext(contex);
   const [weight, setweight] = useState([0])
   const [costAmount, setcostAmount] = useState(0)
@@ -60,7 +20,7 @@ export default function ReturnTrend() {
 
   async function getdata() {
 
-    inputdata = { ...inputdata, ['Grouping']: 'sr' }
+    inputdata = { ...inputdata, ['Grouping']: 'SLSRT' }
 
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {
@@ -121,7 +81,6 @@ export default function ReturnTrend() {
         </div>
         <div className="crancy-progress-card2 top-contant-top-card">
           <div className="crancy-progress-card__content">
-            {/* <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4> */}
             <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
             <div className="crancy-progress-card__history">
               <span>{prc}% Ret.</span>
@@ -134,7 +93,6 @@ export default function ReturnTrend() {
         </div>
         <div className="crancy-progress-card2 top-contant-botton-card">
           <div className="crancy-progress-card__content">
-            {/* <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4> */}
             <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4>
             <div className="crancy-progress-card__history">
               <span>{prc}% Ret.</span>

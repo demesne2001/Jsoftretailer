@@ -5,6 +5,8 @@ import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
+
 
 export default function Experiment(props) {
     const navigate = useNavigate();
@@ -20,8 +22,6 @@ export default function Experiment(props) {
 
     useEffect(() => {
         getChartData()
-
-        console.log("api calleddd", inputdata);
     }, [inputdata])
     useEffect(() => {
         fetchPaginatedData(data[0])
@@ -39,7 +39,6 @@ export default function Experiment(props) {
                 let templength = res.data.lstResult.length
                 let mainlist = [];
                 let childlist = [];
-                console.log(templength, "length");
                 childlist.push(res.data.lstResult[0])
                 for (let i = 1; i <= parseInt(templength / 5) + 1; i++) {
                     if (((i) * 5) <= res.data.lstResult.length) {
@@ -47,14 +46,11 @@ export default function Experiment(props) {
                             childlist.push(res.data.lstResult[index])
                         }
                     } else {
-                        console.log("hahahah", (i - 1) * 5 + 1, templength - (parseInt(templength / 5) * 5));
                         for (let index = (i - 1) * 5 + 1; index < templength; index++) {
                             childlist.push(res.data.lstResult[index])
                         }
                     }
-                    console.log(childlist, 'list');
                     mainlist.push(childlist)
-                    console.log(mainlist, 'list');
 
                     childlist = [];
                 }
@@ -73,7 +69,6 @@ export default function Experiment(props) {
 
     function fetchPaginatedData(data1) {
         if (data.length > 0) {
-            console.log(data, "rtrtrtr");
 
             var tempYaxis = [];
             for (let i = 0; i < StockToSalesChartObject[props.id]['yAxis'].length; i++) {
@@ -173,7 +168,7 @@ export default function Experiment(props) {
                                 <button onClick={() => { handleMonthOptionClick("Q") }}>Quater Wise</button>
                                 <button onClick={() => { handleMonthOptionClick("Y") }}>Year Wise</button>
                             </div>
-                            : null}Data Not Found</div> :
+                            : null}<img id='errorImg'  src={DataError} /></div> :
                     <div class="crancy-progress-card card-contain-graph">
                         <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                             <div class="dot-spinner__dot"></div>

@@ -6,35 +6,22 @@ import Slider from "react-slick";
 import contex from '../../contex/Contex';
 import post from '../../Utility/APIHandle';
 import API from '../../Utility/API';
-import { map } from '../../Assets/font/js/v4-shims';
 import notFound from '../../Assets/image/imageNotFound.jpg'
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-// import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-// import src from 'react-select/dist/declarations/src';
 
 export default function Tag_Image(props) {
-    const navigate = useNavigate();
+
     const contextData = useContext(contex);
-    const [pagesize, setPageSize] = useState(5);
     const [pageNo, setPageNo] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [TotalCount, setTotalCount] = useState();
     const [ImageData, setImageData] = useState([]);
-    const [show, setShow] = useState(false);
     const filtername = contextData.TageImageFilterName
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     let inputdata = contextData.chartImage
     useEffect(() => {
         handleShowPhotos()
-
         setCurrentPage(1)
         setPageNo(0)
-        console.log(inputdata, "sdtagimage");
     }, [inputdata])
     useEffect(() => {
         handleShowPhotos()
@@ -93,13 +80,7 @@ export default function Tag_Image(props) {
         const { className, style, onClick } = props;
         return (
             null
-            // <div
-            //     // className={className}
-            //     // style={{ ...style, marginLeft: '100px', zIndex: '1', display: "block", background: "#094876", width: '28px', height: '28px', top: '30%', fontSize: '10px' }}
-            //     // onClick={onClick}
-
-            // />
-
+           
         );
     }
 
@@ -151,33 +132,16 @@ export default function Tag_Image(props) {
         await post(inputPageUpdate, API.GetDetailChartImage, {}, "post").then((res) => {
             var imageData = [];
             if (res.data !== undefined) {
-                console.log(res.data.lstResult);
                 if (res.data.lstResult.length !== 0) {
                     for (let i = 0; i < res.data.lstResult.length; i++) {
                         imageData.push({ 'ImagePath': res.data.lstResult[i]['ImagePath'], 'netweight': res.data.lstResult[i]['netweight'], 'Tagno': res.data.lstResult[i]['Tagno'] })
                     }
                     setImageData(imageData);
-                    // setTotalCount(res.data.lstResult[0]['TotalCount']);
                 }
             } else {
                 alert(res['Error']);
             }
         })
-        // for (let i = 0; i < document.getElementsByClassName('pageImageButtom').length; i++) {
-
-        //     if (parseInt(document.getElementsByClassName('pageImageButtom')[i]['id']) === page) {
-
-        //         document.getElementById(page).style.backgroundColor = "#e3e9ed";
-        //         document.getElementById(page).style.color = "#094876";
-        //         document.getElementById(page).style.border = "1px solid #094876";
-        //     } else {
-
-
-        //         document.getElementById(page).style.backgroundColor = "#094876";
-        //         document.getElementById(page).style.color = "#e3e9ed";
-        //         document.getElementById(page).style.border = "";
-        //     }
-        // }
 
     }
 
@@ -195,11 +159,7 @@ export default function Tag_Image(props) {
                 </div>
                 <div class="graphdetailcards-silder graphdetail-fourthcard">
 
-                    {/* <div class="ag-carousel-arrow_box">
-                                        <i class="js-ag-carousel-arrow_prev ag-carousel-arrow top-slider-prevarrow"></i>
-                                        <i class="js-ag-carousel-arrow_next ag-carousel-arrow top-slider-nextarrow"></i>
-                                    </div> */}
-
+                  
 
                     <ul id="TagImage" class="js-carousel ag-carousel_list" >
                         {ImageData.length > 0 ?
@@ -207,13 +167,11 @@ export default function Tag_Image(props) {
                                 <Slider  {...settings} >
                                     {
                                         ImageData.map((e, i) => {
-                                            console.log(e, "imagedata");
-                                            return <><li class="ag-carousel_item">
+                                            return <><li class="ag-carousel_item" >
                                                 <figure class="ag-carousel_figure">
 
-                                                    <a data-fancybox="gallery" href={e['ImagePath']} data-caption={" Net Wt : " + e['netweight'].toFixed(3) + ", Tagno : " + e['Tagno']}><img src={e['ImagePath']} /></a>
-                                                    {/* <img src={e['ImagePath']} onClick={(e) => { openModal() }} class="hover-shadow cursor" /> */}
-                                                    <figcaption class="ag-carousel_figcaption">
+                                                    <a data-fancybox="gallery" href={e['ImagePath']} data-caption={" Net Wt : " + e['netweight'].toFixed(3) + ", Tagno : " + e['Tagno']}><img src={e['ImagePath']} id='imageid'/></a>
+                                                   <figcaption class="ag-carousel_figcaption">
                                                         Net Wt: {e['netweight'].toFixed(3)}<br></br>Tag No: {e['Tagno']}
                                                     </figcaption>
                                                 </figure>
@@ -226,15 +184,13 @@ export default function Tag_Image(props) {
                             </Fancybox> :
                             <li class="ag-carousel_item">
                                 <figure class="ag-carousel_figure">
-                                    <img src={notFound} alt='hii' />
+                                    <img src={notFound} alt='hii' id='imageid' />
                                 </figure>
                             </li>
                         }
                         <div className='padonation'>
                             <div className='pagonationdiv'>
-                                {/* {TotalCount}  */}
-                                {/* {(TotalCount + (TotalCount % 5) + 1)} */}
-                                <button id='prev' class="fa-solid fa-angles-left pageImageButtom prev-nxt" onClick={handleLeftFivePage}></button>
+                                 <button id='prev' class="fa-solid fa-angles-left pageImageButtom prev-nxt" onClick={handleLeftFivePage}></button>
                                 {(pageNo + 1) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 1)} onClick={() => handlePageNoChange((pageNo + 1))}>{pageNo + 1}</button> : null}
                                 {(pageNo + 2) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 2)} onClick={() => handlePageNoChange((pageNo + 2))}>{pageNo + 2}</button> : null}
                                 {(pageNo + 3) * 5 <= (TotalCount + (TotalCount % 5) + 1) ? <button className='pageImageButtom' id={(pageNo + 3)} onClick={() => handlePageNoChange((pageNo + 3))}>{pageNo + 3}</button> : null}

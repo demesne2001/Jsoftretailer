@@ -3,7 +3,6 @@ import React from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
 import * as htmlToImage from 'html-to-image'
 import { Buffer } from 'buffer';
 import CreatContext from './../../contex/Contex';
@@ -411,9 +410,7 @@ const ExportToExcel = ({ tableTitles }) => {
     }
 
     function getData16(img) {
-
         setinput16({ Base64: img, Extension: "png", LoginID: data16.toString() + ".png" })
-
         post({ Base64: img, Extension: "png", LoginID: data16.toString() }, API.uploadImage, {}, "post")
             .then((response) => {
                 // setdata16(uuidv4());
@@ -422,8 +419,6 @@ const ExportToExcel = ({ tableTitles }) => {
     }
 
     function getData17(img) {
-
-
         setinput17({ FileName: data16.toString() + ".png" })
         post({ FileName: data16.toString() + ".png" }, API.DeleteFile, {}, "post")
             .then((response) => {
@@ -440,9 +435,6 @@ const ExportToExcel = ({ tableTitles }) => {
                 document.getElementById("downloadExcel").style.pointerEvents = "";
                 var img = new Image();
                 img.src = dataUrl;
-
-
-
                 getData16(dataUrl)
                 getData17(dataUrl)
             })
@@ -667,9 +659,6 @@ const ExportToExcel = ({ tableTitles }) => {
 
     return (
         <>
-            {/* <button className='btn btn-success' onClick={exportToExcel} >
-        Export Data To Excel
-      </button> */}
         </>
     );
 };

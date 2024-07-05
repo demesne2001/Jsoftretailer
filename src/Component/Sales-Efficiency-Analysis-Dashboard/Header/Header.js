@@ -10,8 +10,6 @@ import Commonmodel from "../../CommonModel/CommanModal";
 import "../../Assets/css/Custom.css";
 import * as htmlToImage from 'html-to-image';
 import download from 'downloadjs';
-import { MultiSelect } from "react-multi-select-component";
-import { json } from "react-router-dom";
 import FilterDepObj from "./FilterDepObj";
 
 
@@ -22,6 +20,7 @@ export default function Header() {
   const [fullscreen, setFullScreen] = useState(false);
   const contexData = useContext(contex);
   const unitRef = useRef(null);
+  let resetcalled = false
   const metaltypeRef = useRef(null);
   const DaybookRef = useRef(null);
   let preDefinedThemes = [{
@@ -146,17 +145,9 @@ export default function Header() {
   };
 
   const animatedComponents = makeAnimated();
-
-
   const [filterFlag, setFIlterFlag] = useState(false);
-
-
-  const [file, setfile] = useState('');
-  let res
-
   const [count, setCount] = useState(uuidv4())
   const [percentage_check, setpercentage_check] = useState(false);
-  const conponentPDF = useRef(null);
 
   const postData = {
     strBranch: "",
@@ -214,23 +205,10 @@ export default function Header() {
   const dependentfilter = FilterDepObj
   const [demo, setDemo] = useState([]);
   const [demoName, setDemoName] = useState([]);
-  const [state, setState] = useState({});
-  const [branch, setBranch] = useState({});
-  const [region, setRegion] = useState({});
-  const [city, setCity] = useState({});
-  const [itemGroup, setItemGroup] = useState({});
-  const [product, setProduct] = useState({});
-  const [item, setItem] = useState({});
-  const [subItem, setSubItem] = useState({});
-  const [itemSubitem, setItemSubItem] = useState({});
-  const [design, Setdesign] = useState({});
-  const [salesman, setSalesMan] = useState({});
   const [Daybook, setDayBook] = useState({});
   const [DefaultDaybook, setDefaultDayBook] = useState();
   const [MetalType, setMetalType] = useState({});
   const [DefaultMetalType, setDefaultMetalType] = useState();
-  const [purchaseParty, setPurcharseParty] = useState({});
-  const [salesParty, setSalesParty] = useState({});
   const [unit, setUnit] = useState([{ value: 'KG', label: 'KG' }, { value: 'G', label: 'Gram' }]);
   const [Defaultunit, setDefaultUnit] = useState({ value: 'G', label: 'Gram' });
   const [props1, setProps1] = useState();
@@ -321,7 +299,9 @@ export default function Header() {
     await post({}, API.GetDefaultScreenData, {}, 'post')
       .then((res) => {
         if (res.data !== undefined) {
-          setSyncDate(res.data.lstResult[0].SyncDate)
+          if (res.data.lstResult.length !== 0) {
+            setSyncDate(res.data.lstResult[0].SyncDate)
+          }
         } else {
           alert(res['Error']);
         }
@@ -419,7 +399,8 @@ export default function Header() {
       name: dependentfilter[IndexNo][3],
       LabelValue: dependentfilter[IndexNo][4],
       FilterIndex: IndexNo,
-      grid: dependentfilter[IndexNo][5]
+      grid: dependentfilter[IndexNo][5],
+      filterTitle: dependentfilter[IndexNo][6]
     });
     contexData.setchildFilterShow(true);
   }
@@ -447,25 +428,6 @@ export default function Header() {
     }
   }
 
-  function getdataState() {
-    let temp1 = [];
-
-
-
-    post(postData, API.stateFilter, {}, "post").then((res) => {
-      if (res.data !== undefined) {
-        for (let index = 0; index < res.data.lstResult.length; index++) {
-          temp1.push({
-            value: res.data.lstResult[index].StateID,
-            label: res.data.lstResult[index].StateName,
-          });
-        }
-        setState(temp1);
-      } else {
-        alert(res['Error']);
-      }
-    });
-  }
 
   function handleMetaltype() {
     let temp1 = [];
@@ -516,7 +478,9 @@ export default function Header() {
         }
         contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: val.toString(), ['strMetalTypeValue']: name.toString() });
       } else {
-        // contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
+        if (resetcalled !== true) {
+          contexData.SettempState({ ...contexData.tempstate, ['strMetalType']: '', ['strMetalTypeValue']: '' });
+        }
         setDefaultMetalType([])
       }
 
@@ -532,7 +496,9 @@ export default function Header() {
         }
         contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: val.toString(), ['strDayBookValue']: name.toString() });
       } else {
-        // contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: '', ['strDayBookValue']: '' });
+        if (resetcalled !== true) {
+          contexData.SettempState({ ...contexData.tempstate, ['strDayBook']: '', ['strDayBookValue']: '' });
+        }
         setDefaultDayBook([])
       }
     }
@@ -561,7 +527,7 @@ export default function Header() {
 
         // download(dataUrl, "file1.png")
         post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-          console.log(res, "dsd");
+
           if (res.data !== undefined) {
             nameArray.push(res.data.filename);
 
@@ -621,97 +587,6 @@ export default function Header() {
     // handleOnClose();
   }
 
-  function handleDesignCommanModal() {
-    let myvalue = contexData.tempstate["strItemSubitem"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.GetItemWithSubitem,
-      labelname: "strItemSubitem",
-      id: "ItemSubID",
-      name: "SubItemWithStyleName",
-    });
-    contexData.setchildFilterShow(true);
-  }
-
-  function handlePurchaseCommanModal() {
-    let myvalue = contexData.tempstate["strDesignCodeID"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.Getdesigncode,
-      labelname: "strDesignCodeID",
-      id: "DesignCatalogID",
-      name: "DesignNo",
-    });
-    contexData.setchildFilterShow(true);
-  }
-
-  function handleSalesCommanModal() {
-    let myvalue = contexData.tempstate["strSalesParty"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.GetSalesParty,
-      labelname: "strSalesParty",
-      id: "AccountId",
-      name: "AccountName",
-    });
-    contexData.setchildFilterShow(true);
-  }
-
-  function handleDesignCatalogueCommanModal() {
-    let myvalue = contexData.tempstate["strDesignCatalogue"];
-
-    let demoo = [];
-    demoo.push(myvalue.split(","));
-
-    let newarr = [];
-
-    for (let index = 0; index < demoo[0].length; index++) {
-      if (demoo[0].indexOf("") === -1) {
-        newarr.push(parseInt(demoo[0][index]));
-      }
-    }
-    setDemo(newarr);
-    setProps1({
-      api: API.GetDesignCatalogue,
-      labelname: "strDesignCatalogue",
-      id: "DesignCatalogID",
-      name: "DesignNo",
-    });
-    contexData.setchildFilterShow(true);
-  }
 
   function handleThousand(n) {
     localStorage.setItem("value", n);
@@ -749,6 +624,7 @@ export default function Header() {
   });
 
   function handleOnReset() {
+    resetcalled = true
     contexData.SettempState(postData);
     FilterData = contexData.tempstate
     metaltypeRef.current.clearValue()
@@ -1098,6 +974,7 @@ export default function Header() {
                               <i
                                 className="fas fa-expand-alt"
                                 onClick={Handlefullscreen}
+                                id="fullscreenicon"
                               ></i>
                             </div>
                           </li>
@@ -1107,6 +984,7 @@ export default function Header() {
                               id="Filtermodal"
                             >
                               <i
+                                id="filtericon"
                                 className="fas fa-filter"
                                 onClick={handlerOnOpen}
                               ></i>
@@ -1117,7 +995,7 @@ export default function Header() {
                               className="geex-content__header__quickaction__link  geex-btn__customizer"
                               id="Filtermodal"
                             >
-                              <i class="fa-solid fa-palette" onClick={handlerOnTheme}></i>
+                              <i class="fa-solid fa-palette" onClick={handlerOnTheme} id="themeicon"></i>
                               <div id="open-modal" class="modal-window">
                                 <div>
                                   <div class="header22">
@@ -1229,6 +1107,7 @@ export default function Header() {
                                 class="form-control  date-spacing "
                                 type="date"
                                 onChange={handleonchange}
+
                                 name="FromDate"
                                 id="FromDate"
                                 value={contexData.tempstate["FromDate"]}
@@ -1338,20 +1217,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Branch
                       </label>
-                      {/* <Select
-
-														isMulti
-														name="branchSelect"
-
-														options={branch}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
+                     
                       <input
                         className="filter-input" id='123' value={formatedValue(contexData.tempstate["strBranchValue"])}
                         onClick={() => {
@@ -1367,17 +1233,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Region{" "}
                       </label>
-                      {/* <Select
-                          // defaultValue={[colourOptions[2], colourOptions[3]]}
-                          isMulti
-                          name="regionSelect"
-                          options={region}
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          onChange={handleselect}
-                          components={animatedComponents}
-                          closeMenuOnSelect={false}
-                        /> */}
+                     
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strRegionValue"])}
                         onClick={() => {
@@ -1394,20 +1250,7 @@ export default function Header() {
                         &nbsp;State
                       </label>
 
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="stateSelect"
-
-														options={state}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
+                  
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strStateValue"])}
                         onClick={() => {
@@ -1423,20 +1266,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;City
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="citySelect"
-
-														options={city}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
+                    
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strCity"])}
                         onClick={() => {
@@ -1452,20 +1282,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Item Group
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="itemGroupSelect"
-
-														options={itemGroup}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
+                     
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strItemGroupValue"])}
                         onClick={() => {
@@ -1481,20 +1298,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Product
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="productSelect"
 
-														options={product}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strProductValue"])}
                         onClick={() => {
@@ -1510,20 +1314,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Item
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="itemSelect"
 
-														options={item}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strItemValue"])}
                         onClick={() => {
@@ -1539,20 +1330,6 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Sub-Item
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="subItemSelect"
-
-														options={subItem}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strSubItemValue"])}
                         onClick={() => {
@@ -1568,20 +1345,6 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Item with Sub-item
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="itemSubItemSelect"
-
-												options={itemSubitem}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strItemSubitemValue"])}
                         onClick={() => HandleOnClickComman(9)}
@@ -1595,20 +1358,6 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Design Catalogue
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="designSelect"
-
-												options={design}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strDesignCatalogueValue"])}
                         onClick={() => HandleOnClickComman(10)}
@@ -1622,20 +1371,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Saleman
                       </label>
-                      {/* <Select
-														// defaultValue={[colourOptions[2], colourOptions[3]]}
-														isMulti
-														name="salesmanSelect"
 
-														options={salesman}
-
-														className="basic-multi-select"
-														classNamePrefix="select"
-														// onChange={handleselect}
-
-														components={animatedComponents}
-														closeMenuOnSelect={false}
-													/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strSalemanValue"])}
                         onClick={() => HandleOnClickComman(11)}
@@ -1643,13 +1379,13 @@ export default function Header() {
                     </div>
                   </div>
 
-                  <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                  {/* <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                     <div class="card-filter-contain">
                       <i class="fas fa-layer-group"></i>
                       <label for="sel1" class="form-label">
                         &nbsp;Mode of Sale
                       </label>
-                      {/* <div class="dropdown">
+                      <div class="dropdown">
 														<select class="selectpicker" multiple aria-label="Default select example"
 															data-live-search="true">
 															<option value="one">One</option>
@@ -1657,13 +1393,13 @@ export default function Header() {
 															<option value="three">Three</option>
 															<option value="four">Four</option>
 														</select>
-													</div> */}
+													</div>
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strModeofSaleValue"])}
                         onClick={() => HandleOnClickComman(12)}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   {/* 
                   <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                     <div class="card-filter-contain">
@@ -1706,20 +1442,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Design
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="purchasePartySelect"
 
-												options={salesman}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strDesignCodeValue"])}
                         onClick={() => HandleOnClickComman(15)}
@@ -1733,20 +1456,7 @@ export default function Header() {
                       <label for="sel1" class="form-label">
                         &nbsp;Sales Party
                       </label>
-                      {/* <Select
-												// defaultValue={[colourOptions[2], colourOptions[3]]}
-												isMulti
-												name="salesPartySelect"
 
-												options={salesParty}
-
-												className="basic-multi-select"
-												classNamePrefix="select"
-												// onChange={handleselect}
-
-												components={animatedComponents}
-												closeMenuOnSelect={false}
-											/> */}
                       <input
                         className="filter-input" value={formatedValue(contexData.tempstate["strSalesPartyValue"])}
                         onClick={() => HandleOnClickComman(16)}
@@ -1795,38 +1505,6 @@ export default function Header() {
                       />
                     </div>
                   </div>
-
-                  {/* <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-									<div class="card-filter-contain">
-										<i class="fas fa-calendar-week"></i>
-										<label for="sel1" class="form-label">Month</label>
-										&nbsp;<div class="dropdown">
-											<select class="selectpicker" multiple aria-label="Default select example"
-												data-live-search="true">
-												<option value="one">One</option>
-												<option value="two">Two</option>
-												<option value="three">Three</option>
-												<option value="four">Four</option>
-											</select>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
-									<div class="card-filter-contain">
-										<i class="fas  fa-calendar-alt"></i>
-										<label for="sel1" class="form-label">Year</label>
-										<div class="dropdown">
-											<select class="selectpicker" multiple aria-label="Default select example"
-												data-live-search="true">
-												<option value="one">One</option>
-												<option value="two">Two</option>
-												<option value="three">Three</option>
-												<option value="four">Four</option>
-											</select>
-										</div>
-									</div>
-								</div> */}
                 </div>
               </form>
             </div>

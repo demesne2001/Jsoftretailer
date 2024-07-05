@@ -17,10 +17,10 @@ export default function MinimumStocksDashboard() {
     }, [])
     return (
         <div>
-         
+
             <MinimumStockContext>
-                <Navbar/>
-                <MinimumStockHeader/>
+                <Navbar />
+                <MinimumStockHeader />
                 <section class="crancy-adashboard crancy-show">
                     <div class="container">
                         <div class="crancy-body">
@@ -44,5 +44,6 @@ export default function MinimumStocksDashboard() {
                 </section>
             </MinimumStockContext>
         </div>
+
     )
 }

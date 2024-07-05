@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import StockToSalesContext from '../contex/StockToSalesContext'
 import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar'
 import Header_detailed from '../SecondScreen/Components_Detailed/Header_detailed'
-import Slider from "react-slick";
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import MinimumStockMainCharts from './MinimumStockDetailComponents/MinimumStockMainCharts';
 import MinimumStockDefaultChart from './MinimumStockDetailComponents/MinimumStockDefaultChart';
@@ -17,43 +15,6 @@ export default function MinimumStockDetailedDashboard() {
     const [urlData, seturlData] = useSearchParams()
     const [getUrlState] = useSearchParams()
     const [ThirdChartProps, setThirdChartProps] = useState({})
-    const settings = {
-
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 2500,
-        nextArrow: <SampleNextArrow />,
-        prevArrow: <SamplePrevArrow />,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-            }
-        ]
-    };
     const [defaulChartprops, setDefaultChartProps] = useState({})
 
 
@@ -69,7 +30,6 @@ export default function MinimumStockDetailedDashboard() {
     }, [])
 
     useEffect(() => {
-        console.log(mainChartProps, "mainchart");
         if (JSON.stringify(mainChartProps) !== JSON.stringify({}) && mainChartProps.componentName !== null) {
             setDefaultChartProps({ name: 'SubItem', iconClass: 'fas fa-th-list', group: '', column: '', columnID: '', componentName: 'Sub-Item Wise', filter_key1: '', filter_key2: '', ChartMode: '5', screen: 2, filterkey: 'SubItemID', dropdown:mainChartProps.showdropdown, FromDate:mainChartProps.FromDate, ToDate: mainChartProps.ToDate, filterdata : mainChartProps.filterdata })
             setThirdChartProps({ name: 'SubItem-range', iconClass: 'fas fa-th-list', group: '', column: '', columnID: '', componentName: 'Sub-Item-Range Wise', filter_key1: '', filter_key2: '', ChartMode: '6', FromDate:mainChartProps.FromDate, ToDate: mainChartProps.ToDate, filterdata : mainChartProps.filterdata })
@@ -96,43 +56,12 @@ export default function MinimumStockDetailedDashboard() {
         setMainChartProps(urlData)
     }
 
-    //Description : it's return the nextarrow of slider
-    function SampleNextArrow(props) {
-        const { className, style, onClick } = props;
-        return (
-
-            <div
-                className={className}
-                style={{ ...style, marginLeft: '100px', zIndex: '1', display: "block", background: "#094876", width: '28px', height: '28px', top: '30%', fontSize: '10px' }}
-                onClick={onClick}
-            />
-
-        );
-    }
-
-    //Description : it's return the prevarrow of slider
-    function SamplePrevArrow(props) {
-        const { className, style, onClick } = props;
-
-        return (
-            <div
-                className={className}
-                style={{ ...style, display: "block", background: "#094876", zIndex: '1', width: '28px', height: '28px', top: '30%', fontSize: '10px' }}
-                onClick={onClick}
-            />
-        );
-    }
-
-    //Description : It's used for change the props of the default graph
-    function handleDefaulChartClick(e) {
-        setDefaultChartProps(e);
-    }
-
-
+    
 
 
 
     return (
+    
         <MinimumStockContext>
             <Navbar />
             <div id="crancy-dark-light">
@@ -152,5 +81,6 @@ export default function MinimumStockDetailedDashboard() {
                 </div>
             </div>
         </MinimumStockContext>
+
     )
 }

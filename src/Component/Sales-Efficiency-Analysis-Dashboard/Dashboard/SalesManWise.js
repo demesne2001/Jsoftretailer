@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-
-
-import ReactApexChart from 'react-apexcharts';
 import img from '../../Assets/icons8-person-48.png'
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
 
 export default function SalesManWise() {
   const [loader, setLoader] = useState(true)
@@ -34,23 +31,31 @@ export default function SalesManWise() {
     chartId: 'SalesManWise',
     Xaxis: name,
     Yaxis: weight,
-    prclst:prc
+    prclst: prc,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'polar-radialbar',
     height: '100%',
     width: '100%',
-    chartId: 'SalesManWise Wise',
+    chartId: 'SalesManWise',
     radiusAxis: name,
     seriesdata: weight,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optiondonut = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'donut',
     height: '100%',
     width: '100%',
-    chartId: 'SalesManWise Wise',
+    chartId: 'SalesManWise',
     propdata: data,
     radius: [10, 150],
     label: {
@@ -63,6 +68,10 @@ export default function SalesManWise() {
         fontSize: 20,
         fontWeight: 'bold'
       }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
     }
 
   }
@@ -73,20 +82,24 @@ export default function SalesManWise() {
     height: '100%',
     width: '100%',
     propdata: data,
-    chartId: 'PieChartSalesManWise',
+    chartId: 'SalesManWise',
     label: {
       position: 'inside',
       formatter: '{d}%',
       color: 'white',
       fontWeight: 'bold',
     },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optradialbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'semi-donut',
     height: '100%',
     width: '100%',
-    chartId: 'RadialBarchartSalesManWise',
+    chartId: 'SalesManWise',
     propdata: data,
     position: 'center',
     fontsize: 20,
@@ -100,16 +113,24 @@ export default function SalesManWise() {
         fontSize: 20,
         fontWeight: 'bold'
       }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
     }
-  }      
+  }
   let optionPolar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'pie',
     height: '100%',
     width: '100%',
-    chartId: 'SalesManWise 12',
+    chartId: 'SalesManWise',
     propdata: data,
     radius: [10, 110],
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   useEffect(() => {
     fetchOption()
@@ -129,7 +150,7 @@ export default function SalesManWise() {
   }, [imagearr])
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman", chartId: 11, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "h.SalesmanID,h.SalesmanNAme", columnName: "SalesmanNAme", columnID: "SalesmanID", componentName: "SalesMan Wise", filterKey: "strSaleman", chartId: 11, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
   }
 
   async function getdata() {
@@ -158,7 +179,6 @@ export default function SalesManWise() {
           setName(name)
           setweight(weight)
           setdataLoader(false)
-          console.log(data, "asdsd");
           if (weight.length !== 0) {
             setLoader(false)
           } else {
@@ -191,143 +211,7 @@ export default function SalesManWise() {
 
       })
     }
-    // setImageArr(temp)
   }
-
-  // useEffect(() => {
-
-  // }, [inputdata])
-
-  const series = [{
-    name: 'weight',
-    data: weight
-  }]
-
-  const options = {
-    chart: {
-      toolbar: {
-        show: true,
-        offsetX: 0,
-        offsetY: 0,
-        tools: {
-          download: true,
-        },
-
-      },
-      height: 350,
-      type: 'bar',
-    },
-    plotOptions: {
-      bar: {
-        borderRadius: 10,
-        dataLabels: {
-          position: 'top', // top, center, bottom
-        },
-      }
-    },
-    dataLabels: {
-      enabled: false,
-      formatter: function (val) {
-        return val;
-      },
-      offsetY: 20,
-      style: {
-        fontSize: '12px',
-        colors: ["#304758"]
-      }
-    },
-
-    tooltip: {
-      x: {
-        show: true,
-        formatter: function (val) {
-          return val
-        }
-      },
-      y: {
-        show: true,
-        formatter: function (val) {
-          if (inputdata['column'] === 'Prc') {
-            return val.toString() + "%"
-          } else {
-            return val
-          }
-        }
-      },
-    },
-    xaxis: {
-      categories: name,
-      position: 'bottom',
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: true
-      },
-      crosshairs: {
-        fill: {
-          type: 'gradient',
-          gradient: {
-            colorFrom: '#D8E3F0',
-            colorTo: '#BED1E6',
-            stops: [0, 100],
-            opacityFrom: 0.4,
-            opacityTo: 0.5,
-          }
-        }
-      }
-    },
-    yaxis: {
-      axisBorder: {
-        show: true
-      },
-      axisTicks: {
-        show: false,
-      },
-      labels: {
-        show: true,
-        formatter: function (val) {
-          return val;
-        }
-      }
-    },
-
-    annotations: {
-      // points: imagearr,
-      tooltip: {
-        enabled: true,
-      }
-    },
-    responsive: [{
-      breakpoint: 593,
-      options: {
-
-        xaxis: {
-          labels: {
-            formatter: function (val) {
-              if (val.length > 3) {
-                return val.slice(0, 3) + "..."
-              } else {
-                return val
-              }
-            }
-          }
-        },
-        yaxis: {
-          labels: {
-            show: true,
-            formatter: function (val) {
-
-              return ((val / 1000).toFixed(0)).toString() + "KG"
-
-            }
-
-          }
-        }
-      },
-    }]
-  }
-
 
   function handleclick(e) {
 
@@ -369,7 +253,9 @@ export default function SalesManWise() {
                 post({ "ID": 11, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
                   .then((res) => {
                     if (res.data !== undefined) {
-                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                      if (res.data.lstResult.length !== 0) {
+                        setOptionId(res.data.lstResult[0].ChartOptionID)
+                      }
                     } else {
                       alert(res['Error']);
                     }
@@ -379,8 +265,10 @@ export default function SalesManWise() {
 
           }
           else {
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-            setFlag(res.data.lstResult[0].ChartOption)
+            if (res.data.lstResult.length !== 0) {
+              setOptionId(res.data.lstResult[0].ChartOptionID)
+              setFlag(res.data.lstResult[0].ChartOption)
+            }
           }
         } else {
           alert(res['Error']);
@@ -479,10 +367,7 @@ export default function SalesManWise() {
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
-              {/* <img src={drop} className='dropbtn' onClick={handleonchangeCurrency} id='iconidsalesmanwise'></img> */}
-
               <div id="myDropdowniconSalesManWise" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
                 {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
@@ -491,28 +376,12 @@ export default function SalesManWise() {
                 {flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
                 {flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
-                {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
               </div>
             </div>
           </div>
 
         </div>
-        {/* {weight.length !== 0 ?
-        <div className="crancy-progress-card card-contain-graph">
-          <ReactApexChart options={options} series={series} type="bar" height={350} />
-        </div>:
-        <div className="crancy-progress-card card-contain-graph">
-				<div class="dot-spinner"style={{margin:"auto", position:'inherit'}} >
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-					<div class="dot-spinner__dot"></div>
-				</div>
-			</div>} */}
+
         {dataloader !== true ?
           loader !== true ?
             <div className="crancy-progress-card card-contain-graph">
@@ -524,7 +393,7 @@ export default function SalesManWise() {
               {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
-              Not Found
+              <img id='errorImg' src={DataError} />
             </div>
           :
           <div className="crancy-progress-card card-contain-graph">

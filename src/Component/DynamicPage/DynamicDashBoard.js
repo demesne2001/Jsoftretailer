@@ -6,7 +6,7 @@ import post from '../Utility/APIHandle'
 import API from '../Utility/API'
 import CommonchartComp from './CommonchartComp'
 import { useLocation } from 'react-router-dom'
-import { render } from 'react-dom'
+
 
 
 export default function DynamicDashBoard() {
@@ -21,28 +21,27 @@ export default function DynamicDashBoard() {
     useEffect(() => {
         FetchchartConfig()
     }, [location.state])
-    // useEffect(() => {
-    //     FetchchartConfig()
-    // }, [ChartConfigobj])
+
 
     function FetchchartConfig() {
-        inputd = { ...inputd, PageID: location.state.PageID}
-        post(inputd, API.GetDynamicChartConfig, [], 'post').then((res) => {            
+        inputd = { ...inputd, PageID: location.state.PageID }
+        post(inputd, API.GetDynamicChartConfig, [], 'post').then((res) => {
             if (res.data != undefined) {
                 if (res.data.lstResult.length > 0) {
-                    
+
                     setChartConfigobj(res.data.lstResult)
                     inputd = { ...inputd, PageID: 0 }
                 }
                 else {
                     setChartConfigobj([])
-     
+
                 }
             }
         })
 
     }
     return (
+
         <div>
             <Navbar></Navbar>
             <ContexState>
@@ -54,7 +53,7 @@ export default function DynamicDashBoard() {
                         <div className="crancy-body">
                             <div className="crancy-dsinner">
                                 <div id='rootElementId'  >
-                                    <div className="row crancy-gap-30">                                        
+                                    <div className="row crancy-gap-30">
                                         {ChartConfigobj.map((key, i) => {
                                             return <CommonchartComp Chartconf={key} pageID={location.state.PageID}> </CommonchartComp>
                                         })

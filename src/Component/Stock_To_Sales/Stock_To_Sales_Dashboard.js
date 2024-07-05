@@ -4,7 +4,6 @@ import StockToSalesContext from '../contex/StockToSalesContext';
 import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar';
 import StockToSalesHeader from './Stock_To_Sales_Components/StockToSalesHeader';
 import StockToSalesCharts from './Stock_To_Sales_Components/StockToSalesCharts';
-import Experiment from './Stock_To_Sales_Components/Experiment';
 
 export default function Stock_To_Sales_Dashboard() {
     const navigate = useNavigate();
@@ -36,11 +35,6 @@ export default function Stock_To_Sales_Dashboard() {
                 <section class="crancy-adashboard dashboard-graphdetail">
                     <div class="container">
                         <div class="row">
-                            {/* <Experiment id={1} />
-                            <Experiment id={2} />
-                            <Experiment id={3} />
-                            <Experiment id={4} />
-                            <Experiment id={5} /> */}
                             <StockToSalesCharts id={1}/>
                             <StockToSalesCharts id={2}/>
                             <StockToSalesCharts id={3}/>

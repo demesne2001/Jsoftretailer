@@ -82,9 +82,10 @@ const StockToSalesContext = (props) => {
     const [flagExcel, setflagExcel] = useState(0);
     const [LazyLoading, setLazyLoading] = useState(0);
     const [filtername, setfiltername] = useState("");
+    const [filtervalue, setfiltervalue] = useState("");
     return (
 
-        <contex.Provider value={{setMonthtype, Monthtype, filtername, setfiltername, SetDetailsecondState, detailsecondstate, detailstate, SetDetailState, setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag }}>
+        <contex.Provider value={{filtervalue,setfiltervalue, setMonthtype, Monthtype, filtername, setfiltername, SetDetailsecondState, detailsecondstate, detailstate, SetDetailState, setLazyLoading, LazyLoading, setflagExcel, flagExcel, state: state, SetState: SetState, childFilterShow, setchildFilterShow, tempstate, SettempState, currency, setcurrency, flag, setflag }}>
 
             {props.children}
 

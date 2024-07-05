@@ -1,25 +1,15 @@
 import React, { useContext } from 'react'
 import { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { DesignCatalogueWise_bar } from '../../ChartOptions/DesignCatalogueWise_bar';
-import { DesignCatalogueWise_donut } from '../../ChartOptions/DesignCatalogueWise_donut';
-import { DesignCatalogueWise_pie } from '../../ChartOptions/DesignCatalogueWise_pie';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
-import flow from '../../Assets/image/flow.jpg'
-import img3 from '../../Assets/image/img3.jpg'
-import dots from '../../Assets/image/dots.jpg'
-import strip from '../../Assets/image/strips.jpg'
-import Gradient from "javascript-color-gradient";
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
 
 export default function DesignCatalogueWise() {
-  const [sales, setSales] = useState([])
   const navigate = useNavigate()
   const contexData = useContext(contex);
   const [name, setName] = useState([])
@@ -29,29 +19,25 @@ export default function DesignCatalogueWise() {
   const [dataloader, setdataLoader] = useState(true)
   const [flag, setflag] = useState()
   const ChartType = "donut"
-  const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
   const [optionId, setOptionId] = useState()
-  const options_bar = DesignCatalogueWise_bar(name, inputdata['column']);
-  const options_donut = DesignCatalogueWise_donut(name, inputdata['column']);
-  const options_pie = DesignCatalogueWise_pie(name, inputdata['column']);
-  const series1 = weight;
   const [data, setData] = useState()
   const [flagSort, setflagSort] = useState('')
   const [prc, setprc] = useState([]);
-  const series2 = [{
-    name: 'weight',
-    data: weight
-  }]
+
 
   let optionbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'bar',
     height: '400%',
     width: '100%',
-    chartId: 'DesigncatlogWise',
+    chartId: 'DesignCatalogueWise',
     Xaxis: name,
     Yaxis: weight,
-    prclst:prc
+    prclst: prc,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
 
   let radialdata = {
@@ -59,16 +45,20 @@ export default function DesignCatalogueWise() {
     charttype: 'polar-radialbar',
     height: '100%',
     width: '100%',
-    chartId: 'DesigncatlogWise radialdata',
+    chartId: 'DesignCatalogueWise',
     radiusAxis: name,
     seriesdata: weight,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optiondonut = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'donut',
     height: '100%',
     width: '100%',
-    chartId: 'DesigncatlogWise optiondonut',
+    chartId: 'DesignCatalogueWise',
     propdata: data,
     radius: [10, 150],
     label: {
@@ -81,6 +71,10 @@ export default function DesignCatalogueWise() {
         fontSize: 20,
         fontWeight: 'bold'
       }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
     }
 
   }
@@ -91,34 +85,42 @@ export default function DesignCatalogueWise() {
     height: '100%',
     width: '100%',
     propdata: data,
-    chartId: 'DesigncatlogWise optionpie',
+    chartId: 'DesignCatalogueWise',
     label: {
       position: 'inside',
       formatter: '{d}%',
       color: 'white',
       fontWeight: 'bold',
     },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optradialbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'semi-donut',
     height: '100%',
     width: '100%',
-    chartId: 'DesigncatlogWise optradialbar',
+    chartId: 'DesignCatalogueWise',
     propdata: data,
     position: 'center',
     fontsize: 20,
-    label:  {
-			show: false,
-			position: 'center'
-		  },
-		  emphasis: {
-			label: {
-			  show: true,
-			  fontSize: 20,
-			  fontWeight: 'bold'
-			}
-		}
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
 
 
@@ -153,15 +155,12 @@ export default function DesignCatalogueWise() {
       .then((res) => {
         let name = [];
         let weight = [];
-        let sale = [];
-        var js = {};
         let data = [];
         let tempprc = [];
         if (res.data !== undefined) {
 
 
           for (let index = 0; index < res.data.lstResult.length; index++) {
-            js = { 'product': '', 'thisYearProfit': 0 }
             if (res.data.lstResult[index]['DesignNo'] === null) {
               name.push("null")
               data.push({ name: 'null', value: res.data.lstResult[index][inputdata['column']] })
@@ -171,15 +170,7 @@ export default function DesignCatalogueWise() {
               data.push({ name: res.data.lstResult[index]['DesignNo'], value: res.data.lstResult[index][inputdata['column']] })
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
-
-            if (res.data.lstResult[index]['DesignNo'] === null) {
-              js['product'] = 'null'
-            } else {
-              js['product'] = res.data.lstResult[index]['DesignNo']
-            }
-            js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
             tempprc.push(res.data.lstResult[index]['Prc']);
-            sale.push(js)
 
           }
           setprc(tempprc);
@@ -192,12 +183,6 @@ export default function DesignCatalogueWise() {
           } else {
             setLoader(true)
           }
-          var j = []
-          for (let index = 0; index < sale.length; index++) {
-            j.push({ ...sale[index], ['color']: gradientArray[index] })
-          }
-          setSales(j)
-
           inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
           alert(res['Error']);
@@ -205,19 +190,10 @@ export default function DesignCatalogueWise() {
       })
   }
 
-  function setMargin() {
-    if (weight.length < 7) {
-      return 80
-    } else {
-      return 30
-    }
-  }
-
-
 
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise", filterKey: "strDesignCatalogue", chartId: 13, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "j.designCatalogID,j.DesignNo", columnName: "DesignNo", columnID: "designCatalogID", componentName: "Design Catalogue Wise", filterKey: "strDesignCatalogue", chartId: 13, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
   }
 
 
@@ -263,7 +239,9 @@ export default function DesignCatalogueWise() {
                 post({ "ID": 13, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
                   .then((res) => {
                     if (res.data !== undefined) {
-                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                      if (res.data.lstResult.length !== 0) {
+                        setOptionId(res.data.lstResult[0].ChartOptionID)
+                      }
                     } else {
                       alert(res['Error']);
                     }
@@ -273,8 +251,10 @@ export default function DesignCatalogueWise() {
 
           }
           else {
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-            setflag(res.data.lstResult[0].ChartOption)
+            if (res.data.lstResult.length !== 0) {
+              setOptionId(res.data.lstResult[0].ChartOptionID)
+              setflag(res.data.lstResult[0].ChartOption)
+            }
           }
         } else {
           alert(res['Error']);
@@ -319,15 +299,12 @@ export default function DesignCatalogueWise() {
       .then((res) => {
         let name = [];
         let weight = [];
-        let sale = [];
-        var js = {};
         let data = [];
         let tempprc = [];
         if (res.data !== undefined) {
 
 
           for (let index = 0; index < res.data.lstResult.length; index++) {
-            js = { 'product': '', 'thisYearProfit': 0 }
             if (res.data.lstResult[index]['DesignNo'] === null) {
               name.push("null")
               data.push({ name: 'null', value: res.data.lstResult[index][inputdata['column']] })
@@ -337,15 +314,6 @@ export default function DesignCatalogueWise() {
               data.push({ name: res.data.lstResult[index]['DesignNo'], value: res.data.lstResult[index][inputdata['column']] })
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
-
-            if (res.data.lstResult[index]['DesignNo'] === null) {
-              js['product'] = 'null'
-            } else {
-              js['product'] = res.data.lstResult[index]['DesignNo']
-            }
-            js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-            sale.push(js)
             tempprc.push(res.data.lstResult[index]['Prc']);
           }
           setprc(tempprc);
@@ -359,12 +327,6 @@ export default function DesignCatalogueWise() {
           } else {
             setLoader(true)
           }
-          var j = []
-          for (let index = 0; index < sale.length; index++) {
-            j.push({ ...sale[index], ['color']: gradientArray[index] })
-          }
-          setSales(j)
-
           inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
           alert(res['Error']);;
@@ -382,7 +344,6 @@ export default function DesignCatalogueWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
             <div className='d-flex '>
               <div className='dropbtngraph'>
                 <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -397,7 +358,6 @@ export default function DesignCatalogueWise() {
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
 
               <div id="myDropdownicondesigncat" className="dropdown-contenticon" onClick={handleclick}>
@@ -425,7 +385,7 @@ export default function DesignCatalogueWise() {
               {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
-              Not Found
+              <img id='errorImg' src={DataError} />
             </div>
           :
           <div className="crancy-progress-card card-contain-graph">

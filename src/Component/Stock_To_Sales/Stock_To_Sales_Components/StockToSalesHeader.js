@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import post from "../../Utility/APIHandle";
 import API from "../../Utility/API";
@@ -8,15 +7,11 @@ import makeAnimated from "react-select/animated";
 import contex from "../../contex/Contex";
 import Commonmodel from "../../CommonModel/CommanModal";
 import "../../Assets/css/Custom.css";
-import * as htmlToImage from 'html-to-image';
-import download from 'downloadjs';
 
 export default function StockToSalesHeader() {
 
     // Variable And UseState
-    const [syncDate, setSyncDate] = useState()
     const contexData = useContext(contex);
-    const [count, setCount] = useState(uuidv4())
     const [fullscreen, setFullScreen] = useState(false);
     const [filterFlag, setFIlterFlag] = useState(false);
     const [props1, setProps1] = useState();
@@ -28,13 +23,12 @@ export default function StockToSalesHeader() {
     const [MetalType, setMetalType] = useState({});
     const [DefaultMetalType, setDefaultMetalType] = useState();
     const animatedComponents = makeAnimated();
-    const DaybookRef = useRef(null);
     const dependentfilter = {
-        1: ["StrBranchID", API.BranchFilter, "BranchId", "BranchName", "strBranchValue", 1],
-        2: ["ItemGroupID", API.itemGroupFilter, "ItemGroupID", "ItemGroupName", "strItemGroupValue", 5],
-        3: ["StrProductID", API.productFilter, "ProductId", "ProductName", "strProductValue", 6],
-        4: ["StrItemID", API.itemFilter, "ItemId", "ItemName", "strItemValue", 7],
-        5: ["StrSubItemID", API.GetSubItem, "SubItemId", "SubItemName", "strSubItemValue", 8],
+        1: ["StrBranchID", API.BranchFilter, "BranchId", "BranchName", "strBranchValue", 1, "BranchWise"],
+        2: ["ItemGroupID", API.itemGroupFilter, "ItemGroupID", "ItemGroupName", "strItemGroupValue", 5, "ItemGroupWise"],
+        3: ["StrProductID", API.productFilter, "ProductId", "ProductName", "strProductValue", 6,"ProductWise"],
+        4: ["StrItemID", API.itemFilter, "ItemId", "ItemName", "strItemValue", 7,"ItemWise"],
+        5: ["StrSubItemID", API.GetSubItem, "SubItemId", "SubItemName", "strSubItemValue", 8,"SubItemWise"],
     };
     const postData = {
         "FromDate": "2024-04-01",
@@ -93,7 +87,6 @@ export default function StockToSalesHeader() {
 
         if (Findex !== "undefined" && Findex !== 0) {
             for (let index = Findex + 1; index < 5; index++) {
-                console.log(contexData.tempstate[dependentfilter[index][0]], "asd");
                 if (contexData.tempstate[dependentfilter[index][0]].length > 0) {
                     FetchDataDependentAPI(FilterData, index)
                 }
@@ -122,6 +115,7 @@ export default function StockToSalesHeader() {
                 const element3 = document.getElementsByClassName("crancy-adashboard")[1];
                 element3.classList.remove("crancy-close");
             }
+             document.getElementsByClassName('NavbarFooter')[0].style.bottom = '57px'
 
         } else {
             const element = document.getElementsByClassName("crancy-smenu")[0];
@@ -137,6 +131,7 @@ export default function StockToSalesHeader() {
                 const element3 = document.getElementsByClassName("crancy-adashboard")[1];
                 element3.classList.add("crancy-close");
             }
+              document.getElementsByClassName('NavbarFooter')[0].style.bottom = '57px'
         }
 
     }
@@ -152,69 +147,6 @@ export default function StockToSalesHeader() {
     function handleThousand(n) {
         localStorage.setItem("value", n);
         contexData.setcurrency(n);
-    }
-
-    //Description : This Fnction handle the pdf download option
-    async function downloadPdfDocument() {
-        var nameArray = []
-        document.getElementById("downloadPdf").disabled = true
-
-        document.getElementById('pdf-div').style.display = "block";
-
-        await htmlToImage.toPng(document.getElementById('rootElementId'))
-
-            .then(function (dataUrl) {
-
-                setCount(count + 1)
-
-                var name = count.toString() + "Dashboard";
-
-
-                // download(dataUrl, "file1.png")
-                post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-                    if (res.data !== undefined) {
-                        nameArray.push(res.data.filename);
-                    } else {
-                        alert(res['Error']);
-                    }
-                })
-            });
-
-        await htmlToImage.toPng(document.getElementById('pdf-div'))
-            .then(function (dataUrl) {
-                var name = count.toString() + "filter";
-                // download(dataUrl, "file2.png")
-
-                post({ "Base64": dataUrl, "Extension": "png", "LoginID": name }, API.uploadImage, {}, "post").then((res) => {
-
-                    nameArray.push(res.data.filename);
-
-                    post({ "ImageLst": [count.toString() + "filter.png", count.toString() + "Dashboard.png"], "FileName": count.toString() + "aa" }, 'http://103.131.196.61:52202/Common/GetPDFUsingImage', {}, "post").then((res) => {
-                        // download("http://192.168.1.208:7000/PDF/5aa.pdf", "dash", "pdf")
-
-                        // const pdfUrl = "http://192.168.1.208:7000/PDF/" + count.toString() + "aa.pdf";
-
-                        const pdfUrl = API.downloadPdf + count.toString() + "aa.pdf";
-                        axios.get(pdfUrl, {
-                            responseType: 'blob',
-                        })
-                            .then((res) => {
-                                download(res.data, "JSoftDashboard.pdf")
-                                document.getElementById("downloadPdf").disabled = false
-                            })
-                            .catch((e) => {
-
-                                document.getElementById("downloadPdf").disabled = false
-                            })
-
-                    });
-                })
-            });
-
-
-        setTimeout(() => {
-            document.getElementById('pdf-div').style.display = "none";
-        }, 100);
     }
 
     //Description : This function useed to generate the random name of Pdf
@@ -374,10 +306,8 @@ export default function StockToSalesHeader() {
 
     //Description : It's handle the common modal props and send the value into the comman modal and open it when input is clicked
     function HandleOnClickComman(IndexNo) {
-        console.log(contexData.tempstate, "keyone");
         let myvalue = contexData.tempstate[dependentfilter[IndexNo][0]];
         let myvalueName = contexData.tempstate[dependentfilter[IndexNo][4]];
-        console.log(myvalue, "qw");
         let demoo = [];
         let demooName = [];
         demoo.push(myvalue.split(","));
@@ -416,7 +346,8 @@ export default function StockToSalesHeader() {
             name: dependentfilter[IndexNo][3],
             LabelValue: dependentfilter[IndexNo][4],
             FilterIndex: IndexNo,
-            grid: dependentfilter[IndexNo][5]
+            grid: dependentfilter[IndexNo][5],
+            filterTitle: dependentfilter[IndexNo][6]
         });
         contexData.setchildFilterShow(true);
     }
@@ -434,10 +365,10 @@ export default function StockToSalesHeader() {
         contexData.SettempState(postData);
         FilterData = contexData.tempstate
         metaltypeRef.current.clearValue()
-        console.log(unitRef.current,"asdfzsdfsdf");
-        unitRef.current.setValue({ value: 'W', label: 'NET WEIGHT' })
+        unitRef.current.clearValue()
         setDefaultMetalType([])
-        setDefaultUnit({ value: 'W', label: 'NET WEIGHT' })
+        // setDefaultUnit({ value: 'W', label: 'NET WEIGHT' })
+
     }
 
     //Description : It's handle the Apply filter functionality
@@ -644,7 +575,6 @@ export default function StockToSalesHeader() {
                                                                             <i class='fas fa-rupee-sign'></i>
                                                                             <p class='value_name'> Default</p>
                                                                         </button>
-                                                                        {/* <button class="fa fa-inr" aria-hidden="true" src={currency} className="dropbtn" onClick={handleonchangeCurrency} > </button> */}
                                                                     </>
                                                                 ) : null}
                                                                 {localStorage.getItem("value") === "k" ? (
@@ -739,23 +669,6 @@ export default function StockToSalesHeader() {
                                                             </a>
                                                         </div>
                                                     </li>
-                                                    {/* <li className="geex-content__header__quickaction__item">
-                                                        <div
-                                                            className="geex-content__header__quickaction__link  geex-btn__customizer"
-                                                            id="Filtermodal"
-                                                        >
-                                                            <i id="downloadPdf" className="fa-solid fa-file-pdf" onClick={downloadPdfDocument} > </i>
-                                                        </div>
-                                                    </li>
-                                                    <li className="geex-content__header__quickaction__item">
-                                                        <div
-                                                            className="geex-content__header__quickaction__link  geex-btn__customizer"
-                                                            id="Filtermodal"
-                                                        >
-                                                            <i id="downloadExcel" className="fa-solid fa-file-excel" onClick={downloadExcelDocument} > </i>
-                                                        </div>
-                                                    </li> */}
-
 
                                                     <li className="geex-content__header__quickaction__item">
                                                         <div
@@ -840,7 +753,6 @@ export default function StockToSalesHeader() {
                                                                     id="FromDate"
                                                                     value={contexData.tempstate["FromDate"]}
                                                                 />
-                                                                {/* <i class="fa-solid fa-chevron-right"></i>fa-solid fa-caret-right date-arrow-right */}
                                                                 <i class="fa-solid fa-chevron-right date-arrow-right" onClick={() => { handleArrowRight('FromDate') }} />
                                                             </div>
 
@@ -876,7 +788,6 @@ export default function StockToSalesHeader() {
 
 
                                                                 <Select
-                                                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
                                                                     name="MetalTypeSelect"
                                                                     closeMenuOnSelect={false}
                                                                     isMulti
@@ -891,8 +802,6 @@ export default function StockToSalesHeader() {
                                                                     styles={{
                                                                         control: (provided, state) => ({
                                                                             ...provided,
-                                                                            // height: '45px',
-                                                                            // overflow:'auto',
                                                                             borderRadius: '10px'
                                                                         }),
                                                                     }}
@@ -915,20 +824,6 @@ export default function StockToSalesHeader() {
                                                 <label for="sel1" class="form-label">
                                                     &nbsp;Branch
                                                 </label>
-                                                {/* <Select
-
-                                                    isMulti
-                                                    name="branchSelect"
-
-                                                    options={branch}
-
-                                                    className="basic-multi-select"
-                                                    classNamePrefix="select"
-                                                    onChange={handleselect}
-
-                                                    components={animatedComponents}
-                                                    closeMenuOnSelect={false}
-                                                /> */}
                                                 <input
                                                     className="filter-input" id='123' value={formatedValue(contexData.tempstate["strBranchValue"])}
                                                     onClick={() => {
@@ -960,20 +855,7 @@ export default function StockToSalesHeader() {
                                                 <label for="sel1" class="form-label">
                                                     &nbsp;Product
                                                 </label>
-                                                {/* <Select
-                                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
-                                                    isMulti
-                                                    name="productSelect"
 
-                                                    options={product}
-
-                                                    className="basic-multi-select"
-                                                    classNamePrefix="select"
-                                                    onChange={handleselect}
-
-                                                    components={animatedComponents}
-                                                    closeMenuOnSelect={false}
-                                                /> */}
                                                 <input
                                                     className="filter-input" value={formatedValue(contexData.tempstate["strProductValue"])}
                                                     onClick={() => {
@@ -989,20 +871,7 @@ export default function StockToSalesHeader() {
                                                 <label for="sel1" class="form-label">
                                                     &nbsp;Item
                                                 </label>
-                                                {/* <Select
-                                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
-                                                    isMulti
-                                                    name="itemSelect"
 
-                                                    options={item}
-
-                                                    className="basic-multi-select"
-                                                    classNamePrefix="select"
-                                                    onChange={handleselect}
-
-                                                    components={animatedComponents}
-                                                    closeMenuOnSelect={false}
-                                                /> */}
                                                 <input
                                                     className="filter-input" value={formatedValue(contexData.tempstate["strItemValue"])}
                                                     onClick={() => {
@@ -1018,20 +887,7 @@ export default function StockToSalesHeader() {
                                                 <label for="sel1" class="form-label">
                                                     &nbsp;Sub-Item
                                                 </label>
-                                                {/* <Select
-                                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
-                                                    isMulti
-                                                    name="subItemSelect"
 
-                                                    options={subItem}
-
-                                                    className="basic-multi-select"
-                                                    classNamePrefix="select"
-                                                    onChange={handleselect}
-
-                                                    components={animatedComponents}
-                                                    closeMenuOnSelect={false}
-                                                /> */}
                                                 <input
                                                     className="filter-input" value={formatedValue(contexData.tempstate["strSubItemValue"])}
                                                     onClick={() => {
@@ -1048,7 +904,6 @@ export default function StockToSalesHeader() {
                                                 </label>
 
                                                 <Select
-                                                    // defaultValue={[colourOptions[2], colourOptions[3]]}
                                                     name="unit"
                                                     ref={unitRef}
                                                     options={unit}

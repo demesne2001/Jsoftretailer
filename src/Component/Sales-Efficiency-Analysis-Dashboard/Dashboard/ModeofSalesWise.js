@@ -1,18 +1,12 @@
-import React, { useCallback, useContext } from 'react'
-
-import ReactApexChart from 'react-apexcharts';
-import BlackDots from '../../Assets/image/Dots.png'
+import React, { useContext } from 'react'
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import { useEffect, useState } from 'react';
 import contex from '../../contex/Contex';
 import { useNavigate } from 'react-router-dom';
-import ModeofSales_donut from '../../ChartOptions/ModeOfSales_donut';
-import { ModeofSales_semiDonut } from '../../ChartOptions/ModeOfSales_semiDonut';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-
+import DataError from '../../Assets/image/Error.gif'
 
 export default function ModeofSalesWise() {
 
@@ -34,26 +28,34 @@ export default function ModeofSalesWise() {
     charttype: 'bar',
     height: '400%',
     width: '100%',
-    chartId: 'modeofsales2',
+    chartId: 'ModeOfSalesWise',
     Xaxis: name,
     Yaxis: weight,
-    prclst:prc
+    prclst: prc,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'polar-radialbar',
     height: '100%',
     width: '100%',
-    chartId: 'modeofsales3',
+    chartId: 'ModeOfSalesWise',
     radiusAxis: name,
     seriesdata: weight,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optiondonut = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'donut',
     height: '100%',
     width: '100%',
-    chartId: 'modeofsales4',
+    chartId: 'ModeOfSalesWise',
     propdata: data,
     radius: [10, 150],
     label: {
@@ -66,6 +68,10 @@ export default function ModeofSalesWise() {
         fontSize: 20,
         fontWeight: 'bold'
       }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
     }
 
   }
@@ -76,20 +82,24 @@ export default function ModeofSalesWise() {
     height: '100%',
     width: '100%',
     propdata: data,
-    chartId: 'modeofsales1',
+    chartId: 'ModeOfSalesWise',
     label: {
       position: 'inside',
       formatter: '{d}%',
       color: 'white',
       fontWeight: 'bold',
     },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optradialbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'semi-donut',
     height: '100%',
     width: '100%',
-    chartId: 'modeofsales5123456',
+    chartId: 'ModeOfSalesWise',
     propdata: data,
     position: 'center',
     fontsize: 20,
@@ -103,23 +113,30 @@ export default function ModeofSalesWise() {
         fontSize: 20,
         fontWeight: 'bold'
       }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
     }
+
   }
   let optionPolar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'pie',
     height: '100%',
     width: '100%',
-    chartId: 'modeofsales16',
+    chartId: 'ModeOfSalesWise',
     propdata: data,
     radius: [10, 110],
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
-console.log(optionPolar, 'aaa')
 
   useEffect(() => {
     fetchOption()
     getdata()
-    console.log(inputdata.column, "sdsdsss");
   }, [inputdata])
 
   useEffect(() => {
@@ -141,7 +158,9 @@ console.log(optionPolar, 'aaa')
                 post({ "ID": 17, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
                   .then((res) => {
                     if (res.data !== undefined) {
-                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                      if (res.data.lstResult.length !== 0) {
+                        setOptionId(res.data.lstResult[0].ChartOptionID)
+                      }
                     } else {
                       alert(res['Error']);
                     }
@@ -152,9 +171,10 @@ console.log(optionPolar, 'aaa')
 
           }
           else {
-
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-            setflag(res.data.lstResult[0].ChartOption)
+            if (res.data.lstResult.length !== 0) {
+              setOptionId(res.data.lstResult[0].ChartOptionID)
+              setflag(res.data.lstResult[0].ChartOption)
+            }
           }
         } else {
           alert(res['Error']);
@@ -229,12 +249,12 @@ console.log(optionPolar, 'aaa')
               data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
             } else {
               name.push(res.data.lstResult[index]['ChallanGenerateType'])
-              data.push({value: res.data.lstResult[index][inputdata['column']],  name: res.data.lstResult[index]['ChallanGenerateType']})
+              data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ChallanGenerateType'] })
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
             prce.push(res.data.lstResult[index]['Prc'])
           }
-      
+
           setdata(data);
           setName(name)
           setweight(weight)
@@ -253,16 +273,8 @@ console.log(optionPolar, 'aaa')
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise", chartId: 17, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "a.ChallanGenerateTypeID,N.ChallanGenerateType", columnName: "ChallanGenerateType", columnID: "ChallanGenerateTypeID", componentName: "Mode of Sales Wise", chartId: 17, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
   }
-
-  const series = weight
-
-  const option_semiDonut = ModeofSales_semiDonut(name, inputdata['column'], prc)
-  const options_donut = ModeofSales_donut(name, inputdata['column'])
-
-
-
 
   function handleSorting() {
     document.getElementById("sorticonModeOfScale").style.display === "block" ? document.getElementById("sorticonModeOfScale").style.display = "none" : document.getElementById("sorticonModeOfScale").style.display = "block";
@@ -299,7 +311,7 @@ console.log(optionPolar, 'aaa')
               data.push({ name: "null", value: res.data.lstResult[index][inputdata['column']] })
             } else {
               name.push(res.data.lstResult[index]['ChallanGenerateType'])
-              data.push({value: res.data.lstResult[index][inputdata['column']],  name: res.data.lstResult[index]['ChallanGenerateType']})
+              data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['ChallanGenerateType'] })
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
             prce.push(res.data.lstResult[index]['Prc'])
@@ -333,8 +345,6 @@ console.log(optionPolar, 'aaa')
           </div>
 
           <div className="col-sm-2 col-md-2 col-2" >
-
-            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
             <div className='d-flex '>
               <div className='dropbtngraph'>
                 <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -349,11 +359,7 @@ console.log(optionPolar, 'aaa')
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
-
             <div className='btnicons'>
-
-
               <div id="myDropdowniconModeOfSales" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
                 {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
@@ -383,7 +389,7 @@ console.log(optionPolar, 'aaa')
               {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
-              Not Found
+              <img id='errorImg' src={DataError} />
             </div>
           :
           <div className="crancy-progress-card card-contain-graph">

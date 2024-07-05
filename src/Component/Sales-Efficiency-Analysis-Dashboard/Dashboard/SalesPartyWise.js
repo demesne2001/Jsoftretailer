@@ -1,23 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Gradient from "javascript-color-gradient";
-import ReactApexChart from 'react-apexcharts';
-import BlackDots from '../../Assets/image/Dots.png'
 import post from '../../Utility/APIHandle'
 import API from '../../Utility/API';
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
-import { SalesPartyWiseLolipop } from '../../ChartOptions/SalesPartyWiseLolipop';
-import { SalesPartyWise_bar } from '../../ChartOptions/SalesPartyWise_bar';
 import { useNavigate } from 'react-router-dom';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 import '../../Assets/css/Custom.css'
 import Notify from '../Notification/Notify';
+import DataError from '../../Assets/image/Error.gif'
 
 export default function SalesPartyWise() {
-	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 	const [prc, setprc] = useState([]);
 	const contexData = useContext(contex);
-	const [sales, setSales] = useState([])
 	let inputdata = contexData.state;
 	const [loader, setLoader] = useState(true)
 	const [dataloader, setdataLoader] = useState(true)
@@ -26,36 +19,43 @@ export default function SalesPartyWise() {
 	const [data, setdata] = useState([])
 	const [flag, setflag] = useState()
 	const ChartType = "bar"
-	const [demo, setdemo] = useState("bar")
 	const [optionId, setOptionId] = useState()
 	const [flagSort, setflagSort] = useState('')
-	
+
 	const navigate = useNavigate()
 	let optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'bar',
 		height: '400%',
 		width: '100%',
-		chartId: 'Sales Party Wise',
+		chartId: 'SalesPartyWise',
 		Xaxis: name,
 		Yaxis: weight,
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'polar-radialbar',
 		height: '100%',
 		width: '100%',
-		chartId: 'Sales Party Wise',
+		chartId: 'SalesPartyWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optiondonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'Sales Party Wise',
+		chartId: 'SalesPartyWise',
 		propdata: data,
 		radius: [10, 150],
 		label: {
@@ -68,6 +68,10 @@ export default function SalesPartyWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 
 	}
@@ -78,20 +82,24 @@ export default function SalesPartyWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'PieChartSales Party Wise',
+		chartId: 'SalesPartyWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'RadialBarchartSales Party Wise',
+		chartId: 'SalesPartyWise',
 		propdata: data,
 		position: 'center',
 		fontsize: 20,
@@ -105,6 +113,10 @@ export default function SalesPartyWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	let optionPolar = {
@@ -112,17 +124,14 @@ export default function SalesPartyWise() {
 		charttype: 'pie',
 		height: '100%',
 		width: '100%',
-		chartId: 'Sales Party Wise',
+		chartId: 'SalesPartyWise',
 		propdata: data,
 		radius: [10, 110],
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
-	const options_lolipop = SalesPartyWiseLolipop(name, inputdata['column'])
-	const options_bar = SalesPartyWise_bar(name, inputdata['column'])
-	const series = [{
-		name: 'Weight',
-		data: weight
-	}]
-
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
@@ -145,9 +154,6 @@ export default function SalesPartyWise() {
 			fetchSortData()
 		}
 	}, [flagSort])
-	// useEffect(() => {
-	// 	gradientdata()
-	// }, [sales])
 
 	async function getdata() {
 
@@ -155,8 +161,6 @@ export default function SalesPartyWise() {
 
 		await post(inputdata, API.CommonChart, {}, 'post')
 			.then((res) => {
-				let sale = [];
-				var js = {};
 				let name = [];
 				let weight = [];
 				let data = [];
@@ -171,29 +175,14 @@ export default function SalesPartyWise() {
 							name.push(res.data.lstResult[index]['AccountName'])
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
-
-
-						js = { 'product': '', 'thisYearProfit': 0 }
-						if (res.data.lstResult[index]['AccountName'] === null) {
-							js['product'] = 'null'
-						} else {
-							js['product'] = res.data.lstResult[index]['AccountName']
-						}
-						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 						tempprc.push(res.data.lstResult[index]['Prc']);
-						sale.push(js)
+
 
 					}
 					setprc(tempprc);
-					// setSales(sale)
-					var j = []
-					for (let index = 0; index < sale.length; index++) {
-						j.push({ ...sale[index], ['color']: gradientArray[index] })
-					}
 					setdata(data)
 					setName(name)
 					setweight(weight)
-					setSales(j)
 					setdataLoader(false)
 					if (weight.length !== 0) {
 						setLoader(false)
@@ -206,18 +195,6 @@ export default function SalesPartyWise() {
 				}
 			})
 	}
-
-
-
-	// function gradientdata() {
-	// 	var j = []
-	// 	for (let index = 0; index < sales.length; index++) {
-	// 		j.push({ ...sales[index], ['color']: gradientArray[index] })
-	// 	}
-	// 	setSales(j)
-	// }
-
-
 
 	function handleonchangeCurrency() {
 
@@ -244,16 +221,8 @@ export default function SalesPartyWise() {
 
 	});
 
-	function setMargin() {
-		if (weight.length < 7) {
-			return 80
-		} else {
-			return 30
-		}
-	}
-
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "AccountName", columnID: "accountID", componentName: "Sales Party Wise", filterKey: "strSalesParty", chartId: 10, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "a.accountID,c.AccountName", columnName: "AccountName", columnID: "accountID", componentName: "Sales Party Wise", filterKey: "strSalesParty", chartId: 10, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -270,7 +239,9 @@ export default function SalesPartyWise() {
 								post({ "ID": 10, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -280,8 +251,10 @@ export default function SalesPartyWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -322,8 +295,6 @@ export default function SalesPartyWise() {
 
 		await post(inputForSort, API.CommonChart, {}, 'post')
 			.then((res) => {
-				let sale = [];
-				var js = {};
 				let name = [];
 				let weight = [];
 				let tempprc = [];
@@ -335,29 +306,11 @@ export default function SalesPartyWise() {
 							name.push(res.data.lstResult[index]['AccountName'])
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
-
-
-						js = { 'product': '', 'thisYearProfit': 0 }
-						if (res.data.lstResult[index]['AccountName'] === null) {
-							js['product'] = 'null'
-						} else {
-							js['product'] = res.data.lstResult[index]['AccountName']
-						}
-						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-						sale.push(js)
 						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
 					setprc(tempprc);
-					// setSales(sale)
-					var j = []
-					for (let index = 0; index < sale.length; index++) {
-						j.push({ ...sale[index], ['color']: gradientArray[index] })
-					}
-
 					setName(name)
 					setweight(weight)
-					setSales(j)
 					setdataLoader(false)
 					if (weight.length !== 0) {
 						setLoader(false)
@@ -389,14 +342,12 @@ export default function SalesPartyWise() {
 								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
 							</div>
 						</div>
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div id="sorticonSalesParty" className="dropdown-contenticon" onClick={handleclickSort}>
 							{flagSort === 'Label' ? <><a id='Label'>Sort by SalesParty ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesParty ASC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesParty DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesParty DESC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconSalesparty" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
@@ -407,7 +358,6 @@ export default function SalesPartyWise() {
 								{flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
-								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
 							</div>
 						</div>
 					</div>
@@ -425,7 +375,7 @@ export default function SalesPartyWise() {
 							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

@@ -2,50 +2,10 @@ import React, { useEffect, useState, useContext } from 'react'
 import contex from '../../contex/Contex'
 import API from '../../Utility/API'
 import post from '../../Utility/APIHandle'
-
 import collenction1 from '../../Assets/img/svgs bold/collection1.svg'
 import collenction2 from '../../Assets/img/svgs bold/collection 2.svg'
 
 export default function Collection() {
-
-    // const [postData, setPostData] = useState({
-    //     "strBranch": "",
-    //     "strState": "",
-    //     "strCity": "",
-    //     "strItem": "",
-    //     "strSubItem": "",
-    //     "strItemGroup": "",
-    //     "strItemSubitem": "",
-    //     "strPurchaseParty": "",
-    //     "strSalesParty": "",
-    //     "strSaleman": "",
-    //     "strProduct": "",
-    //     "strDesignCatalogue": "",
-    //     "strSaleAging": "",
-    //     "strModeofSale": "",
-    //     "strTeamModeofSale": "",
-    //     "FromDate": "",
-    //     "ToDate": "",
-    //     "strMetalType": "",
-    //     "strDayBook": "",
-    //     "PageNo": 0,
-    //     "PageSize": 0,
-    //     "Search": ""
-    // })
-
-
-    // useEffect(()=>{
-    //     getdata()
-    // },[])
-
-
-    // function getdata() {
-
-    //     post(postData,API.GetCollectionCard,'post')
-    //     .then((res)=>{
-
-    //     })
-    // }
     const contexData = useContext(contex);
     const [weight, setweight] = useState([0])
     const [costAmount, setcostAmount] = useState([0])
@@ -57,7 +17,7 @@ export default function Collection() {
 
     async function getdata() {
         
-        inputdata = { ...inputdata, ['Grouping']: 'r' }
+        inputdata = { ...inputdata, ['Grouping']: 'RSLS' }
 
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
@@ -73,24 +33,6 @@ export default function Collection() {
               }
             })
     }
-    // function format(val) {
-    //     if (localStorage.getItem('value') === 'k') {
-
-    //         return ((((val / 1000).toFixed(1)).toString()) + "K");
-    //     } else if (localStorage.getItem('value') === 'l') {
-    //         return ((((val / 100000).toFixed(1)).toString()) + "L");
-    //     } else if (localStorage.getItem('value') === 'm') {
-    //         return ((((val / 1000000).toFixed(1)).toString()) + "M");
-    //     } else if (localStorage.getItem('value') === 'c') {
-    //         return ((((val / 10000000).toFixed(1)).toString()) + "CR");
-    //     } else if (localStorage.getItem('value') === 'b') {
-    //         return ((((val / 1000000000).toFixed(1)).toString()) + "B");
-    //     } else {
-    //         return Math.floor(val);
-            
-    //     }
-    // }
-
     function format(val) {
         if (localStorage.getItem('value') === 'k') {
           return (Number(parseFloat(((((val / 1000).toFixed(1)).toString())))).toLocaleString('en', {

@@ -1,16 +1,14 @@
 import React, { useContext } from 'react'
-
-import ReactApexChart from 'react-apexcharts';
-import BlackDots from '../../Assets/image/Dots.png'
 import post from '../../Utility/APIHandle'
 import { useEffect, useState } from 'react';
 import API from '../../Utility/API';
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
+
 export default function SalesAgingWise() {
 	const [data, setdata] = useState([])
 	const [loader, setLoader] = useState(true)
@@ -30,9 +28,13 @@ export default function SalesAgingWise() {
 		charttype: 'line',
 		height: '400px',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		Xaxis: name,
 		Yaxis: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	let optionarea = {
@@ -40,9 +42,13 @@ export default function SalesAgingWise() {
 		charttype: 'area',
 		height: '400px',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		Xaxis: name,
-		Yaxis: weight
+		Yaxis: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	let optionbar = {
@@ -50,26 +56,34 @@ export default function SalesAgingWise() {
 		charttype: 'bar',
 		height: '400%',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		Xaxis: name,
 		Yaxis: weight,
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'polar-radialbar',
 		height: '100%',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optiondonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		propdata: data,
 		radius: [10, 150],
 		label: {
@@ -82,6 +96,10 @@ export default function SalesAgingWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 
 	}
@@ -92,20 +110,24 @@ export default function SalesAgingWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		propdata: data,
 		position: 'center',
 		fontsize: 20,
@@ -119,6 +141,10 @@ export default function SalesAgingWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	let optionPolar = {
@@ -126,9 +152,13 @@ export default function SalesAgingWise() {
 		charttype: 'pie',
 		height: '100%',
 		width: '100%',
-		chartId: 'salesAgingWise',
+		chartId: 'SalesAgingWise',
 		propdata: data,
 		radius: [10, 110],
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	function handleclick(e) {
@@ -195,7 +225,7 @@ export default function SalesAgingWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging", chartId: 16, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "a.[rd.caption]", columnName: "rd.caption", columnID: "rd.caption", componentName: "Sales Aging Wise", filterKey: "strSaleAging", chartId: 16, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 
@@ -231,14 +261,15 @@ export default function SalesAgingWise() {
 				if (res.data !== undefined) {
 					if (res.data.lstResult.length === 0) {
 						setflag(ChartType)
-
 						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 16, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 							.then((res) => {
 
 								post({ "ID": 16, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -248,8 +279,10 @@ export default function SalesAgingWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -328,15 +361,13 @@ export default function SalesAgingWise() {
 
 
 	return (
-		<div class="col-lg-6 col-md-6 col-12">
+		<div class="col-lg-12 col-md-6 col-12">
 			<div class="graph-card">
 				<div class="card-title-graph">
 					<div className="col-sm-10 col-md-10 col-10" onClick={handleNavigation}>
 						<p><i class="fas fa-chart-line"></i> Sales Aging Wise</p>
 					</div>
-
-					< div className="col-sm-2 col-md-2 col-2">
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
+					<div className="col-sm-2 col-md-2 col-2">
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
 								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -345,17 +376,14 @@ export default function SalesAgingWise() {
 								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
 							</div>
 						</div>
-						<div id="sorticonSalesAging" className="dropdown-contenticon" onClick={handleclickSort}>
+						<div id="sorticonSalesAging" className="dropdown-contenticon" onClick={handleclickSort} >
 							{flagSort === 'Label' ? <><a id='Label'>Sort by SalesAging ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label'>Sort by SalesAging ASC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'Label-desc' ? <><a id='Label-desc'>Sort by SalesAging DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Label-desc'>Sort by SalesAging DESC&nbsp;</a><hr className='custom-hr' /></>}
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
-
 							<div id="myDropdowniconSalesAging" className="dropdown-contenticon" onClick={handleclick}>
-
 								{flag === 'line' ? <><a id='line' className='line' >line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='line' className='line' >line </a><hr className='custom-hr' /></>}
 								{flag === 'area' ? <><a id='area' className='area'>area chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='area' className='area'>area chart</a><hr className='custom-hr' /></>}
 								{flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
@@ -368,8 +396,6 @@ export default function SalesAgingWise() {
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 
 				{dataloader !== true ?
@@ -386,7 +412,7 @@ export default function SalesAgingWise() {
 							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

@@ -2,16 +2,12 @@ import React from 'react'
 import API from '../../Utility/API';
 import { useEffect, useState, useContext } from 'react';
 import post from '../../Utility/APIHandle'
-import Gradient from "javascript-color-gradient";
-import ReactApexChart from 'react-apexcharts';
 import contex from '../../contex/Contex';
 import '../../Assets/css/Custom.css'
-import { ItemWithSubItemWise_bar } from '../../ChartOptions/ItemWithSubItemWise_bar';
-import { ItemWithSubItemWise_vbar } from '../../ChartOptions/ItemWithSubItemWise_vbar';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
-
+import DataError from '../../Assets/image/Error.gif'
 
 export default function ItemWithSubItemWise() {
 	const contexData = useContext(contex);
@@ -24,7 +20,6 @@ export default function ItemWithSubItemWise() {
 	const ChartType = "bar"
 	const [optionId, setOptionId] = useState()
 	const [flagSort, setflagSort] = useState('')
-	const [sales, setSales] = useState([])
 	const [data, setdata] = useState([]);
 	const [prc, setprc] = useState([]);
 	let optionbar = {
@@ -32,10 +27,14 @@ export default function ItemWithSubItemWise() {
 		charttype: 'bar',
 		height: '400%',
 		width: '100%',
-		chartId: 'itemWithSubItemWise',
+		chartId: 'ItemWithSubItemWise',
 		Xaxis: name,
 		Yaxis: weight,
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	let barHorizontal = {
@@ -43,27 +42,35 @@ export default function ItemWithSubItemWise() {
 		charttype: 'round-horizontal-bar',
 		height: '100%',
 		width: '100%',
-		chartId: 'itemWithSubItemWise',
+		chartId: 'ItemWithSubItemWise',
 		Xaxis: name,
 		Yaxis: weight,
 		divname: 'crancy-progress-card card-contain-graph',
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'polar-radialbar',
 		height: '100%',
 		width: '100%',
-		chartId: 'itemWithSubItemWise',
+		chartId: 'ItemWithSubItemWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optiondonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'itemWithSubItemWise',
+		chartId: 'ItemWithSubItemWise',
 		propdata: data,
 		radius: [10, 150],
 		label: {
@@ -76,6 +83,10 @@ export default function ItemWithSubItemWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 
 	}
@@ -86,20 +97,24 @@ export default function ItemWithSubItemWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'PieChartitemWithSubItemWise',
+		chartId: 'ItemWithSubItemWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'RadialBarchartitemWithSubItemWise',
+		chartId: 'ItemWithSubItemWise',
 		propdata: data,
 		position: 'center',
 		fontsize: 20,
@@ -113,18 +128,13 @@ export default function ItemWithSubItemWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	const navigate = useNavigate()
-
-	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
-
-	const options_bar = ItemWithSubItemWise_bar(name, inputdata['column']);
-	const options_vbar = ItemWithSubItemWise_vbar(name, inputdata['column']);
-	const series = [{
-		data: weight
-	}]
-
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconbranch' && e.target.id !== '') {
@@ -136,15 +146,6 @@ export default function ItemWithSubItemWise() {
 		}
 
 	}
-
-	function setMargin() {
-		if (weight.length < 7) {
-			return 80
-		} else {
-			return 30
-		}
-	}
-
 
 
 	useEffect(() => {
@@ -165,8 +166,6 @@ export default function ItemWithSubItemWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
-				let sale = [];
-				var js = {};
 				let data = [];
 				let tempprc = [];
 				if (res.data !== undefined) {
@@ -179,15 +178,6 @@ export default function ItemWithSubItemWise() {
 							name.push(res.data.lstResult[index]['ItemSubNAme'])
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
-						js = { 'product': '', 'thisYearProfit': 0 }
-						if (res.data.lstResult[index]['ItemSubNAme'] === null) {
-							js['product'] = 'null'
-						} else {
-							js['product'] = res.data.lstResult[index]['ItemSubNAme']
-						}
-						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-						sale.push(js)
 						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
 					setprc(tempprc);
@@ -200,11 +190,6 @@ export default function ItemWithSubItemWise() {
 					setdata(data)
 					setName(name)
 					setweight(weight)
-					var j = []
-					for (let index = 0; index < sale.length; index++) {
-						j.push({ ...sale[index], ['color']: gradientArray[index] })
-					}
-					setSales(j)
 					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
 					alert(res['Error']);
@@ -227,7 +212,7 @@ export default function ItemWithSubItemWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item With Sub Item Wise", filterKey: "strItemSubitem", chartId: 7, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "f.ItemSubNAme,f.ItemSubID", columnName: "ItemSubNAme", columnID: "ItemSubID", componentName: "Item With Sub Item Wise", filterKey: "strItemSubitem", chartId: 7, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -242,8 +227,14 @@ export default function ItemWithSubItemWise() {
 							.then((res) => {
 								post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 8, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 									.then((res) => {
+										
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult !== undefined) {
+												if (res.data.lstResult.length !== 0 ) {
+													setOptionId(res.data.lstResult[0].ChartOptionID)
+												}	
+											}
+											
 										} else {
 											alert(res['Error']);
 										}
@@ -253,8 +244,10 @@ export default function ItemWithSubItemWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -310,8 +303,6 @@ export default function ItemWithSubItemWise() {
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name = [];
 			let weight = [];
-			let sale = [];
-			var js = {};
 			let data = [];
 			let tempprc = [];
 			if (res.data !== undefined) {
@@ -324,16 +315,7 @@ export default function ItemWithSubItemWise() {
 						name.push(res.data.lstResult[index]['ItemSubNAme'].toLowerCase())
 					}
 					weight.push(res.data.lstResult[index][inputdata['column']])
-					js = { 'product': '', 'thisYearProfit': 0 }
-					if (res.data.lstResult[index]['ItemSubNAme'] === null) {
-						js['product'] = 'null'
-					} else {
-						js['product'] = res.data.lstResult[index]['ItemSubNAme']
-					}
-					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 					tempprc.push(res.data.lstResult[index]['Prc']);
-					sale.push(js)
-
 				}
 				setprc(tempprc);
 				setdataLoader(false)
@@ -345,11 +327,6 @@ export default function ItemWithSubItemWise() {
 				setdata(data)
 				setName(name)
 				setweight(weight)
-				var j = []
-				for (let index = 0; index < sale.length; index++) {
-					j.push({ ...sale[index], ['color']: gradientArray[index] })
-				}
-				setSales(j)
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			} else {
 				alert(res['Error']);
@@ -366,7 +343,6 @@ export default function ItemWithSubItemWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
 								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -381,7 +357,6 @@ export default function ItemWithSubItemWise() {
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconitemsub" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >bar</a><hr className='custom-hr' /></>}
@@ -411,7 +386,7 @@ export default function ItemWithSubItemWise() {
 							{flag === 'barv' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

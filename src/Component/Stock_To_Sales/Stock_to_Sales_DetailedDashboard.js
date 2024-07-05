@@ -75,7 +75,6 @@ export default function Stock_to_Sales_DetailedDashboard() {
     }, [])
 
     useEffect(() => {
-        console.log(mainChartProps, "mainchart");
         if (JSON.stringify(mainChartProps) !== JSON.stringify({}) && mainChartProps.componentName !== null) {
             if (mainChartProps.componentName === 'Product Wise') {
                 setDefaultChartProps({ name: 'Branch', iconClass: 'fas fa-chart-pie', group: '', column: '', columnID: '', componentName: 'Branch Wise', filter_key1: '', filter_key2: '', ChartMode:'2', FromDate: mainChartProps.FromDate, ToDate : mainChartProps.ToDate  })
@@ -141,6 +140,7 @@ export default function Stock_to_Sales_DetailedDashboard() {
 
 
     return (
+
         <StockToSalesContext>
             <Navbar />
             <div id="crancy-dark-light">
@@ -180,13 +180,7 @@ export default function Stock_to_Sales_DetailedDashboard() {
                                                     </ul>
                                                 </div>
                                                 <div class="crancy-featured-default-box">
-                                                    {/* <div class="crancy-featured-user__fcontent graphdetaildefault mb-0">
-                                                        <form class="form-check checkbox-filter">
-                                                           
-                                                            <input class="form-check-input" type="checkbox" value="" id="DefaultCheckBoxSeconScreen" />
-                                                            <label class="form-check-label checkbox-filter-label graphdetail-text" for="DefaultCheckBoxSeconScreen">Set as Default</label>
-                                                        </form>
-                                                    </div> */}
+                                                   
                                                 </div>
 
                                             </div>

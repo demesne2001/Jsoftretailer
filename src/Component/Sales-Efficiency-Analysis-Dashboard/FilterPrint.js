@@ -1,60 +1,11 @@
 import React, { useContext } from 'react';
 import { Table } from 'react-bootstrap';
 import contex from '../contex/Contex';
-import { json } from 'react-router-dom';
 
 
 
 export default function FilterPrint() {
   const filter = useContext(contex);
-  const default_filter = {
-    strBranch: "",
-    strState: "",
-    strCity: "",
-    strItem: "",
-    strSubItem: "",
-    strItemGroup: "",
-    strItemSubitem: "",
-    strPurchaseParty: "",
-    strDesignCodeID: "",
-    strSalesParty: "",
-    strSaleman: "",
-    strProduct: "",
-    strDesignCatalogue: "",
-    strDesignCodeID: "",
-    strSaleAging: "",
-    strModeofSale: "",
-    strTeamModeofSale: "",
-    strRegionID: "",
-    FromDate: "",
-    ToDate: "",
-    strMetalType: "",
-    strDayBook: "",
-    PageNo: 0,
-    PageSize: 9999,
-    Search: "",
-    Grouping: "",
-    FilterIndex: "",
-    strBranchValue: "",
-    strItemValue: "",
-    strSubItemValue: "",
-    strItemGroupValue: "",
-    strItemSubitemValue: "",
-    strPurchasePartyValue: "",
-    strSalesPartyValue: "",
-    strSalemanValue: "",
-    strProductValue: "",
-    strDesignCatalogueValue: "",
-    strSaleAgingValue: "",
-    strModeofSaleValue: "",
-    strTeamModeofSaleValue: "",
-    strRegionValue: "",
-    strDayBookValue: "",
-    strStateValue: '',
-    strMonth: "",
-    strFinYear: "",
-    strMonthValue: ""
-  }
 
 
   return (

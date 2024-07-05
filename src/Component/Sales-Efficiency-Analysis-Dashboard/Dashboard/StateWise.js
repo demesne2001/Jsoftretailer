@@ -1,18 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import ReactApexChart from 'react-apexcharts';
-import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
-
-import BlackDots from '../../Assets/image/Dots.png'
-import { StateWise_Treemap } from '../../ChartOptions/StateWise_Treemap';
 import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-
+import DataError from '../../Assets/image/Error.gif'
 
 export default function StateWise() {
 	const [loader, setLoader] = useState(true)
@@ -30,13 +24,6 @@ export default function StateWise() {
 	const [Map, setMap] = useState([]);
 	const [prc, setprc] = useState([]);
 
-	// const options_semidonut = StateWise_SemiDonut(name, state, inputdata['column'])
-	// const options_Treemap = StateWise_Treemap(name, inputdata['column'])
-	const series_treemap = [
-		{
-			data: state
-		}
-	]
 	let semiDonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
@@ -54,6 +41,10 @@ export default function StateWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	let map = {
@@ -63,6 +54,10 @@ export default function StateWise() {
 		height: '100%',
 		width: '100%',
 		chartId: 'StateWise',
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let treemap = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -74,32 +69,38 @@ export default function StateWise() {
 				data: state
 			}
 		],
+		column: inputdata.column
 	}
 	var optionbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'bar',
 		height: '400%',
 		width: '100%',
-		chartId: 'ItemWise',
+		chartId: 'StateWise',
 		Xaxis: name,
 		Yaxis: weight,
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	var barHorizontal = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'round-horizontal-bar',
 		height: '100%',
 		width: '100%',
-		chartId: 'ItemWise',
+		chartId: 'StateWise',
 		Xaxis: name,
 		Yaxis: weight,
 		divname: 'crancy-progress-card card-contain-graph',
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
-	const series_semidonut = weight;
-
 	const ChartType = "treemap"
-
 	function handleclick(e) {
 
 		if (e.target.id !== 'save' && e.target.id !== 'myDropdowniconstate' && e.target.id !== '') {
@@ -125,11 +126,6 @@ export default function StateWise() {
 
 	}, [inputdata])
 
-	// useEffect(() => {
-	// 	fetchOption()
-	// 	getdata()
-	// }, [inputdata['column']])
-
 	async function getdata() {
 		inputdata = { ...inputdata, ['Grouping']: 'k.stateID,k.Statename', ['SortByLabel']: 'Statename' }
 
@@ -144,7 +140,6 @@ export default function StateWise() {
 				if (res.data !== undefined) {
 					for (let index = 0; index < res.data.lstResult.length; index++) {
 						if (res.data.lstResult[index]['Statename'] != null) {
-							// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
 							name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
 							name1.push(res.data.lstResult[index]['Statename'])
 							data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['Statename'] })
@@ -153,7 +148,7 @@ export default function StateWise() {
 						weight.push(res.data.lstResult[index][inputdata['column']])
 						tempprc.push(res.data.lstResult[index]['Prc']);
 					}
-					// setweight(weight)
+
 					setdata(data)
 					setState(name)
 					setName(name1)
@@ -193,22 +188,6 @@ export default function StateWise() {
 		}
 
 	}
-
-	// document.getElementById('root').onclick = function(event) {
-
-	// 	if (event.target.className !== 'dropbtn') {
-	// 		document.getElementById("myDropdowniconstate").style.display = "none";
-
-	// 	}
-	// }
-	// document.getElementById('root').onclick = function(event) {
-	// 	if (event.target.className !== 'dropbtn') {
-	// 		if (document.getElementById("myDropdowniconstate") !== null) {
-	// 			document.getElementById("myDropdowniconstate").style.display = "none"
-	// 		}
-	// 	}
-	// }
-
 	document.getElementById("root").addEventListener("click", function (event) {
 
 		if (event.target.id !== 'icon_drop' && event.target.className !== 'fa-solid fa-arrow-down-short-wide sorticon') {
@@ -220,7 +199,7 @@ export default function StateWise() {
 
 	});
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2 , FromDate: inputdata.FromDate, ToDate : inputdata.ToDate}, replace: true })
+		navigate('/graph-detail', { state: { grouping: "k.stateID,k.Statename", columnName: "Statename", columnID: "stateID", componentName: "State Wise", filterKey: "strState", chartId: 2, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -237,7 +216,9 @@ export default function StateWise() {
 								post({ "ID": 2, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -248,8 +229,10 @@ export default function StateWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 
 					}
 				} else {
@@ -300,7 +283,6 @@ export default function StateWise() {
 			if (res.data !== undefined) {
 				for (let index = 0; index < res.data.lstResult.length; index++) {
 					if (res.data.lstResult[index]['Statename'] != null) {
-						// name.push({ x: res.data.lstResult[index]['Statename'] + "\n" +"(" +res.data.lstResult[index][inputdata['column']]+")", y: res.data.lstResult[index][inputdata['column']] })
 						name.push({ x: res.data.lstResult[index]['Statename'], y: res.data.lstResult[index][inputdata['column']] })
 						name1.push(res.data.lstResult[index]['Statename'])
 						data.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['Statename'] })
@@ -309,7 +291,6 @@ export default function StateWise() {
 					weight.push(res.data.lstResult[index][inputdata['column']])
 					tempprc.push(res.data.lstResult[index]['Prc']);
 				}
-				// setweight(weight)
 				setdata(data)
 				setState(name)
 				setName(name1)
@@ -344,7 +325,6 @@ export default function StateWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2" >
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
 								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -359,7 +339,6 @@ export default function StateWise() {
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 
 							<div id="myDropdowniconstate" className="dropdown-contenticon" onClick={handleclick}>
@@ -373,55 +352,12 @@ export default function StateWise() {
 						</div>
 
 					</div>
-
-
-
-
-					{/* <i class="fas fa-external-link-alt"></i> */}
 				</div>
-
-				{/* <p class="geex-content__header__quickaction__link  geex-btn__customizer dots" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu} >
-						<img src={BlackDots} className='dropbtn' />
-					</p>
-					<div id="myDropdownState" class="dropdown-content" onMouseEnter={handledropdownMenu} onMouseLeave={handledropdownMenu}>
-						<a id='option1' onClick={() => handleSelectedChart(1)}>Tree Map</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(2)}>Radial Bar</a><hr class="custom-hr" />
-						<a id='option2' onClick={() => handleSelectedChart(3)}>Semi Doughnut</a><hr class="custom-hr" />
-					</div> */}
-
-
-
-
-
-
-
-				{/* {weight.length !== 0 ?
-					<>
-						<div className="crancy-progress-card card-contain-graph">
-
-							{flag === 'donut' ? <ReactApexChart options={options_semidonut} type={flag} series={series_semidonut} height={350} /> : null}
-							{flag === 'treemap' ? <ReactApexChart options={options_Treemap} type={flag} series={series_treemap} height={350} /> : null}
-						</div>
-						<div id="html-dist"></div></> :
-					<div className="crancy-progress-card card-contain-graph">
-						<div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-							<div class="dot-spinner__dot"></div>
-						</div>
-					</div>
-				} */}
 				{dataloader !== true ?
 					loader !== true ?
 						<>
 
 							<div className="crancy-progress-card card-contain-graph">
-
 								{flag === 'map' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(map))} /> : null}
 								{flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(semiDonut))} /> : null}
 								{flag === 'treemap' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(treemap))} /> : null}
@@ -430,7 +366,7 @@ export default function StateWise() {
 							</div>
 							<div id="html-dist"></div></> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img src={DataError} style={{ height: '80%', width: '80%' }} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

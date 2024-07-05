@@ -93,12 +93,14 @@ const ContexState1 = (props) => {
 
     const [defaultchartFilterName,  setdefaultchartFilterName] = useState("");
     const [TageImageFilterName,  settagImageFilterName] = useState("");
+    const [defaultchartValue,  setdefaultchartValue] = useState("");
+    const [TageImageValue,  settagImageValue] = useState("");
 
     let Index = localStorage.getItem("ThemeIndex")
 	const [ThemeIndex, setThemeIndex] = useState(Index)
     return (
 
-        <contex.Provider value={{setThemeIndex, ThemeIndex, setdefaultchartFilterName, defaultchartFilterName, TageImageFilterName , settagImageFilterName , state: state, SetState: SetState, defaultchart, setDefaultChart, chartImage, setchartImage }}>
+        <contex.Provider value={{defaultchartValue,setdefaultchartValue,TageImageValue,settagImageValue,setThemeIndex, ThemeIndex, setdefaultchartFilterName, defaultchartFilterName, TageImageFilterName , settagImageFilterName , state: state, SetState: SetState, defaultchart, setDefaultChart, chartImage, setchartImage }}>
 
             {props.children}
 

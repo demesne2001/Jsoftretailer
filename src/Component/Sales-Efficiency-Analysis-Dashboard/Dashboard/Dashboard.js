@@ -22,20 +22,12 @@ import MonthWise from './MonthWise'
 import YearWise from './YearWise'
 import SalesAgingWise from './SalesAgingWise'
 import ModeofSalesWise from './ModeofSalesWise'
-import TeamModeofSalesWise from './TeamModeofSalesWise'
 import { NotificationContainer } from 'react-notifications';
 import ContexState from '../../contex/ContexState'
 import FilterPrint from '../FilterPrint'
 import Navbar from '../NavigationBar/Navbar'
 import ExportToExcel from './ExportToExcel'
 import { useNavigate } from 'react-router-dom';
-
-// import bootstrapSelectMin from '../../Assets/js/bootstrap-select.min';
-// import bootstrapMin from '../../Assets/js/bootstrap.min'
-// import jqueryMigrate from '../../Assets/js/jquery-migrate';
-// import jquaryMin from '../../Assets/js/jquery.min'
-// import main from '../../Assets/js/main'
-// import popperMin from '../../Assets/js/popper.min';
 
 
 export default function Dashboard() {
@@ -77,8 +69,9 @@ export default function Dashboard() {
         localStorage.setItem('load', (parseInt(localStorage.getItem('load')) + 1).toString())
     }
 
+   
     return (
-        <div>
+
             <ContexState>
                 <Navbar />
                 <Header />
@@ -92,7 +85,7 @@ export default function Dashboard() {
                                 <div className="crancy-dsinner">
                                     <div id='rootElementId'  onScroll={handleOnscroll}>
 
-                                        <div className="row">
+                                        <div className="row" id='cardrow'>
 
                                             <Piegraph1 />
                                             <SalesEfficiency />
@@ -119,8 +112,7 @@ export default function Dashboard() {
                                             <MonthWise />
                                             <YearWise />
                                             <SalesAgingWise />
-                                            <ModeofSalesWise />
-                                            {/* <TeamModeofSalesWise/> */}
+                                            {/* <ModeofSalesWise /> */}
                                         </div>
                                     </div>
                                 </div>
@@ -132,14 +124,6 @@ export default function Dashboard() {
 
                 <div id='pdf-div'><FilterPrint /></div>
 
-                {/* <script type="text/javascript" src={bootstrapSelectMin}></script>
-            <script type="text/javascript" src={bootstrapMin}></script>
-            <script type="text/javascript" src={jqueryMigrate}></script>
-            <script type="text/javascript" src={jquaryMin}></script>
-            <script type="text/javascript" src={main}></script>
-            <script type="text/javascript" src={popperMin}></script> */}
-
             </ContexState>
-        </div>
     )
 }

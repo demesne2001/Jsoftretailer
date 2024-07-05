@@ -1,7 +1,3 @@
-
-
-
-
 function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,ContextObj) {
    
     function ComboChartoption(lstCombo) {
@@ -45,8 +41,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
                 events: {
                     dataPointSelection: (event, chartContex, config) => {
                         if (XAxisID[config.dataPointIndex] !== null && XAxisID[config.dataPointIndex] !== undefined) {
-                            console.log(XAxisID[config.dataPointIndex], "on Click");
-                            console.log(XAxisID, "ID Click");
                               }
                     }
                 },
@@ -98,7 +92,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
             YAxis1.push(item[YLabel[0]])
             XAxis.push(item[XLabel])
             XAxisID.push(item[XLabelID])
-            console.log('+++++++++++++++++++>',XLabel,XLabelID,item[XLabelID],item[XLabel])
             XYCombian.push({ x: item[XLabel], y: item[YLabel[0]] })
         });
         YAxis.push(YAxis1)
@@ -121,7 +114,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
             YAxis3.push(item[YLabel[2]])
             XAxis.push(item[XLabel])
             XAxisID.push(item[XLabelID])
-            console.log('itemWiseData', item[XLabel])
         });
 
         YAxis.push(YAxis1)
@@ -141,10 +133,7 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
                 },
                 events: {
                     dataPointSelection: (event, chartContex, config) => {
-                        console.log('On click Event',XAxisID,config.dataPointIndex,SrNo)
                         if (XAxisID[config.dataPointIndex] !== null && XAxisID[config.dataPointIndex] !== undefined) {
-                            console.log(XAxisID[config.dataPointIndex], "on Click");
-                            console.log(XAxisID, "ID Click");
                             ContextObj.SetState({...ContextObj.state,"DependancyID":XLabelID,"ID":XAxisID[config.dataPointIndex]})
                               }
                     }
@@ -193,8 +182,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
                 events: {
                     dataPointSelection: (event, chartContex, config) => {
                         if (XAxisID[config.dataPointIndex] !== null && XAxisID[config.dataPointIndex] !== undefined) {
-                            console.log(XAxisID[config.dataPointIndex], "on Click");
-                            console.log(XAxisID, "ID Click");
                               }
                     }
                 },
@@ -233,10 +220,8 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
                 type: TypeName,
                 events: {
                     dataPointSelection: (event, chartContex, config) => {
-                        console.log('On click Event',XAxisID,config.dataPointIndex,SrNo)
                         if (XAxisID[config.dataPointIndex] !== null && XAxisID[config.dataPointIndex] !== undefined) {
-                            console.log(XAxisID[config.dataPointIndex], "on Click");
-                            console.log(XAxisID, "ID Click");
+
                             ContextObj.SetState({...ContextObj.state,"DependancyID":XLabelID,"ID":XAxisID[config.dataPointIndex]})
                               }
                     }
@@ -273,7 +258,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
         ReturnResult['series'] = ComboSer
         ReturnResult['option'] = option
         ReturnResult['type'] = 'line'
-        console.log('BarLine', ReturnResult)
     }
     else if ('AreaBar' === TypeName) {
         if (YLabel.length == 2) {
@@ -287,7 +271,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
         ReturnResult['series'] = ComboSer
         ReturnResult['option'] = option
         ReturnResult['type'] = 'line'
-        console.log('BarLine', ReturnResult)
 
     }
     else if ('Barline' === TypeName) {
@@ -302,7 +285,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
         ReturnResult['series'] = ComboSer
         ReturnResult['option'] = option
         ReturnResult['type'] = 'line'
-        console.log('BarLine', ReturnResult)
 
     }
     else if ('LineBar' === TypeName) {
@@ -317,7 +299,6 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
         ReturnResult['series'] = ComboSer
         ReturnResult['option'] = option
         ReturnResult['type'] = 'line'
-        console.log('BarLine', ReturnResult)
 
     }
     else if ('BarLineArea' === TypeName) {
@@ -332,10 +313,8 @@ function DataFormat(resultdata, XLabel, YLabelName, TypeName,XLabelID,SrNo,Conte
         ReturnResult['series'] = ComboSer
         ReturnResult['option'] = option
         ReturnResult['type'] = 'line'
-        console.log('BarLine', ReturnResult)
 
     }
-    console.log('XAxisID',XAxisID)
     return ReturnResult
 }
 

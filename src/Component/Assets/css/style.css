@@ -220,7 +220,7 @@
 }
 
 .crancy__dropdown ul li a {
-    display: ;
+
     padding: 10px 0
 }
 
@@ -772,9 +772,9 @@
     font-size: 14px !important
 }
 
-.crancy-sidebar_btn.crancy-heading__tabs:after {
+/* .crancy-sidebar_btn.crancy-heading__tabs:after {
     display: ;
-}
+} */
 
 .crancy-sidebar_btn.crancy-heading__tabs i {
     padding-left: 5px
@@ -1387,7 +1387,6 @@ button.crancy-item__btn {
 
 .crancy-table__amount img {
     max-width: 18px;
-    height:
 }
 
 .crancy-table__main .crancy-table__column-2 {
@@ -1616,7 +1615,6 @@ button.crancy-item__btn {
 
 .crancy-todolist__menu--list li a {
     display: flex;
-    flex-direction: ;
     align-items: center;
     color: #9aa2b1;
     font-weight: 400;

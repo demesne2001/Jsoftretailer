@@ -3,9 +3,6 @@ import contex from '../../contex/Contex';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
 import API from '../../Utility/API'
 import post from '../../Utility/APIHandle'
-import ReactApexChart from 'react-apexcharts';
-
-
 
 export default function Piegraph1() {
   const contexData = useContext(contex);
@@ -20,18 +17,12 @@ export default function Piegraph1() {
   }, [inputdata])
 
   async function getdata() {
-
-    inputdata = { ...inputdata, ['Grouping']: 'T,sr' }
-
+    inputdata = { ...inputdata, ['Grouping']: 'T,SLSRT' }
     await post(inputdata, API.CommonCard, {}, 'post')
       .then((res) => {
-
-
+        console.log(res)
         if (res.data !== undefined) {
-
-
           if (res.data.lstResult.length > 0) {
-
             setweight(res.data.lstResult[0]['NetWeight'])
             setname(res.data.lstResult[0]['SalesType'])
             setweight1(res.data.lstResult[1] ? res.data.lstResult[1]['NetWeight'] : 0)
@@ -45,12 +36,15 @@ export default function Piegraph1() {
       })
   }
 
-  const series = [weight, weight1]
   let donut = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'donut',
     height: '100%',
     width: '100%',
+    tooltip:{
+			formatter:`{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc'?'%':""}`,
+			confine:true  
+		},
     legend: {
       type: 'scroll',
       orient: 'vertical',
@@ -98,26 +92,10 @@ export default function Piegraph1() {
 
     <div className="col-xl-2 col-lg-4 col-md-4 col-12">
       <div className="graph-card">
-        {weight.length !== 0 ?
-          <div className="crancy-progress-card top-graph-card">
-            {/* <div className="text-center"> */}
-
-            {/* <ReactApexChart options={options} series={series} type="donut" /> */}
-            <AlphaDashChart obj={JSON.parse(JSON.stringify(donut))} />
-            {/* </div> */}
-          </div> :
-          <div className="crancy-progress-card top-graph-card">
-            <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-              <div class="dot-spinner__dot" style={{ top: "7px" }}></div>
-            </div>
-          </div>}
+      <div className="crancy-progress-card top-graph-card">
+              <AlphaDashChart obj={JSON.parse(JSON.stringify(donut))} />
+          </div> 
+        
 
       </div>
     </div>

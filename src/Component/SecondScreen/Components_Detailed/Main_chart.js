@@ -3,18 +3,12 @@ import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import { useState, useEffect, useContext } from 'react';
 import contex from '../../contex/Contex';
-import ReactApexChart from 'react-apexcharts';
 import './../../Assets/css/Custom.css';
-import Slider from "react-slick";
-import { secondScreen_hbar } from '../../ChartOptions/SecondScreen/Hbar';
-import { secondScreen_donut } from '../../ChartOptions/SecondScreen/Donut';
-import secondScreen_radial from '../../ChartOptions/SecondScreen/Radial';
-import { BranchWise_donut } from '../../ChartOptions/BranchWise_donut';
-import axios from 'axios';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-
+import DataError from '../../Assets/image/Error.gif'
 
 export default function Main_chart(props) {
+
     const contextData = useContext(contex);
     const [name, setName] = useState([])
     const [id, setId] = useState([])
@@ -24,21 +18,14 @@ export default function Main_chart(props) {
     const [flagSort, setflagSort] = useState('');
     const [prc, setprc] = useState([]);
     const [flagShowId, setFlagShowId] = useState(true)
-    // const [tableFlag, setTableFlag] = useState(false)
     const [componentName, setComponentName] = useState('')
     let input = contextData.state;
     const [loader, setLoader] = useState(true);
     const [dataloader, setdataLoader] = useState(true);
+    let percentage;
+    
 
-    const options_hbar = secondScreen_hbar(name, contextData, id, props.state.filterKey)
-    const options_donut = secondScreen_donut(name, contextData, id, props.state.filterKey)
-    // const options_radialbar = secondScreen_radial(name)
-
-    const series_bar = [{
-        data: weight
-    }]
-
-    const series_donut = handleSeriesData()
+    
     useEffect(() => {
         if (flagSort !== '') {
             fetchSortData()
@@ -59,29 +46,7 @@ export default function Main_chart(props) {
     async function fetchData() {
 
         input = { ...input, ['Grouping']: props.state.grouping, ['FromDate']: props.state.FromDate, ['ToDate']: props.state.ToDate };
-        // await axios.post(API.GetDetailCommanChart, input).then((res) => {
-        //     let name = [];
-        //     let weg = [];
-        //     let id1 = [];
 
-        //     if (res.data.lstResult.length !== 0) {
-
-        //         for (let i = 0; i < res.data.lstResult.length; i++) {
-
-        //             name.push(res.data.lstResult[i][props.state.columnName] ? res.data.lstResult[i][props.state.columnName] : 'null');
-        //             weg.push(res.data.lstResult[i]['NetWeight']);
-        //             id1.push(res.data.lstResult[i][props.state.columnID]);
-        //         }
-
-
-        //         setName(name);
-        //         setweight(weg);
-        //         setId(id1)
-        //         setdata(res.data.lstResult)
-        //     }
-        // })
-
-        console.log(input, "main chart input");
 
         await post(input, API.GetDetailCommanChart, {}, "post").then((res) => {
             let name = [];
@@ -90,7 +55,6 @@ export default function Main_chart(props) {
             let tempdata = [];
             let tempprc = [];
             if (res.data !== undefined) {
-                console.log(res.data.lstResult.length, "sdffe");
                 setLoader(false)
                 if (res.data.lstResult.length !== 0) {
 
@@ -109,7 +73,6 @@ export default function Main_chart(props) {
                     setweight(weg);
                     setId(id1)
                     setdata(tempdata)
-                    console.log(tempdata, "sdffe");
                     setdataLoader(false)
 
                 } else {
@@ -121,40 +84,6 @@ export default function Main_chart(props) {
         })
 
     }
-
-
-    // const series = weight
-
-    function handleSeriesData() {
-        let percarray = []
-        let sum = 0;
-
-        for (let i = 0; i < weight.length; i++) {
-            sum += weight[i];
-        }
-
-        for (let index = 0; index < weight.length; index++) {
-            percarray.push((weight[index] / sum) * 100)
-        }
-        return percarray
-
-    }
-
-    function flip() {
-        if (document.getElementById("filp").style.transform === "rotateY(360deg)" || document.getElementById("filp").style.transform === "") {
-
-            document.getElementById("filp").style.transform = "rotateY(180deg)"
-        } else {
-
-            document.getElementById("filp").style.transform = "rotateY(360deg)"
-        }
-
-    }
-
-    // function tableView() {
-
-    // setTableFlag(true)
-    // }
 
     function handleChartSelect(e) {
         if (e.target.id !== "") {
@@ -182,15 +111,6 @@ export default function Main_chart(props) {
             }
         }
     }
-
-    // window.onclick = function (event) {
-    //     if (event.target.id !== 'dropdownbutton') {
-    //         if (document.getElementsByClassName("dropdown-contenticon-second-screen")[0] !== undefined) {
-
-    //             document.getElementsByClassName("dropdown-contenticon-second-screen")[0].style.display = "none";
-    //         }
-    //     }
-    // }
     document.getElementById("root").addEventListener("click", function (event) {
 
         if (event.target.className !== 'fa-solid fa-arrow-down-short-wide sort-icon-second-screen' && event.target.id !== 'dropdownbutton') {
@@ -244,11 +164,12 @@ export default function Main_chart(props) {
     } else {
         sliderbol = true
     }
+    dividedata(name.length, 100)
     let barHorizontal = {
         themeId: contextData.ThemeIndex,
         charttype: 'round-horizontal-bar',
         height: '100%',
-        chartId: 'Main_chart_secondScreen',
+        chartId: 'Mainchart',
         width: '100%',
         Xaxis: name,
         Yaxis: weight,
@@ -257,17 +178,21 @@ export default function Main_chart(props) {
         idlst: id,
         divname: 'flip-card-back',
         sliderflag: sliderbol,
-        datazoomlst: [0, 100, 0, 50],
-        prclst:prc
+        datazoomlst: [0, 100, 0, percentage],
+        prclst:prc,
+        tooltip: {
+            formatter: '{b}<br> NetWeight - {c}',
+            confine: true
+        }
 
     }
-    console.log(props.state.filterKey, "key");
+
     let donutoption = {
         themeId: contextData.ThemeIndex,
         charttype: 'donut',
         height: '100%',
         width: '100%',
-        chartId: 'Main_chart_secondScreen',
+        chartId: 'Mainchart',
         propdata: data,
         idkey: props.state.filterKey,
         idlst: id,
@@ -281,6 +206,10 @@ export default function Main_chart(props) {
                 fontSize: 20,
                 fontWeight: 'bold'
             }
+        },
+        tooltip: {
+            formatter: '{b}<br> NetWeight - {c}',
+            confine: true
         }
     }
     let updatedstate = {}
@@ -296,22 +225,21 @@ export default function Main_chart(props) {
         }
         contextData.setDefaultChart({ ...contextData.defaultchart, [props.state.filterKey]: updatedstate[props.state.filterKey] })
     }
-
+    function dividedata(len_of_data, per) {
+        console.log(len_of_data,"Len")
+        if (len_of_data <= 10) {
+            console.log(parseInt(per),"answer");
+            percentage = parseInt(per)
+        } else {
+            dividedata(parseInt(len_of_data/2), parseInt(per/2))
+        }
+    }
     return (
         <div>
-            {console.log(loader, "sdsdweerfwer")}
             <div class="title-top-graphdetail">
                 <h5>
                     {componentName}
-
-                    {/* <button class="fa-solid fa-retweet" style={{ float: 'right', height:'10px' }} onClick={flip} /> */}
-
-                    {/* <i class="fa-light fa-table" style={{ float: 'right' }} onClick={tableView} /> */}
-
-                    {/* <button class="fas fa-expand-alt" style={{ float: 'right' }} onClick={handleFullDiv} /> */}
-
                     <button id='dropdownbutton' className="fa-solid fa-ellipsis-vertical" onClick={handledropdownMenu} ></button>
-                    {/* <i className="fa-solid fa-arrow-down-short-wide sort-icon-second-screen" onClick={handleSorting} ></i> */}
                 </h5>
             </div>
 
@@ -326,53 +254,11 @@ export default function Main_chart(props) {
 
                 {flag === 'bar' ? <><a id='bar'> Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar'>Bar</a><hr className='custom-hr' /> </>}
                 {flag === 'donut' ? <><a id='donut'>Donut &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='donut'>Donut</a><hr className='custom-hr' /></>}
-
-                {/* {flag === 'radialBar'} ?<><a id='radialBar'>Radial Bar &nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr'/></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr'/></> */}
-
             </div>
             <div class="flip-card">
 
                 <div class="flip-card-inner" id='filp'>
                     <div class="flip-card-front">
-
-                        {/* <div className="tableScroll">
-                                <table class="table table-striped table-bordered" >
-                                    {flagShowId === true ?
-                                        <><thead>
-                                            <td>ID</td>
-                                            <td>NAME</td>
-                                            <td>WEIGHT</td>
-                                        </thead></> :
-                                        <><thead>
-                                            <td>NAME</td>
-                                            <td>WEIGHT</td>
-                                        </thead></>}
-
-                                    <tbody>
-                                        {flagShowId === true ? data.map((ele) => {
-                                            return (
-                                                <>
-                                                    <tr>
-                                                        <td>{ele[props.state.columnID]}</td>
-                                                        <td>{ele[props.state.columnName]}</td>
-                                                        <td>{ele['NetWeight']}</td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        }) : data.map((ele) => {
-                                            return (
-                                                <>
-                                                    <tr>
-                                                        <td>{ele[props.state.columnName]}</td>
-                                                        <td>{ele['NetWeight']}</td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        })}
-                                    </tbody>
-
-                                </table>
-                            </div> */}
 
                     </div>
                     <div class="flip-card-back">
@@ -387,7 +273,7 @@ export default function Main_chart(props) {
                                         {flag === 'donut' ?
                                             <AlphaDashChart obj={donutoption} state={contextData.defaultchart} />
                                             : null}
-                                    </> : <div style={{ margin: "auto", position: 'inherit', color: 'black' }}>Not Found</div>
+                                    </> : <div style={{ margin: "auto", position: 'inherit', color: 'black' }}><img id='errorImg'  src={DataError} /></div>
                                 :
                                 <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                                     <div class="dot-spinner__dot"></div>

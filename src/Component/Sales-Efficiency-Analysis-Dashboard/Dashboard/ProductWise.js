@@ -1,19 +1,13 @@
 import React, { useContext } from 'react'
 import contex from '../../contex/Contex';
-import ReactApexChart from 'react-apexcharts';
-import ParentSize from '@visx/responsive/lib/components/ParentSize';
-import Radialbar from '../../Radialbar/Radialbar'
-import BlackDots from '../../Assets/image/Dots.png'
-import { ProductWise_Bar } from '../../ChartOptions/ProductWise_Bar';
 import API from '../../Utility/API';
 import { useEffect, useState } from 'react';
 import post from '../../Utility/APIHandle'
-import Gradient from "javascript-color-gradient";
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
 
 export default function ProductWise() {
 	const [loader, setLoader] = useState(true)
@@ -35,7 +29,11 @@ export default function ProductWise() {
 		chartId: 'ProductWise',
 		Xaxis: name,
 		Yaxis: weight,
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	let radialdata = {
@@ -46,6 +44,10 @@ export default function ProductWise() {
 		chartId: 'ProductWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optiondonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -61,6 +63,10 @@ export default function ProductWise() {
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 
 	}
 
@@ -70,20 +76,24 @@ export default function ProductWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'PieChartProductWise',
+		chartId: 'ProductWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'RadialBarcharProductWise',
+		chartId: 'ProductWise',
 		propdata: data,
 		position: 'center',
 		fontsize: 20,
@@ -93,19 +103,14 @@ export default function ProductWise() {
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
-	const options_Bar = ProductWise_Bar(name, inputdata['column'])
-	const series = [{
-		name: 'weight',
-		data: weight
-	}]
 
 	const [flag, setflag] = useState()
 	const ChartType = "bar"
-
-	const [sales, setSales] = useState([])
-
-	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 
 	function handleclick(e) {
 
@@ -139,8 +144,6 @@ export default function ProductWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
-				let sale = [];
-				var js = {};
 				let data = [];
 				let tempprc = [];
 				if (res.data !== undefined) {
@@ -152,15 +155,6 @@ export default function ProductWise() {
 							name.push(res.data.lstResult[index]['ProductName'])
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
-						js = { 'product': '', 'thisYearProfit': 0 }
-						if (res.data.lstResult[index]['ProductName'] === null) {
-							js['product'] = 'null'
-						} else {
-							js['product'] = res.data.lstResult[index]['ProductName']
-						}
-						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-						sale.push(js)
 						tempprc.push(res.data.lstResult[index]['Prc']);
 
 					}
@@ -174,11 +168,6 @@ export default function ProductWise() {
 					} else {
 						setLoader(true)
 					}
-					var j = []
-					for (let index = 0; index < sale.length; index++) {
-						j.push({ ...sale[index], ['color']: gradientArray[index] })
-					}
-					setSales(j)
 				} else {
 					alert(res['Error']);
 				}
@@ -186,18 +175,8 @@ export default function ProductWise() {
 			})
 	}
 
-	// function handledropdownMenu() {
-	// 	document.getElementById("myDropdownCity").style.display === "block" ? document.getElementById("myDropdownCity").style.display = "none" : document.getElementById("myDropdownCity").style.display = "block";
-	// }
-
-
-
-	// function handleSelectedChart(num) {
-	// 	// setBranchWiseChart(num)
-	// }
-
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise", filterKey: "strProduct", chartId: 12, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "i.ProductId,i.ProductName", columnName: "ProductName", columnID: "ProductId", componentName: "Product Wise", filterKey: "strProduct", chartId: 12, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 
@@ -226,15 +205,6 @@ export default function ProductWise() {
 		}
 
 	});
-
-	function setMargin() {
-		if (weight.length < 7) {
-			return 80
-		} else {
-			return 30
-		}
-	}
-
 	async function fetchOption() {
 		await post({ "ID": 12, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
@@ -249,7 +219,9 @@ export default function ProductWise() {
 								post({ "ID": 12, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -259,8 +231,10 @@ export default function ProductWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -305,8 +279,6 @@ export default function ProductWise() {
 			.then((res) => {
 				let name = [];
 				let weight = [];
-				let sale = [];
-				var js = {};
 				let data = [];
 				let tempprc = [];
 				if (res.data !== undefined) {
@@ -318,15 +290,7 @@ export default function ProductWise() {
 							name.push(res.data.lstResult[index]['ProductName'])
 						}
 						weight.push(res.data.lstResult[index][inputdata['column']])
-						js = { 'product': '', 'thisYearProfit': 0 }
-						if (res.data.lstResult[index]['ProductName'] === null) {
-							js['product'] = 'null'
-						} else {
-							js['product'] = res.data.lstResult[index]['ProductName']
-						}
-						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
 						tempprc.push(res.data.lstResult[index]['Prc']);
-						sale.push(js)
 
 					}
 					setprc(tempprc);
@@ -339,11 +303,6 @@ export default function ProductWise() {
 					} else {
 						setLoader(true)
 					}
-					var j = []
-					for (let index = 0; index < sale.length; index++) {
-						j.push({ ...sale[index], ['color']: gradientArray[index] })
-					}
-					setSales(j)
 				} else {
 					alert(res['Error']);
 				}
@@ -363,7 +322,6 @@ export default function ProductWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
 								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -378,7 +336,6 @@ export default function ProductWise() {
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconproduct" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
@@ -387,7 +344,6 @@ export default function ProductWise() {
 								{flag === 'pie' ? <><a id='pie' className='pie'>Pie Chart&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='pie' className='pie'>Pie chart </a><hr className='custom-hr' /></>}
 								{flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
-								{/* <a id='heatmap' >Heat map</a><hr className='custom-hr' /> */}
 							</div>
 						</div>
 					</div>
@@ -398,9 +354,6 @@ export default function ProductWise() {
 				{dataloader !== true ?
 					loader !== true ?
 						<div class="crancy-progress-card card-contain-graph">
-
-							{/* <ParentSize>{({ width, height }) => <Radialbar width={width} height={350} />}</ParentSize> */}
-
 							{flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbar))} /> : null}
 							{flag === 'donut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondonut))} /> : null}
 							{flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(radialdata))} /> : null}
@@ -408,7 +361,7 @@ export default function ProductWise() {
 							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

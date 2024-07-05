@@ -1,55 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
-
 import API from '../../Utility/API'
 import post from '../../Utility/APIHandle'
-
-import piegraph1 from '../../Assets/image/piegraph1.png'
 import contex from '../../contex/Contex';
 import salesEff1 from '../../Assets/img/svgs bold/sales eff 1.svg'
 import salesEff2 from '../../Assets/img/svgs bold/sales eff 2.svg'
-import context from 'react-bootstrap/esm/AccordionContext';
 
 export default function SalesEfficiency() {
-
-    // const [postData, setPostData] = useState({
-    //     "strBranch": "",
-    //     "strState": "",
-    //     "strCity": "",
-    //     "strItem": "",
-    //     "strSubItem": "",
-    //     "strItemGroup": "",
-    //     "strItemSubitem": "",
-    //     "strPurchaseParty": "",
-    //     "strSalesParty": "",
-    //     "strSaleman": "",
-    //     "strProduct": "",
-    //     "strDesignCatalogue": "",
-    //     "strSaleAging": "",
-    //     "strModeofSale": "",
-    //     "strTeamModeofSale": "",
-    //     "FromDate": "",
-    //     "ToDate": "",
-    //     "strMetalType": "",
-    //     "strDayBook": "",
-    //     "PageNo": 0,
-    //     "PageSize": 0,
-    //     "Search": ""
-    // })
-
-
-    // useEffect(()=>{
-    //     getdata()
-    // },[])
-
-
-    // function getdata() {
-
-    //     post(postData,API.GetSalesEfficiencyCard,'post')
-    //     .then((res)=>{
-
-    //     })
-    // }
-
     const contexData = useContext(contex);
     const [weight, setweight] = useState([0])
     const [costAmount, setcostAmount] = useState([0])
@@ -67,6 +23,7 @@ export default function SalesEfficiency() {
 
         await post(inputdata, API.CommonCard, {}, 'post')
             .then((res) => {
+              console.log(res)
               if (res.data !== undefined) {
                 if (res.data.lstResult.length > 0) {
                     setweight(res.data.lstResult[0]['NetWeight'])
@@ -76,28 +33,10 @@ export default function SalesEfficiency() {
                     inputdata = { ...inputdata, ['Grouping']: '' }
                 } 
               } else {
-                alert(res['Error']);;
+                alert(res['Error']);
               }
             })
     }
-    // function format(val) {
-
-    //     if (localStorage.getItem('value') === 'k') {
-
-    //         return ((((val / 1000).toFixed(1)).toString()) + "K");
-    //     } else if (localStorage.getItem('value') === 'l') {
-    //         return ((((val / 100000).toFixed(1)).toString()) + "L");
-    //     } else if (localStorage.getItem('value') === 'm') {
-    //         return ((((val / 1000000).toFixed(1)).toString()) + "M");
-    //     } else if (localStorage.getItem('value') === 'c') {
-    //         return ((((val / 10000000).toFixed(1)).toString()) + "CR");
-    //     } else if (localStorage.getItem('value') === 'b') {
-    //         return ((((val / 1000000000).toFixed(1)).toString()) + "B");
-    //     } else {
-    //         return Math.floor(val);;
-    //     }
-    // }
-
     function thousandSeparated(val){
         return (Number(parseFloat(val)).toLocaleString('en', {
             minimumFractionDigits: 2 
@@ -144,8 +83,7 @@ export default function SalesEfficiency() {
                 <div className="crancy-progress-card1 top-contant-top-card">
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">{thousandSeparated(weight)}</h4>
-                        {/* <h4 className="crancy-progress-card__title">{38.15}</h4> */}
-                        <div className="crancy-progress-card__history">
+                         <div className="crancy-progress-card__history">
                             <span>{prc}% Sold</span>
                         </div>
                     </div>
@@ -157,7 +95,6 @@ export default function SalesEfficiency() {
                 <div className="crancy-progress-card1 top-contant-botton-card">
                     <div className="crancy-progress-card__content">
                         <h4 className="crancy-progress-card__title">₹ {format(costAmount)}</h4>
-                        {/* <h4 className="crancy-progress-card__title">₹ 4,212,356</h4> */}
                         <div className="crancy-progress-card__history">
                             <span>{prc}% Sold</span>
                         </div>

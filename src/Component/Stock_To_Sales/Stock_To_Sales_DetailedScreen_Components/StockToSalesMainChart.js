@@ -3,12 +3,10 @@ import StockToSalesChartObject from '../Stock_To_Sales_Components/StockToSalesCh
 import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
-import StockToSalesOption from '../../ChartOptions/StockToSales/StockToSalesOption';
-import ReactApexChart from 'react-apexcharts';
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import 'react-date-range/dist/styles.css'; // main css file
-import { DateRange } from 'react-date-range';
-import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import 'react-date-range/dist/theme/default.css'; 
+import 'react-date-range/dist/styles.css'; 
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs';
+import DataError from '../../Assets/image/Error.gif'
 
 export default function StockToSalesMainChart(props) {
     const contextData = useContext(contex);
@@ -18,22 +16,22 @@ export default function StockToSalesMainChart(props) {
     const [yAxis, setyAxis] = useState([]);
     const [loader, setLoader] = useState(true);
     const [dataloader, setdataLoader] = useState(true);
-    const [page, setPage] = useState(0);
-    const [data, setdata] = useState([]);
-    const [flagCalender, setflagCalender] = useState(false)
-    let updatedstate = {}
-    let option = {};
     const [flag, setflag] = useState('bar');
     const [flagSort, setflagSort] = useState('AvgStockCycleNtWt Desc');
     const [countforflag, setcountforflag] = useState(0)
+    const [datashow, setDatashow] = useState(11);
+
     let optionMultiBar = {}
     let optionBar = {}
     let optionHorizontalBar = {}
     let optionLineBar = {}
     let updatecontext = {}
+    let percentage;
+    let percentageVertical;
+
 
     useEffect(() => {
-        console.log("awsdvbaygsdv", props.state.filterdata);
+
         if (props.state.filterdata !== null) {
             contextData.SetDetailState(props.state.filterdata)
         }
@@ -42,13 +40,12 @@ export default function StockToSalesMainChart(props) {
         if (props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd", props.state.ChartMode);
+
     }, [props])
     useEffect(() => {
         if (props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd11", inputdata);
     }, [inputdata])
 
     useEffect(() => {
@@ -58,12 +55,8 @@ export default function StockToSalesMainChart(props) {
     }, [flagSort])
 
 
-
     function getChartData() {
-        console.log(props);
         inputdata = { ...inputdata, 'Mode': props.state.ChartMode, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate }
-        console.log(inputdata, "brfotr Api"
-        );
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -83,7 +76,6 @@ export default function StockToSalesMainChart(props) {
                     idtemp.push(res.data.lstResult[j][StockToSalesChartObject[props.state.ChartMode]['id']])
                 }
                 setxAxis(tempXaxis);
-                console.log(idtemp, "sasa");
                 setid(idtemp);
                 setdataLoader(false)
                 if (tempXaxis.length !== 0) {
@@ -118,9 +110,28 @@ export default function StockToSalesMainChart(props) {
             return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
         }
     }
+    function divideHorizontalData(len_of_data, per) {
+        if (len_of_data <= 5) {
+            console.log(parseInt(per), "answer");
+            percentage = parseInt(per)
+        } else {
+            divideHorizontalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
 
+    function divideVerticalData(len_of_data, per) {
+        if (len_of_data <= datashow) {
+            console.log(parseInt(per), "answer");
+            percentageVertical = parseInt(per)
+        } else {
+            divideVerticalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
+
+    divideHorizontalData(xAxis.length, 100)
+    divideVerticalData(xAxis.length, 100)
     if (document.getElementsByClassName('detailstocktosales')[0] !== undefined && xAxis.length > 0 && yAxis.length > 0) {
-        console.log(xAxis, inputdata, "qawe");
+
         let tempYAxis = yAxis;
         let templegend = [];
         let sliderbol
@@ -133,13 +144,13 @@ export default function StockToSalesMainChart(props) {
             if (tempYAxis.length > 3) {
                 tempYAxis.splice(2, 1);
             }
-            console.log("asdgjhagsd", tempYAxis);
+
             templegend = ['AvgStock', 'Sales-NetWeight', 'AvgStockCycleNtWt']
         } else {
             if (tempYAxis.length > 3) {
                 tempYAxis.splice(1, 1);
             }
-            console.log("asdgjhagsd", tempYAxis);
+
             templegend = ['AvgStock', 'Sales-Pieces', 'AvgStockCycleNtWt']
         }
         if (props.state.ChartMode === 1) {
@@ -164,7 +175,7 @@ export default function StockToSalesMainChart(props) {
                 tooltipid: 0,
                 divname: 'detailstocktosales',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 50, 0, 100],
+                datazoomlst: [0, percentageVertical, 0, 100],
             }
 
         } else {
@@ -189,7 +200,7 @@ export default function StockToSalesMainChart(props) {
                 tooltipid: 0,
                 divname: 'detailstocktosales',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 50, 0, 100],
+                datazoomlst: [0, percentageVertical, 0, 100],
             }
 
         }
@@ -223,7 +234,7 @@ export default function StockToSalesMainChart(props) {
             idlst: id,
             divname: 'detailstocktosales',
             sliderflag: sliderbol,
-            datazoomlst: [0, 50, 0, 100],
+            datazoomlst: [0, percentageVertical, 0, 100],
             tooltip:{
                 formatter:'{b}<br>AvgStockCycleNtWt - {c}'
             }
@@ -239,7 +250,7 @@ export default function StockToSalesMainChart(props) {
             idkey: props.state.filterkey,
             idlst: id,
         }
-        console.log("options", optionBar);
+      
 
     }
     if (flag === 'MultiBar') {
@@ -252,10 +263,12 @@ export default function StockToSalesMainChart(props) {
         updatecontext = (<AlphaDashChart obj={JSON.parse(JSON.stringify(optionBar))} state={contextData.detailsecondstate} />).props.state;
     }
     function DivOnClick() {
-        console.log(updatecontext, "asdhtutdf");
+        if (updatecontext.filtername !== undefined && updatecontext.filtervalue !== undefined) {
+            contextData.setfiltervalue(updatecontext.filtervalue)
+            contextData.setfiltername(updatecontext.filtername)
+        }
         contextData.SetDetailsecondState({ ...contextData.detailsecondstate, [props.state.filterkey]: updatecontext[props.state.filterkey] })
     }
-
     function handleclick(e) {
         if (e.target.id !== "myDropdownicon" + props.id && e.target.id !== '') {
             setflag(e.target.id)
@@ -298,7 +311,7 @@ export default function StockToSalesMainChart(props) {
 
     function getSortChartData() {
         inputdata = { ...inputdata, 'Mode': props.state.ChartMode, "sort": flagSort }
-        console.log(inputdata, "wewqeqwqeqwewqe");
+     
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -346,8 +359,8 @@ export default function StockToSalesMainChart(props) {
 
 
                         <h5>
-                            {props.state !== null ? props.state.componentName : null}
-                            <div className='d-flex MinimumstockIcons'>
+                        {props.state !== null ? props.state.componentName : null}
+                        <div className='d-flex MinimumstockIcons'>
                                 <div className='dropbtngraph'>
                                     <i className="fa-solid fa-arrow-down-short-wide sorticon minimumstocktosaleschartoption" onClick={handleSorting} />
                                 </div>
@@ -380,8 +393,7 @@ export default function StockToSalesMainChart(props) {
                         <div id={"myDropdownicon" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclick}>
                             {flag === 'bar' ? <><a id='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
                             {flag === 'HorizontalBar' ? <><a id='HorizontalBar'>HorizontalBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='HorizontalBar' >HorizontalBar</a><hr className='custom-hr' /></>}
-                            {/* {flag === 'Line' ? <><a id='Line'>Line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Line' >Line</a><hr className='custom-hr' /></>} */}
-                            {flag === 'MultiBar' ? <><a id='MultiBar'>MultiBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='MultiBar' >MultiBar</a><hr className='custom-hr' /></>}
+                             {flag === 'MultiBar' ? <><a id='MultiBar'>MultiBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='MultiBar' >MultiBar</a><hr className='custom-hr' /></>}
                         </div>
                     </div>
 
@@ -402,13 +414,12 @@ export default function StockToSalesMainChart(props) {
                                                 <button className='chartoptionButton' onClick={() => { handleMonthOptionClick("Y") }}>Year Wise</button>
                                             </div>
                                             : null}
-                                        {console.log(StockToSalesOption(xAxis, yAxis, id, contextData)[1], "ssss")}
+                                      
                                         {optionBar.Xaxis !== undefined ? optionBar.Xaxis.length > 0 ?
                                             <>
                                                 {flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionBar))} state={contextData.detailsecondstate} /> : null}
                                                 {flag === 'HorizontalBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionHorizontalBar))} state={contextData.detailsecondstate} /> : null}
-                                                {/* {flag === 'Line' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionLineBar))} state={contextData.detailsecondstate} /> : null} */}
-                                                {flag === 'MultiBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionMultiBar))} state={contextData.detailsecondstate} /> : null}
+                                                 {flag === 'MultiBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionMultiBar))} state={contextData.detailsecondstate} /> : null}
                                             </>
                                             : null : null}
                                     </div>
@@ -428,7 +439,7 @@ export default function StockToSalesMainChart(props) {
                                                 <button className='chartoptionButton' onClick={() => { handleMonthOptionClick("Y") }}>Year Wise</button>
                                             </div>
                                             : null}
-                                        Not Found
+                                      <img id='errorImg'  src={DataError} />
                                     </div>
                                 </div>
                             </div>

@@ -1,32 +1,18 @@
-import React, { useRef } from 'react';
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import Header_detailed from './Components_Detailed/Header_detailed';
 import './../Assets/css/Custom.css';
 import './../Assets/css/style.css';
-// import './../Assets/css/fstyle.css';
 import './../Assets/css/responsive.css';
 import Main_chart from './Components_Detailed/Main_chart';
 import ContexState1 from '../contex/ContextState1';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import img1 from '../Assets/image/slider/ring1.png';
-import img2 from '../Assets/image/slider/ring2.png';
-import img3 from '../Assets/image/slider/ring3.png';
-import img4 from '../Assets/image/slider/ring4.png';
-import img5 from '../Assets/image/slider/ring5.png';
-import img6 from '../Assets/image/slider/Ring11.png';
-import img7 from '../Assets/image/slider/Ring12.png';
-import img8 from '../Assets/image/slider/Ring13.png';
-import img9 from '../Assets/image/slider/Ring14.png';
-import img10 from '../Assets/image/slider/Ring15.png';
 import Default_chart from './Components_Detailed/default_chart';
 import API from '../Utility/API';
 import post from '../Utility/APIHandle';
-import { elements } from 'chart.js';
 import Navbar from '../Sales-Efficiency-Analysis-Dashboard/NavigationBar/Navbar';
-import Fancybox from './Components_Detailed/Fancybox';
 import Tag_Image from './Components_Detailed/Tag_Image';
 import Notify from '../Sales-Efficiency-Analysis-Dashboard/Notification/Notify';
 import { NotificationContainer } from 'react-notifications';
@@ -41,15 +27,32 @@ export default function DetailedScreen() {
     const [chartGroupId, setChartGroupId] = useState() // To fetch api data 
     const [chartGroup, setChartGroup] = useState() // To check and uncheck default button and add selected effect on slider
     const [defaultGroup, setdefaultGroup] = useState()
-    const [imagePath, setimagePath] = useState([])
-    const [barcode, setbarcode] = useState([])
-    const [netweight, setnetweight] = useState([])
     const [urlData, seturlData] = useSearchParams()
     const [getUrlState] = useSearchParams()
     const [sliderData, setSliderData] = useState([]);
     let defaultChartGroup
 
-
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let currentDate
+    if (month < 10) {
+      if (day < 10) {
+        currentDate = `${year}-0${month}-0${day}`;
+      }
+      else {
+        currentDate = `${year}-0${month}-${day}`;
+      }
+    }
+    else {
+      if (day < 10) {
+        currentDate = `${year}-0${month}-0${day}`;
+      }
+      else {
+        currentDate = `${year}-0${month}-${day}`;
+      }
+    }
     const settings = {
 
         speed: 100,
@@ -116,9 +119,10 @@ export default function DetailedScreen() {
             "componentName": getUrlState.get("componentName"),
             "filterKey": getUrlState.get("filterKey"),
             "chartId": getUrlState.get("chartId"),
-            "FromDate":getUrlState.get("FromDate"), 
-            "ToDate":getUrlState.get("ToDate"), 
+            "FromDate":getUrlState.get("FromDate") !== '' ? getUrlState.get("FromDate") : `${year}-04-01`, 
+            "ToDate":getUrlState.get("ToDate") !== '' ? getUrlState.get("ToDate") : currentDate, 
         }
+        
         setMainChartProps(urlData)
     }
 
@@ -140,9 +144,8 @@ export default function DetailedScreen() {
             { name: 'Month', iconClass: 'fas fa-calendar-week icon-m', group: 'datename(month,a.voucherDate)', column: 'MonthName', columnID: 'MonthName', componentName: 'Month Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strMonth', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
             { name: 'Year', iconClass: 'fas  fa-calendar-alt icon-m', group: 'M.FinYearID,m.YearCode', column: 'YearCode', columnID: 'FinYearID', componentName: 'Year Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strFinYear', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
             { name: 'Sale Aging', iconClass: 'fas fa-chart-line icon-m', group: 'a.[rd.caption]', column: 'rd.caption', columnID: 'rd.caption', componentName: 'Sale Aging Wise', filter_key1: mainChartProps['filterKey'], filter_key2: 'strSaleAging', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
-            { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise', columnID: 'ChallanGenerateTypeID', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
-            // { name: 'Team & Mode of Sale', iconClass: 'fas fa-stream icon-m', group: '', column: '', componentName: 'Team & Mode of Sale Wise' }
-        ])
+            // { name: 'Mode of Sale', iconClass: 'fas fa-layer-group icon-m', group: 'a.ChallanGenerateTypeID,N.ChallanGenerateType', column: 'ChallanGenerateType', componentName: 'Mode of Sale Wise', columnID: 'ChallanGenerateTypeID', filter_key1: mainChartProps['filterKey'], filter_key2: 'strModeofSale', FromDate:mainChartProps['FromDate'], ToDate:mainChartProps['ToDate'] },
+         ])
     }
 
     function setDefaultGrouping() {
@@ -219,11 +222,14 @@ export default function DetailedScreen() {
                                 post({ "ID": mainChartProps.chartId, "vendorID": 1, "UserID": 1 }, API.GetChartGroupByID, {}, 'post')
                                     .then((res) => {
                                         if (res.data !== undefined) {
-                                            setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
-                                            setChartGroupId(res.data.lstResult[0].ChartGroupID)
-                                            setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
-
-                                            showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
+                                            if (res.data.lstResult.length !== 0) {
+                                                setChartGroup(JSON.parse(res.data.lstResult[0].ChartGroup).group)
+                                                setChartGroupId(res.data.lstResult[0].ChartGroupID)
+                                                setGraph(JSON.parse(res.data.lstResult[0].ChartGroup))
+    
+                                                showSelectedSlider(JSON.parse(res.data.lstResult[0].ChartGroup).componentName)
+                                            }
+                                           
                                         } else {
                                             alert(res['Error']);
                                         }
@@ -285,7 +291,7 @@ export default function DetailedScreen() {
                 <NotificationContainer />
                 <div id="crancy-dark-light">
                     <div class="crancy-body-area">
-                        <Header_detailed Date={{FromDate : mainChartProps.FromDate, ToDate: mainChartProps.ToDate}} />
+                        <Header_detailed Date={{FromDate : mainChartProps.FromDate , ToDate: mainChartProps.ToDate}} />
 
                         <section class="crancy-adashboard crancy-show">
                             <div class="container"></div>
@@ -307,7 +313,6 @@ export default function DetailedScreen() {
                                                             <Slider {...settings} >
                                                                 {
                                                                     sliderData.map((data) => {
-                                                                        console.log(data.group, mainChartProps.grouping,"compare")
                                                                         if (data.group === mainChartProps.grouping) {
 
                                                                         }
@@ -316,12 +321,10 @@ export default function DetailedScreen() {
                                                                                 <li class="ag-carousel_item">
                                                                                     <div class="ag-carousel_figure" >
                                                                                         <a onClick={() => { handleOnLink({ group: data.group, column: data.column, componentName: data.componentName, columnID: data.columnID, filter_key1: data.filter_key1, filter_key2: data.filter_key2 }) }}>
-                                                                                            {/* <div class="crancy-featured-user__fcontent"> */}
-                                                                                            <div class="crancy-featured-user__ficon" id={data.componentName}>
+                                                                                              <div class="crancy-featured-user__ficon" id={data.componentName}>
                                                                                                 <i class={data.iconClass}></i>
                                                                                             </div>
                                                                                             <h4 class="crancy-featured-user__fname">{data.name}</h4>
-                                                                                            {/* </div> */}
                                                                                         </a>
                                                                                     </div>
                                                                                 </li>
@@ -334,9 +337,8 @@ export default function DetailedScreen() {
                                                     </div>
                                                     <div class="crancy-featured-default-box">
                                                         <div class="crancy-featured-user__fcontent graphdetaildefault mb-0">
-                                                            <form class="form-check checkbox-filter">
-                                                                {/* <input class="form-check-input" type="checkbox" value="" id="DefaultCheckBoxSeconScreen" onClick={handleDefault} /> */}
-                                                                <input class="form-check-input" type="checkbox" value="" id="DefaultCheckBoxSeconScreen" onClick={addEditOption} />
+                                                            <form class="form-check checkbox-filter"  id='checkboxofdetailscreen'>
+                                                                  <input class="form-check-input" type="checkbox" value="" id="DefaultCheckBoxSeconScreen" onClick={addEditOption} />
                                                                 <label class="form-check-label checkbox-filter-label graphdetail-text" for="DefaultCheckBoxSeconScreen">Set as Default</label>
                                                             </form>
                                                         </div>
@@ -347,122 +349,6 @@ export default function DetailedScreen() {
                                         </div>
                                         <Default_chart graph={graph} Date={{FromDate : mainChartProps.FromDate, ToDate: mainChartProps.ToDate}}  />
                                     </div>
-                                    {/* <div class="col-xl-12 col-lg-12 col-md-12 col-12">
-                                    <div class="title-top-graphdetail">
-                                        <h5>Tag Image</h5>
-                                    </div>
-                                    <div class="graphdetailcards-silder graphdetail-fourthcard"> */}
-                                    {/* <div class="ag-carousel-arrow_box">
-                                        <i class="js-ag-carousel-arrow_prev ag-carousel-arrow top-slider-prevarrow"></i>
-                                        <i class="js-ag-carousel-arrow_next ag-carousel-arrow top-slider-nextarrow"></i>
-                                    </div> */}
-                                    {/* <ul id="TagImage" class="js-carousel ag-carousel_list" >
-
-                                            <Fancybox
-                                                options={{
-                                                    Carousel: {
-                                                        infinite: false,
-                                                    },
-                                                }}
-                                            >
-                                                <Slider  {...settings} >
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                111
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                112
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                113
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                114
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                115
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                116
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                117
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-
-                                                    <li class="ag-carousel_item">
-                                                        <figure class="ag-carousel_figure">
-
-                                                            <a data-fancybox="gallery" href="http://110.227.251.94:9992/Images/TagImage/943.jpg"><img src="http://110.227.251.94:9992/Images/TagImage/943.jpg" width="200" height="150" /></a>
-
-
-                                                            <figcaption class="ag-carousel_figcaption">
-                                                                118
-                                                            </figcaption>
-                                                        </figure>
-                                                    </li>
-                                                </Slider>
-                                            </Fancybox>
-
-                                        </ul>
-                                    </div>
-                                </div> */}
                                     <Tag_Image   Date={{FromDate : mainChartProps.FromDate, ToDate: mainChartProps.ToDate}}/>
 
                                 </div>
@@ -474,7 +360,6 @@ export default function DetailedScreen() {
                     </div >
                 </div>
             </ContexState1>
-
 
         )
     }

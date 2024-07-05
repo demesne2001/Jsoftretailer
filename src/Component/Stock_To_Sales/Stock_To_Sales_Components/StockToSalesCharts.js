@@ -19,7 +19,11 @@ export default function StockToSalesCharts(props) {
     const [dataloader, setdataLoader] = useState(true);
     const [flag, setflag] = useState('bar');
     const [flagSort, setflagSort] = useState('AvgStockCycleNtWt Desc');
-    const [countforflag, setcountforflag] = useState(0)
+    const [countforflag, setcountforflag] = useState(0);
+    const [datashow, setDatashow] = useState(11);
+
+    let percentage;
+    let percentageVertical;
     let optionMultiBar = {}
     let optionBar = {}
     let optionHorizontalBar = {}
@@ -27,7 +31,7 @@ export default function StockToSalesCharts(props) {
 
     useEffect(() => {
         getChartData()
-        console.log("api calleddd", inputdata);
+
     }, [inputdata])
 
     useEffect(() => {
@@ -41,6 +45,9 @@ export default function StockToSalesCharts(props) {
             getSortChartData()
         }
     }, [flagSort])
+    useEffect(() => {
+        setDatashowOnDivWidth()
+    }, [])
 
     function handleDetailNaviogation() {
         navigate('/Stock_To_Sales_Detailed', { state: { componentName: StockToSalesChartObject[props.id].heading, ChartMode: props.id, filterkey: StockToSalesChartObject[props.id].filterkey, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate, filterdata: JSON.stringify(inputdata) }, replace: true });
@@ -48,7 +55,7 @@ export default function StockToSalesCharts(props) {
 
     function getChartData() {
         inputdata = { ...inputdata, 'Mode': props.id, 'MonthType': MonthType }
-        console.log("aegrhagb", inputdata);
+
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -114,6 +121,40 @@ export default function StockToSalesCharts(props) {
             return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
         }
     }
+
+    function setDatashowOnDivWidth() {
+        console.log(document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth, "divlength");
+        if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth < 902 && document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth > 450) {
+            setDatashow(5)
+        } else if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth <= 450) {
+            setDatashow(3)
+        } else {
+            setDatashow(11)
+        }
+    }
+
+    function divideHorizontalData(len_of_data, per) {
+        if (len_of_data <= 5) {
+            console.log(parseInt(per), "answer");
+            percentage = parseInt(per)
+        } else {
+            divideHorizontalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
+
+    function divideVerticalData(len_of_data, per) {
+        if (len_of_data <= datashow) {
+            console.log(per, props.id,"answer12");
+            percentageVertical = per
+        } else {
+            divideVerticalData(parseInt(len_of_data / 2), per / 2)
+        }
+    }
+
+    divideHorizontalData(xAxis.length, 100)
+    divideVerticalData(xAxis.length, 100)
+    console.log(percentageVertical, xAxis.length, props.id  ,"asjdhuhd"
+    );
     if (inputdata.Unit !== 'P' || inputdata.Unit === '') {
         let tempYAxis = yAxis;
         if (tempYAxis.length > 3) {
@@ -130,7 +171,7 @@ export default function StockToSalesCharts(props) {
             if (props.id === 1) {
                 optionMultiBar = {
                     themeId: 11,
-                    chartId: 'inside-Baryudsd' + props.id,
+                    chartId: 'StockToSales' + props.id,
                     charttype: 'inside-Bar',
                     height: '350%',
                     width: '100%',
@@ -147,13 +188,14 @@ export default function StockToSalesCharts(props) {
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltipid: 0,
                     sliderflag: sliderbol,
-                    datazoomlst: [0, 50, 0, 100],
-                  
+                    datazoomlst: [0, percentageVertical, 0, 100],
+                    filtervalueindex: 2,
+
                 }
             } else {
                 optionMultiBar = {
                     themeId: 11,
-                    chartId: 'inside-Baryuiaw' + props.id,
+                    chartId: 'StockToSales' + props.id,
                     charttype: 'inside-Bar',
                     height: '350%',
                     width: '100%',
@@ -170,7 +212,8 @@ export default function StockToSalesCharts(props) {
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltipid: 0,
                     sliderflag: sliderbol,
-                    datazoomlst: [0, 50, 0, 100],
+                    datazoomlst: [0, percentageVertical, 0, 100],
+                    filtervalueindex: 2,
                 }
 
             }
@@ -179,23 +222,25 @@ export default function StockToSalesCharts(props) {
                 charttype: 'round-horizontal-bar',
                 height: '100%',
                 width: '100%',
-                chartId: 'MinimumStocks' + props.id,
+                chartId: 'StockToSales' + props.id,
                 Xaxis: xAxis,
                 color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
                 Yaxis: tempYAxis[2],
                 divname: 'crancy-progress-card card-contain-graph',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 100, 0, 50],
+                datazoomlst: [0, 100, 0, percentage],
                 tooltip: {
-                    formatter: '{b}<br>AvgStockCycleNtWt - {c}'
-                }
+                    formatter: '{b}<br> AvgStockCycle - {c}%'
+                },
+       
+
             }
             optionBar = {
                 themeId: localStorage.getItem("ThemeIndex"),
                 charttype: 'roundbar',
                 height: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientHeight - 30,
                 width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth - 30,
-                chartId: 'MinimumStockwiseBar1' + props.id,
+                chartId: 'StockToSales' + props.id,
                 Xaxis: xAxis,
                 Yaxis: tempYAxis[2],
                 sliderflag: sliderbol,
@@ -203,13 +248,14 @@ export default function StockToSalesCharts(props) {
                 divname: 'crancy-progress-card card-contain-graph',
                 tooltip: {
                     formatter: '{b}<br>AvgStockCycleNtWt - {c}'
-                }
+                },
+                datazoomlst:[0,percentageVertical,0,100],
             }
             optionLineBar = {
                 themeId: 11,
                 height: '350%',
                 width: '100%',
-                chartId: 'Minimumsrtocksline' + props.id,
+                chartId: 'StockToSales' + props.id,
                 charttype: 'cartesian-point',
                 Xaxis: xAxis,
                 Yaxis: tempYAxis[2],
@@ -217,7 +263,7 @@ export default function StockToSalesCharts(props) {
                     formatter: '{b}<br>AvgStockCycleNtWt - {c}'
                 }
             }
-            console.log("options", optionMultiBar);
+
 
         }
     } else {
@@ -252,7 +298,8 @@ export default function StockToSalesCharts(props) {
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltipid: 0,
                     sliderflag: sliderbol,
-                    datazoomlst: [0, 50, 0, 100],
+                    datazoomlst:[0,percentageVertical,0,100],
+                    filtervalueindex: 2
                 }
 
             } else {
@@ -275,7 +322,8 @@ export default function StockToSalesCharts(props) {
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltipid: 0,
                     sliderflag: sliderbol,
-                    datazoomlst: [0, 50, 0, 100],
+                    datazoomlst:[0,percentageVertical,0,100],
+                    filtervalueindex: 2
                 }
 
             }
@@ -290,7 +338,7 @@ export default function StockToSalesCharts(props) {
                 Yaxis: tempYAxis[2],
                 divname: 'crancy-progress-card card-contain-graph',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 100, 0, 50],
+                datazoomlst:[0,100,0,percentage],
                 tooltip: {
                     formatter: '{b}<br>AvgStockCycleNtWt - {c}'
                 }
@@ -305,7 +353,7 @@ export default function StockToSalesCharts(props) {
                 Yaxis: tempYAxis[2],
                 divname: 'crancy-progress-card card-contain-graph',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 50, 0, 100],
+                datazoomlst:[0,percentageVertical,0,100],
                 tooltip: {
                     formatter: '{b}<br>AvgStockCycleNtWt - {c}'
                 }
@@ -322,7 +370,7 @@ export default function StockToSalesCharts(props) {
                     formatter: '{b}<br>AvgStockCycleNtWt - {c}'
                 }
             }
-            console.log("options", optionMultiBar);
+
 
         }
     }
@@ -369,7 +417,7 @@ export default function StockToSalesCharts(props) {
 
     function getSortChartData() {
         inputdata = { ...inputdata, 'Mode': props.id, "sort": flagSort }
-        console.log(inputdata, "wewqeqwqeqwewqe");
+
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -465,7 +513,7 @@ export default function StockToSalesCharts(props) {
                                     <button className='chartoptionButton' onClick={() => { handleMonthOptionClick("Y") }}>Year Wise</button>
                                 </div>
                                 : null}
-                            {console.log(optionMultiBar, "hdjsgfjhusf", optionHorizontalBar)}
+
                             <div className='' style={props.id === 1 ? { height: '310px' } : { height: '350px' }}>
                                 {optionMultiBar.Xaxis !== undefined ? optionMultiBar.Xaxis.length > 0 ?
                                     <>
@@ -503,3 +551,4 @@ export default function StockToSalesCharts(props) {
         </div >
     )
 }
+		

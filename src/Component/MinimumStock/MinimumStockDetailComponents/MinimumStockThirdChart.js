@@ -3,7 +3,8 @@ import MinimumStockChartObject from '../MinimumStocksComponents/MinimumStockChar
 import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
-import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs';
+import DataError from '../../Assets/image/Error.gif'
 
 
 export default function MinimumStockThirdChart(props) {
@@ -27,14 +28,14 @@ export default function MinimumStockThirdChart(props) {
         if (props.state.ChartMode !== undefined && props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd", props.state);
+
     }, [props])
 
     useEffect(() => {
         if (props.state.ChartMode !== undefined && props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd11", contextData.detailTirdstate);
+
     }, [inputdata])
     useEffect(() => {
         if (flagSort !== "" && countforflag !== 0) {
@@ -44,13 +45,13 @@ export default function MinimumStockThirdChart(props) {
 
 
     function getChartData() {
-        console.log(props);
+
         inputdata = { ...inputdata, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate }
-        console.log(inputdata, "thirdsubitem");
+
         if (inputdata.SubItemID !== "") {
             post(inputdata, API.GetMinStockChartDeatil, {}, "post").then((res) => {
                 if (res.data !== undefined) {
-                    console.log(res, "output third");
+
                     var tempYaxis = [];
                     for (let i = 0; i < MinimumStockChartObject[props.state.ChartMode]['yAxis'].length; i++) {
                         var tempYaxis1 = [];
@@ -128,7 +129,7 @@ export default function MinimumStockThirdChart(props) {
 
         optionMultiBar = {
             themeId: 11,
-            chartId: 'inside-Barydsfuwsesddsd' + props.state.ChartMode,
+            chartId: 'MinimumStocks_ThirdChart',
             charttype: 'inside-Bar',
             height: '340%',
             width: '100%',
@@ -146,22 +147,22 @@ export default function MinimumStockThirdChart(props) {
             tooltipid: 2,
             sliderflag: sliderbol,
             datazoomlst: [0, 50, 0, 100],
-
+            filtervalueindex: 2
         }
         optionHorizontalBar = {
             themeId: localStorage.getItem("ThemeIndex"),
             charttype: 'round-horizontal-bar',
             height: document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientHeight,
             width: '100%',
-            chartId: 'MinimumStocks3' + props.id,
+            chartId: 'MinimumStocks_ThirdChart',
             Xaxis: xAxis,
             color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
             Yaxis: tempYAxis[2],
             divname: 'graphdetailcards graphdetail-secondcard',
             sliderflag: sliderbol,
             datazoomlst: [0, 50, 0, 100],
-            tooltip:{
-                formatter:'{b}<br> AvgStockCycle - {c}%'
+            tooltip: {
+                formatter: '{b}<br> AvgStockCycle - {c}%'
             }
         }
         optionBar = {
@@ -169,23 +170,21 @@ export default function MinimumStockThirdChart(props) {
             charttype: 'roundbar',
             height: document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientHeight - 30,
             width: document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0].clientWidth - 30,
-            chartId: 'MinimumStockwiseBar3' + props.id,
+            chartId: 'MinimumStocks_ThirdChart',
             Xaxis: xAxis,
             Yaxis: tempYAxis[2],
             sliderflag: sliderbol,
             datazoomlst: [0, 50, 0, 100],
             divname: 'graphdetailcards graphdetail-secondcard',
-            tooltip:{
-                formatter:function(params) {
-                    return 
-                }
+            tooltip: {
+                formatter: '{b}<br> AvgStockCycle - {c}%'
             }
         }
         optionLineBar = {
             themeId: 11,
             height: '350%',
             width: '100%',
-            chartId: 'Minimumsrtocksline3' + props.id,
+            chartId: 'MinimumStocks_ThirdChart',
             charttype: 'cartesian-point',
             Xaxis: xAxis,
             Yaxis: tempYAxis[2],
@@ -193,13 +192,13 @@ export default function MinimumStockThirdChart(props) {
     }
 
     function getSortChartData() {
-        console.log(props);
+
         inputdata = { ...inputdata, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate, "Sort": flagSort }
-        console.log(inputdata, "sfdsdf");
+
         if (inputdata.SubItemID !== "") {
             post(inputdata, API.GetMinStockChartDeatil, {}, "post").then((res) => {
                 if (res.data !== undefined) {
-                    console.log(res, "output third");
+
                     var tempYaxis = [];
                     for (let i = 0; i < MinimumStockChartObject[props.state.ChartMode]['yAxis'].length; i++) {
                         var tempYaxis1 = [];
@@ -234,19 +233,19 @@ export default function MinimumStockThirdChart(props) {
             setdataLoader(false)
         }
     } function handleclick(e) {
-        if (e.target.id !== "myDropdownicon2" + props.id && e.target.id !== '') {
+        if (e.target.id !== "myDropdownicon2" + props.state.ChartMode && e.target.id !== '') {
             setflag(e.target.id)
         }
     }
 
     function handleonchangeCurrency() {
-        document.getElementById("myDropdownicon2" + props.id).style.display === "block" ? document.getElementById("myDropdownicon2" + props.id).style.display = "none" : document.getElementById("myDropdownicon2" + props.id).style.display = "block";
+        document.getElementById("myDropdownicon2" + props.state.ChartMode).style.display === "block" ? document.getElementById("myDropdownicon2" + props.state.ChartMode).style.display = "none" : document.getElementById("myDropdownicon2" + props.state.ChartMode).style.display = "block";
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')
 
         if (tag_array !== undefined) {
             for (let i = 0; i < tag_array.length; i++) {
 
-                if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== "myDropdownicon2" + props.id) {
+                if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== "myDropdownicon2" + props.state.ChartMode) {
                     document.getElementsByClassName('dropdown-contenticon-second-screen')[i].style.display = 'none';
                 }
             }
@@ -254,12 +253,12 @@ export default function MinimumStockThirdChart(props) {
     }
 
     function handleSorting() {
-        document.getElementById("sortingmenu2" + props.id).style.display === "block" ? document.getElementById("sortingmenu2" + props.id).style.display = "none" : document.getElementById("sortingmenu2" + props.id).style.display = "block";
+        document.getElementById("sortingmenu2" + props.state.ChartMode).style.display === "block" ? document.getElementById("sortingmenu2" + props.state.ChartMode).style.display = "none" : document.getElementById("sortingmenu2" + props.state.ChartMode).style.display = "block";
         const tag_array = document.getElementsByClassName('dropdown-contenticon-second-screen')
 
         if (tag_array !== undefined) {
             for (let i = 0; i < tag_array.length; i++) {
-                if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== "sortingmenu2" + props.id) {
+                if (document.getElementsByClassName('dropdown-contenticon-second-screen')[i]['id'] !== "sortingmenu2" + props.state.ChartMode) {
                     document.getElementsByClassName('dropdown-contenticon-second-screen')[i].style.display = 'none';
                 }
             }
@@ -267,7 +266,7 @@ export default function MinimumStockThirdChart(props) {
     }
 
     function handleclickSort(e) {
-        if (e.target.id !== props.id && e.target.id !== '') {
+        if (e.target.id !== props.state.ChartMode && e.target.id !== '') {
             setflagSort(e.target.id)
             setcountforflag(1)
         }
@@ -275,9 +274,9 @@ export default function MinimumStockThirdChart(props) {
 
     document.getElementById("root").addEventListener("click", function (event) {
         if (event.target.className !== 'fa-solid fa-arrow-down-short-wide' && event.target.id !== 'icon_drop') {
-            if (document.getElementById("myDropdownicon2" + props.id) !== null) {
-                document.getElementById("myDropdownicon2" + props.id).style.display = "none"
-                document.getElementById("sortingmenu2" + props.id).style.display = "none"
+            if (document.getElementById("myDropdownicon2" + props.state.ChartMode) !== null) {
+                document.getElementById("myDropdownicon2" + props.state.ChartMode).style.display = "none"
+                document.getElementById("sortingmenu2" + props.state.ChartMode).style.display = "none"
             }
         }
     });
@@ -286,7 +285,7 @@ export default function MinimumStockThirdChart(props) {
     return (
         <div>
             <div class="title-top-graphdetail-withoutcolor">
-                <h5>{props.state.componentName} <span style={{ fontSize: '15px' }}> {contextData.filternamesubitemrange !== "" ? "( " + contextData.filternamesubitemrange + " )" : null}</span></h5>
+                <h5>{props.state.componentName} <span style={{ fontSize: '15px' }}> {contextData.filternamesubitemrange !== "" ? "( " + contextData.filternamesubitemrange + ", AvgStockCycle - " + contextData.filtervaluesubitemrange + "% )" : null}</span></h5>
                 {/* <i className="fa-solid fa-arrow-down-short-wide sort-icon-second-screen" ></i> */}
                 <div className='d-flex MinimumstockIcons'  >
                     <div className='dropbtngraph'>
@@ -297,7 +296,7 @@ export default function MinimumStockThirdChart(props) {
                     </div>
                 </div>
             </div>
-            <div id={"sortingmenu2" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclickSort}>
+            <div id={"sortingmenu2" + props.state.ChartMode} className="dropdown-contenticon-second-screen" onClick={handleclickSort}>
                 {flagSort === 'AvgStockCycle' ? <><a id='AvgStockCycle'>Sort by MinimumStockCycle ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='AvgStockCycle'>Sort by MinimumStockCycle ASC&nbsp;</a><hr className='custom-hr' /></>}
                 {flagSort === 'AvgStockCycle Desc' ? <><a id='AvgStockCycle Desc'>Sort by MinimumStockCycle DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='AvgStockCycle Desc'>Sort by MinimumStockCycle DESC&nbsp;</a><hr className='custom-hr' /></>}
                 {inputdata.Unit === 'P' ?
@@ -312,7 +311,7 @@ export default function MinimumStockThirdChart(props) {
                 }
             </div>
             <div className='btnicons1'>
-                <div id={"myDropdownicon2" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclick}>
+                <div id={"myDropdownicon2" + props.state.ChartMode} className="dropdown-contenticon-second-screen" onClick={handleclick}>
                     {flag === 'bar' ? <><a id='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
                     {flag === 'HorizontalBar' ? <><a id='HorizontalBar'>HorizontalBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='HorizontalBar' >HorizontalBar</a><hr className='custom-hr' /></>}
                     {/* {flag === 'Line' ? <><a id='Line'>Line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Line' >Line</a><hr className='custom-hr' /></>} */}
@@ -324,7 +323,7 @@ export default function MinimumStockThirdChart(props) {
 
             <div class="graphdetailcards graphdetail-secondcard">
                 <div class="topimg-gd" style={{ height: '290px' }}>
-                    {console.log(option, "qwe")}
+
                     {
                         dataloader !== true ?
                             loader !== true ?
@@ -336,9 +335,9 @@ export default function MinimumStockThirdChart(props) {
                                         {flag === 'MultiBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionMultiBar))} /> : null}
                                     </div>
                                     : null : null
-                                : <div >
-
-                                    Not Found</div> : <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+                                :
+                                <img id='errorImg' src={DataError} />
+                            : <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                                 <div class="dot-spinner__dot"></div>
                                 <div class="dot-spinner__dot"></div>
                                 <div class="dot-spinner__dot"></div>
@@ -356,3 +355,4 @@ export default function MinimumStockThirdChart(props) {
         </div >
     )
 }
+

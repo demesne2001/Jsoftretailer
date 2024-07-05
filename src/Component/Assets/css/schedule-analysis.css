@@ -39,6 +39,8 @@ h4.crancy-progress-card__title.shedule-card-tt {
         font-size: 18px;
     }
 }
+
+
 @media only screen and (max-width: 320px) {
     h4.crancy-progress-card__title.shedule-card-tt {
         font-size: 18px;

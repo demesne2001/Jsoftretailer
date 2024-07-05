@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
-import axios from 'axios';
 import contex from '../contex/Contex';
-import Loader from '../Loader';
-import { Collapse, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import post from '../Utility/APIHandle';
 import API from '../Utility/API';
 
@@ -106,23 +103,11 @@ function Commonmodel(props) {
 
         setSearch(contextSetparam.tempstate)
         fetchItemdata()
-        // if (multicheckName.length !== 0) {
-
-        //     fetchAllData()
-        // }
-
-
     }, [props.modelprops])
     useEffect(() => {
         setmulticheck(updatedList)
         setmulticheckName(updatelistName);
     }, [])
-
-
-    // useEffect(() => {
-
-    // }, [multicheck])
-
 
     useEffect(() => {
 
@@ -134,13 +119,7 @@ function Commonmodel(props) {
 
 
     useEffect(() => {
-
-
-
-
-        fetchItemdata()
-
-
+        fetchItemdata();
     }, [search])
 
     useEffect(() => {
@@ -178,29 +157,19 @@ function Commonmodel(props) {
                 if (res.data.lstResult.length === 0) {
                     if (props.modelprops.id === 'DesignCatalogID') {
                         post({ "FilterGridID": 0, "FilterGrid": header[2], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-
-                            // setColumn([props.modelprops.name]);
                         })
                     } else if (props.modelprops.id === 'CityName' && props.modelprops.id === 'Caption') {
                         post({ "FilterGridID": 0, "FilterGrid": header[0], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
-
-                            // setColumn([props.modelprops.name]);
                         })
                     } else {
 
                         post({ "FilterGridID": 0, "FilterGrid": header[1], "FilterID": props.modelprops.grid, vendorID: 1, UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
 
-                            // setColumn([props.modelprops.name]);
                         })
                     }
 
 
-                    // } else {
-                    //     post({ "FilterGridID": 0, "FilterGrid": props.modelprops.name, "FilterID": props.modelprops.grid,vendorID:1,UserID: 1 }, API.FilterGridAddEdit, {}, "post").then((res1) => {
 
-                    //         // setColumn([props.modelprops.name]);
-                    //     })
-                    // }
                 } else {
 
                     setFilterGridId(res.data.lstResult[0]['FilterGridID']);
@@ -293,9 +262,6 @@ function Commonmodel(props) {
     const handlesavefilter = () => {
         var stringConvert = multicheck.toString()
         var stringNameConvert = multicheckName.toString()
-
-        // props.setvalues({ ...props.valuesform, [props.modelprops.labelname]: stringConvert })
-
         contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: stringConvert, [props.modelprops['LabelValue']]: stringNameConvert, ['FilterIndex']: props.modelprops.FilterIndex })
         contextSetparam.setchildFilterShow(false)
         setmulticheck([])
@@ -341,9 +307,6 @@ function Commonmodel(props) {
             setmulticheck([]);
             setmulticheckName([]);
         }
-
-        // setmulticheckName([])
-        // contextSetparam.SettempState({ ...contextSetparam.tempstate, [props.modelprops['labelname']]: "",  [props.modelprops['LabelValue']]: ""})
     }
 
 
@@ -409,16 +372,12 @@ function Commonmodel(props) {
                     }
 
                 })
-                
+
         }
     }
 
 
     const handleSearch = async (event) => {
-        // await setLoader(true)
-        // await setTimeout(() => {
-        //     setLoader(false)
-        // }, 2000);
         if (event.target.value === '') {
             setPage(2)
         }
@@ -439,12 +398,6 @@ function Commonmodel(props) {
             })
         })
     }
-    function showLoader() {
-
-
-    }
-
-    // if (finalitem.length !== 0) {
     if (finalitem.length !== 0) {
 
         return (
@@ -454,8 +407,8 @@ function Commonmodel(props) {
                         <>
                             <Modal show={contextSetparam.childFilterShow} onHide={handleClose} >
                                 <Modal.Header >
-                                    <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> Filter By</h5>
-                                    <button class="geex-btn geex-btn__customizer-close" onClick={handleClose}>
+                                    <h5 class="modal-title filter-modal-title"><i class="fa-solid fa-filter"></i> {props.modelprops.filterTitle} Filter</h5>
+                                    <button class="geex-btn geex-btn__customizer-close" onClick={handleClose}>  
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z"
@@ -498,17 +451,6 @@ function Commonmodel(props) {
 
                                         <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
                                     </InputGroup><br></br></>}
-                                    {/* <InputGroup >
-                                                    <Form.Control
-                                                        placeholder='Search here...'
-                                                        style={{ border: '1px solid' }}
-                                                        aria-label="Search"
-                                                        name='Search'
-                                                        aria-describedby="basic-addon1"
-                                                        onChange={handleSearch}
-                                                    />
-                                                    <InputGroup.Text id="basic-addon1"><img height={20} src={search_icon} style={{cursor:'pointer'}} onClick={handleSearchClick}/></InputGroup.Text>
-                                                </InputGroup><br></br> */}
 
                                     {multicheck.length !== 0 ?
                                         <div className='selected-item style-3'>
@@ -532,20 +474,6 @@ function Commonmodel(props) {
                                         {props.modelprops.labelname !== 'strSaleAging' && props.modelprops.labelname !== 'strCity' ?
                                             <div id='columnChooser'>
                                                 <div>
-                                                    {/* {
-                                                                    column.map((ele) => {
-                                                                        return <Form.Check
-                                                                            inline
-                                                                            value={ele}
-                                                                            name={ele}
-                                                                            label={ele}
-                                                                            id='check-column'
-                                                                            className='column'
-                                                                            onChange={handleColumnChosser}
-                                                                            checked={column.includes(ele)}
-                                                                        />
-                                                                    })
-                                                                } */}
                                                     <Form.Check
                                                         inline
                                                         value={props.modelprops.id}
@@ -556,9 +484,6 @@ function Commonmodel(props) {
                                                         onChange={handleColumnChosser}
                                                         checked={column.includes(props.modelprops.id)}
                                                     />
-                                                    {/* <input type='checkbox' value={props.modelprops.id}
-                                                                    name={props.modelprops.id} onChange={handleColumnChosser}
-                                                                    checked={column.includes(props.modelprops.id)} id='check-column' /><label for='check-column'>{props.modelprops.id}</label> */}
                                                     <Form.Check
                                                         value={props.modelprops.name}
                                                         name={props.modelprops.name}
@@ -590,7 +515,6 @@ function Commonmodel(props) {
                                                                 return <th id='columnth'
                                                                     onClick={handleDoubleClick}>{ele}</th>
                                                             })}
-                                                            {/* <th id='columnth' onClick={handleDoubleClick}>{props.modelprops.name}</th> */}
                                                         </tr>
                                                     </thead>
 
@@ -615,7 +539,6 @@ function Commonmodel(props) {
                                                                     [ele1]}</label></td>
                                                                 }
                                                                 )}
-                                                                {/* <td><label className='Table-Label' for={ele[props.modelprops.id]}>{ele[props.modelprops.name]}</label></td> */}
                                                             </tr>
 
                                                         )
@@ -695,18 +618,7 @@ function Commonmodel(props) {
                                         />
                                         <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
                                     </InputGroup><br></br></>}
-                                    {/* <InputGroup >
-                                                <Form.Control
-                                                    placeholder='Search here...'
-                                                    style={{ border: '1px solid' }}
-                                                    aria-label="Search"
-                                                    name='Search'
-                                                    aria-describedby="basic-addon1"
-                                                    onChange={handleSearch}
-                                                />
-                                                <InputGroup.Text id="basic-addon1"><img height={20} src={search_icon} style={{cursor:'pointer'}} onClick={handleSearchClick}/></InputGroup.Text>
-                                            </InputGroup><br></br> */}
-
+                                  
                                     {multicheck.length !== 0 ?
                                         <div className='selected-item style-3'>
 

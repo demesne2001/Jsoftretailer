@@ -1,7 +1,3 @@
-import { List } from 'echarts';
-import React, { useEffect } from 'react'
-import { useNavigationType } from 'react-router-dom';
-
 export default function StockToSalesOption(xAxis, yAxis, id, contextdata, filterkey, screen) {
     const series = [
         {
@@ -54,7 +50,6 @@ export default function StockToSalesOption(xAxis, yAxis, id, contextdata, filter
                             contextdata.SetDetailsecondState({ ...contextdata.detailsecondstate, [filterkey]: '-' })
                         }
                         else {
-                            console.log(id[config.dataPointIndex].toString() ,"sdsdsdss");
                             setTimeout(() => {
                                 contextdata.SetDetailsecondState({ ...contextdata.detailsecondstate, [filterkey]: id[config.dataPointIndex].toString(), ['MonthType']:contextdata.detailstate['MonthType'] })
                                 contextdata.setfiltername(xAxis[config.dataPointIndex])
@@ -151,13 +146,10 @@ export default function StockToSalesOption(xAxis, yAxis, id, contextdata, filter
             y: {
                 formatter: function (val, config) {
                     if (config['seriesIndex'] === 0 && val !== undefined) {
-                        console.log(val);
                         return (val.toFixed(3)).toString()
                     } else if (config['seriesIndex'] === 2 && val !== undefined) {
-                        console.log(val);
                         return (val.toFixed(2)).toString()
                     } else if (config['seriesIndex'] === 1 && val !== undefined) {
-                        console.log(val);
                         return (val.toFixed(3)).toString()
                     }
 

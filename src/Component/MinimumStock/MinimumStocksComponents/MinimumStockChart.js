@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
-import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import { AlphaDashChart } from 'alpha-echart-library/dist/cjs';
+import DataError from '../../Assets/image/Error.gif'
 
 export default function MinimumStockChart(props) {
     const navigate = useNavigate();
@@ -18,8 +19,11 @@ export default function MinimumStockChart(props) {
     const [pageSize, setPageSize] = useState(0);
     const [data, setdata] = useState([]);
     const [flag, setflag] = useState('bar');
+    const [datashow, setDatashow] = useState(11);
     const [flagSort, setflagSort] = useState('AvgStockCycle Desc');
-    const [countforflag, setcountforflag] = useState(0) 
+    const [countforflag, setcountforflag] = useState(0);
+    let percentage;
+    let percentageVertical;
     let optionMultiBar = {}
     let optionBar = {}
     let optionHorizontalBar = {}
@@ -30,12 +34,13 @@ export default function MinimumStockChart(props) {
             setPageSize(5)
         } else {
             setPageSize(10)
-        }
+        } 
+        setDatashowOnDivWidth()
     }, [])
 
     useEffect(() => {
         getChartData()
-        console.log("api calleddd", inputdata);
+
     }, [inputdata])
 
     useEffect(() => {
@@ -47,7 +52,7 @@ export default function MinimumStockChart(props) {
 
     function handleDetailNaviogation() {
         if (props.id === 3) {
-            console.log(inputdata, "asdgg");
+
             contextData.SetDetailState(inputdata)
             navigate('/minimum_stocks_Detailed', { state: { componentName: MinimumStockChartObject[4].heading, ChartMode: 4, filterkey: 'StrItemID', screen: 1, showdropdown: 1, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate, filterdata: JSON.stringify(inputdata) }, replace: true });
         } else if (props.id === 4) {
@@ -69,7 +74,7 @@ export default function MinimumStockChart(props) {
                     }
                     tempYaxis.push(tempYaxis1);
                 }
-                console.log(tempYaxis,"sahdmgyu");
+
                 setyAxis(tempYaxis);
 
 
@@ -106,6 +111,37 @@ export default function MinimumStockChart(props) {
         }
     }
 
+    function setDatashowOnDivWidth() {
+        console.log(document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth, "divlength");
+        if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth < 902 && document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth > 450) {
+            setDatashow(5)
+        } else if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth <= 450) {
+            setDatashow(3)
+        } else {
+            setDatashow(11)
+        }
+    }
+
+    function divideHorizontalData(len_of_data, per) {
+        if (len_of_data <= 5) {
+            console.log(parseInt(per),"answer");
+            percentage = parseInt(per)
+        } else {
+            divideHorizontalData(parseInt(len_of_data/2), parseInt(per/2))
+        }
+    }
+
+    function divideVerticalData(len_of_data, per) {
+        if (len_of_data <= datashow) {
+            console.log(parseInt(per),"answer");
+            percentageVertical = parseInt(per)
+        } else {
+            divideVerticalData(parseInt(len_of_data/2), parseInt(per/2))
+        }
+    }
+
+    divideHorizontalData(xAxis.length, 100)
+    divideVerticalData(xAxis.length, 100)
     if (yAxis.length > 0) {
         let sliderbol
         if (xAxis.length < 8) {
@@ -118,11 +154,11 @@ export default function MinimumStockChart(props) {
             if (tempYAxis.length > 3) {
                 tempYAxis.splice(1, 1);
             }
-            console.log(tempYAxis, "dshgjhusdgkfg");
+
             if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
                 optionMultiBar = {
                     themeId: 11,
-                    chartId: 'inside-Bardfyuwsedsd' + props.id,
+                    chartId: 'MinimumStocks' + props.id,
                     charttype: 'inside-Bar',
                     height: '350%',
                     width: '100%',
@@ -139,8 +175,8 @@ export default function MinimumStockChart(props) {
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltipid: 2,
                     sliderflag:sliderbol,
-                    datazoomlst:[0,50,0,100],
-             
+                    datazoomlst:[0,percentageVertical,0,100],
+                    filtervalueindex:2,
                     prclst:tempYAxis[2]
                 }
                 optionHorizontalBar = {
@@ -154,7 +190,7 @@ export default function MinimumStockChart(props) {
                     Yaxis: tempYAxis[2],
                     divname: 'crancy-progress-card card-contain-graph',
                     sliderflag:sliderbol,
-                    datazoomlst:[0,100,0,50],
+                    datazoomlst:[0,100,0,percentage],
                     tooltip:{
                         formatter:'{b}<br> AvgStockCycle - {c}%'
                     },
@@ -165,11 +201,11 @@ export default function MinimumStockChart(props) {
                     charttype: 'roundbar',
                     height: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientHeight - 30,
                     width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth - 30,
-                    chartId: 'MinimumStockwiseBar' + props.id,
+                    chartId: 'MinimumStocks' + props.id,
                     Xaxis: xAxis,
                     Yaxis: tempYAxis[2],
                     sliderflag:sliderbol,
-                    datazoomlst:[0,50,0,100],
+                    datazoomlst:[0,percentageVertical,0,100],
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltip:{
                         formatter:'{b}<br> AvgStockCycle - {c}%'
@@ -180,7 +216,7 @@ export default function MinimumStockChart(props) {
                     themeId: 11,
                     height: '350%',
                     width: '100%',
-                    chartId: 'Minimumsrtocksline' + props.id,
+                    chartId: 'MinimumStocks' + props.id,
                     charttype: 'cartesian-point',
                     Xaxis: xAxis,
                     Yaxis: tempYAxis[2],
@@ -196,7 +232,7 @@ export default function MinimumStockChart(props) {
             if (document.getElementsByClassName('crancy-progress-card card-contain-graph')[0] !== undefined) {
                 optionMultiBar = {
                     themeId: 11,
-                    chartId: 'inside-Bardfyuwsedsd' + props.id,
+                    chartId: 'MinimumStocks' + props.id,
                     charttype: 'inside-Bar',
                     height: '350%',
                     width: '100%',
@@ -213,9 +249,9 @@ export default function MinimumStockChart(props) {
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltipid: 2,
                     sliderflag:sliderbol,
-                    datazoomlst:[0,50,0,100],
-
-                    prclst:tempYAxis[2]
+                    datazoomlst:[0,percentageVertical,0,100],
+                    prclst:tempYAxis[2],
+                    filtervalueindex:2
                 }
                 optionHorizontalBar = {
                     themeId: localStorage.getItem("ThemeIndex"),
@@ -228,7 +264,7 @@ export default function MinimumStockChart(props) {
                     Yaxis: tempYAxis[2],
                     divname: 'crancy-progress-card card-contain-graph',
                     sliderflag:sliderbol,
-                    datazoomlst:[0,100,0,50],
+                    datazoomlst:[0,100,0,percentage],
                     tooltip:{
                         formatter:'{b} - {c}%'
                     }
@@ -238,11 +274,11 @@ export default function MinimumStockChart(props) {
                     charttype: 'roundbar',
                     height: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientHeight - 30,
                     width: document.getElementsByClassName('crancy-progress-card card-contain-graph')[0].clientWidth - 30,
-                    chartId: 'MinimumStockwiseBar1' + props.id,
+                    chartId: 'MinimumStocks' + props.id,
                     Xaxis: xAxis,
                     Yaxis: tempYAxis[2],
                     sliderflag:sliderbol,
-                    datazoomlst:[0,50,0,100],
+                    datazoomlst:[0,percentageVertical,0,100],
                     divname: 'crancy-progress-card card-contain-graph',
                     tooltip:{
                         formatter:'{b}<br>AvgStockCycle - {c}%'
@@ -252,7 +288,7 @@ export default function MinimumStockChart(props) {
                     themeId: 11,
                     height: '350%',
                     width: '100%',
-                    chartId: 'Minimumsrtocksline' + props.id,
+                    chartId: 'MinimumStocks' + props.id,
                     charttype: 'cartesian-point',
                     Xaxis: xAxis,
                     Yaxis: tempYAxis[2],
@@ -306,7 +342,7 @@ export default function MinimumStockChart(props) {
 
     function getSortChartData() {
         inputdata = { ...inputdata, 'Mode': props.id, "sort": flagSort }
-        console.log(inputdata,"sorttttt");
+
         post(inputdata, API.GetMinStockChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -388,7 +424,7 @@ export default function MinimumStockChart(props) {
                         </div>
                     </div>
                 </div>
-                {console.log("asgvdhavbsd", optionBar)}
+
                 {dataloader !== true ?
                     loader !== true ?
 
@@ -403,7 +439,7 @@ export default function MinimumStockChart(props) {
                         </div>
                         : <div class="crancy-progress-card card-contain-graph">
 
-                            Data Not Found</div> :
+<img id='errorImg'  src={DataError} /></div> :
                     <div class="crancy-progress-card card-contain-graph">
                         <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                             <div class="dot-spinner__dot"></div>

@@ -4,7 +4,7 @@ import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-import { color } from 'echarts';
+import DataError from '../../Assets/image/Error.gif'
 
 export default function StockToSalesDefaultChart(props) {
     const contextData = useContext(contex);
@@ -14,6 +14,7 @@ export default function StockToSalesDefaultChart(props) {
     const [yAxis, setyAxis] = useState([]);
     const [loader, setLoader] = useState(true);
     const [dataloader, setdataLoader] = useState(true);
+    const [datashow, setDatashow] = useState(11);
 
     const [flag, setflag] = useState('bar');
     const [flagSort, setflagSort] = useState('AvgStockCycleNtWt Desc');
@@ -22,20 +23,20 @@ export default function StockToSalesDefaultChart(props) {
     let optionBar = {}
     let optionHorizontalBar = {}
     let optionLineBar = {}
-    let updatecontext = {}
+    let percentage;
+    let percentageVertical;
+
 
     useEffect(() => {
         if (props.state.ChartMode !== undefined && props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd", props.state);
     }, [props])
 
     useEffect(() => {
         if (props.state.ChartMode !== undefined && props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd11", inputdata);
     }, [inputdata])
 
     useEffect(() => {
@@ -47,13 +48,10 @@ export default function StockToSalesDefaultChart(props) {
 
 
     function getChartData() {
-        console.log(props);
         inputdata = { ...inputdata, 'Mode': props.state.ChartMode, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate }
-        console.log(inputdata, "api default");
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 if (res.data.lstResult.length > 0) {
-                    console.log(res.data.lstResult, "main data");
                     var tempYaxis = [];
                     for (let i = 0; i < StockToSalesChartObject[props.state.ChartMode]['yAxis'].length; i++) {
                         var tempYaxis1 = [];
@@ -84,19 +82,6 @@ export default function StockToSalesDefaultChart(props) {
         })
     }
 
-    function dataformate() {
-        let tempjs = {};
-        let templs = [];
-        for (let index = 0; index < xAxis.length; index++) {
-            tempjs = {};
-            tempjs[StockToSalesChartObject[props.state.ChartMode].xAxis] = xAxis[index];
-            tempjs['AvgStock'] = yAxis[0][index];
-            tempjs['Sales-NetWeight'] = yAxis[1][index];
-            tempjs['AvgStockCycleNtWt'] = yAxis[2][index];
-            templs.push(tempjs);
-        }
-        return templs;
-    }
     function findMinMax() {
         let ansmin = [];
         let ansmax = [];
@@ -112,6 +97,26 @@ export default function StockToSalesDefaultChart(props) {
             return [((parseInt((parseInt(Math.max(...ansmax).toFixed(0)) + 1) / Math.pow(10, lenthdigit)) + 1)) * (Math.pow(10, lenthdigit)), parseInt(Math.min(...ansmin).toFixed(0)) + 1]
         }
     }
+    function divideHorizontalData(len_of_data, per) {
+        if (len_of_data <= 5) {
+            console.log(parseInt(per), "answer");
+            percentage = parseInt(per)
+        } else {
+            divideHorizontalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
+
+    function divideVerticalData(len_of_data, per) {
+        if (len_of_data <= datashow) {
+            console.log(parseInt(per), "answer");
+            percentageVertical = parseInt(per)
+        } else {
+            divideVerticalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
+
+    divideHorizontalData(xAxis.length, 100)
+    divideVerticalData(xAxis.length, 100)
     if (document.getElementsByClassName('graphdetailcards graphdetail-secondcard')[0] !== undefined) {
         let tempYAxis = yAxis;
         if (tempYAxis.length > 3) {
@@ -142,7 +147,7 @@ export default function StockToSalesDefaultChart(props) {
                 barnum: 2,
                 divname: 'graphdetailcards graphdetail-secondcard',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 50, 0, 100],
+                datazoomlst: [0, percentageVertical, 0, 100],
             }
 
         } else {
@@ -164,7 +169,7 @@ export default function StockToSalesDefaultChart(props) {
                 barnum: 2,
                 divname: 'graphdetailcards graphdetail-secondcard',
                 sliderflag: sliderbol,
-                datazoomlst: [0, 50, 0, 100],
+                datazoomlst: [0, percentageVertical, 0, 100],
             }
 
         }
@@ -194,7 +199,7 @@ export default function StockToSalesDefaultChart(props) {
             Yaxis: tempYAxis[2],
             divname: 'graphdetailcards graphdetail-secondcard',
             sliderflag: sliderbol,
-            datazoomlst: [0, 50, 0, 100],
+            datazoomlst: [0, percentageVertical, 0, 100],
             tooltip:{
                 formatter:'{b}<br>AvgStockCycleNtWt - {c}'
             }
@@ -262,7 +267,7 @@ export default function StockToSalesDefaultChart(props) {
 
     function getSortChartData() {
         inputdata = { ...inputdata, 'Mode': props.state.ChartMode, "sort": flagSort }
-        console.log(inputdata, "wewqeqwqeqwewqe");
+
         post(inputdata, API.GetStockToSalesChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -306,8 +311,7 @@ export default function StockToSalesDefaultChart(props) {
         <div>
             <div class="title-top-graphdetail-withoutcolor">
                 <h5>
-                    {props.state.componentName} <span style={{ fontSize: '15px' }}> {contextData.filtername !== "" ? "( " + contextData.filtername + " )" : null}</span>
-
+                {props.state.componentName} <span style={{ fontSize: '15px' }}> {contextData.filtername !== "" ? "( " + contextData.filtername + ", AvgStockCycleNtWt - " + contextData.filtervalue + " )" : null}</span>
                     <div className='d-flex MinimumstockIcons'>
                         <div className='dropbtngraph'>
                             <i className="fa-solid fa-arrow-down-short-wide" id='icon_sort' style={{ color: '#094876 !important' }} onClick={handleSorting} />
@@ -339,7 +343,6 @@ export default function StockToSalesDefaultChart(props) {
                 <div id={"myDropdownicon1" + props.state.ChartMode} className="dropdown-contenticon-second-screen" onClick={handleclick}>
                     {flag === 'bar' ? <><a id='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
                     {flag === 'HorizontalBar' ? <><a id='HorizontalBar'>HorizontalBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='HorizontalBar' >HorizontalBar</a><hr className='custom-hr' /></>}
-                    {/* {flag === 'Line' ? <><a id='Line'>Line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Line' >Line</a><hr className='custom-hr' /></>} */}
                     {flag === 'MultiBar' ? <><a id='MultiBar'>MultiBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='MultiBar' >MultiBar</a><hr className='custom-hr' /></>}
                 </div>
             </div>
@@ -365,8 +368,7 @@ export default function StockToSalesDefaultChart(props) {
                                         <>
                                             {flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionBar))} /> : null}
                                             {flag === 'HorizontalBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionHorizontalBar))} /> : null}
-                                            {/* {flag === 'Line' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionLineBar))} /> : null} */}
-                                            {flag === 'MultiBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionMultiBar))} /> : null}
+                                             {flag === 'MultiBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionMultiBar))} /> : null}
                                         </>                                    </div>
                                     : null : null
 
@@ -382,7 +384,7 @@ export default function StockToSalesDefaultChart(props) {
                                             <button className='chartoptionButton' onClick={() => { handleMonthOptionClick("Y") }}>Year Wise</button>
                                         </div>
                                         : null}
-                                    Not Found</div> : <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
+                                    <img id='errorImg'  src={DataError} /></div> : <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                                 <div class="dot-spinner__dot"></div>
                                 <div class="dot-spinner__dot"></div>
                                 <div class="dot-spinner__dot"></div>

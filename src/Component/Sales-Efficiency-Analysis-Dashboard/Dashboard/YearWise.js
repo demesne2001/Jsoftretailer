@@ -1,20 +1,13 @@
 import React, { useContext } from 'react'
-
-import ReactApexChart from 'react-apexcharts';
-import BlackDots from '../../Assets/image/Dots.png'
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import { useEffect, useState } from 'react';
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
-import { YearWise_Donut } from '../../ChartOptions/YearWise_Donut';
-import { YearWise_bar } from '../../ChartOptions/YearWise_bar';
-import { YearWise_semiDonut } from '../../ChartOptions/YearWise_semiDonut';
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-
+import DataError from '../../Assets/image/Error.gif'
 
 
 export default function YearWise() {
@@ -36,26 +29,34 @@ export default function YearWise() {
 		charttype: 'bar',
 		height: '400%',
 		width: '100%',
-		chartId: 'yearwise',
+		chartId: 'YearWise',
 		Xaxis: name,
 		Yaxis: weight,
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'polar-radialbar',
 		height: '100%',
 		width: '100%',
-		chartId: 'yearwise1',
+		chartId: 'YearWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optiondonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'yearwise2',
+		chartId: 'YearWise',
 		propdata: data,
 		radius: [10, 150],
 		label: {
@@ -68,6 +69,10 @@ export default function YearWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 
 	}
@@ -78,20 +83,24 @@ export default function YearWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'yearwise3',
+		chartId: 'YearWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'yearwise4',
+		chartId: 'YearWise',
 		propdata: data,
 		position: 'center',
 		fontsize: 20,
@@ -105,6 +114,10 @@ export default function YearWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	let optionPolar = {
@@ -112,9 +125,13 @@ export default function YearWise() {
 		charttype: 'pie',
 		height: '100%',
 		width: '100%',
-		chartId: 'yearwise6',
+		chartId: 'YearWise',
 		propdata: data,
 		radius: [10, 110],
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	function handleclick(e) {
 
@@ -127,14 +144,6 @@ export default function YearWise() {
 		}
 
 	}
-	const options_bar = YearWise_bar(name, inputdata['column'])
-	const options_donut = YearWise_Donut(name, inputdata['column'])
-	const options_semidonut = YearWise_semiDonut(name, inputdata['column'])
-	const series1 = [{
-		name: 'weight',
-		data: weight
-	}]
-	const series2 = weight
 
 	useEffect(() => {
 		fetchOption()
@@ -202,7 +211,7 @@ export default function YearWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15 , FromDate: inputdata.FromDate, ToDate : inputdata.ToDate}, replace: true })
+		navigate('/graph-detail', { state: { grouping: "M.FinYearID,m.YearCode", columnName: "YearCode", columnID: "FinYearID", componentName: "Year Wise", chartId: 15, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
@@ -229,7 +238,9 @@ export default function YearWise() {
 								post({ "ID": 15, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -239,8 +250,10 @@ export default function YearWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -325,7 +338,6 @@ export default function YearWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
 								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -340,7 +352,6 @@ export default function YearWise() {
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconyear" className="dropdown-contenticon" onClick={handleclick}>
 
@@ -352,7 +363,6 @@ export default function YearWise() {
 								{flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
 								<button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
-								{/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
 							</div>
 						</div>
 					</div>
@@ -370,7 +380,7 @@ export default function YearWise() {
 							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

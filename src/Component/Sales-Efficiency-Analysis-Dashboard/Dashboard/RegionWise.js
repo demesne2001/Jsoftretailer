@@ -1,20 +1,13 @@
 import React, { useContext } from 'react'
-
-import ReactApexChart from 'react-apexcharts';
-import { RegionWise_lolipop } from '../../ChartOptions/RegionWise_lolipop';
-import { RegionWise_Polar } from '../../ChartOptions/RegionWise_Polar';
-import BlackDots from '../../Assets/image/Dots.png'
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import { useEffect, useState } from 'react';
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
-import { BranchWise_donut } from '../../ChartOptions/BranchWise_donut';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-
+import DataError from '../../Assets/image/Error.gif'
 
 
 export default function RegionWise() {
@@ -29,10 +22,6 @@ export default function RegionWise() {
 	const [optionId, setOptionId] = useState()
 	const ChartType = "bar"
 	const [flagSort, setflagSort] = useState('')
-	let localloader = localStorage.getItem('load')
-	const options_lolipop = RegionWise_lolipop(name, inputdata['column'])
-	const options_polar = RegionWise_Polar(name, inputdata['column'])
-	const options_donut = BranchWise_donut(name, inputdata['column'])
 	const [prc, setprc] = useState([]);
 	let optionDonut = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -52,6 +41,10 @@ export default function RegionWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	let optionPolar = {
@@ -62,16 +55,24 @@ export default function RegionWise() {
 		chartId: 'RegionWise',
 		propdata: data,
 		radius: [10, 110],
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let gradientbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		height: '400px',
 		width: '100%',
 		labelcolor: '#000',
-		chartId: 'RegionWisegradient',
+		chartId: 'RegionWise',
 		charttype: 'gradient-bar',
 		Xaxis: name,
-		Yaxis: weight
+		Yaxis: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -81,6 +82,10 @@ export default function RegionWise() {
 		chartId: 'RegionWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optionpie = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -88,20 +93,24 @@ export default function RegionWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'PieChartRegionWise',
+		chartId: 'RegionWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'RadialBarchartRegionWise',
+		chartId: 'RegionWise',
 		propdata: data,
 		position: 'center',
 		fontsize: 20,
@@ -115,6 +124,10 @@ export default function RegionWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 	let roundedBarHorizontal = {
@@ -127,13 +140,12 @@ export default function RegionWise() {
 		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
 		Yaxis: weight,
 		divname: 'crancy-progress-card card-contain-graph',
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
-	const series_lolipop = [{
-		name: 'Weight',
-		data: weight
-	}]
-	const series_polar = weight
 
 	const navigate = useNavigate()
 
@@ -226,7 +238,7 @@ export default function RegionWise() {
 
 	});
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise", filterKey: "strRegionID", chartId: 4 , FromDate: inputdata.FromDate, ToDate : inputdata.ToDate}, replace: true })
+		navigate('/graph-detail', { state: { grouping: "l.RegionID,l.RegionName", columnName: "RegionName", columnID: "RegionID", componentName: "Region Wise", filterKey: "strRegionID", chartId: 4, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 	async function fetchOption() {
@@ -243,7 +255,9 @@ export default function RegionWise() {
 								post({ "ID": 4, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -255,8 +269,10 @@ export default function RegionWise() {
 
 					}
 					else {
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -341,7 +357,6 @@ export default function RegionWise() {
 					</div>
 
 					<div className="col-sm-2 col-md-2 col-2">
-						{/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
 								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -356,7 +371,6 @@ export default function RegionWise() {
 							{flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
 							{flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
 						</div>
-						{/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
 						<div className='btnicons'>
 							<div id="myDropdowniconregion" className="dropdown-contenticon" onClick={handleclick}>
 								{flag === 'polarArea' ? <><a id='polarArea' >Polar Area&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='polarArea' >Polar Area</a><hr className='custom-hr' /></>}
@@ -370,8 +384,6 @@ export default function RegionWise() {
 						</div>
 
 					</div>
-
-					{/* <i class="fas fa-external-link-alt"></i> */}
 				</div>
 
 				{dataloader !== true ?
@@ -384,11 +396,9 @@ export default function RegionWise() {
 							{flag === 'pie' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionpie))} /> : null}
 							{flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
 							{flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(roundedBarHorizontal))} /> : null}
-
-							{/* <Cylinder/> */}
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

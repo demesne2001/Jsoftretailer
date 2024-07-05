@@ -1,12 +1,10 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import MinimumStockChartObject from '../MinimumStocksComponents/MinimumStockChartObject';
 import contex from '../../contex/Contex';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-import StockToSalesOption from '../../ChartOptions/StockToSales/StockToSalesOption';
-import ReactApexChart from 'react-apexcharts';
+import DataError from '../../Assets/image/Error.gif'
 
 export default function MinimumStockDefaultChart(props) {
     const contextData = useContext(contex);
@@ -19,25 +17,27 @@ export default function MinimumStockDefaultChart(props) {
     const [flag, setflag] = useState('bar');
     const [flagSort, setflagSort] = useState('AvgStockCycle Desc');
     const [countforflag, setcountforflag] = useState(0)
+    const [datashow, setDatashow] = useState(11);
     let optionMultiBar = {}
     let optionBar = {}
     let optionHorizontalBar = {}
     let optionLineBar = {}
     let option = {};
     let updatecontext = {}
+    let percentage;
+    let percentageVertical;
+
 
     useEffect(() => {
         if (props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd", props.state.ChartMode);
     }, [props])
 
     useEffect(() => {
         if (props.state.ChartMode !== null) {
             getChartData()
         }
-        console.log("api calleddd1sdsd1", inputdata);
     }, [inputdata])
 
     useEffect(() => {
@@ -50,7 +50,6 @@ export default function MinimumStockDefaultChart(props) {
 
     function getChartData() {
         inputdata = { ...inputdata, 'Mode': props.state.ChartMode, 'FromDate': props.state.FromDate, 'ToDate': props.state.ToDate }
-        console.log(inputdata, 'sed123');
 
         post(inputdata, API.GetMinStockChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
@@ -71,7 +70,6 @@ export default function MinimumStockDefaultChart(props) {
                     idtemp.push(res.data.lstResult[j][MinimumStockChartObject[props.state.ChartMode]['id']])
                 }
                 setxAxis(tempXaxis);
-                console.log(idtemp, "sasa");
                 setid(idtemp);
                 setdataLoader(false)
                 if (tempXaxis.length !== 0) {
@@ -85,7 +83,23 @@ export default function MinimumStockDefaultChart(props) {
         })
     }
 
+    function divideHorizontalData(len_of_data, per) {
+        if (len_of_data <= 5) {
+            console.log(parseInt(per), "answer");
+            percentage = parseInt(per)
+        } else {
+            divideHorizontalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
 
+    function divideVerticalData(len_of_data, per) {
+        if (len_of_data <= datashow) {
+            console.log(parseInt(per), "answer");
+            percentageVertical = parseInt(per)
+        } else {
+            divideVerticalData(parseInt(len_of_data / 2), parseInt(per / 2))
+        }
+    }
 
 
     function findMinMax() {
@@ -115,7 +129,8 @@ export default function MinimumStockDefaultChart(props) {
         } else {
             sliderbol = true
         }
-
+        divideHorizontalData(xAxis.length, 100)
+        divideVerticalData(xAxis.length, 100)
         if (props.state.dropdown === "1") {
             optionMultiBar = {
                 themeId: 11,
@@ -138,10 +153,10 @@ export default function MinimumStockDefaultChart(props) {
                 divname: 'detailstocktosales',
                 tooltipid: 2,
                 sliderflag: sliderbol,
-                datazoomlst: [0, 40, 0, 100],
+                datazoomlst: [0, percentageVertical, 0, 100],
 
             }
-          
+
         } else {
             optionMultiBar = {
                 themeId: 11,
@@ -164,7 +179,7 @@ export default function MinimumStockDefaultChart(props) {
                 divname: 'detailstocktosales',
                 tooltipid: 2,
                 sliderflag: sliderbol,
-                datazoomlst: [0, 40, 0, 100],
+                datazoomlst: [0, percentageVertical, 0, 100],
 
             }
         }
@@ -182,8 +197,8 @@ export default function MinimumStockDefaultChart(props) {
             idlst: id,
             sliderflag: sliderbol,
             datazoomlst: [0, 100, 50, 100],
-            tooltip:{
-                formatter:'{b}<br> AvgStockCycle - {c}%'
+            tooltip: {
+                formatter: '{b}<br> AvgStockCycle - {c}%'
             }
         }
         optionBar = {
@@ -198,9 +213,9 @@ export default function MinimumStockDefaultChart(props) {
             idkey: props.state.filterkey,
             idlst: id,
             sliderflag: sliderbol,
-            datazoomlst: [0, 50, 0, 100],
-            tooltip:{
-                formatter:'{b}<br> AvgStockCycle - {c}%'
+            datazoomlst: [0, percentageVertical, 0, 100],
+            tooltip: {
+                formatter: '{b}<br> AvgStockCycle - {c}%'
             }
         }
         optionLineBar = {
@@ -215,13 +230,12 @@ export default function MinimumStockDefaultChart(props) {
             idkey: props.state.filterkey,
             idlst: id,
             sliderflag: sliderbol,
-            datazoomlst: [0, 50, 0, 100],
-            tooltip:{
-                formatter:'{b}<br> AvgStockCycle - {c}%'
+            datazoomlst: [0, percentageVertical, 0, 100],
+            tooltip: {
+                formatter: '{b}<br> AvgStockCycle - {c}%'
             }
         }
 
-        console.log(option, "sdfshgfd");
     }
 
     if (flag === 'MultiBar') {
@@ -234,7 +248,10 @@ export default function MinimumStockDefaultChart(props) {
         updatecontext = (<AlphaDashChart obj={JSON.parse(JSON.stringify(optionBar))} state={contextData.detailTirdstate} />).props.state;
     }
     function DivOnClick() {
-        console.log(updatecontext, "asdhtutdf");
+        if (updatecontext.filtername !== undefined && updatecontext.filtervalue !== undefined) {
+            contextData.setfiltervaluesubitemrange(updatecontext.filtervalue)
+            contextData.setfilternamesubitemrange(updatecontext.filtername)
+        }
         contextData.SetDetailThirdState({ ...contextData.detailTirdstate, [props.state.filterkey]: updatecontext[props.state.filterkey] })
     }
 
@@ -280,7 +297,6 @@ export default function MinimumStockDefaultChart(props) {
 
     function getSortChartData() {
         inputdata = { ...inputdata, 'Mode': props.state.ChartMode, "sort": flagSort }
-        console.log(inputdata, "sahdgaysdgyagsd");
         post(inputdata, API.GetMinStockChart, {}, "post").then((res) => {
             if (res.data !== undefined) {
                 var tempYaxis = [];
@@ -300,7 +316,6 @@ export default function MinimumStockDefaultChart(props) {
                     idtemp.push(res.data.lstResult[j][MinimumStockChartObject[props.state.ChartMode]['id']])
                 }
                 setxAxis(tempXaxis);
-                console.log(idtemp, "sasa");
                 setid(idtemp);
                 setdataLoader(false)
                 if (tempXaxis.length !== 0) {
@@ -329,10 +344,10 @@ export default function MinimumStockDefaultChart(props) {
         <div class="col-xl-6 col-lg-6 col-md-12 col-12">
             <div className='graph-card'>
                 <div class="title-top-graphdetail">
-                            <h5>
-                                {props.state !== null ? props.state.componentName : null} <span style={{ fontSize: '15px' }}> {contextData.filtername !== "" ? "( " + contextData.filtername + " )" : null}</span>
-                        
-                    
+                    <h5>
+                        {props.state !== null ? props.state.componentName : null} <span style={{ fontSize: '15px' }}> {contextData.filtername !== "" ? "( " + contextData.filtername + ", AvgStockCycle - " + contextData.filtervalue + "% )" : null}</span>
+
+
                         <div className='d-flex MinimumstockIcons'  >
                             <div className='dropbtngraph'>
                                 <i className="fa-solid fa-arrow-down-short-wide sorticon minimumstocktosaleschartoption" onClick={handleSorting} />
@@ -341,45 +356,41 @@ export default function MinimumStockDefaultChart(props) {
                                 <i class="fa-solid fa-ellipsis-vertical " id='icon_drop' onClick={handleonchangeCurrency} />
                             </div>
                         </div>
-                        </h5>
-                        </div>
-                   
+                    </h5>
+                </div>
 
-                        <div id={"sortingmenu1" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclickSort}>
-                            {flagSort === 'AvgStockCycle' ? <><a id='AvgStockCycle'>Sort by MinimumStockCycle ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='AvgStockCycle'>Sort by MinimumStockCycle ASC&nbsp;</a><hr className='custom-hr' /></>}
-                            {flagSort === 'AvgStockCycle Desc' ? <><a id='AvgStockCycle Desc'>Sort by MinimumStockCycle DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='AvgStockCycle Desc'>Sort by MinimumStockCycle DESC&nbsp;</a><hr className='custom-hr' /></>}
-                            {inputdata.Unit === 'P' ?
-                                <>
-                                    {flagSort === 'AvgMinStockRequiredPcs' ? <><a id='AvgMinStockRequiredPcs'>Sort by MinimumStockPcs ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequiredPcs'>Sort by MinimumStockPcs ASC&nbsp;</a><hr className='custom-hr' /> </>}
-                                    {flagSort === 'AvgMinStockRequiredPcs desc' ? <><a id='AvgMinStockRequiredPcs desc'>Sort by MinimumStockPcs DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequiredPcs desc'>Sort by MinimumStockPcs DESC&nbsp;</a><hr className='custom-hr' /> </>}
-                                </> :
-                                <>
-                                    {flagSort === 'AvgMinStockRequired' ? <><a id='AvgMinStockRequired'>Sort by MinimumStock ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequired'>Sort by MinimumStock ASC&nbsp;</a><hr className='custom-hr' /> </>}
-                                    {flagSort === 'AvgMinStockRequired desc' ? <><a id='AvgMinStockRequired desc'>Sort by MinimumStock DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequired desc'>Sort by MinimumStock DESC&nbsp;</a><hr className='custom-hr' /> </>}
-                                </>
-                            }
-                        </div>
-                        <div className='btnicons1'>
-                            <div id={"myDropdownicon1" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclick}>
-                                {flag === 'bar' ? <><a id='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
-                                {flag === 'HorizontalBar' ? <><a id='HorizontalBar'>HorizontalBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='HorizontalBar' >HorizontalBar</a><hr className='custom-hr' /></>}
-                                {/* {flag === 'Line' ? <><a id='Line'>Line&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='Line' >Line</a><hr className='custom-hr' /></>} */}
-                                {flag === 'MultiBar' ? <><a id='MultiBar'>MultiBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='MultiBar' >MultiBar</a><hr className='custom-hr' /></>}
-                            </div>
-                        </div>
-                 
-                
+
+                <div id={"sortingmenu1" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclickSort}>
+                    {flagSort === 'AvgStockCycle' ? <><a id='AvgStockCycle'>Sort by MinimumStockCycle ASC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='AvgStockCycle'>Sort by MinimumStockCycle ASC&nbsp;</a><hr className='custom-hr' /></>}
+                    {flagSort === 'AvgStockCycle Desc' ? <><a id='AvgStockCycle Desc'>Sort by MinimumStockCycle DESC&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='AvgStockCycle Desc'>Sort by MinimumStockCycle DESC&nbsp;</a><hr className='custom-hr' /></>}
+                    {inputdata.Unit === 'P' ?
+                        <>
+                            {flagSort === 'AvgMinStockRequiredPcs' ? <><a id='AvgMinStockRequiredPcs'>Sort by MinimumStockPcs ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequiredPcs'>Sort by MinimumStockPcs ASC&nbsp;</a><hr className='custom-hr' /> </>}
+                            {flagSort === 'AvgMinStockRequiredPcs desc' ? <><a id='AvgMinStockRequiredPcs desc'>Sort by MinimumStockPcs DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequiredPcs desc'>Sort by MinimumStockPcs DESC&nbsp;</a><hr className='custom-hr' /> </>}
+                        </> :
+                        <>
+                            {flagSort === 'AvgMinStockRequired' ? <><a id='AvgMinStockRequired'>Sort by MinimumStock ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequired'>Sort by MinimumStock ASC&nbsp;</a><hr className='custom-hr' /> </>}
+                            {flagSort === 'AvgMinStockRequired desc' ? <><a id='AvgMinStockRequired desc'>Sort by MinimumStock DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='AvgMinStockRequired desc'>Sort by MinimumStock DESC&nbsp;</a><hr className='custom-hr' /> </>}
+                        </>
+                    }
+                </div>
+                <div className='btnicons1'>
+                    <div id={"myDropdownicon1" + props.id} className="dropdown-contenticon-second-screen" onClick={handleclick}>
+                        {flag === 'bar' ? <><a id='bar'>Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar</a><hr className='custom-hr' /></>}
+                        {flag === 'HorizontalBar' ? <><a id='HorizontalBar'>HorizontalBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='HorizontalBar' >HorizontalBar</a><hr className='custom-hr' /></>}
+                        {flag === 'MultiBar' ? <><a id='MultiBar'>MultiBar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='MultiBar' >MultiBar</a><hr className='custom-hr' /></>}
+                    </div>
+                </div>
+
+
                 {dataloader !== true ?
                     loader !== true ?
                         <div class="flip-card">
                             <div class="flip-card-inner" id='filp'>
                                 <div class="flip-card-back">
                                     <div className="detailstocktosales" onClick={DivOnClick} style={props.state.dropdown === '1' ? { height: '395px' } : { height: '350px' }} >
-
-                                        {console.log(props.state, "ssss")}
                                         {flag === 'bar' && optionBar.height !== undefined ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionBar))} state={contextData.detailTirdstate} /> : null}
                                         {flag === 'HorizontalBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionHorizontalBar))} state={contextData.detailTirdstate} /> : null}
-                                        {/* {flag === 'Line' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionLineBar))} state={contextData.detailTirdstate} /> : null} */}
                                         {flag === 'MultiBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionMultiBar))} state={contextData.detailTirdstate} /> : null}
                                     </div>
                                 </div>
@@ -389,17 +400,17 @@ export default function MinimumStockDefaultChart(props) {
                         <div class="flip-card">
                             <div class="flip-card-inner" id='filp'>
                                 <div class="flip-card-back">
-                                    <div class="" style={props.state.dropdown === '1' ? { height: '395px', color: 'black' } : { height: '350px', color: 'black' }}>
-
-                                        Not Found
+                                <div className="detailstocktosales" style={{ height: '395px' }} >
+                                    <img id='errorImg' src={DataError} />
                                     </div>
                                 </div>
                             </div>
-                        </div> :
+                        </div>
+                    :
                     <div class="flip-card">
                         <div class="flip-card-inner" id='filp'>
                             <div class="flip-card-back">
-                                <div class="" style={props.state.dropdown === '1' ? { height: '395px' } : { height: '350px' }}>
+                                <div class="detailstocktosales" style={props.state.dropdown === '1' ? { height: '395px' } : { height: '350px' }}>
                                     <div class="dot-spinner" style={{ margin: "auto", position: 'inherit' }} >
                                         <div class="dot-spinner__dot"></div>
                                         <div class="dot-spinner__dot"></div>

@@ -1,12 +1,13 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
-import Gradient from "javascript-color-gradient";
 import contex from '../../contex/Contex';
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
+
 
 export default function BranchWise() {
 	const [loader, setLoader] = useState(true)
@@ -18,13 +19,13 @@ export default function BranchWise() {
 	const navigate = useNavigate()
 	const [flag, setflag] = useState()
 	const [flagSort, setflagSort] = useState('')
-	// const [, setflag] = useState()
 	const [optionId, setOptionId] = useState();
 	const [data, setdata] = useState([]);
-	const [sales, setSales] = useState([])
 	const ChartType = "donut"
-	const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
 	const [prc, setprc] = useState([]);
+
+
+
 
 	let radialdata = {
 		themeId: localStorage.getItem("ThemeIndex"),
@@ -34,6 +35,10 @@ export default function BranchWise() {
 		chartId: 'BranchWise',
 		radiusAxis: name,
 		seriesdata: weight,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	let optiondonut = {
@@ -54,6 +59,10 @@ export default function BranchWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 
@@ -63,20 +72,24 @@ export default function BranchWise() {
 		height: '100%',
 		width: '100%',
 		propdata: data,
-		chartId: 'PieChartBranchwise',
+		chartId: 'BranchWise',
 		label: {
 			position: 'inside',
 			formatter: '{d}%',
 			color: 'white',
 			fontWeight: 'bold',
 		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 	let optradialbar = {
 		themeId: localStorage.getItem("ThemeIndex"),
 		charttype: 'semi-donut',
 		height: '100%',
 		width: '100%',
-		chartId: 'RadialBarchart',
+		chartId: 'BranchWise',
 		propdata: data,
 		label: {
 			show: false,
@@ -88,6 +101,10 @@ export default function BranchWise() {
 				fontSize: 20,
 				fontWeight: 'bold'
 			}
+		},
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
 		}
 	}
 
@@ -96,12 +113,16 @@ export default function BranchWise() {
 		charttype: 'round-horizontal-bar',
 		height: '100%',
 		width: '100%',
-		chartId: 'City Wise',
+		chartId: 'BranchWise',
 		Xaxis: name,
 		Yaxis: weight,
 		color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
 		divname: 'crancy-progress-card card-contain-graph',
-		prclst:prc
+		prclst: prc,
+		tooltip: {
+			formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+			confine: true
+		}
 	}
 
 	useEffect(() => {
@@ -137,8 +158,6 @@ export default function BranchWise() {
 			.then((res) => {
 				let name1 = [];
 				let weight1 = [];
-				let sale = [];
-				var js = {};
 				let tempprc = [];
 				var data = [];
 				if (res.data !== undefined) {
@@ -148,19 +167,8 @@ export default function BranchWise() {
 						data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['BranchName'] })
 						name1.push(res.data.lstResult[index]['BranchName'])
 						weight1.push(res.data.lstResult[index][inputdata['column']])
-
-						js = { 'product': '', 'thisYearProfit': 0 }
-						if (res.data.lstResult[index]['BranchName'] === null) {
-							js['product'] = 'null'
-						} else {
-							js['product'] = res.data.lstResult[index]['BranchName']
-						}
-						js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-						sale.push(js)
 						tempprc.push(res.data.lstResult[index]['Prc'])
 					}
-					console.log("weight", weight1)
 					setName(name1)
 					setweight(weight1)
 					setdata(data);
@@ -171,13 +179,6 @@ export default function BranchWise() {
 					} else {
 						setLoader(true)
 					}
-					var j = []
-					for (let index = 0; index < sale.length; index++) {
-						j.push({ ...sale[index], ['color']: gradientArray[index] })
-					}
-					setSales(j)
-
-
 					inputdata = { ...inputdata, ['Grouping']: '' }
 				} else {
 					alert(res['Error']);
@@ -189,16 +190,19 @@ export default function BranchWise() {
 		await post({ "ID": 1, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 
 			.then((res) => {
+
 				if (res.data !== undefined) {
 					if (res.data.lstResult.length === 0) {
 						setflag(ChartType)
-
 						post({ "ChartOptionID": 0, "ChartOption": ChartType, "ChartID": 1, "vendorID": 1, "UserID": 1 }, API.ChartOptionAddEdit, {}, 'post')
 							.then((res) => {
+
 								post({ "ID": 1, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
 									.then((res) => {
 										if (res.data !== undefined) {
-											setOptionId(res.data.lstResult[0].ChartOptionID)
+											if (res.data.lstResult.length !== 0) {
+												setOptionId(res.data.lstResult[0].ChartOptionID)
+											}
 										} else {
 											alert(res['Error']);
 										}
@@ -209,9 +213,10 @@ export default function BranchWise() {
 
 					}
 					else {
-
-						setOptionId(res.data.lstResult[0].ChartOptionID)
-						setflag(res.data.lstResult[0].ChartOption)
+						if (res.data.lstResult.length !== 0) {
+							setOptionId(res.data.lstResult[0].ChartOptionID)
+							setflag(res.data.lstResult[0].ChartOption)
+						}
 					}
 				} else {
 					alert(res['Error']);
@@ -244,7 +249,7 @@ export default function BranchWise() {
 	}
 
 	function handleNavigation() {
-		navigate('/graph-detail', { state: { grouping: "a.BranchID,b.BranchName", columnID: 'BranchID', columnName: 'BranchName', componentName: "Branch Wise", filterKey: "strBranch", chartId: 1, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+		navigate('/graph-detail', { state: { grouping: "a.BranchID,b.BranchName", columnID: 'BranchID', columnName: 'BranchName', componentName: "Branch Wise", filterKey: "strBranch", chartId: 1, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
 	}
 
 	document.getElementById("root").addEventListener("click", function (event) {
@@ -284,8 +289,6 @@ export default function BranchWise() {
 		await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
 			let name2 = [];
 			let weight2 = [];
-			let sale = [];
-			var js = {};
 			var data = [];
 			let tempprc = [];
 			if (res.data !== undefined) {
@@ -293,16 +296,6 @@ export default function BranchWise() {
 					data.push({ value: res.data.lstResult[index][inputdata['column']], name: res.data.lstResult[index]['BranchName'] })
 					name2.push(res.data.lstResult[index]['BranchName'])
 					weight2.push(res.data.lstResult[index][inputdata['column']])
-
-					js = { 'product': '', 'thisYearProfit': 0 }
-					if (res.data.lstResult[index]['BranchName'] === null) {
-						js['product'] = 'null'
-					} else {
-						js['product'] = res.data.lstResult[index]['BranchName']
-					}
-					js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-					sale.push(js)
 					tempprc.push(res.data.lstResult[index]['Prc']);
 				}
 				setName(name2);
@@ -315,11 +308,6 @@ export default function BranchWise() {
 				} else {
 					setLoader(true)
 				}
-				var j = []
-				for (let index = 0; index < sale.length; index++) {
-					j.push({ ...sale[index], ['color']: gradientArray[index] })
-				}
-				setSales(j)
 				inputdata = { ...inputdata, ['Grouping']: '' }
 			} else {
 				alert(res['Error']);
@@ -333,16 +321,16 @@ export default function BranchWise() {
 			<div className="graph-card">
 				<div className='card-title-graph'>
 
-					<div className="col-xs-8 col-sm-10 col-md-10 col-10" onClick={handleNavigation} >
+					<div className="col-xs-8 col-sm-10 col-md-10 col-10" id='chartnavbar' onClick={handleNavigation} >
 
-						<p><i class="fas fa-chart-pie"></i> Branch Wise</p>
+						<p><i class="fas fa-chart-pie" ></i> Branch Wise</p>
 
 					</div>
 
 					<div className="col-xs-4 col-sm-2 col-md-2 col-2" >
 						<div className='d-flex '>
 							<div className='dropbtngraph'>
-								<i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
+								<i className="fa-solid fa-arrow-down-short-wide sorticon" id='sorticonfordatasorting' onClick={handleSorting} />
 							</div>
 							<div className='dropbtngraph'>
 								<i class="fa-solid fa-ellipsis-vertical" id='icon_drop' onClick={handleonchangeCurrency} />
@@ -381,7 +369,7 @@ export default function BranchWise() {
 							<div id="html-dist"></div>
 						</div> :
 						<div className="crancy-progress-card card-contain-graph"  >
-							Not Found
+							<img id='errorImg' src={DataError} />
 						</div>
 					:
 					<div className="crancy-progress-card card-contain-graph">

@@ -1,18 +1,13 @@
 import React from 'react'
 import { useEffect, useState, useContext } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import BlackDots from '../../Assets/image/Dots.png'
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle';
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
-import { MonthWise_Bar } from '../../ChartOptions/MonthWise_Bar';
-import { MonthWise_area } from '../../ChartOptions/MonthWise_area';
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
-
+import DataError from '../../Assets/image/Error.gif'
 
 export default function MonthWise() {
   const [data, setdata] = useState([])
@@ -27,9 +22,6 @@ export default function MonthWise() {
   const [flagSort, setflagSort] = useState('')
   const ChartType = "bar"
   const [optionId, setOptionId] = useState()
-  const [demo, setdemo] = useState("bar")
-  const options_bar = MonthWise_Bar(name, inputdata['column'])
-  const options_area = MonthWise_area(name, inputdata['column'])
   const [prc, setprc] = useState([]);
   let optionbar = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -40,7 +32,11 @@ export default function MonthWise() {
     Xaxis: name,
     color: ['#00FFD7', '#FFD700', '#D700FF'],
     Yaxis: weight,
-    prclst:prc
+    prclst: prc,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
 
   let optionarea = {
@@ -51,35 +47,47 @@ export default function MonthWise() {
     chartId: 'MonthWise',
     Xaxis: name,
     Yaxis: weight,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'polar-radialbar',
     height: '100%',
     width: '100%',
-    chartId: 'MonthWise Wise',
+    chartId: 'MonthWise',
     radiusAxis: name,
     seriesdata: weight,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optiondonut = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'donut',
     height: '100%',
     width: '100%',
-    chartId: 'MonthWise Wise',
+    chartId: 'MonthWise',
     propdata: data,
     radius: [10, 150],
-    label:  {
-			show: false,
-			position: 'center'
-		  },
-		  emphasis: {
-			label: {
-			  show: true,
-			  fontSize: 20,
-			  fontWeight: 'bold'
-			}
-		}
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
 
   }
 
@@ -96,6 +104,10 @@ export default function MonthWise() {
       color: 'white',
       fontWeight: 'bold',
     },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optradialbar = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -106,17 +118,21 @@ export default function MonthWise() {
     propdata: data,
     position: 'center',
     fontsize: 20,
-    label:  {
-			show: false,
-			position: 'center'
-		  },
-		  emphasis: {
-			label: {
-			  show: true,
-			  fontSize: 20,
-			  fontWeight: 'bold'
-			}
-		}
+    label: {
+      show: false,
+      position: 'center'
+    },
+    emphasis: {
+      label: {
+        show: true,
+        fontSize: 20,
+        fontWeight: 'bold'
+      }
+    },
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let optionPolar = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -126,11 +142,11 @@ export default function MonthWise() {
     chartId: 'MonthWise',
     propdata: data,
     radius: [10, 110],
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
-  var series = [{
-    name: 'weight',
-    data: weight
-  }]
 
   function handleclick(e) {
 
@@ -196,7 +212,7 @@ export default function MonthWise() {
 
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "datename(month,a.voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise", filterKey: "strMonth", chartId: 14, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "datename(month,a.voucherDate)", columnName: "MonthName", columnID: "MonthName", componentName: " Month Wise", filterKey: "strMonth", chartId: 14, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
   }
 
 
@@ -240,7 +256,9 @@ export default function MonthWise() {
                 post({ "ID": 14, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
                   .then((res) => {
                     if (res.data !== undefined) {
-                      setOptionId(res.data.lstResult[0].ChartOptionID)
+                      if (res.data.lstResult.length !== 0) {
+                        setOptionId(res.data.lstResult[0].ChartOptionID)
+                      }
                     } else {
                       alert(res['Error']);
                     }
@@ -250,8 +268,10 @@ export default function MonthWise() {
 
           }
           else {
-            setOptionId(res.data.lstResult[0].ChartOptionID)
-            setflag(res.data.lstResult[0].ChartOption)
+            if (res.data.lstResult.length !== 0) {
+              setOptionId(res.data.lstResult[0].ChartOptionID)
+              setflag(res.data.lstResult[0].ChartOption)
+            }
           }
         } else {
           alert(res['Error']);
@@ -335,7 +355,6 @@ export default function MonthWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
             <div className='d-flex '>
               <div className='dropbtngraph'>
                 <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -350,7 +369,6 @@ export default function MonthWise() {
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               <div id="myDropdowniconmonth" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' className='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' className='bar' >Bar</a><hr className='custom-hr' /></>}
@@ -361,7 +379,6 @@ export default function MonthWise() {
                 {flag === 'semidonut' ? <><a id='semidonut' className='semidonut'>Semi Donut&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='semidonut' className='semidonut'>Semi Donut </a><hr className='custom-hr' /></>}
 
                 <button id='save' onClick={addEditOption}>Save&nbsp;<i class="fas fa-save"></i></button>
-                {/* <a id='pie' >Pie chart </a><hr className='custom-hr' /> */}
               </div>
             </div>
           </div>
@@ -380,7 +397,7 @@ export default function MonthWise() {
               {flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionPolar))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
-              Not Found
+              <img id='errorImg' src={DataError} />
             </div>
           :
           <div className="crancy-progress-card card-contain-graph">

@@ -5,9 +5,11 @@
     <link rel="icon" href="%PUBLIC_URL%/Jsoft.png" />
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
 
-    <meta name="description" content="#">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="description" content="#" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <meta name="theme-color" content="#000000" />
     <meta
@@ -55,126 +57,73 @@
     <script type="text/javascript" src="%PUBLIC_URL%/jquery-migrate.js"></script>
 
     <script type="text/javascript" src="%PUBLIC_URL%/popper.min.js"></script> -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-migrate.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-
-    <script src="js/main.js"></script>
-    <!-- <script src="js/bootstrap-select.min.js"></script> -->
-    <script src="font/js/all.js"></script>
-    <script src="font/js/solid.min.js"></script>
-    <script src="font/js/regular.min.js"></script>
-    <script src="font/js/fontawesome.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/slick.min.js"></script>
-    <script src="js/jquery.fancybox.min.js"></script>
-
-    <!-- top slider & tag name silder -->
+   
+    <script type="text/jsx" src="js/jquery.min.js"></script>
+    <script type="text/jsx" src="js/jquery-migrate.js"></script>
+    <script type="text/jsx" src="js/popper.min.js"></script>
+    <script type="text/jsx" src="js/bootstrap.min.js"></script>
+    <script type="text/jsx" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/jsx" src="js/main.js"></script>
+    <script type="text/jsx" src="font/js/all.js"></script>
+    <script type="text/jsx" src="font/js/solid.min.js"></script>
+    <script type="text/jsx" src="font/js/regular.min.js"></script>
+    <script type="text/jsx" src="font/js/fontawesome.min.js"></script>
+    <script type="text/jsx" src="js/jquery.min.js"></script>
+    <script type="text/jsx" src="js/slick.min.js"></script>
+    <script type="text/jsx" src="js/jquery.fancybox.min.js"></script>
+    <script src="https://jsuites.net/v5/jsuites.js"></script>
     <script>
-      (function ($) {
-        $(function () {
-          $("#topitem").slick({
-            infinite: true,
-            autoplay: true,
-            autoplaySpeed: 1000,
-            prevArrow: ".js-ag-carousel-arrow_prev",
-            nextArrow: ".js-ag-carousel-arrow_next",
-            variableWidth: true,
-            centerMode: false,
-            responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  slidesToShow: 5,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-              {
-                breakpoint: 767,
-                settings: {
-                  slidesToShow: 5,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-              {
-                breakpoint: 600,
-                settings: {
-                  slidesToShow: 4,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-              {
-                breakpoint: 460,
-                settings: {
-                  slidesToShow: 3,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-              {
-                breakpoint: 415,
-                settings: {
-                  slidesToShow: 2,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-              {
-                breakpoint: 320,
-                settings: {
-                  slidesToShow: 1.5,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-            ],
-          });
+      function sortTable(n, e) {
+        var table,
+          rows,
+          switching,
+          i,
+          x,
+          y,
+          shouldSwitch,
+          dir,
+          switchcount = 0;
+        table = document.getElementById(e.id);
 
-          $("#TagImage").slick({
-            infinite: true,
-            autoplay: true,
-            autoplaySpeed: 1500,
-            prevArrow: ".js-ag-carousel-arrow_prev.top-slider-prevarrow",
-            nextArrow: ".js-ag-carousel-arrow_next.top-slider-nextarrow",
-            variableWidth: true,
-            centerMode: false,
-            responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  slidesToShow: 10,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-              {
-                breakpoint: 480,
-                settings: {
-                  slidesToShow: 4,
-                  variableWidth: false,
-                  centerMode: false,
-                },
-              },
-            ],
-          });
-        });
-      })(jQuery);
+        if (table !== undefined && table !== null) {
+          switching = true;
+
+          dir = "asc";
+
+          while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < rows.length - 1; i++) {
+              shouldSwitch = false;
+
+              x = rows[i].getElementsByTagName("TD")[n];
+              y = rows[i + 1].getElementsByTagName("TD")[n];
+
+              if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                  shouldSwitch = true;
+                  break;
+                }
+              } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                  shouldSwitch = true;
+                  break;
+                }
+              }
+            }
+            if (shouldSwitch) {
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+              switchcount++;
+            } else {
+              if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+              }
+            }
+          }
+        }
+      }
     </script>
-
-    <!-- top slider on click image event    
-    <script>
-      $(function () {
-        $(".topimg-gd img:eq(0)").nextAll().hide();
-        $(".topicon-gd li").click(function (e) {
-          var index = $(this).index();
-          $(".topimg-gd img").eq(index).show().siblings().hide();
-        });
-      });
-    </script> -->
   </body>
 </html>

@@ -2,16 +2,12 @@ import React, { useContext } from 'react'
 import API from '../../Utility/API';
 import { useEffect, useState } from 'react';
 import post from '../../Utility/APIHandle'
-import ReactApexChart from 'react-apexcharts';
-import { ItemGroup_RadialBar } from '../../ChartOptions/ItemGroup_RadialBar';
-import { ItemGroup_treemap } from '../../ChartOptions/ItemGroup_treemap';
-import BlackDots from '../../Assets/image/Dots.png'
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
 
 export default function ItemGroupWise() {
   const contexData = useContext(contex);
@@ -31,10 +27,14 @@ export default function ItemGroupWise() {
     charttype: 'polar-radialbar',
     height: '100%',
     width: '100%',
-    chartId: 'itemGroupWise',
+    chartId: 'ItemGroupWise',
     radiusAxis: name,
     seriesdata: weight,
     maxdegree: 80,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
+    }
   }
   let treemap = {
     themeId: localStorage.getItem("ThemeIndex"),
@@ -46,6 +46,8 @@ export default function ItemGroupWise() {
         data: finalarr
       }
     ],
+    column: inputdata.column
+  
   }
 
   let roundedBarHorizontal = {
@@ -53,40 +55,20 @@ export default function ItemGroupWise() {
     charttype: 'round-horizontal-bar',
     height: '100%',
     width: '100%',
-    chartId: 'itemGroupWise',
+    chartId: 'ItemGroupWise',
     Xaxis: name,
     color: ['#0073b0', '#caf77d', '#8bd9e8', '#c4e8f0'],
     Yaxis: weight,
-    divname:'crancy-progress-card card-contain-graph',
-    prclst:prc
-  }
-  const options_radial = ItemGroup_RadialBar(name)
-  const options_treemap = ItemGroup_treemap(name, inputdata['column'])
-  const series_treemap = [
-    {
-      data: finalarr
+    divname: 'crancy-progress-card card-contain-graph',
+    prclst: prc,
+    tooltip: {
+      formatter: `{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc' ? '%' : ""}`,
+      confine: true
     }
-  ]
-  const series_radial = handleSeriesData()
+  }
 
   const navigate = useNavigate()
 
-  function handleSeriesData() {
-    let percarray = []
-    let sum = 0;
-    if (inputdata['column'] === 'NetWeight') {
-      for (let i = 0; i < weight.length; i++) {
-        sum += weight[i];
-      }
-
-      for (let index = 0; index < weight.length; index++) {
-        percarray.push((weight[index] / sum) * 100)
-      }
-      return percarray
-    } else {
-      return weight
-    }
-  }
 
   function handleclick(e) {
 
@@ -100,23 +82,18 @@ export default function ItemGroupWise() {
 
   }
 
-  const [seri, setseries] = useState([])
-  const [opt, setopt] = useState([])
 
   useEffect(() => {
     fetchOption()
     getdata()
+    
   }, [inputdata])
+
   useEffect(() => {
     if (flagSort !== '') {
       fetchSortData()
     }
   }, [flagSort])
-
-  // useEffect(() => {
-  //   setseries(select_series(flag))
-  //   setopt(select_option(flag))
-  // }, [flag])
 
 
   async function getdata() {
@@ -159,7 +136,7 @@ export default function ItemGroupWise() {
   }
 
   function handleNavigation() {
-    navigate('/graph-detail', { state: { grouping: "o.ItemGroupId,o.GroupName", columnName: "GroupName", columnID: "ItemGroupId", componentName: "Item Group Wise", filterKey: "strItemGroup", chartId: 5, FromDate: inputdata.FromDate, ToDate : inputdata.ToDate }, replace: true })
+    navigate('/graph-detail', { state: { grouping: "o.ItemGroupId,o.GroupName", columnName: "GroupName", columnID: "ItemGroupId", componentName: "Item Group Wise", filterKey: "strItemGroup", chartId: 5, FromDate: inputdata.FromDate, ToDate: inputdata.ToDate }, replace: true })
   }
 
   function handleonchangeCurrency() {
@@ -201,7 +178,9 @@ export default function ItemGroupWise() {
                 post({ "ID": 5, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
                   .then((res) => {
                     if (res.data !== undefined) {
+                      if (res.data.lstResult.length !== 0) {
                       setOptionId(res.data.lstResult[0].ChartOptionID)
+                      }
                     } else {
                       alert(res['Error']);
                     }
@@ -212,8 +191,10 @@ export default function ItemGroupWise() {
 
           }
           else {
+            if (res.data.lstResult.length !== 0) {
             setOptionId(res.data.lstResult[0].ChartOptionID)
             setflag(res.data.lstResult[0].ChartOption)
+            }
           }
         } else {
           alert(res['Error']);
@@ -300,7 +281,6 @@ export default function ItemGroupWise() {
 
 
           <div className="col-sm-2 col-md-2 col-2">
-            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
             <div className='d-flex '>
               <div className='dropbtngraph'>
                 <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -315,10 +295,8 @@ export default function ItemGroupWise() {
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               <div id="myDropdowniconigroup" className="dropdown-contenticon" onClick={handleclick}>
-                {/* {flag === 'radialBar' ? <><a id='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr' /></>} */}
                 {flag === 'radialBar' ? <><a id='radialBar'>Radial Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='radialBar'>Radial Bar</a><hr className='custom-hr' /></>}
                 {flag === 'hbar' ? <><a id='hbar'>Horizantal bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='hbar'>Horizantal bar</a><hr className='custom-hr' /></>}
                 {flag === 'treemap' ? <><a id='treemap'>Treemap&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='treemap'>Treemap</a><hr className='custom-hr' /></>}
@@ -331,14 +309,12 @@ export default function ItemGroupWise() {
         {dataloader !== true ?
           loader !== true ?
             <div className="crancy-progress-card card-contain-graph">
-
-              {/* {flag === 'radialBar' ? <ReactApexChart options={options_radial} series={series_radial} height={390} type={flag} /> : null} */}
               {flag === 'radialBar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optionbarpolar))} /> : null}
               {flag === 'hbar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(roundedBarHorizontal))} /> : null}
               {flag === 'treemap' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(treemap))} /> : null}
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
-              Not Found
+         <img id='errorImg'  src={DataError} />
             </div>
           :
           <div className="crancy-progress-card card-contain-graph">

@@ -1,19 +1,13 @@
 import React, { useContext } from 'react'
-
 import API from '../../Utility/API';
 import post from '../../Utility/APIHandle'
 import { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import Gradient from "javascript-color-gradient";
-import BlackDots from '../../Assets/image/Dots.png'
-import { SubItemWise_bar } from '../../ChartOptions/SubItemWise_bar';
-import { SubItem_Polar } from '../../ChartOptions/SubItem_Polar';
 import contex from '../../contex/Contex';
-import drop from '../../Assets/img/svg/dropdown.svg'
 import '../../Assets/css/Custom.css'
 import { useNavigate } from 'react-router-dom';
 import Notify from '../Notification/Notify';
 import { AlphaDashChart } from 'alpha-echart-library/dist/cjs'
+import DataError from '../../Assets/image/Error.gif'
 
 export default function SubItemWise() {
 
@@ -26,32 +20,29 @@ export default function SubItemWise() {
   const [flag, setflag] = useState()
   const ChartType = "bar"
   const [optionId, setOptionId] = useState()
-  const [sales, setSales] = useState([])
   const [flagSort, setflagSort] = useState('')
-  const options_Polar = SubItem_Polar(name, inputdata['column'])
-  const options_bar = SubItemWise_bar(name, inputdata['column'])
   const [data, setdata] = useState([])
   const [prc, setprc] = useState([]);
 
-  const series_bar = [{
-    name: 'Weight',
-    data: weight
-  }]
   let optiondata = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'pie',
     height: '100%',
     width: '100%',
-    chartId: 'subItemWise',
+    chartId: 'SubItemWise',
     propdata: data,
     radius: [10, 110],
+    tooltip:{
+			formatter:`{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc'?'%':""}`,
+			confine:true  
+		}
   }
   let optradialbar = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'semi-donut',
     height: '100%',
     width: '100%',
-    chartId: 'subItemWise',
+    chartId: 'SubItemWise',
     propdata: data,
     position: 'center',
     fontsize: 20,
@@ -65,7 +56,11 @@ export default function SubItemWise() {
         fontSize: 20,
         fontWeight: 'bold'
       }
-    }
+    },
+    tooltip:{
+			formatter:`{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc'?'%':""}`,
+			confine:true  
+		}
   }
 
   let roundbar = {
@@ -73,22 +68,29 @@ export default function SubItemWise() {
     charttype: 'roundbar',
     height: '100%',
     width: '100%',
-    chartId: 'subItemWise',
+    chartId: 'SubItemWise',
     Xaxis: name,
     Yaxis: weight,
     divname: "crancy-progress-card card-contain-graph",
-    prclst:prc
+    prclst:prc,
+    tooltip:{
+			formatter:`{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc'?'%':""}`,
+			confine:true  
+		}
   }
   let radialdata = {
     themeId: localStorage.getItem("ThemeIndex"),
     charttype: 'polar-radialbar',
     height: '100%',
     width: '100%',
-    chartId: 'subItemWise',
+    chartId: 'SubItemWise',
     radiusAxis: name,
     seriesdata: weight,
+    tooltip:{
+			formatter:`{b} <br> ${inputdata.column} - {c}${inputdata.column === 'Prc'?'%':""}`,
+			confine:true  
+		}
   }
-  const series_polar = weight;
 
   const navigate = useNavigate()
 
@@ -104,11 +106,6 @@ export default function SubItemWise() {
 
   }
 
-
-  const gradientArray = new Gradient().setColorGradient("#01555b", "#98c8cb").getColors()
-
-
-
   useEffect(() => {
     fetchOption()
     getdata()
@@ -121,16 +118,6 @@ export default function SubItemWise() {
   }, [flagSort])
 
 
-  function setMargin() {
-    if (weight.length < 7) {
-      return 80
-    } else {
-      return 30
-    }
-  }
-
-
-
   async function getdata() {
 
     inputdata = { ...inputdata, ['Grouping']: 'e.subitemID,e.subItemName', ['SortByLabel']: 'subItemName' }
@@ -139,14 +126,11 @@ export default function SubItemWise() {
       .then((res) => {
         let name = [];
         let weight = [];
-        let sale = [];
-        var js = {};
         let tempdata = [];
         let tempprc = [];
         if (res.data !== undefined) {
 
           for (let index = 0; index < res.data.lstResult.length; index++) {
-            js = { 'product': '', 'thisYearProfit': 0 }
             if (res.data.lstResult[index]['subItemName'] === null) {
               name.push("null")
               tempdata.push({ value: res.data.lstResult[index]['NetWeight'], name: 'null' })
@@ -156,15 +140,6 @@ export default function SubItemWise() {
               tempdata.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['subItemName'] })
             }
             weight.push(res.data.lstResult[index][inputdata['column']])
-
-            if (res.data.lstResult[index]['subItemName'] === null) {
-              js['product'] = 'null'
-            } else {
-              js['product'] = res.data.lstResult[index]['subItemName']
-            }
-            js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
-
-            sale.push(js)
             tempprc.push(res.data.lstResult[index]['Prc']);
           }
           setprc(tempprc);
@@ -177,12 +152,6 @@ export default function SubItemWise() {
           } else {
             setLoader(true)
           }
-          var j = []
-          for (let index = 0; index < sale.length; index++) {
-            j.push({ ...sale[index], ['color']: gradientArray[index] })
-          }
-          setSales(j)
-
           inputdata = { ...inputdata, ['Grouping']: '' }
         } else {
           alert(res['Error']);
@@ -236,7 +205,9 @@ export default function SubItemWise() {
                 post({ "ID": 6, "vendorID": 1, "UserID": 1 }, API.GetChartOptionByID, {}, 'post')
                   .then((res) => {
                     if (res.data !== undefined) {
+                      if (res.data.lstResult.length !== 0) {
                       setOptionId(res.data.lstResult[0].ChartOptionID)
+                      }
                     } else {
                       alert(res['Error']);
                     }
@@ -246,8 +217,10 @@ export default function SubItemWise() {
 
           }
           else {
+            if (res.data.lstResult.length !== 0) {
             setOptionId(res.data.lstResult[0].ChartOptionID)
             setflag(res.data.lstResult[0].ChartOption)
+            }
           }
         } else {
           alert(res['Error']);
@@ -289,13 +262,10 @@ export default function SubItemWise() {
     await post(inputForSort, API.CommonChart, {}, 'post').then((res) => {
       let name = [];
       let weight = [];
-      let sale = [];
-      var js = {};
       let tempdata = [];
       let tempprc = [];
       if (res.data !== undefined) {
         for (let index = 0; index < res.data.lstResult.length; index++) {
-          js = { 'product': '', 'thisYearProfit': 0 }
           if (res.data.lstResult[index]['subItemName'] === null) {
             name.push("null")
             tempdata.push({ value: res.data.lstResult[index]['NetWeight'], name: 'null' })
@@ -305,15 +275,7 @@ export default function SubItemWise() {
             tempdata.push({ value: res.data.lstResult[index]['NetWeight'], name: res.data.lstResult[index]['subItemName'] })
           }
           weight.push(res.data.lstResult[index][inputdata['column']])
-
-          if (res.data.lstResult[index]['subItemName'] === null) {
-            js['product'] = 'null'
-          } else {
-            js['product'] = res.data.lstResult[index]['subItemName']
-          }
-          js['thisYearProfit'] = res.data.lstResult[index][inputdata['column']]
           tempprc.push(res.data.lstResult[index]['Prc']);
-          sale.push(js)
         }
         setprc(tempprc);
         setdata(tempdata)
@@ -325,12 +287,6 @@ export default function SubItemWise() {
         } else {
           setLoader(true)
         }
-        var j = []
-        for (let index = 0; index < sale.length; index++) {
-          j.push({ ...sale[index], ['color']: gradientArray[index] })
-        }
-        setSales(j)
-
         inputdata = { ...inputdata, ['Grouping']: '' }
       } else {
         alert(res['Error']);
@@ -349,7 +305,6 @@ export default function SubItemWise() {
           </div>
 
           <div className="col-sm-2 col-md-2 col-2">
-            {/* <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} ></i> */}
             <div className='d-flex '>
               <div className='dropbtngraph'>
                 <i className="fa-solid fa-arrow-down-short-wide sorticon" onClick={handleSorting} />
@@ -364,7 +319,6 @@ export default function SubItemWise() {
               {flagSort === 'wt' ? <><a id='wt'>Sort by Weight ASC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt'>Sort by Weight ASC&nbsp;</a><hr className='custom-hr' /> </>}
               {flagSort === 'wt-desc' ? <><a id='wt-desc'>Sort by Weight DESC&nbsp; <i class="fa-solid fa-check"></i></a><hr className='custom-hr' /> </> : <><a id='wt-desc'>Sort by Weight DESC&nbsp;</a><hr className='custom-hr' /> </>}
             </div>
-            {/* <img src={drop} className='dropbtn icon_drop' onClick={handleonchangeCurrency} ></img> */}
             <div className='btnicons'>
               <div id="myDropdowniconsubitem" className="dropdown-contenticon" onClick={handleclick}>
                 {flag === 'bar' ? <><a id='bar' >Bar&nbsp;<i class="fa-solid fa-check"></i></a><hr className='custom-hr' /></> : <><a id='bar' >Bar </a><hr className='custom-hr' /></>}
@@ -375,8 +329,6 @@ export default function SubItemWise() {
               </div>
             </div>
           </div>
-
-          {/* <i class="fas fa-external-link-alt"></i> */}
         </div>
 
 
@@ -384,9 +336,6 @@ export default function SubItemWise() {
         {dataloader !== true ?
           loader !== true ?
             <div className="crancy-progress-card card-contain-graph">
-              {/* <ReactApexChart options={options} series={series} type="polarArea" height={390} /> */}
-              {/* <RoundedBar/> */}
-
               {flag === 'bar' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(roundbar))} /> : null}
               {flag === 'polarArea' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optiondata))} /> : null}
               {flag === 'semidonut' ? <AlphaDashChart obj={JSON.parse(JSON.stringify(optradialbar))} /> : null}
@@ -394,7 +343,7 @@ export default function SubItemWise() {
 
             </div> :
             <div className="crancy-progress-card card-contain-graph"  >
-              Not Found
+           <img id='errorImg'  src={DataError} />
             </div>
           :
           <div className="crancy-progress-card card-contain-graph">
